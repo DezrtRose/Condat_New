@@ -99,14 +99,14 @@
         var institute = $("#institute").val();
         $.ajax({
             url: appUrl + "/tenant/courses/" + institute,
-            beforeSend: function() {
+            beforeSend: function () {
                 $("#course").before('<div class="form-control course-loading"><i class = "fa fa-spinner fa-spin"></i> Loading...</div>');
                 $('#course').hide();
             },
             success: function (result) {
                 $("#course").html(result.data.options);
             }
-        }).complete(function(){
+        }).complete(function () {
             $("#course").show();
             $('.course-loading').remove();
         });
@@ -116,14 +116,14 @@
         var institute = $("#institute").val();
         $.ajax({
             url: appUrl + "/tenant/intakes/" + institute,
-            beforeSend: function() {
+            beforeSend: function () {
                 $("#intake").before('<div class="form-control intake-loading"><i class = "fa fa-spinner fa-spin"></i> Loading...</div>');
                 $('#intake').hide();
             },
             success: function (result) {
                 $("#intake").html(result.data.options);
             }
-        }).complete(function(){
+        }).complete(function () {
             $("#intake").show();
             $('.intake-loading').remove();
         });
@@ -153,7 +153,7 @@
                         select.append($("<option></option>").attr("value", result.data.institute_id).text(result.data.name));
                         select.val(result.data.institute_id);
 
-                        if($(".institute option[value='']").length > 0)
+                        if ($(".institute option[value='']").length > 0)
                             $(this).remove();
 
                         $('#condat-modal').modal('hide');
@@ -176,7 +176,7 @@
     $(document).on("submit", "#add-course", function (event) {
         var formData = $(this).serialize();
         var institute_id = $('#institute').val();
-        var url = appUrl + '/tenant/course/'+ institute_id + '/store';
+        var url = appUrl + '/tenant/course/' + institute_id + '/store';
 
         // process the form
         $.ajax({
@@ -192,13 +192,13 @@
                         select.append($("<option></option>").attr("value", result.data.course_id).text(result.data.name));
                         select.val(result.data.course_id);
 
-                        if($(".course option[value='']").length > 0)
+                        if ($(".course option[value='']").length > 0)
                             $(this).remove();
 
                         $('#condat-modal').modal('hide');
                         $('.container .box-primary').before(notify('success', 'Course Added Successfully!'));
                     }
-                    else{
+                    else {
                         $.each(result.data.errors, function (i, v) {
                             //$('#add-institute').find('input[name=' + i + ']').after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
                             /* Applicable for other elements like calender, phone */
@@ -215,7 +215,7 @@
     $(document).on("submit", "#add-intake", function (event) {
         var formData = $(this).serialize();
         var institute_id = $('#institute').val();
-        var url = appUrl + '/tenant/intakes/'+ institute_id + '/store';
+        var url = appUrl + '/tenant/intakes/' + institute_id + '/store';
 
         // process the form
         $.ajax({
@@ -231,13 +231,13 @@
                         select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.name));
                         select.val(result.data.intake_id);
 
-                        if($(".intake option[value='']").length != 0)
+                        if ($(".intake option[value='']").length != 0)
                             $(".intake option[value='']").remove();
 
                         $('#condat-modal').modal('hide');
                         $('.container .box-primary').before(notify('success', 'Intake Added Successfully!'));
                     }
-                    else{
+                    else {
                         $.each(result.data.errors, function (i, v) {
                             //$('#add-institute').find('input[name=' + i + ']').after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
                             /* Applicable for other elements like calender, phone */
@@ -270,13 +270,13 @@
                         $('#superagent').append($("<option></option>").attr("value", result.data.agent_id).text(result.data.name));
                         select.val(result.data.agent_id);
 
-                        if($(".subagent option[value='']").length != 0)
+                        if ($(".subagent option[value='']").length != 0)
                             $(".subagent option[value='']").remove();
 
                         $('#condat-modal').modal('hide');
                         $('.container .box-primary').before(notify('success', 'Sub Agent Added Successfully!'));
                     }
-                    else{
+                    else {
                         $.each(result.data.errors, function (i, v) {
                             //$('#add-institute').find('input[name=' + i + ']').after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
                             /* Applicable for other elements like calender, phone */
@@ -309,13 +309,13 @@
                         $('#subagent').append($("<option></option>").attr("value", result.data.agent_id).text(result.data.name));
                         select.val(result.data.agent_id);
 
-                        if($(".superagent option[value='']").length != 0)
+                        if ($(".superagent option[value='']").length != 0)
                             $(".superagent option[value='']").remove();
 
                         $('#condat-modal').modal('hide');
                         $('.container .box-primary').before(notify('success', 'Sub Agent Added Successfully!'));
                     }
-                    else{
+                    else {
                         $.each(result.data.errors, function (i, v) {
                             //$('#add-institute').find('input[name=' + i + ']').after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
                             /* Applicable for other elements like calender, phone */
@@ -335,6 +335,7 @@
 
 </script>
 {{ Condat::js("$('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
                 startDate: '+0d',
                 autoclose: true
             });"
