@@ -63,7 +63,7 @@
             <div class="form-group">
                 {!!Form::label('role', 'User Role', array('class' => 'col-sm-4 control-label')) !!}
                 <div class="col-sm-8">
-                    {!!Form::select('role', config('constants.user_role'), null, array('class' => 'form-control'))!!}
+                    {!!Form::select('role', $user_levels, null, array('class' => 'form-control'))!!}
                 </div>
             </div>
         @endif
