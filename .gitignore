@@ -34,3 +34,13 @@ storage/logs/laravel.log
 storage/logs/laravel.log.txt
 
 storage/framework/sessions/7dbf09c18d2f3b46e1b6f0f0edbdf2362976b803
+
+storage/framework/sessions/7dbf09c18d2f3b46e1b6f0f0edbdf2362976b803
+
+storage/framework/sessions/7dbf09c18d2f3b46e1b6f0f0edbdf2362976b803
+
+*.log
+
+*.txt
+
+storage/framework/sessions/9155fa948effe4441ec933f0a79e3fe4efe98d7d
