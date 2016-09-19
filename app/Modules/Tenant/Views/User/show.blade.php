@@ -2,7 +2,7 @@
 @section('title', 'Agent View')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/agents')}}" title="All Agents"><i class="fa fa-users"></i> Agents</a></li>
+    <li><a href="{{url('tenant/users')}}" title="All Users"><i class="fa fa-users"></i> Agents</a></li>
     <li>View</li>
 @stop
 @section('content')
@@ -12,20 +12,21 @@
         <div class="box box-primary">
             <div class="box-body box-profile">
 
-                <h3 class="profile-username ">{{$agent->name}}</h3>
+                <h3 class="profile-username ">Full Name</h3>
                  
 
-                <p class="text-muted ">Agent ID: {{format_id($agent->agent_id, 'Ag')}}</p>
+                <p class="text-muted ">User ID: </p>
+                <hr>
+                <strong><i class="fa fa-calendar margin-r-5"></i> Role</strong>
+                <p class="text-muted ">Role: </p>
                 <hr>
                 <strong><i class="fa fa-calendar margin-r-5"></i> Created At</strong>
-                <p class="text-muted">{{format_datetime($agent->created_at)}}</p>
+                <p class="text-muted"></p>
                 <hr>
-                <strong><i class="fa fa-plus-square margin-r-5"></i> Added By</strong>
-                <p class="text-muted">{{get_tenant_name($agent->added_by)}}</p>
+                <strong><i class="fa fa-calendar margin-r-5"></i> No.of Clients</strong>
+                <p class="text-muted">No. of Client Added by this User</p>
                 <hr>
-                <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
-                <p class="text-muted">{{$agent->description}}</p>
-                <hr>
+                
                 
             </div>
             <!-- /.box-body -->
@@ -37,36 +38,38 @@
     <div class="col-xs-9">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Company Details</h3>
+                <h3 class="box-title">User Details</h3>
                 <div class="box-tools pull-right"><a data-toggle="tooltip" title="Edit Agent" class="btn btn-action-box" href ="{{route('tenant.agents.edit', $agent->agent_id)}}"><i class="fa fa-edit"></i></a> </div>
             </div>
             <div class="box-body">
                 <table class="table table-hover">
                     <tbody>
                     <tr>
-                        <th style="width: 34%;">Agent ID</th>
-                        <td>{{format_id($agent->agent_id, 'Ag')}}</td>
+                        <th style="width: 34%;">User ID</th>
+                        <td></td>
                     </tr>
                     <tr>
-                        <th>Company Name</th>
-                        <td>{{$agent->name}}</td>
+                        <th>Full Name</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>DOB</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Sex</th>
+                        <td></td>
                     </tr>
                     <tr>
                         <th>Phone Number</th>
-                        <td>{{$agent->number}}</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th>Email</th>
-                        <td>{{$agent->email}}</td>
+                        <td></td>
                     </tr>
-                    <tr>
-                        <th>Website</th>
-                        <td>{{$agent->website}}</td>
-                    </tr>
-                    <tr>
-                        <th>Invoice To</th>
-                        <td>{{$agent->invoice_to_name}}</td>
-                    </tr>
+                    
+                    
                     </tbody>
                 </table>
             </div>
