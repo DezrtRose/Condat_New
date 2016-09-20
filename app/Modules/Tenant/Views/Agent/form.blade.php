@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="form-group @if($errors->has('invoice_to_name')) {{'has-error'}} @endif">
-                    {!!Form::label('invoice_to_name', 'Invoice To Whom', array('class' => 'col-sm-4 control-label')) !!}
+                    {!!Form::label('invoice_to_name', 'Invoice To', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
                         {!!Form::text('invoice_to_name', null, array('class' => 'form-control', 'id'=>'invoice_to_name'))!!}
                         @if($errors->has('invoice_to_name'))
@@ -123,7 +123,7 @@
                 <div class="form-group @if($errors->has('country_id')) {{'has-error'}} @endif">
                     {!!Form::label('country_id', 'Country', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
-                        {!!Form::select('country_id', $countries, null, array('class' =>
+                        {!!Form::select('country_id', $countries, 263, array('class' =>
                         'form-control'))!!}
                         @if($errors->has('country_id'))
                             {!! $errors->first('country_id', '<label class="control-label"

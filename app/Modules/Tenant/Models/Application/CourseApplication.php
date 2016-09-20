@@ -48,7 +48,7 @@ class CourseApplication extends Model
             $application = CourseApplication::create([
                 'institution_course_id' => $request['institution_course_id'],
                 'intake_id' => $request['intake_id'],
-                //'end_date' => insert_dateformat($request['end_date']), check this later
+                'end_date' => insert_dateformat($request['end_date']),
                 'tuition_fee' => $request['tuition_fee'],
                 'super_agent_id' => $request['super_agent_id'],
                 'sub_agent_id' => $request['sub_agent_id'],

@@ -18,9 +18,10 @@
                     <tr>
                         <th>User ID</th>
                         <th>Full Name</th>
+                        <th>Phone No</th>
                         <th>Email</th>
+                        <th>Role</th>
                         <th>Status</th>
-                        <th>Created At</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -39,8 +40,11 @@
                         {data: 'user_id', name: 'user_id'},
                         {data: 'fullname', name: 'fullname'},
                         {data: 'email', name: 'email'},
+                        {data: 'email', name: 'email'},
+                        {data: 'email', name: 'email'},
+                        
                         {data: 'status', name: 'status'},
-                        {data: 'created_at', name: 'created_at'},
+                       
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                     ],
                     order: [ [0, 'desc'] ]

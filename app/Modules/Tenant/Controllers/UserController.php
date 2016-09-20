@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Modules\Tenant\Models\User;
+use App\Modules\Tenant\Models\UserLevel;
 use DB;
 use Illuminate\Http\Request;
 use Flash;
@@ -86,7 +87,8 @@ class UserController extends BaseController {
 	 */
 	public function create()
 	{
-		return view('Tenant::User/add');
+		$data['user_levels'] = UserLevel::where('name', '!=', 'Admin')->lists('name', 'user_level_id');
+		return view('Tenant::User/add', $data);
 	}
 
 	/**
@@ -133,6 +135,7 @@ class UserController extends BaseController {
 		/* Getting the user details*/
 		//$data['user'] = User::join('persons', 'persons.person_id', '=', 'users.person_id')->where('users.user_id', $user_id)->first();
 		$data['user'] = $this->user->getDetails($user_id);
+		$data['user_levels'] = UserLevel::where('name', '!=', 'Admin')->lists('name', 'user_level_id');
 
 		if($data['user'] != null)
 			return view('Tenant::User/edit', $data);

@@ -135,7 +135,7 @@
                             <div class="form-group @if($errors->has('country_id')) {{'has-error'}} @endif">
                                 {!!Form::label('country_id', 'Country', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
-                                    {!!Form::select('country_id', $countries, null, array('class' =>
+                                    {!!Form::select('country_id', $countries, 263, array('class' =>
                                     'form-control'))!!}
                                     @if($errors->has('country_id'))
                                         {!! $errors->first('country_id', '<label class="control-label"

@@ -77,7 +77,7 @@
                 <?php echo Form::label('role', 'User Role', array('class' => 'col-sm-4 control-label')); ?>
 
                 <div class="col-sm-8">
-                    <?php echo Form::select('role', config('constants.user_role'), null, array('class' => 'form-control')); ?>
+                    <?php echo Form::select('role', $user_levels, null, array('class' => 'form-control')); ?>
 
                 </div>
             </div>
@@ -176,7 +176,7 @@
             <?php echo Form::label('country_id', 'Country', array('class' => 'col-sm-4 control-label')); ?>
 
             <div class="col-sm-8">
-                <?php echo Form::select('country_id', $countries, null, array('class' =>
+                <?php echo Form::select('country_id', $countries, 263, array('class' =>
                 'form-control')); ?>
 
                 <?php if($errors->has('country_id')): ?>

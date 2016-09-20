@@ -63,7 +63,7 @@
             <div class="form-group">
                 {!!Form::label('role', 'User Role', array('class' => 'col-sm-4 control-label')) !!}
                 <div class="col-sm-8">
-                    {!!Form::select('role', config('constants.user_role'), null, array('class' => 'form-control'))!!}
+                    {!!Form::select('role', $user_levels, null, array('class' => 'form-control'))!!}
                 </div>
             </div>
         @endif
@@ -146,7 +146,7 @@
         <div class="form-group @if($errors->has('country_id')) {{'has-error'}} @endif">
             {!!Form::label('country_id', 'Country', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
-                {!!Form::select('country_id', $countries, null, array('class' =>
+                {!!Form::select('country_id', $countries, 263, array('class' =>
                 'form-control'))!!}
                 @if($errors->has('country_id'))
                     {!! $errors->first('country_id', '<label class="control-label"
@@ -161,9 +161,15 @@
 
 <script>
     $(function(){
+        $('input').iCheck({
+            radioClass: 'iradio_minimal-blue'
+        });
+        $("[data-mask]").inputmask();
+
         var date = new Date();
         $("#dob").datepicker({
             autoclose: true,
+            format: 'dd/mm/yyyy',
             endDate: date
         });
     });

@@ -137,10 +137,6 @@
                 "pageLength": 10
             });
 
-            $('.datepicker').datepicker({
-                autoclose: true
-            });
-
             $('.dateranger').daterangepicker({
                 autoUpdateInput: false,
                 locale: {

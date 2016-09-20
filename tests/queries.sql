@@ -404,3 +404,10 @@ ALTER TABLE `application_status_documents` ADD `application_id` INT NOT NULL AFT
 
 /* 26th August */
 ALTER TABLE `persons` ADD `image` VARCHAR(255) NULL DEFAULT NULL AFTER `sex`;
+
+/* 19th Sept */
+TRUNCATE TABLE `user_levels`;
+
+ALTER TABLE `user_levels` CHANGE `user_level_id` `user_level_id` INT(11) NOT NULL AUTO_INCREMENT;
+
+INSERT INTO `condat_tenant`.`user_levels` (`user_level_id`, `name`, `description`, `value`) VALUES ('', 'Admin', 'Adminstrator of the system', '12'), ('', 'Staff', 'staff members of agency', '8'), ('', 'Accountant', 'Accountants of agency', '4');

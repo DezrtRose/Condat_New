@@ -6,61 +6,39 @@
     <li>View</li>
 @stop
 @section('content')
-    <div class="col-md-4">
+    <div class="col-md-3">
 
         <!-- Profile Image -->
         <div class="box box-primary">
             <div class="box-body box-profile">
-                {{--<img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg"
-                     alt="User profile picture">--}}
 
-                <h3 class="profile-username text-center">Agent ID: {{format_id($agent->agent_id, 'Ag')}}</h3>
+                <h3 class="profile-username ">{{$agent->name}}</h3>
+                 
 
-                <p class="text-muted text-center">System Agent</p>
-
-                <ul class="list-group list-group-unbordered">
-                    <li class="list-group-item">
-                        <b>Followers</b> <a class="pull-right">1,322</a>
-                    </li>
-                    <li class="list-group-item">
-                        <b>Following</b> <a class="pull-right">543</a>
-                    </li>
-                    <li class="list-group-item">
-                        <b>Friends</b> <a class="pull-right">13,287</a>
-                    </li>
-                </ul>
-
-                <a href="{{route('tenant.agents.edit', $agent->agent_id)}}" class="btn btn-primary btn-block"><b>Update</b></a>
-            </div>
-            <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-
-        <!-- About Me Box -->
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">General Information</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
+                <p class="text-muted ">Agent ID: {{format_id($agent->agent_id, 'Ag')}}</p>
+                <hr>
                 <strong><i class="fa fa-calendar margin-r-5"></i> Created At</strong>
                 <p class="text-muted">{{format_datetime($agent->created_at)}}</p>
-                <hr>
-                <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
-                <p class="text-muted">{{$agent->description}}</p>
                 <hr>
                 <strong><i class="fa fa-plus-square margin-r-5"></i> Added By</strong>
                 <p class="text-muted">{{get_tenant_name($agent->added_by)}}</p>
                 <hr>
+                <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
+                <p class="text-muted">{{$agent->description}}</p>
+                <hr>
+                
             </div>
             <!-- /.box-body -->
         </div>
         <!-- /.box -->
+
+        
     </div>
-    <div class="col-xs-8">
+    <div class="col-xs-9">
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Company Details</h3>
+                <div class="box-tools pull-right"><a data-toggle="tooltip" title="Edit Agent" class="btn btn-action-box" href ="{{route('tenant.agents.edit', $agent->agent_id)}}"><i class="fa fa-edit"></i></a> </div>
             </div>
             <div class="box-body">
                 <table class="table table-hover">
@@ -86,15 +64,15 @@
                         <td>{{$agent->website}}</td>
                     </tr>
                     <tr>
-                        <th>Invoice To Whom</th>
-                        <td>{{$agent->invoice_to_whom}}</td>
+                        <th>Invoice To</th>
+                        <td>{{$agent->invoice_to_name}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="col-xs-8">
+    <div class="col-xs-9">
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title"><i class="fa fa-map-marker"></i> Address Details</h3>
