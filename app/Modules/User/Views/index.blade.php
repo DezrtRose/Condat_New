@@ -17,11 +17,12 @@
                 <table id="users" class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr>
-                        <th>Full Name</th>
+                        <th>User ID</th>
                         <th>Username</th>
+                        <th>Full Name</th>
                         <th>Email</th>
+                        <th>User Role</th>
                         <th>Status</th>
-                        <th>Created At</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -37,11 +38,12 @@
                     "serverSide": true,
                     "ajax": appUrl + "/users/data",
                     "columns": [
-                        {data: 'fullname', name: 'fullname'},
+                        {data: 'id', name: 'id'},
                         {data: 'username', name: 'username'},
+                        {data: 'fullname', name: 'fullname'},
                         {data: 'email', name: 'email'},
+                        {data: 'role', name: 'role'},
                         {data: 'status', name: 'status'},
-                        {data: 'created_at', name: 'created_at'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                     ]
                 });

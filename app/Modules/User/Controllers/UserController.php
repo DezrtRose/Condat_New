@@ -42,7 +42,12 @@ class UserController extends BaseController {
 		$users = User::select(['id', 'given_name', 'surname', 'username', 'email', 'status', 'role', 'title', 'created_at', DB::raw('CONCAT(given_name, " ", surname) AS fullname')]);
 
 		$datatable = \Datatables::of($users)
-			->addColumn('action', '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="{{ route( \'user.show\', $id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="{{ route( \'user.edit\', $id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete User" class="delete-user btn btn-action-box" href="{{ route( \'user.destroy\', $id) }}"><i class="fa fa-trash"></i></a>')
+			->addColumn('action', '<a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="{{ route( \'user.edit\', $id) }}"><i class="fa fa-edit"></i></a> 
+<form action="{{ route( \'user.destroy\', $id) }}" method="POST">
+    {{ method_field(\'DELETE\') }}
+    {{ csrf_field() }}
+    <button data-toggle="tooltip" title="Delete User" type="submit" class="delete-user btn btn-action-box"><i class="fa fa-trash"></i></button>
+</form>')
 			->editColumn('status','@if($status == 0)
                                 <span class="label label-warning">Pending</span>
                             @elseif($status == 1)
@@ -52,7 +57,13 @@ class UserController extends BaseController {
                             @else
                                 <span class="label label-danger">Trashed</span>
                             @endif')
-			->editColumn('created_at', function($data){return format_datetime($data->created_at); });
+            ->editColumn('role','@if($role == 1)
+                                <span class="label label-info">Super Admin</span>
+                            @elseif($role == 2)
+                                <span class="label label-info">Admin</span>
+                            @elseif($role == 3)
+                                <span class="label label-info">Normal User</span>
+                            @endif');
 		// Global search function
 		if ($keyword = $request->get('search')['value']) {
 			// override users.id global search - demo for concat
@@ -154,7 +165,9 @@ class UserController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$user = User::find($id);
+        $user->delete();
+        return redirect('user')->with('message', 'User has been removed.');
 	}
 
 	public function profile()
