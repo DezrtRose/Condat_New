@@ -93,7 +93,7 @@
                 <a href="#">
                     <i class="fa fa-users"></i>
                     <span>Users</span>
-                    <span class="label label-primary pull-right">{{get_total_count('U')}}</span>
+                    <span class="label label-primary pull-right">{{get_total_count('TU')}}</span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{url('tenant/user')}}"><i class="fa fa-circle-o"></i> View All</a></li>

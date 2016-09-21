@@ -108,6 +108,9 @@ function get_total_count($entity = 'U')
         case 'U':
             $total = \App\Modules\User\Models\User::count();
             break;
+        case 'TU':
+            $total = \App\Modules\Tenant\Models\User::count();
+            break;
         case 'A':
             $total = \App\Modules\Agency\Models\Agency::count();
             break;
