@@ -18,6 +18,8 @@
         <li class="{{ Request::is('tenant/institutes/payments') ? 'active' : '' }}"><a href="{{ route('accounts.institutes.payments') }}">Institute Payments</a></li>
         
         <li class="{{ Request::is('tenant/subagent/payments') ? 'active' : '' }}"><a href="{{ route('accounts.subagent.payments') }}">SubAgent Payments</a></li>
+
+        <li class="{{ Request::is('tenant/search/payments') ? 'active' : '' }}"><a href="{{ route('accounts.search.payments') }}">Advanced Search</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

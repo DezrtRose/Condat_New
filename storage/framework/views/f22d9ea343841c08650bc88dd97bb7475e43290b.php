@@ -18,6 +18,11 @@
 <script src="<?php echo e(asset('assets/plugins/slimScroll/jquery.slimscroll.min.js')); ?>"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="<?php echo e(asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')); ?>"></script>
+<!-- Select 2 Dropdown -->
+<script src="<?php echo e(asset('assets/plugins/select2/select2.full.min.js')); ?>"></script>
+<!-- Bootstrap Datepicker Range -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 <!-- AdminLTE App -->
 <script src="<?php echo e(asset('assets/js/app.js')); ?>"></script>
 

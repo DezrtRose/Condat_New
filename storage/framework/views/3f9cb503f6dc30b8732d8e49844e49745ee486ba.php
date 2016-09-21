@@ -27,9 +27,15 @@
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="<?php echo e(asset('assets/plugins/datepicker/datepicker3.css')); ?>">
 
+    <!-- select 2 dropdown -->
+    <link rel="stylesheet" href="<?php echo e(asset('assets/plugins/select2/select2.min.css')); ?>">
+
     <?php /* Load Essential JS */ ?>
     <script src="<?php echo e(asset('assets/plugins/jQuery/jQuery-2.1.4.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/plugins/bootstrap/js/bootstrap.min.js')); ?>" type="text/javascript"></script>
+
+    <?php /* Moment JS */ ?>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
     <!-- For data masking -->
     <script src="<?php echo e(asset('assets/js/maskinput.min.js')); ?>" type="text/javascript"></script>

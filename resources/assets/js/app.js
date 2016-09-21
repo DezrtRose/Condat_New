@@ -756,6 +756,10 @@ $(document).ajaxComplete (function () {
 
 $('[data-tooltip="tooltip"]').tooltip();
 
+$('.select2').select2({
+  theme: "classic"
+});
+
 /* data mask */
 //$(".phone-input").mask("9999 999 999");
 

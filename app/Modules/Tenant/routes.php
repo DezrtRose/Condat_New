@@ -343,6 +343,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('client/payments', ['as' => 'accounts.client.payments', 'uses' => 'InvoiceReportController@clientPayments']);
     Route::get('institutes/payments', ['as' => 'accounts.institutes.payments', 'uses' => 'InvoiceReportController@collegePayments']);
     Route::get('subagent/payments', ['as' => 'accounts.subagent.payments', 'uses' => 'InvoiceReportController@subagentsPayments']);
+    Route::get('search/payments', ['as' => 'accounts.search.payments', 'uses' => 'InvoiceReportController@searchPayments']);
 
     Route::get('college_invoice_report/group_invoice', ['as' => 'college.invoice.groupInvoice', 'uses' => 'InvoiceReportController@groupInvoice']);
 

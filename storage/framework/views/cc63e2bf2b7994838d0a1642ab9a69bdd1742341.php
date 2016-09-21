@@ -35,14 +35,13 @@
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-money"></i>
-                    <span>Invoice</span>
+                    <span>Accounts</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="<?php echo e(url('payment')); ?>"><i class="fa fa-circle-o"></i> Invoice List</a></li>
-                    <li><a href="<?php echo e(url('payment/create')); ?>"><i class="fa fa-circle-o"></i> Filter Invoices</a></li>
-                    <li><a href="<?php echo e(url('payment/search')); ?>"><i class="fa fa-circle-o"></i> Invoice Statistics</a></li>
-                    <li><a href="<?php echo e(url('payment/search')); ?>"><i class="fa fa-circle-o"></i> Group Invoice</a></li>
-                    <li><a href="<?php echo e(url('payment/search')); ?>"><i class="fa fa-circle-o"></i> Create Group Invoice</a></li>
+                    <li><a href="<?php echo e(url('tenant/client_invoice_report/invoice_pending')); ?>"><i class="fa fa-circle-o"></i> Client Invoices</a></li>
+                    <li><a href="<?php echo e(url('tenant/college_invoice_report/invoice_pending')); ?>"><i class="fa fa-circle-o"></i> Institute Invoices</a></li>
+                    <li><a href="<?php echo e(url('tenant/client/payments')); ?>"><i class="fa fa-circle-o"></i> Payments</a></li>
+                    <li><a href="<?php echo e(url('tenant/college_invoice_report/group_invoice')); ?>"><i class="fa fa-circle-o"></i> Group Invoice</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -78,6 +77,16 @@
                 <ul class="treeview-menu">
                     <li><a href="<?php echo e(url('tenant/agents')); ?>"><i class="fa fa-circle-o"></i> View All</a></li>
                     <li><a href="<?php echo e(url('tenant/agents/create')); ?>"><i class="fa fa-circle-o"></i> Add</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span>Mailbox</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="<?php echo e(url('tenant/agents')); ?>"><i class="fa fa-circle-o"></i> Compose</a></li>
+                    <li><a href="<?php echo e(url('tenant/agents/create')); ?>"><i class="fa fa-circle-o"></i> All Sent</a></li>
                 </ul>
             </li>
             <li class="treeview">

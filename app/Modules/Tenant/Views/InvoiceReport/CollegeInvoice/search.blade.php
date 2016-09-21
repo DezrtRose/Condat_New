@@ -16,7 +16,7 @@
 
     <div class="col-md-12 col-xs-12">
         <div class="box box-primary">
-            {!!Form::open(array('route' => 'application.search', 'method' => 'post', 'class' => ''))!!}
+            {!!Form::model($search_attributes, array('route' => 'application.search', 'method' => 'post', 'class' => ''))!!}
             <div class="box-header">
                 <h3 class="box-title">Filter Options</h3>
                 <input type="submit" class="btn btn-primary pull-right" value="Search"/>
