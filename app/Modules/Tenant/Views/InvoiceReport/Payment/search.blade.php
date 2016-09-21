@@ -1,16 +1,16 @@
 @extends('layouts.tenant')
-@section('title', 'Client Invoice Advanced Search')
-@section('heading', '<h1>Client Invoice - <small>Advanced Search</small></h1>')
+@section('title', 'Payment Advanced Search')
+@section('heading', '<h1>Payment - <small>Advanced Search</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Client Invoices"><i class="fa fa-users"></i> Client Invoices</a>
+    <li><a href="{{url('tenant/clients')}}" title="All Payments"><i class="fa fa-users"></i> Payments</a>
     </li>
     <li>Advanced Search</li>
 @stop
 
 @section('content')
     <div class="col-md-12">
-        @include('Tenant::InvoiceReport/ClientInvoice/partial/navbar')
+        @include('Tenant::InvoiceReport/Payment/partial/navbar')
         @include('flash::message')
     </div>
 
@@ -29,14 +29,14 @@
 
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('client_name', 'Client Name', array('class' => 'control-label')) !!}
-                    {!!Form::text('client_name', null, array('class' => 'form-control', 'id'=>'client_name'))!!}
+                    {!!Form::label('agent', 'Agent Name', array('class' => 'control-label')) !!}
+                    {!!Form::text('agent', null, array('class' => 'form-control', 'id'=>'agent'))!!}
 
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('invoice_date', 'Invoice Date', array('class' => 'control-label')) !!}
+                    {!!Form::label('invoice_date', 'Payment Date', array('class' => 'control-label')) !!}
                     <div class='input-group'>
-                        {!!Form::text('invoice_date', null, array('class' => 'form-control dateranger', 'id'=>'invoice_date', 'placeholder' => "Select Date Range"))!!}
+                        {!!Form::text('payment_date', null, array('class' => 'form-control dateranger', 'id'=>'payment_date', 'placeholder' => "Select Date Range"))!!}
                         <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -45,12 +45,22 @@
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('amount', 'Amount', array('class' => 'control-label')) !!}
                     {!!Form::text('amount', null, array('class' => 'form-control', 'id'=>'amount'))!!}
-
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('college_name', 'College Name', array('class' => 'control-label')) !!}
+                    {!!Form::label('payment_type', 'Payment Type', array('class' => 'control-label')) !!}
+                    {!!Form::text('payment_type', null, array('class' => 'form-control', 'id'=>'payment_type'))!!}
+                </div>
+                <div class="form-group col-md-4 col-xs-12">
+                    {!!Form::label('client_name', 'Client Name', array('class' => 'control-label')) !!}
+                    {!!Form::text('client_name', null, array('class' => 'form-control', 'id'=>'client_name'))!!}
+                </div>
+                <div class="form-group col-md-4 col-xs-12">
+                    {!!Form::label('college_name', 'Institute Name', array('class' => 'control-label')) !!}
                     {!!Form::select('college_name[]', $colleges, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
-
+                </div>
+                <div class="form-group col-md-4 col-xs-12">
+                    {!!Form::label('added_by', 'Added By', array('class' => 'control-label')) !!}
+                    {!!Form::select('added_by[]', $users, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
                 </div>
             </div>
             {{--<div class="box-footer clearfix">
@@ -63,7 +73,7 @@
     <div class="col-md-12 col-xs-12">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title">Filtered Client Invoices</h3>
+                <h3 class="box-title">Filtered Payments</h3>
             </div>
             <div class="box-body table-responsive">
                 @if(isset($invoice_reports))
