@@ -24,8 +24,8 @@
 
             <div class="box-body">
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('status', 'Status', array('class' => 'control-label')) !!}
-                    {!!Form::select('status', $status, null, array('class' => 'form-control select2'))!!}
+                    {!!Form::label('type', 'Payment Type', array('class' => 'control-label')) !!}
+                    {!!Form::select('type', $type, null, array('class' => 'form-control select2'))!!}
 
                 </div>
                 <div class="form-group col-md-4 col-xs-12">

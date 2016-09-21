@@ -151,10 +151,10 @@ class InvoiceReportController extends BaseController
 
     public function searchPayments()
     {
-        $data['status'] = [0 => 'All',
-            1 => 'Pending',
-            2 => 'Paid',
-            3 => 'Future'];
+        $data['type'] = [0 => 'All',
+            1 => 'Client',
+            2 => 'Institute',
+            3 => 'Sub Agent'];
 
         $data['colleges'] = $this->institute->getList()->toArray();
         array_unshift($data['colleges'], 'All');

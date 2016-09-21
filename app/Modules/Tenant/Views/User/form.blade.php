@@ -161,9 +161,15 @@
 
 <script>
     $(function(){
+        $('input').iCheck({
+            radioClass: 'iradio_minimal-blue'
+        });
+        $("[data-mask]").inputmask();
+
         var date = new Date();
         $("#dob").datepicker({
             autoclose: true,
+            format: 'dd/mm/yyyy',
             endDate: date
         });
     });

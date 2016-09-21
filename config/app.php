@@ -163,6 +163,8 @@ return [
 
         /* Recaptcha */
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+        /* PayPal */
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
     ],
 
     /*
@@ -218,6 +220,8 @@ return [
         'Condat'    => 'App\Condat\Facades\General', //custom facade
         'Flash' => 'Laracasts\Flash\Flash',
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
+        /* PayPal */
+        'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
 
     ],
 

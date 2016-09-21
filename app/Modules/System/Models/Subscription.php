@@ -4,6 +4,7 @@ use App\Modules\Agency\Models\AgencySubscription;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Carbon\Carbon;
+use Srmklive\PayPal\Services\ExpressCheckout;
 
 class Subscription extends Model
 {
@@ -70,11 +71,42 @@ class Subscription extends Model
                 'agency_subscription_id' => $agency_subs->agency_subscription_id
             ]);
             DB::commit();
+            if($request['payment_type'] == 'Card' || $request['payment_type'] == 'Paypal') {
+                $this->_process_paypal($amount, $request['subscription_years']);
+            }
             return true;
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);
         }
+    }
+
+    function _process_paypal($amount, $subscription_years)
+    {
+        $provider = new ExpressCheckout;
+        $data = [];
+        $data['items'] = [
+            [
+                'name' => 'Subscription for ' . $subscription_years . ' year(s)',
+                'price' => $amount,
+                'qty' => 1
+            ]
+        ];
+
+        $data['invoice_id'] = 1;
+        $data['invoice_description'] = "Order #$data[invoice_id] Invoice";
+        $data['return_url'] = url('/payment/success');
+        $data['cancel_url'] = url('/cart');
+
+        $total = 0;
+        foreach($data['items'] as $item) {
+            $total += $item['price'];
+        }
+
+        $data['total'] = $total;
+
+        $response = $provider->setExpressCheckout($data, true);
+        header('location: ' . $response['paypal_link']);die;
     }
 
     function activateTrail(array $request, $agency_id)
