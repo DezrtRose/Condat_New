@@ -5,10 +5,11 @@ use App\Modules\System\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Mail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agency extends Model
 {
-
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *
@@ -16,6 +17,7 @@ class Agency extends Model
      */
     protected $table = 'agencies';
     protected $primaryKey = 'agency_id';
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
