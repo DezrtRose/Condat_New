@@ -9,6 +9,7 @@ use App\Modules\Tenant\Models\Invoice\StudentInvoice;
 use App\Modules\Tenant\Models\Payment\CollegePayment;
 use App\Modules\Tenant\Models\Payment\SubAgentApplicationPayment;
 use App\Modules\Tenant\Models\Report\Report;
+use App\Modules\Tenant\Models\User;
 use Flash;
 use DB;
 use Carbon\Carbon;
@@ -18,7 +19,7 @@ use Illuminate\Http\Request;
 class InvoiceReportController extends BaseController
 {
 
-    function __construct(Invoice $invoice, StudentInvoice $student_invoice, Report $report, Institute $institute, Request $request, CollegeInvoice $college_invoice)
+    function __construct(Invoice $invoice, StudentInvoice $student_invoice, Report $report, Institute $institute, Request $request, CollegeInvoice $college_invoice, User $user)
     {
         $this->invoice = $invoice;
         $this->student_invoice = $student_invoice;
@@ -26,6 +27,7 @@ class InvoiceReportController extends BaseController
         $this->report = $report;
         $this->institute = $institute;
         $this->request = $request;
+        $this->user = $user;
         parent::__construct();
     }
 
@@ -151,13 +153,14 @@ class InvoiceReportController extends BaseController
 
     public function searchPayments()
     {
-        $data['type'] = [0 => 'All',
-            1 => 'Client',
+        $data['type'] = [1 => 'Client',
             2 => 'Institute',
             3 => 'Sub Agent'];
 
         $data['colleges'] = $this->institute->getList()->toArray();
         array_unshift($data['colleges'], 'All');
+
+        $data['users'] = $this->user->getList();
 
         $data['search_attributes'] = array();
         if ($this->request->isMethod('post')) {
