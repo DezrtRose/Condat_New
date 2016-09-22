@@ -43,6 +43,7 @@ class Subscription extends Model
 
             $previous_sub = AgencySubscription::where('agency_id', $agency_id)->orderBy('agency_subscription_id', 'desc')->first();
             $expiry_date = get_expiry_date(null, $request['subscription_years']);
+            $subscription_type = 1;
             if(!empty($previous_sub)) {
                 $previous_sub->is_current = 0;
                 $previous_sub->save();
@@ -51,6 +52,7 @@ class Subscription extends Model
                 $remaining_months = $old_end_date->diffInMonths($today);
                 $expiry_date = get_expiry_date(null, $request['subscription_years']);
                 $expiry_date = $expiry_date->addMonths($remaining_months);
+                $subscription_type = 2;
             }
 
             $agency_subs = AgencySubscription::create([
@@ -58,7 +60,7 @@ class Subscription extends Model
                 'is_current' => 1,
                 'start_date' => get_today_date(),
                 'end_date' => $expiry_date,
-                'subscription_status_id' => 1, // 1 = trail, 2 = paid
+                'subscription_status_id' => $subscription_type, // 1 = trail, 2 = paid
                 'subscription_id' => $subscription_id,
             ]);
 
@@ -66,7 +68,7 @@ class Subscription extends Model
 
             SubscriptionPayment::create([
                 'amount' => $amount,
-                'payment_date' => insert_dateformat($request['payment_date']),
+                'payment_date' => get_today_date(),
                 'payment_type' => $request['payment_type'],
                 'agency_subscription_id' => $agency_subs->agency_subscription_id
             ]);
@@ -95,8 +97,8 @@ class Subscription extends Model
 
         $data['invoice_id'] = 1;
         $data['invoice_description'] = "Order #$data[invoice_id] Invoice";
-        $data['return_url'] = url('/payment/success');
-        $data['cancel_url'] = url('/cart');
+        $data['return_url'] = url('/agency');
+        $data['cancel_url'] = url('/subscription/83/renew');
 
         $total = 0;
         foreach($data['items'] as $item) {

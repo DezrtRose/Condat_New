@@ -18,12 +18,6 @@
             <div class="box-body">
                 <div class="col-md-6">
                     <div class="form-group">
-                        {!!Form::label('amount', 'Total Amount', array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8">
-                            $<span class="subscription-amount">0</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         {!!Form::label('renewal_date', 'Renewal Date', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
                             {{ format_date(get_today_date()) }}
@@ -36,7 +30,13 @@
                             'form-control'))!!}
                         </div>
                     </div>
-                    <div class="form-group @if($errors->has('payment_date')) {{'has-error'}} @endif">
+                    <div class="form-group total-amount">
+                        {!!Form::label('amount', 'Total Amount', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            $<span class="subscription-amount">0</span>
+                        </div>
+                    </div>
+                    {{--<div class="form-group @if($errors->has('payment_date')) {{'has-error'}} @endif">
                         {!!Form::label('payment_date', 'Payment Date', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
                             <div class="input-group">
@@ -51,7 +51,7 @@
                                 @endif
                             </div>
                         </div>
-                    </div>
+                    </div>--}}
                     <div class="form-group">
                         {!!Form::label('', 'Payment Type', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
