@@ -1,6 +1,7 @@
 <table class="table table-striped table-bordered table-condensed" id="invoice_report_table">
     <thead>
     <tr class="text-nowrap">
+        {!! (isset($is_group) && $is_group == true)? '<th>Select</th>' : '' !!}
         <th>Invoice Id</th>
         <th>Date</th>
         <th>Client Name</th>
@@ -16,6 +17,7 @@
     <tbody>
     @foreach($invoice_reports as $invoice)
         <tr>
+            {!! (isset($is_group) && $is_group == true)? '<td><input type = "checkbox" class = "icheck" name = "group[]" value = "'.$invoice->invoice_id.'" /></td>' : '' !!}
             <td>{{ format_id($invoice->invoice_id, 'CI') }}</td>
             <td>{{ format_date($invoice->invoice_date) }}</td>
             <td>{{ $invoice->fullname }}</td>

@@ -92,6 +92,14 @@
             $('.dateranger').daterangepicker({
                 autoUpdateInput: false
             });
+
+            $('.dateranger').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            });
+
+            $('.dateranger').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
         });
     </script>
 @stop

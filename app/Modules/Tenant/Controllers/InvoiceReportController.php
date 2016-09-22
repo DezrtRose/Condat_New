@@ -64,7 +64,7 @@ class InvoiceReportController extends BaseController
             2 => 'Paid',
             3 => 'Future'];
 
-        $data['colleges'] = $this->institute->getList()->toArray();
+        $data['colleges'] = $this->institute->getList();
 
         $data['search_attributes'] = array();
 
@@ -97,14 +97,6 @@ class InvoiceReportController extends BaseController
         return view("Tenant::InvoiceReport/CollegeInvoice/invoice_future", $data);
     }
 
-    public function groupInvoice()
-    {
-        $data['invoice_reports'] = $this->college_invoice->getAll();
-        $data['date'] = Carbon::now();
-
-        return view("Tenant::InvoiceReport/CollegeInvoice/group_invoice", $data);
-    }
-
     public function collegeInvoiceSearch()
     {
         $data['status'] = [0 => 'All',
@@ -112,8 +104,7 @@ class InvoiceReportController extends BaseController
             2 => 'Paid',
             3 => 'Future'];
 
-        $data['colleges'] = $this->institute->getList()->toArray();
-        array_unshift($data['colleges'], 'All');
+        $data['colleges'] = $this->institute->getList();
         $data['search_attributes'] = array();
 
         if ($this->request->isMethod('post')) {
@@ -168,6 +159,20 @@ class InvoiceReportController extends BaseController
             Flash::success(count($data['applications']) . ' records found.');
         }
         return view('Tenant::InvoiceReport/Payment/search', $data);
+    }
+
+    public function groupInvoice()
+    {
+        $data['search_attributes'] = array();
+        $data['colleges'] = $this->institute->getList();
+        if ($this->request->isMethod('post')) {
+            $data['search_attributes'] = $this->request->all();
+            $data['invoice_reports'] = $this->college_invoice->getFilterResults($data['search_attributes']);
+            Flash::success(count($data['invoice_reports']) . ' records found.');
+        } else {
+            $data['invoice_reports'] = $this->college_invoice->getAll();
+        }
+        return view("Tenant::InvoiceReport/CollegeInvoice/group_invoice", $data);
     }
 
 

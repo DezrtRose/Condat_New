@@ -90,16 +90,3 @@
     </script>
     {!! Condat::registerModal() !!}
 @stop
-                      
-
-                      
-                            
-                
-
-      
-
-              
-
-
-              
-        
