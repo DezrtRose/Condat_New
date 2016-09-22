@@ -232,7 +232,16 @@ class CollegeInvoice extends Model
             ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
-            ->select(['college_invoices.college_invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name'])
+            ->select(['college_invoices.college_invoice_id', 'companies.invoice_to_name',
+                DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'),
+                'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name',
+                DB::raw('CASE WHEN ISNULL(course_application.super_agent_id)
+                THEN (companies.invoice_to_name)
+                ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
+                    ON ag.company_id = comp.company_id
+                    WHERE ag.agent_id = course_application.super_agent_id)
+                END
+                AS invoice_to')])
             ->orderBy('college_invoices.created_at', 'desc')
             //->where('college_invoices.invoice_date', '<=', get_today_datetime())
             ->groupBy('college_invoices.college_invoice_id');
@@ -265,7 +274,14 @@ class CollegeInvoice extends Model
             ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
-            ->select(['college_invoices.college_invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name'])
+            ->select(['college_invoices.college_invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name',
+                DB::raw('CASE WHEN ISNULL(course_application.super_agent_id)
+                THEN (companies.invoice_to_name)
+                ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
+                    ON ag.company_id = comp.company_id
+                    WHERE ag.agent_id = course_application.super_agent_id)
+                END
+                AS invoice_to')])
             ->orderBy('college_invoices.created_at', 'desc')
             //->where('college_invoices.invoice_date', '<=', get_today_datetime())
             ->groupBy('college_invoices.college_invoice_id');
@@ -288,5 +304,28 @@ class CollegeInvoice extends Model
 
         $invoices = $invoices_query->get();
         return $invoices;
+    }
+
+    function getInvoiceToList()
+    {
+        $list = CollegeInvoice::leftjoin('college_invoice_payments', 'college_invoice_payments.college_invoice_id', '=', 'college_invoices.college_invoice_id')
+            ->leftJoin('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
+            ->leftjoin('courses', 'course_application.institution_course_id', '=', 'courses.course_id')
+            ->leftjoin('institute_courses', 'institute_courses.course_id', '=', 'courses.course_id')
+            ->leftjoin('institutes', 'institute_courses.institute_id', '=', 'institutes.institution_id')
+            ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id')
+            ->select(DB::raw('CASE WHEN ISNULL(course_application.super_agent_id)
+                THEN (companies.invoice_to_name)
+                ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
+                    ON ag.company_id = comp.company_id
+                    WHERE ag.agent_id = course_application.super_agent_id)
+                END
+                AS invoice_to')
+        )
+        ->orderBy('invoice_to', 'asc')
+        ->groupBy('invoice_to')
+        ->lists('invoice_to', 'invoice_to');
+
+        return $list;
     }
 }

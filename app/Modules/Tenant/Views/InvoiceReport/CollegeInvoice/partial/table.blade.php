@@ -17,7 +17,7 @@
     <tbody>
     @foreach($invoice_reports as $invoice)
         <tr>
-            {!! (isset($is_group) && $is_group == true)? '<td><input type = "checkbox" class = "icheck" name = "group[]" value = "'.$invoice->invoice_id.'" /></td>' : '' !!}
+            {!! (isset($is_group) && $is_group == true)? '<td><input type = "checkbox" class = "icheck group-ids" name = "group" value = "'.$invoice->invoice_id.'" /></td>' : '' !!}
             <td>{{ format_id($invoice->invoice_id, 'CI') }}</td>
             <td>{{ format_date($invoice->invoice_date) }}</td>
             <td>{{ $invoice->fullname }}</td>

@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Institute\Institute;
 use App\Modules\Tenant\Models\Invoice\CollegeInvoice;
+use App\Modules\Tenant\Models\Invoice\GroupInvoice;
 use App\Modules\Tenant\Models\Invoice\Invoice;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
 use App\Modules\Tenant\Models\Payment\CollegePayment;
@@ -19,7 +20,7 @@ use Illuminate\Http\Request;
 class InvoiceReportController extends BaseController
 {
 
-    function __construct(Invoice $invoice, StudentInvoice $student_invoice, Report $report, Institute $institute, Request $request, CollegeInvoice $college_invoice, User $user)
+    function __construct(Invoice $invoice, StudentInvoice $student_invoice, Report $report, Institute $institute, Request $request, CollegeInvoice $college_invoice, User $user, GroupInvoice $groupInvoice)
     {
         $this->invoice = $invoice;
         $this->student_invoice = $student_invoice;
@@ -28,6 +29,7 @@ class InvoiceReportController extends BaseController
         $this->institute = $institute;
         $this->request = $request;
         $this->user = $user;
+        $this->groupInvoice = $groupInvoice;
         parent::__construct();
     }
 
@@ -164,6 +166,7 @@ class InvoiceReportController extends BaseController
     public function groupInvoice()
     {
         $data['search_attributes'] = array();
+        $data['invoice_to_list'] = $this->college_invoice->getInvoiceToList();
         $data['colleges'] = $this->institute->getList();
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
@@ -173,6 +176,16 @@ class InvoiceReportController extends BaseController
             $data['invoice_reports'] = $this->college_invoice->getAll();
         }
         return view("Tenant::InvoiceReport/CollegeInvoice/group_invoice", $data);
+    }
+
+    public function createGroupInvoice()
+    {
+        if ($this->request->isMethod('post')) {
+            $this->groupInvoice->add($this->request->all());
+            return $this->success(['message' => 'Success']);
+        } else {
+            return view("Tenant::InvoiceReport/CollegeInvoice/partial/createGroupInvoice");
+        }
     }
 
 
