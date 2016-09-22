@@ -49,8 +49,17 @@ class AgencyController extends BaseController {
 	function getData(Request $request)
 	{
 		$agencies = Agency::leftJoin('companies','agencies.agency_id','=','companies.agencies_agent_id')
-			->select(['agency_id', 'agencies.created_at', 'company_database_name', 'companies.name', 'companies.email_id'])
-            ->orderBy('agency_id', 'desc');
+            ->leftJoin('agency_subscriptions', function($join) {
+                $join->on('agencies.agency_id', '=', 'agency_subscriptions.agency_id');
+                $join->on('agency_subscriptions.is_current', '=', DB::raw('1'));
+            })
+            ->leftJoin('subscription_statuses',
+                'agency_subscriptions.subscription_status_id',
+                '=',
+                'subscription_statuses.status_id')
+            ->select(['agencies.agency_id', 'agencies.created_at', DB::raw('case when companies.phone_id = 0 then "N/A" else companies.phone_id end as phone_id'), 'company_database_name', 'companies.name', 'companies.email_id', 'end_date', DB::raw('case when subscription_id = 1 then "Basic" when subscription_id = 2 then "Standard" else "Premium" end as subscription_id, subscription_statuses.name as subscription_name')])
+            ->groupBy('agency_subscriptions.agency_id')
+            ->orderBy('agency_subscriptions.agency_subscription_id', 'desc');
 
 		$datatable = \Datatables::of($agencies)
 			->editColumn('created_at', function($data){return format_datetime($data->created_at); })
@@ -216,11 +225,10 @@ class AgencyController extends BaseController {
 	 */
 	public function postSubscriptionRenew($agency_id)
 	{
-		$rules['payment_date'] = 'required';
+		/*$rules['payment_date'] = 'required';
 
-		$this->validate($this->request, $rules);
+		$this->validate($this->request, $rules);*/
 
-		// if validates
 		$updated = $this->subscription->renew($this->request->all(), $agency_id);
 		if($updated)
 			Flash::success('Subscription has been renewed successfully.');
