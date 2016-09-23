@@ -5,7 +5,7 @@
     @parent
     <li><a href="{{url('tenant/college_invoice_report/invoice_pending')}}" title="All College Invoices"><i
                     class="fa fa-users"></i> College Invoices</a></li>
-    <li>Grouped Invoices</li>
+    <li>Group Invoices</li>
 @stop
 
 @section('content')
@@ -17,7 +17,7 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header">
-                <h3 class="box-title">Grouped Invoices</h3>
+                <h3 class="box-title">Group Invoices</h3>
             </div>
             <div class="box-body">
                 <table class="table table-striped table-bordered table-condensed" id="invoice_report_table">
@@ -43,6 +43,10 @@
                                 <a href="{{ route('invoice.grouped.show', $invoice->group_invoice_id) }}" title="View Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
+                                <a href="{{ route('invoice.grouped.print', $invoice->group_invoice_id) }}" title="Print Invoice"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Print Invoice"></i></a>
                             </td>
                         </tr>
                     @endforeach

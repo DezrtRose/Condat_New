@@ -1,10 +1,10 @@
 @extends('layouts.tenant')
-@section('title', 'Grouped Invoices')
+@section('title', 'Group Invoices')
 @section('heading', '<h1>Invoices - <small>Grouped</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/college_invoice_report/invoice_grouped')}}" title="All Grouped Invoices"><i
-                    class="fa fa-users"></i> Grouped Invoices</a></li>
+    <li><a href="{{url('tenant/college_invoice_report/invoice_grouped')}}" title="All Group Invoices"><i
+                    class="fa fa-users"></i> Group Invoices</a></li>
     <li>Invoices Invoices</li>
 @stop
 @section('content')
@@ -46,7 +46,7 @@
     <div class="col-xs-9">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title">Grouped Invoices</h3>
+                <h3 class="box-title">Group Invoices</h3>
             </div>
             <div class="box-body table-responsive">
                 @include('Tenant::InvoiceReport/CollegeInvoice/partial/table')

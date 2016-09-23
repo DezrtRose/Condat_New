@@ -123,7 +123,8 @@ class InvoiceReportController extends BaseController
 
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
-            Flash::success(count($data['applications']) . ' record(s) found.');
+            $data['invoice_reports'] = $this->college_invoice->getFilterResults($data['search_attributes']);
+            Flash::success(count($data['invoice_reports']) . ' record(s) found.');
         }
         return view('Tenant::InvoiceReport/CollegeInvoice/search', $data);
     }

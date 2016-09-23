@@ -338,6 +338,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('college_invoice_report/invoice_future', ['as' => 'college.invoice.future', 'uses' => 'InvoiceReportController@collegeInvoicefuture']);
     Route::get('college_invoice_report/invoice_grouped', ['as' => 'college.invoice.grouped', 'uses' => 'InvoiceReportController@collegeInvoiceGrouped']);
     Route::get('college_invoice_report/show_grouped_invoices/{grouped_invoice_id}', ['as' => 'invoice.grouped.show', 'uses' => 'InvoiceReportController@showGroupedInvoices']);
+    Route::get('college_invoice_report/print_grouped_invoices/{grouped_invoice_id}', ['as' => 'invoice.grouped.print', 'uses' => 'InvoiceReportController@showGroupedInvoices']);
     Route::get('college_invoice_report/search', ['as' => 'college.invoice.search', 'uses' => 'InvoiceReportController@collegeInvoiceSearch']);
     Route::post('college_invoice_report/search', ['as' => 'college.invoice', 'uses' => 'InvoiceReportController@collegeInvoiceSearch']);
 

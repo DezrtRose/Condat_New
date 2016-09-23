@@ -16,7 +16,7 @@
 
     <div class="col-md-12 col-xs-12">
         <div class="box box-primary">
-            {!!Form::model($search_attributes, array('route' => 'application.search', 'method' => 'post', 'class' => ''))!!}
+            {!!Form::model($search_attributes, array('route' => 'college.invoice', 'method' => 'post', 'class' => ''))!!}
             <div class="box-header">
                 <h3 class="box-title">Filter Options</h3>
                 <input type="submit" class="btn btn-primary pull-right" value="Search"/>
@@ -31,7 +31,7 @@
 
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('college_name', 'Institute Name', array('class' => 'control-label')) !!}
-                    {!!Form::select('college_name', $colleges, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
+                    {!!Form::select('college_name[]', $colleges, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
                 </div>
 
 
@@ -64,7 +64,7 @@
                 <h3 class="box-title">Filtered College Invoices</h3>
             </div>
             <div class="box-body table-responsive">
-                @if(isset($applications))
+                @if(isset($invoice_reports))
                     @include('Tenant::InvoiceReport/CollegeInvoice/partial/table')
                 @else
                     <div class="callout callout-warning">
