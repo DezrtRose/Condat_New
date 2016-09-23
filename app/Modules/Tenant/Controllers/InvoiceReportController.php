@@ -104,6 +104,13 @@ class InvoiceReportController extends BaseController
         return view("Tenant::InvoiceReport/CollegeInvoice/invoice_grouped", $data);
     }
 
+    public function showGroupedInvoices($grouped_invoice_id)
+    {
+        $data['invoice_details'] = GroupInvoice::find($grouped_invoice_id);
+        $data['invoice_reports'] = $this->groupInvoice->getInvocies($grouped_invoice_id); //dd($data['invoice_reports']->toArray());
+        return view("Tenant::InvoiceReport/CollegeInvoice/show_grouped_invoices", $data);
+    }
+
     public function collegeInvoiceSearch()
     {
         $data['status'] = [0 => 'All',
@@ -116,7 +123,7 @@ class InvoiceReportController extends BaseController
 
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
-            Flash::success(count($data['applications']) . ' records found.');
+            Flash::success(count($data['applications']) . ' record(s) found.');
         }
         return view('Tenant::InvoiceReport/CollegeInvoice/search', $data);
     }
@@ -163,7 +170,7 @@ class InvoiceReportController extends BaseController
         $data['search_attributes'] = array();
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
-            Flash::success(count($data['applications']) . ' records found.');
+            Flash::success(count($data['applications']) . ' record(s) found.');
         }
         return view('Tenant::InvoiceReport/Payment/search', $data);
     }
@@ -177,7 +184,7 @@ class InvoiceReportController extends BaseController
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
             $data['invoice_reports'] = $this->college_invoice->getFilterResults($data['search_attributes']);
-            Flash::success(count($data['invoice_reports']) . ' records found.');
+            Flash::success(count($data['invoice_reports']) . ' record(s) found.');
         } else {
             $data['invoice_reports'] = $this->college_invoice->getAll();
         }

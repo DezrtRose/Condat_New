@@ -25,9 +25,9 @@
                     <tr class="text-nowrap">
                         <th>Group Invoice Id</th>
                         <th>Date</th>
-                        <th>Description</th>
-                        <th>Due Date</th>
                         <th>Number of Invoices</th>
+                        <th>Total Amount</th>
+                        <th>Total GST</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -36,11 +36,11 @@
                         <tr>
                             <td>{{ format_id($invoice->group_invoice_id, 'GI') }}</td>
                             <td>{{ format_date($invoice->date) }}</td>
-                            <td>{{ $invoice->description }}</td>
-                            <td>{{ format_date($invoice->due_date) }}</td>
                             <td>{{ $invoice->invoiceCount }}</td>
+                            <td>{{ $invoice->total_amount }}</td>
+                            <td>{{ $invoice->total_gst }}</td>
                             <td>
-                                <a href="#" title="View Invoice"><i
+                                <a href="{{ route('invoice.grouped.show', $invoice->group_invoice_id) }}" title="View Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
                             </td>
