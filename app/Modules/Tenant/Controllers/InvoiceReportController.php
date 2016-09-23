@@ -171,9 +171,33 @@ class InvoiceReportController extends BaseController
         $data['search_attributes'] = array();
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
+            $data['payments'] = $this->filterPayments($data['search_attributes']);
             Flash::success(count($data['applications']) . ' record(s) found.');
         }
         return view('Tenant::InvoiceReport/Payment/search', $data);
+    }
+
+    public function filterPayments(array $request)
+    {
+        if($request['type'] == 1)
+        {
+            $payments = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
+                ->leftJoin('clients', 'clients.client_id', '=', 'client_payments.client_id')
+                ->leftJoin('persons', 'persons.person_id', '=', 'clients.person_id')
+                ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+                ->select(['student_application_payments.student_payments_id', 'client_payments.*', 'payment_invoice_breakdowns.invoice_id', 'course_application_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name')])
+                ->get();
+        } elseif ($request['type'] == 2) {
+            $payments = CollegePayment::leftJoin('college_invoice_payments', 'college_payments.college_payment_id', '=', 'college_invoice_payments.ci_payment_id')
+                ->select(['college_payments.*', 'college_invoice_payments.college_invoice_id'])
+                ->get();
+        } else {
+            $payments = SubAgentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'subagent_application_payments.client_payment_id')
+                ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+                ->select(['subagent_application_payments.subagent_payments_id', 'subagent_application_payments.course_application_id', 'payment_invoice_breakdowns.invoice_id', 'client_payments.*'])
+                ->get();
+        }
+        return $payments;
     }
 
     public function groupInvoice()
