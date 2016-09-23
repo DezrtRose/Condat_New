@@ -302,4 +302,13 @@ class Client extends Model
         }
 
     }
+
+    function getClientNameList()
+    {
+        $list = Client::join('persons', 'persons.person_id', '=', 'clients.person_id')
+                ->select('client_id', DB::raw('CONCAT(persons.first_Name, " ", persons.last_Name) AS full_name'))
+                ->orderBy('full_name', 'asc')
+                ->lists('full_name', 'client_id');
+        return $list;
+    }
 }

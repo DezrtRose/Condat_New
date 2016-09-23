@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('client_name', 'Client Name', array('class' => 'control-label')) !!}
-                    {!!Form::text('client_name', null, array('class' => 'form-control', 'id'=>'client_name'))!!}
+                    {!!Form::select('client_name[]', $clients, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('college_name', 'Institute Name', array('class' => 'control-label')) !!}

@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
+use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Institute\Institute;
 use App\Modules\Tenant\Models\Invoice\CollegeInvoice;
 use App\Modules\Tenant\Models\Invoice\GroupInvoice;
@@ -20,7 +21,7 @@ use Illuminate\Http\Request;
 class InvoiceReportController extends BaseController
 {
 
-    function __construct(Invoice $invoice, StudentInvoice $student_invoice, Report $report, Institute $institute, Request $request, CollegeInvoice $college_invoice, User $user, GroupInvoice $groupInvoice)
+    function __construct(Invoice $invoice, StudentInvoice $student_invoice, Report $report, Institute $institute, Request $request, CollegeInvoice $college_invoice, User $user, GroupInvoice $groupInvoice, Client $client)
     {
         $this->invoice = $invoice;
         $this->student_invoice = $student_invoice;
@@ -30,6 +31,7 @@ class InvoiceReportController extends BaseController
         $this->request = $request;
         $this->user = $user;
         $this->groupInvoice = $groupInvoice;
+        $this->client = $client;
         parent::__construct();
     }
 
@@ -67,6 +69,7 @@ class InvoiceReportController extends BaseController
             3 => 'Future'];
 
         $data['colleges'] = $this->institute->getList();
+        $data['clients'] = $this->client->getClientNameList();
 
         $data['search_attributes'] = array();
 
@@ -119,6 +122,7 @@ class InvoiceReportController extends BaseController
             3 => 'Future'];
 
         $data['colleges'] = $this->institute->getList();
+        $data['clients'] = $this->client->getClientNameList();
         $data['search_attributes'] = array();
 
         if ($this->request->isMethod('post')) {
@@ -164,6 +168,7 @@ class InvoiceReportController extends BaseController
             3 => 'Sub Agent'];
 
         $data['colleges'] = $this->institute->getList()->toArray();
+        $data['clients'] = $this->client->getClientNameList();
         array_unshift($data['colleges'], 'All');
 
         $data['users'] = $this->user->getList();
@@ -206,6 +211,7 @@ class InvoiceReportController extends BaseController
         $data['invoice_to_list'] = $this->college_invoice->getInvoiceToList()->toArray();
         array_unshift($data['invoice_to_list'], 'All');
         $data['colleges'] = $this->institute->getList();
+        $data['clients'] = $this->client->getClientNameList();
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
             $data['invoice_reports'] = $this->college_invoice->getFilterResults($data['search_attributes']);
