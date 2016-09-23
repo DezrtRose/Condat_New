@@ -40,7 +40,7 @@ class GroupInvoice extends Model
                 'due_date' => insert_dateformat($request['due_date'])
             ]);
 
-            $thePostIdArray = explode(', ', $request['group_ids']);
+            $thePostIdArray = explode(',', $request['group_ids']);
             foreach($thePostIdArray as $key => $invoice_id) {
                 GroupCollegeInvoice::create([
                     'group_invoices_id' => $group_invoice->group_invoice_id,
@@ -56,6 +56,16 @@ class GroupInvoice extends Model
             dd($e);
             // something went wrong
         }
+    }
+
+    function getAll()
+    {
+        $grouped_invoices = GroupInvoice::join('group_college_invoices', 'group_college_invoices.group_invoices_id', '=', 'group_invoices.group_invoice_id')
+            ->join('college_invoices', 'college_invoices.college_invoice_id', '=', 'group_college_invoices.college_invoices_id')
+            ->groupBy('group_college_invoices.group_invoices_id')
+            ->select('group_invoices.*', DB::raw('COUNT(college_invoices.college_invoice_id) as invoiceCount'))
+            ->get();
+        return $grouped_invoices;
     }
 
 }

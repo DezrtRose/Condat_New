@@ -235,7 +235,7 @@ class CollegeInvoice extends Model
             ->select(['college_invoices.college_invoice_id', 'companies.invoice_to_name',
                 DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'),
                 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name',
-                DB::raw('CASE WHEN ISNULL(course_application.super_agent_id)
+                DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
                 THEN (companies.invoice_to_name)
                 ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
                     ON ag.company_id = comp.company_id
@@ -275,7 +275,7 @@ class CollegeInvoice extends Model
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
             ->select(['college_invoices.college_invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name',
-                DB::raw('CASE WHEN ISNULL(course_application.super_agent_id)
+                DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
                 THEN (companies.invoice_to_name)
                 ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
                     ON ag.company_id = comp.company_id

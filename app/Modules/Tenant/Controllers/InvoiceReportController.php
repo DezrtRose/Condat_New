@@ -92,11 +92,16 @@ class InvoiceReportController extends BaseController
         return view("Tenant::InvoiceReport/CollegeInvoice/invoice_paid", $data);
     }
 
-
     public function collegeInvoiceFuture()
     {
         $data['invoice_reports'] = $this->college_invoice->getAll(3);
         return view("Tenant::InvoiceReport/CollegeInvoice/invoice_future", $data);
+    }
+
+    public function collegeInvoiceGrouped()
+    {
+        $data['invoice_reports'] = $this->groupInvoice->getAll(); //dd($data['invoice_reports']->toArray());
+        return view("Tenant::InvoiceReport/CollegeInvoice/invoice_grouped", $data);
     }
 
     public function collegeInvoiceSearch()

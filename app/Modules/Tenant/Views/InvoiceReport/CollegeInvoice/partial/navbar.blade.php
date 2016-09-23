@@ -19,6 +19,8 @@
         
         <li class="{{ Request::is('tenant/college_invoice_report/invoice_future') ? 'active' : '' }}"><a href="{{ route('college.invoice.future') }}">Future Invoices</a></li>
 
+        <li class="{{ Request::is('tenant/college_invoice_report/invoice_grouped') ? 'active' : '' }}"><a href="{{ route('college.invoice.grouped') }}">Grouped Invoices</a></li>
+
         <li class="{{ Request::is('tenant/college_invoice_report/search') ? 'active' : '' }}"><a href="{{ route('college.invoice.search') }}">Advance Search</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->

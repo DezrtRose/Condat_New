@@ -25,7 +25,7 @@ class GroupCollegeInvoice extends Model
      *
      * @var array
      */
-    protected $fillable = ['group_invoice_id', 'college_invoices_id'];
+    protected $fillable = ['group_invoices_id', 'college_invoices_id'];
 
     public $timestamps = false;
 
