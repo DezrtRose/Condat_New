@@ -347,6 +347,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('institutes/payments', ['as' => 'accounts.institutes.payments', 'uses' => 'InvoiceReportController@collegePayments']);
     Route::get('subagent/payments', ['as' => 'accounts.subagent.payments', 'uses' => 'InvoiceReportController@subagentsPayments']);
     Route::get('search/payments', ['as' => 'accounts.search.payments', 'uses' => 'InvoiceReportController@searchPayments']);
+    Route::post('search/payments', ['as' => 'payments.search', 'uses' => 'InvoiceReportController@searchPayments']);
 
     Route::get('college_invoice_report/group_invoice', ['as' => 'college.invoice.groupInvoice', 'uses' => 'InvoiceReportController@groupInvoice']);
     Route::post('college_invoice_report/group_invoice', ['as' => 'college.invoice.groupInvoice', 'uses' => 'InvoiceReportController@groupInvoice']);
