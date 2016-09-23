@@ -21,8 +21,8 @@
             <div class="box-body">
 
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('college_name', 'Invoice To', array('class' => 'control-label')) !!}
-                    {!!Form::select('college_name[]', $colleges, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
+                    {!!Form::label('invoice_to', 'Invoice To', array('class' => 'control-label')) !!}
+                    {!!Form::select('invoice_to', $invoice_to_list, null, array('class' => 'form-control select2'))!!}
                 </div>
 
                 <div class="form-group col-md-4 col-xs-12">
@@ -47,14 +47,14 @@
             {!!Form::close()!!}
         </div>
 
-        <div class="box box-primary">
+        <div class="box box-info">
             <div class="box-body">
                 <?php $is_group = true ?>
                 @include('Tenant::InvoiceReport/CollegeInvoice/partial/table')
             </div>
             <div class="box-footer clearfix">
-                <input type="reset" class="btn btn-primary pull-left" value="Check All"/>
-                <input type="submit" class="btn btn-primary pull-right" value="Generate Group Invoice"/>
+                <input type="button" class="btn btn-primary pull-left check" value="Check All"/>
+                <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#condat-modal" data-url="{{ url('tenant/invoice/group') }}"><i class="glyphicon glyphicon-plus-sign"></i> Generate Group Invoice</a>
             </div>
         </div>
     </div>
@@ -79,6 +79,66 @@
             $(".icheck").iCheck({
                 checkboxClass: 'icheckbox_square-blue'
             });
+
+            $('.icheck').iCheck('uncheck');
+
+            $('.check').on('click', function (event) {
+                var $this = $(this);
+                if ($('.icheck').filter(':checked').length == $('.icheck').length) {
+                    $('.icheck').iCheck('uncheck');
+                    $this.val('Check All');
+                } else {
+                    $('.icheck').iCheck('check');
+                    $this.val('Uncheck All');
+                }
+            });
+
+            // process the add invoice form
+            $(document).on("submit", "#add-invoice", function (event) {
+                //var groupIds = $('.group-ids').val();
+                var groupIds = getSelectedValues();
+                var formData = $(this).serializeArray();
+                formData.push({name: 'group_ids', value: groupIds});
+
+                var url = $(this).attr('action');
+
+                // process the form
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    dataType: 'json',
+                    encode: true
+                })
+                        .done(function (result) {
+                            if (result.status == 1) {
+                                $('#condat-modal').modal('hide');
+                                $('.box-primary').before(notify('success', 'Added To Group Successfully!'));
+                            }
+                            else {
+                                $.each(result.data.errors, function (i, v) {
+                                    $('#add-invoice').find('#' + i).after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
+                                });
+                            }
+                            setTimeout(function () {
+                                $('.callout').remove()
+                            }, 2500);
+                        });
+                event.preventDefault();
+            });
+
+            function getSelectedValues(){
+                var chkArray = [];
+                $(".group-ids:checked").each(function() {
+                    chkArray.push($(this).val());
+                });
+                return chkArray;
+            }
         });
+
+        function notify(type, text) {
+            return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
+        }
     </script>
+    {!! Condat::registerModal('modal-lg') !!}
 @stop

@@ -411,3 +411,8 @@ TRUNCATE TABLE `user_levels`;
 ALTER TABLE `user_levels` CHANGE `user_level_id` `user_level_id` INT(11) NOT NULL AUTO_INCREMENT;
 
 INSERT INTO `condat_tenant`.`user_levels` (`user_level_id`, `name`, `description`, `value`) VALUES ('', 'Admin', 'Adminstrator of the system', '12'), ('', 'Staff', 'staff members of agency', '8'), ('', 'Accountant', 'Accountants of agency', '4');
+
+/* 22nd September */
+ALTER TABLE `group_invoices` CHANGE `group_invoice_id` `group_invoice_id` INT(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `group_college_invoices` CHANGE `group_college_invoice_id` `group_college_invoice_id` INT(11) NOT NULL AUTO_INCREMENT;
