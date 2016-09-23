@@ -24,7 +24,7 @@
 
                 <strong><i class="fa fa-file-text-o margin-r-5"></i> Invoice Id</strong>
 
-                <p class="text-muted">{{ format_id($invoice_details->group_invoice_id) }}</p>
+                <p class="text-muted">{{ format_id($invoice_details->group_invoice_id, "GI") }}</p>
 
                 <strong><i class="fa fa-file-text-o margin-r-5"></i> Invoice Date </strong>
 

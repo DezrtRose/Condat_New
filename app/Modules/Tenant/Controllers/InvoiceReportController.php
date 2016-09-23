@@ -209,7 +209,7 @@ class InvoiceReportController extends BaseController
     {
         $data['search_attributes'] = array();
         $data['invoice_to_list'] = $this->college_invoice->getInvoiceToList()->toArray();
-        array_unshift($data['invoice_to_list'], 'All');
+        //array_unshift($data['invoice_to_list'], 'All');
         $data['colleges'] = $this->institute->getList();
         $data['clients'] = $this->client->getClientNameList();
         if ($this->request->isMethod('post')) {

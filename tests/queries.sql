@@ -416,3 +416,8 @@ INSERT INTO `condat_tenant`.`user_levels` (`user_level_id`, `name`, `description
 ALTER TABLE `group_invoices` CHANGE `group_invoice_id` `group_invoice_id` INT(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `group_college_invoices` CHANGE `group_college_invoice_id` `group_college_invoice_id` INT(11) NOT NULL AUTO_INCREMENT;
+
+/* 23rd September */
+ALTER TABLE `client_payments` ADD `added_by` INT NOT NULL ;
+
+ALTER TABLE `college_payments` ADD `added_by` INT NOT NULL AFTER `course_application_id`;

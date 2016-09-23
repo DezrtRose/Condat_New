@@ -29,11 +29,6 @@
 
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('agent', 'Agent Name', array('class' => 'control-label')) !!}
-                    {!!Form::text('agent', null, array('class' => 'form-control', 'id'=>'agent'))!!}
-
-                </div>
-                <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('invoice_date', 'Payment Date', array('class' => 'control-label')) !!}
                     <div class='input-group'>
                         {!!Form::text('payment_date', null, array('class' => 'form-control dateranger', 'id'=>'payment_date', 'placeholder' => "Select Date Range"))!!}
