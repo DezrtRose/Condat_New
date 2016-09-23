@@ -314,7 +314,7 @@ class CollegeInvoice extends Model
             ->leftjoin('institute_courses', 'institute_courses.course_id', '=', 'courses.course_id')
             ->leftjoin('institutes', 'institute_courses.institute_id', '=', 'institutes.institution_id')
             ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id')
-            ->select(DB::raw('CASE WHEN ISNULL(course_application.super_agent_id)
+            ->select(DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
                 THEN (companies.invoice_to_name)
                 ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
                     ON ag.company_id = comp.company_id
