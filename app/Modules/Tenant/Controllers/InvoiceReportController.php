@@ -172,7 +172,7 @@ class InvoiceReportController extends BaseController
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
             $data['payments'] = $this->filterPayments($data['search_attributes']);
-            Flash::success(count($data['applications']) . ' record(s) found.');
+            Flash::success(count($data['payments']) . ' record(s) found.');
         }
         return view('Tenant::InvoiceReport/Payment/search', $data);
     }
