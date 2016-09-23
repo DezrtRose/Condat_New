@@ -64,7 +64,8 @@ class Subscription extends Model
                 'subscription_id' => $subscription_id,
             ]);
 
-            $amount = $this->amount($subscription_id);
+            $base_amount = $this->amount($subscription_id);
+            $amount = ($base_amount * $request['subscription_years']) - (($request['subscription_years'] - 1) / 100) * (($base_amount * $request['subscription_years']) * 5);
 
             SubscriptionPayment::create([
                 'amount' => $amount,
