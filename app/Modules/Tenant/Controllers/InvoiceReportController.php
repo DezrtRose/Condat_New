@@ -171,7 +171,8 @@ class InvoiceReportController extends BaseController
     public function groupInvoice()
     {
         $data['search_attributes'] = array();
-        $data['invoice_to_list'] = $this->college_invoice->getInvoiceToList();
+        $data['invoice_to_list'] = $this->college_invoice->getInvoiceToList()->toArray();
+        array_unshift($data['invoice_to_list'], 'All');
         $data['colleges'] = $this->institute->getList();
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();

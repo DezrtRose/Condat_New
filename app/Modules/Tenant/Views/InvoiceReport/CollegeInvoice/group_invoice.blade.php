@@ -22,7 +22,7 @@
 
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('invoice_to', 'Invoice To', array('class' => 'control-label')) !!}
-                    {!!Form::select('invoice_to[]', $invoice_to_list, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
+                    {!!Form::select('invoice_to', $invoice_to_list, null, array('class' => 'form-control select2'))!!}
                 </div>
 
                 <div class="form-group col-md-4 col-xs-12">
@@ -79,6 +79,8 @@
             $(".icheck").iCheck({
                 checkboxClass: 'icheckbox_square-blue'
             });
+
+            $('.icheck').iCheck('uncheck');
 
             $('.check').on('click', function (event) {
                 var $this = $(this);

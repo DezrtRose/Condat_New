@@ -302,7 +302,17 @@ class CollegeInvoice extends Model
         if (isset($request['college_name']) && !empty($request['college_name']))
             $invoices_query = $invoices_query->whereIn('course_application.institute_id', $request['college_name']);
 
+        /*if ($request['invoice_to'] != 0)
+            $invoices_query = $invoices_query->where('invoice_to', $request['invoice_to']);*/
+
         $invoices = $invoices_query->get();
+
+        if($request['invoice_to']) {
+            foreach ($invoices as $key => $invoice) {
+                if ($invoice->invoice_to != $request['invoice_to'])
+                    unset($invoices[$key]);
+            }
+        }
         return $invoices;
     }
 
