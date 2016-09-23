@@ -17,10 +17,12 @@
                 <table id="agencies" class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr>
-                        <th>Company Name</th>
+                        <th>Agency Name</th>
                         <th>Amount</th>
                         <th>Payment Date</th>
                         <th>Payment Type</th>
+                        <th>Subscription Type</th>
+                        <th>Subscription Expiry Date</th>
                     </tr>
                     </thead>
                 </table>
@@ -39,6 +41,8 @@
                     {data: 'amount', name: 'amount'},
                     {data: 'payment_date', name: 'payment_date'},
                     {data: 'payment_type', name: 'payment_type'},
+                    {data: 'subscription_id', name: 'subscription_id'},
+                    {data: 'end_date', name: 'end_date'},
                 ]
             });
         });
