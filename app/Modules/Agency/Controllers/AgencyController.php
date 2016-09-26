@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\BaseController;
 use App\Modules\Agency\Models\Agency;
+use App\Modules\Agency\Models\Company;
 use App\Modules\System\Models\Subscription;
 use DB;
 use Illuminate\Http\Request;
@@ -62,7 +63,7 @@ class AgencyController extends BaseController {
             ->orderBy('agency_subscriptions.agency_subscription_id', 'desc');
 
 		$datatable = \Datatables::of($agencies)
-			->editColumn('created_at', function($data){return format_datetime($data->created_at); })
+			->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
 			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a>
  <form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
     {{ method_field(\'DELETE\') }}
@@ -212,9 +213,10 @@ class AgencyController extends BaseController {
 	 * @param  int  $agency_id
 	 * @return Response
 	 */
-	public function subscriptionRenew()
+	public function subscriptionRenew($agency_id)
 	{
-		return view('Agency::renew');
+	    $companyDetails = Company::where('agencies_agent_id', $agency_id)->first();
+		return view('Agency::renew', compact('companyDetails'));
 	}
 
 	/**

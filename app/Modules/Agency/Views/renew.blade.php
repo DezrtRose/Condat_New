@@ -18,6 +18,12 @@
             <div class="box-body">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <div class="col-sm-4"><strong>Company Name</strong></div>
+                        <div class="col-sm-8">
+                            {{ $companyDetails->name }}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         {!!Form::label('renewal_date', 'Renewal Date', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
                             {{ format_date(get_today_date()) }}

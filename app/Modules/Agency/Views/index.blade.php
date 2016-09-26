@@ -38,11 +38,11 @@
                     "serverSide": true,
                     "ajax": appUrl + "/agencies/data",
                     "columns": [
-                        {data: 'agency_id', name: 'agency_id'},
-                        {data: 'name', name: 'name'},
+                        {data: 'agency_id', name: 'agencies.agency_id'},
+                        {data: 'name', name: 'companies.name'},
                         {data: 'phone_id', name: 'phone_id'},
                         {data: 'subscription_id', name: 'subscription_id'},
-                        {data: 'subscription_name', name: 'subscription_name'},
+                        {data: 'subscription_name', name: 'subscription_name', searchable: false},
                         {data: 'end_date', name: 'end_date'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                     ]

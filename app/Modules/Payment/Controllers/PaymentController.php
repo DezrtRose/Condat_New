@@ -23,11 +23,13 @@ class PaymentController extends BaseController {
         $payments = SubscriptionPayment::leftJoin('agency_subscriptions', 'agency_subscriptions.agency_subscription_id', '=', 'subscription_payments.agency_subscription_id')
             ->leftJoin('agencies', 'agencies.agency_id', '=', 'agency_subscriptions.agency_id')
             ->leftJoin('companies', 'companies.agencies_agent_id', '=', 'agencies.agency_id')
-            ->select(['companies.name as company_name', 'amount', 'payment_date', 'payment_type', DB::raw('case when subscription_id = 1 then "Basic" when subscription_id = 2 then "Standard" else "Premium" end as subscription_id'), 'agency_subscriptions.end_date'])
+            ->select(['subscription_payment_id', 'companies.name as company_name', 'amount', 'payment_date', 'payment_type', DB::raw('case when subscription_id = 1 then "Basic" when subscription_id = 2 then "Standard" else "Premium" end as subscription_id'), 'agency_subscriptions.end_date'])
             ->orderBy('subscription_payments.subscription_payment_id', 'desc');
 
         $datatable = \Datatables::of($payments)
-            ->editColumn('payment_date', function($data){return format_datetime($data->payment_date); });
+            ->editColumn('payment_date', function($data){return format_datetime($data->payment_date); })
+            ->editColumn('subscription_payment_id', function($data){return format_id($data->subscription_payment_id, 'P'); })
+            ->editColumn('amount', function($data){return format_price($data->amount); });
         return $datatable->make(true);
     }
 

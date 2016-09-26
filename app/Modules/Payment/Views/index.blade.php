@@ -38,8 +38,8 @@
                 "serverSide": true,
                 "ajax": appUrl + "/payments/data",
                 "columns": [
-                    {data: 'company_name', name: 'company_name'},
-                    {data: 'company_name', name: 'company_name'},
+                    {data: 'subscription_payment_id', name: 'subscription_payment_id'},
+                    {data: 'company_name', name: 'companies.name'},
                     {data: 'amount', name: 'amount'},
                     {data: 'payment_date', name: 'payment_date'},
                     {data: 'payment_type', name: 'payment_type'},
