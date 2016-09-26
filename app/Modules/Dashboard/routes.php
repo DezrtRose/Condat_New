@@ -5,5 +5,6 @@ Route::group(array('module' => 'Dashboard', 'namespace' => 'App\Modules\Dashboar
     Route::get('dashboard', 'DashboardController@index');
     Route::get('dashboard/newAgencyData', 'DashboardController@getNewAgencyData');
     Route::get('dashboard/expiringAgencyData', 'DashboardController@getExpiringAgencyData');
+    Route::get('dashboard/expiredAgencyData', 'DashboardController@getExpiredAgencyData');
 
 });	
