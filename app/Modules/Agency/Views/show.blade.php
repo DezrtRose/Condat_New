@@ -15,9 +15,9 @@
                 {{--<img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg"
                      alt="User profile picture">--}}
 
-                <h3 class="profile-username text-center">Agency ID: {{format_id($agency->agency_id, 'A')}}</h3>
+                <h3 class="profile-username text-center"><b>{{$agency->name}}</b></h3>
 
-                <p class="text-muted text-center">{{ format_datetime($agency->created_at) }}</p>
+                <p class="text-muted text-center">Agency ID: {{format_id($agency->agency_id, 'A')}}</p>
 
                 <strong><i class="fa fa-calendar margin-r-5"></i> Created At</strong>
                 <p class="text-muted">{{format_datetime($agency->created_at)}}</p>
@@ -35,76 +35,76 @@
         </div>
         <!-- /.box -->
     </div>
-    <div class="col-xs-4">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Company Details</h3>
+    <div class="col-md-7">
+        <div class="row">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Company Details</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th style="width: 34%;">Company ID</th>
+                            <td>{{format_id($agency->company_id, 'C')}}</td>
+                        </tr>
+                        <tr>
+                            <th>Company Name</th>
+                            <td>{{$agency->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Email ID</th>
+                            <td>{{$agency->email_id}}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td>{{$agency->phone_id ? $agency->phone_id : 'Undefined'}}</td>
+                        </tr>
+                        <tr>
+                            <th>ABN</th>
+                            <td>{{$agency->abn or 'Undefined'}}</td>
+                        </tr>
+                        <tr>
+                            <th>ACN</th>
+                            <td>{{$agency->acn or 'Undefined'}}</td>
+                        </tr>
+                        <tr>
+                            <th>Website</th>
+                            <td><a href="http://{{$agency->website  or 'Undefined'}}">{{$agency->website  or 'Undefined'}}</a></td>
+                        </tr>
+                        <tr>
+                            <th>Invoice To</th>
+                            <td>{{$agency->invoice_to_name}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="box-body">
-                <table class="table table-hover">
-                    <tbody>
-                    <tr>
-                        <th style="width: 34%;">Company ID</th>
-                        <td>{{format_id($agency->company_id, 'C')}}</td>
-                    </tr>
-                    <tr>
-                        <th>Company Name</th>
-                        <td>{{$agency->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Email ID</th>
-                        <td>{{$agency->email_id}}</td>
-                    </tr>
-                    <tr>
-                        <th>Phone</th>
-                        <td>{{$agency->phone_id ? $agency->phone_id : 'Undefined'}}</td>
-                    </tr>
-                    <tr>
-                        <th>ABN</th>
-                        <td>{{$agency->abn or 'Undefined'}}</td>
-                    </tr>
-                    <tr>
-                        <th>ACN</th>
-                        <td>{{$agency->acn or 'Undefined'}}</td>
-                    </tr>
-                    <tr>
-                        <th>Website</th>
-                        <td>{{$agency->website  or 'Undefined'}}</td>
-                    </tr>
-                    <tr>
-                        <th>Invoice To Whom</th>
-                        <td>{{$agency->invoice_to_name}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-map-marker"></i> Address Details</h3>
+                </div>
+                <div class="box-body">
+                    <dl class="dl-horizontal">
+                        <dt>Line 1</dt>
+                        <dd>{{ $agency->line1 ? $agency->line1 : 'Undefined' }}</dd>
+                        <dt>Line 2</dt>
+                        <dd>{{ $agency->line2 ? $agency->line2 : 'Undefined' }}</dd>
+                        {{--<dt>Street</dt>
+                        <dd>{{ $agency->street ? $agency->street : 'Undefined' }}</dd>--}}
+                        <dt>Suburb</dt>
+                        <dd>{{ $agency->suburb ? $agency->suburb : 'Undefined' }}</dd>
+                        <dt>Postcode</dt>
+                        <dd>{{ $agency->postcode ? $agency->postcode : 'Undefined' }}</dd>
+                        <dt>State</dt>
+                        <dd>{{ $agency->state ? $agency->state : 'Undefined' }}</dd>
+                        <dt>Country</dt>
+                        <dd>{{ $agency->country_id ? config('constants.countries')[$agency->country_id] : 'Undefined' }}</dd>
+                        {{--<dt>Type</dt>
+                        <dd>{{ $agency->type }}</dd>--}}
+                    </dl>
+                </div>
             </div>
-        </div>
     </div>
-    <div class="col-xs-4">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-map-marker"></i> Address Details</h3>
-            </div>
-            <div class="box-body">
-                <dl class="dl-horizontal">
-                    <dt>Line 1</dt>
-                    <dd>{{ $agency->line1 ? $agency->line1 : 'Undefined' }}</dd>
-                    <dt>Line 2</dt>
-                    <dd>{{ $agency->line2 ? $agency->line2 : 'Undefined' }}</dd>
-                    {{--<dt>Street</dt>
-                    <dd>{{ $agency->street ? $agency->street : 'Undefined' }}</dd>--}}
-                    <dt>Suburb</dt>
-                    <dd>{{ $agency->suburb ? $agency->suburb : 'Undefined' }}</dd>
-                    <dt>Postcode</dt>
-                    <dd>{{ $agency->postcode ? $agency->postcode : 'Undefined' }}</dd>
-                    <dt>State</dt>
-                    <dd>{{ $agency->state ? $agency->state : 'Undefined' }}</dd>
-                    <dt>Country</dt>
-                    <dd>{{ $agency->country_id ? config('constants.countries')[$agency->country_id] : 'Undefined' }}</dd>
-                    {{--<dt>Type</dt>
-                    <dd>{{ $agency->type }}</dd>--}}
-                </dl>
-            </div>
-        </div>
-    </div>
+    
 @stop

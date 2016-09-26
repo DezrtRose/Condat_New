@@ -1,6 +1,6 @@
 @extends('layouts.main')
-@section('title', 'All Agencies')
-@section('heading', 'All Agencies')
+@section('title', 'All Payments')
+@section('heading', 'All Payments')
 @section('breadcrumb')
     @parent
     <li><a href="{{url('agency')}}" title="All Agencies"><i class="fa fa-dashboard"></i> Agencies</a></li>
@@ -10,13 +10,14 @@
         @include('flash::message')
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Manage Agencies</h3>
+                <h3 class="box-title">Manage Payments</h3>
                 <a href="{{route('agency.create')}}" class="btn btn-primary btn-flat pull-right">Add New Agency</a>
             </div>
             <div class="box-body">
                 <table id="agencies" class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr>
+                        <th>Payment ID</th>
                         <th>Agency Name</th>
                         <th>Amount</th>
                         <th>Payment Date</th>
@@ -37,6 +38,7 @@
                 "serverSide": true,
                 "ajax": appUrl + "/payments/data",
                 "columns": [
+                    {data: 'company_name', name: 'company_name'},
                     {data: 'company_name', name: 'company_name'},
                     {data: 'amount', name: 'amount'},
                     {data: 'payment_date', name: 'payment_date'},

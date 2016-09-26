@@ -56,8 +56,9 @@
                         {!!Form::label('', 'Payment Type', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
                             @foreach(config('constants.payment_type') as $key => $value)
-                                {!! Form::label($key, $value, array('class' => 'control-label')) !!}
                                 {!! Form::radio('payment_type', $key, false, ['id' => $key]) !!}
+                                {!! Form::label($key, $value, array('class' => 'control-label')) !!}
+                                
                             @endforeach
                         </div>
                     </div>
