@@ -1,10 +1,254 @@
 @extends('layouts.tenant')
 @section('title', 'Dashboard')
-@section('heading', 'Dashboard')
 
 @section('content')
 
-    <div class="col-md-8">
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header ui-sortable-handle">
+                <h3 class="box-title">Recent Activity</h3>
+            </div>
+            <div class="box">
+                <ul class="timeline timeline-inverse">
+    <!-- timeline time label -->
+                    <li>
+                       
+                          &nbsp;
+                    
+                    </li>
+                    <li class="time-label">
+                        <span class="bg-red">
+                          Sep 16, 2016
+                        </span>
+                    </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Wants to apply for Diploma of Business starting from November. Will have PTE Test on 20 sep 2016<br></div>
+                        </div>
+                    </li>
+                    <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                                <h3 class="timeline-header no-border">Client Created</h3>
+                            </div>
+                    </li>
+                    <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                                <h3 class="timeline-header no-border">Client Created</h3>
+                            </div>
+                    </li>
+                    <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                                <h3 class="timeline-header no-border">Client Created</h3>
+                            </div>
+                    </li>
+                    <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                                <h3 class="timeline-header no-border">Client Created</h3>
+                            </div>
+                    </li>
+                    <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                                <h3 class="timeline-header no-border">Client Created</h3>
+                            </div>
+                    </li><li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                                <h3 class="timeline-header no-border">Client Created</h3>
+                            </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
+                        </div>
+                    </li>
+                    <li class="time-label">
+                        <span class="bg-red">
+                          Sep 16, 2016
+                        </span>
+                    </li>
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-sticky-note bg-blue"></i>
+
+                        <div class="timeline-item">
+                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
+                        </div>
+                    </li>
+                    <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                                <h3 class="timeline-header no-border">Client Created</h3>
+                            </div>
+                    </li>
+                    <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
+                                <h3 class="timeline-header no-border">Client Created</h3>
+                            </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li>
+                </ul>
+                <!-- /.post -->
+            </div>
+        </div>
+        
+
+        --------
+
+        <div class="box box-primary">
+            <div class="box-header ui-sortable-handle">
+                <i class="ion ion-clipboard"></i>
+
+                <h3 class="box-title">To Do List</h3>
+
+                <div class="box-tools pull-right">
+                    <a class="btn btn-primary" href="http://expertfinance.thinkingnepal.com/system/lead/add"><i
+                                class="fa fa-plus"></i> Add Reminders</a>
+                </div>
+
+
+                <div class="box-tools pull-right task-pagination">
+
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <ul class="todo-list ui-sortable">
+                        <li>
+                            <label>
+                                <!-- checkbox -->
+                                <input type="checkbox" value="" name="" class="complete" id="196">
+                                <span class="text">please email me customer passport</span>
+                                <!-- Emphasis label -->
+                                <small class="label label-info"><i
+                                            class="fa fa-clock-o"></i> 3 weeks ago
+                                </small>
+                            </label>
+                            <!-- General tools such as edit or delete-->
+                            <div class="tools">
+                                <a href="http://expertfinance.thinkingnepal.com/system/task/view/196"> <i
+                                            class="fa fa-eye"></i></a>
+                            </div>
+                        </li>
+                        <li>
+                            <label>
+                                <!-- checkbox -->
+                                <input type="checkbox" value="" name="" class="complete" id="188">
+                                <span class="text">hello there</span>
+                                <!-- Emphasis label -->
+                                <small class="label label-info"><i
+                                            class="fa fa-clock-o"></i> 1 month ago
+                                </small>
+                            </label>
+                            <!-- General tools such as edit or delete-->
+                            <div class="tools">
+                                <a href="http://expertfinance.thinkingnepal.com/system/task/view/188"> <i
+                                            class="fa fa-eye"></i></a>
+                            </div>
+                        </li>
+                        <li>
+                            <label>
+                                <!-- checkbox -->
+                                <input type="checkbox" value="" name="" class="complete" id="187">
+                                <span class="text">give me some feedback</span>
+                                <!-- Emphasis label -->
+                                <small class="label label-info"><i
+                                            class="fa fa-clock-o"></i> 1 month ago
+                                </small>
+                            </label>
+                            <!-- General tools such as edit or delete-->
+                            <div class="tools">
+                                <a href="http://expertfinance.thinkingnepal.com/system/task/view/187"> <i
+                                            class="fa fa-eye"></i></a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header ui-sortable-handle">
                 <h3 class="box-title">Active Clients</h3>
@@ -76,80 +320,8 @@
             <br>
         </div>
 
-        <div class="box box-primary">
-            <div class="box-header ui-sortable-handle">
-                <i class="ion ion-clipboard"></i>
-
-                <h3 class="box-title">To Do List</h3>
-
-                <div class="box-tools pull-right">
-                    <a class="btn btn-primary" href="http://expertfinance.thinkingnepal.com/system/lead/add"><i
-                                class="fa fa-plus"></i> Add Reminders</a>
-                </div>
-
-
-                <div class="box-tools pull-right task-pagination">
-
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <ul class="todo-list ui-sortable">
-                        <li>
-                            <label>
-                                <!-- checkbox -->
-                                <input type="checkbox" value="" name="" class="complete" id="196">
-                                <span class="text">please email me customer passport</span>
-                                <!-- Emphasis label -->
-                                <small class="label label-info"><i
-                                            class="fa fa-clock-o"></i> 3 weeks ago
-                                </small>
-                            </label>
-                            <!-- General tools such as edit or delete-->
-                            <div class="tools">
-                                <a href="http://expertfinance.thinkingnepal.com/system/task/view/196"> <i
-                                            class="fa fa-eye"></i></a>
-                            </div>
-                        </li>
-                        <li>
-                            <label>
-                                <!-- checkbox -->
-                                <input type="checkbox" value="" name="" class="complete" id="188">
-                                <span class="text">hello there</span>
-                                <!-- Emphasis label -->
-                                <small class="label label-info"><i
-                                            class="fa fa-clock-o"></i> 1 month ago
-                                </small>
-                            </label>
-                            <!-- General tools such as edit or delete-->
-                            <div class="tools">
-                                <a href="http://expertfinance.thinkingnepal.com/system/task/view/188"> <i
-                                            class="fa fa-eye"></i></a>
-                            </div>
-                        </li>
-                        <li>
-                            <label>
-                                <!-- checkbox -->
-                                <input type="checkbox" value="" name="" class="complete" id="187">
-                                <span class="text">give me some feedback</span>
-                                <!-- Emphasis label -->
-                                <small class="label label-info"><i
-                                            class="fa fa-clock-o"></i> 1 month ago
-                                </small>
-                            </label>
-                            <!-- General tools such as edit or delete-->
-                            <div class="tools">
-                                <a href="http://expertfinance.thinkingnepal.com/system/task/view/187"> <i
-                                            class="fa fa-eye"></i></a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.box-body -->
-
-            </div>
-        </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header ui-sortable-handle">
                 <h3 class="box-title">Outstanding Payments</h3>
