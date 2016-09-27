@@ -106,7 +106,7 @@ class CourseController extends BaseController
             $course_id = $this->course->add($this->request->all(), $institution_id);
             if ($course_id)
                 Flash::success('Course has been created successfully.');
-            return redirect()->route('tenant.institute.show', $institution_id);
+            return redirect()->route('tenant.course.index', $institution_id);
         }
     }
 
@@ -119,6 +119,7 @@ class CourseController extends BaseController
     public function show($course_id)
     {
         $data['course'] = $this->course->getDetails($course_id);
+        $data['institute'] = $this->institute->getDetails($institution_id);
         return view("Tenant::Course/show", $data);
     }
 
@@ -132,6 +133,7 @@ class CourseController extends BaseController
     {
         /* Getting the course details*/
         $data['course'] = $course = $this->course->getDetails($course_id);
+        $data['course_levels'] = CourseLevel::lists('name', 'level_id');
         $data['broad_fields'] = BroadField::lists('name', 'id');
         $data['narrow_fields'] = NarrowField::where('broad_field_id', $course->broad_field)->lists('name', 'id');
         return view('Tenant::Course/edit', $data);

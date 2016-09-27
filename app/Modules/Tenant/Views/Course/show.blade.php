@@ -7,136 +7,68 @@
     <li>View</li>
 @stop
 @section('content')
-    <div class="col-md-4">
+    @include('Tenant::Institute/navbar')
+    <div class="col-xs-12">
+        @include('flash::message')
+    </div>
+    <div class="col-md-3 col-xs-12">
 
-        <!-- Profile Image -->
-        <div class="box box-primary">
-            <div class="box-body box-profile">
-                {{--<img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg"
-                     alt="User profile picture">--}}
-
-                <h3 class="profile-username text-center">Client ID: {{format_id($client->client_id, 'C')}}</h3>
-
-                <p class="text-muted text-center">System Client</p>
-
-                <ul class="list-group list-group-unbordered">
-                    <li class="list-group-item">
-                        <b>Followers</b> <a class="pull-right">1,322</a>
-                    </li>
-                    <li class="list-group-item">
-                        <b>Following</b> <a class="pull-right">543</a>
-                    </li>
-                    <li class="list-group-item">
-                        <b>Friends</b> <a class="pull-right">13,287</a>
-                    </li>
-                </ul>
-
-                <a href="{{route('tenant.client.edit', $client->client_id)}}" class="btn btn-primary btn-block"><b>Update</b></a>
-            </div>
-            <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-
-        <!-- About Me Box -->
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">General Information</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+                <strong><i class="fa fa-calendar margin-r-5"></i> Institute Id</strong>
+
+                <p class="text-muted">{{format_id($institute->institution_id, 'I')}}</p>
+
+                <strong><i class="fa fa-calendar margin-r-5"></i> Short Name</strong>
+
+                <p class="text-muted">{{$institute->short_name}}</p>
+
+                <strong><i class="fa fa-phone margin-r-5"></i> Website</strong>
+
+                <p class="text-muted"><a href="http://{{ $institute->website }}"
+                                         target="_blank">{{$institute->website}}</a></p>
+
+                <strong><i class="fa fa-calendar margin-r-5"></i> Invoice To</strong>
+
+                <p class="text-muted">{{$institute->invoice_to_name}}</p>
+
                 <strong><i class="fa fa-calendar margin-r-5"></i> Created At</strong>
-                <p class="text-muted">{{format_datetime($client->created_at)}}</p>
-                <hr>
-                <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
-                <p class="text-muted">{{$client->description}}</p>
-                <hr>
+
+                <p class="text-muted">{{format_datetime($institute->created_at)}}</p>
+
+                <strong><i class="fa fa-phone margin-r-5"></i> Created By</strong>
+
+                <p class="text-muted">{{$institute->number}}</p>
+
             </div>
             <!-- /.box-body -->
         </div>
-        <!-- /.box -->
+
     </div>
-    <div class="col-xs-8">
+
+    <div class="col-md-9">
         <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Personal Details</h3>
+            <div class="box-header">
+                <h3 class="box-title">Manage Courses</h3>
+                <a href="{{route('tenant.course.create', $institution_id)}}"
+                   class="btn btn-primary btn-flat pull-right">Add New Course</a>
             </div>
             <div class="box-body">
-                <table class="table table-hover">
-                    <tbody>
+                <table id="courses" class="table table-bordered table-striped dataTable">
+                    <thead>
                     <tr>
-                        <th style="width: 34%;">Client ID</th>
-                        <td>{{format_id($client->client_id, 'C')}}</td>
+                        <th>Cricos ID</th>
+                        <th>Course Name</th>
+                        <th>Level</th>
+                        <th>Tuition Fee</th>
+                        <th>Com %</th>
+                        <th>Actions</th>
                     </tr>
-                    <tr>
-                        <th>First Name</th>
-                        <td>{{$client->first_name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Middle Name</th>
-                        <td>{{$client->middle_name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Last Name</th>
-                        <td>{{$client->last_name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Sex</th>
-                        <td>{{$client->sex}}</td>
-                    </tr>
-                    <tr>
-                        <th>DOB</th>
-                        <td>{{format_date($client->dob)}}</td>
-                    </tr>
-                    <tr>
-                        <th>Passport No.</th>
-                        <td>{{$client->passport_no}}</td>
-                    </tr>
-                    <tr>
-                        <th>Email Address</th>
-                        <td>{{$client->email}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-8">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-map-marker"></i> Address Details</h3>
-            </div>
-            <div class="box-body">
-                <table class="table table-hover">
-                <tbody>
-                <tr>
-                    <th style="width: 34%;">Line 1</th>
-                    <td>{{ $client->line1 }}</td>
-                </tr>
-                <tr>
-                    <th>Line 2</th>
-                    <td>{{ $client->line2 }}</td>
-                </tr>
-                <tr>
-                    <th>Street</th>
-                    <td>{{ $client->street }}</td>
-                </tr>
-                <tr>
-                    <th>Suburb</th>
-                    <td>{{ $client->suburb }}</td>
-                </tr>
-                <tr>
-                    <th>Postcode</th>
-                    <td>{{ $client->postcode }}</td>
-                </tr>
-                <tr>
-                    <th>State</th>
-                    <td>{{ $client->state }}</td>
-                </tr>
-                <tr>
-                    <th>Country</th>
-                    <td>{{ get_country($client->country_id) }}</td>
-                </tr>
-                </tbody>
+                    </thead>
                 </table>
             </div>
         </div>

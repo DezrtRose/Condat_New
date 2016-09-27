@@ -79,9 +79,10 @@ class InstituteController extends BaseController
     {
         $courses = InstituteCourse::join('courses', 'institute_courses.course_id', '=', 'courses.course_id')
             ->leftJoin('course_fees', 'course_fees.course_id', '=', 'courses.course_id')
+            ->leftJoin('course_levels', 'course_levels.level_id', '=', 'courses.level_id')
             ->leftJoin('fees', 'fees.fee_id', '=', 'course_fees.fees_id')
             ->where('institute_courses.institute_id', $institute_id)
-            ->select(['institute_courses.description', 'courses.course_id', 'courses.name', 'courses.level','courses.commission_percent', 'fees.total_tuition_fee'])
+            ->select(['institute_courses.description', 'courses.course_id', 'courses.name', 'course_levels.name as level','courses.commission_percent', 'fees.total_tuition_fee'])
             ->orderBy('course_id', 'desc');
 
         $datatable = \Datatables::of($courses)

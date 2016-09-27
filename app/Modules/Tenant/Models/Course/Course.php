@@ -129,9 +129,10 @@ class Course extends Model
     function getDetails($course_id)
     {
         $course = Course::join('institute_courses', 'institute_courses.course_id', '=', 'courses.course_id')
+            ->leftJoin('institute_courses', 'institute_courses.institute_id', '=', 'institutes.institution_id')
             ->leftJoin('course_fees', 'course_fees.course_id', '=', 'courses.course_id')
             ->leftJoin('fees', 'fees.fee_id', '=', 'course_fees.fees_id')
-            ->select(['institute_courses.description', 'courses.*', 'fees.total_tuition_fee', 'fees.coe_fee'])
+            ->select(['institute_courses.description', 'institute_courses.institute_id', 'institutes.short_name', 'courses.*', 'fees.total_tuition_fee', 'fees.coe_fee'])
             ->find($course_id);
         return $course;
     }

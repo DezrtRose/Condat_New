@@ -421,3 +421,6 @@ ALTER TABLE `group_college_invoices` CHANGE `group_college_invoice_id` `group_co
 ALTER TABLE `client_payments` ADD `added_by` INT NOT NULL ;
 
 ALTER TABLE `college_payments` ADD `added_by` INT NOT NULL AFTER `course_application_id`;
+
+/* 27th September */
+ALTER TABLE `courses` CHANGE `level` `level_id` INT NULL DEFAULT NULL COMMENT 'Diploma, Bachelor etc..';
