@@ -5,6 +5,7 @@ use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Institute\Institute;
 use App\Modules\Tenant\Models\Invoice\CollegeInvoice;
+use App\Modules\Tenant\Models\Invoice\GroupCollegeInvoice;
 use App\Modules\Tenant\Models\Invoice\GroupInvoice;
 use App\Modules\Tenant\Models\Invoice\Invoice;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
@@ -109,8 +110,9 @@ class InvoiceReportController extends BaseController
 
     public function showGroupedInvoices($grouped_invoice_id)
     {
-        $data['invoice_details'] = GroupInvoice::find($grouped_invoice_id);
-        $data['invoice_reports'] = $this->groupInvoice->getInvocies($grouped_invoice_id); //dd($data['invoice_reports']->toArray());
+        $data['invoice_details'] = $this->groupInvoice->getDetails($grouped_invoice_id);
+        $data['invoice_ids'] = $this->groupInvoice->getOtherInvoicesList($grouped_invoice_id);
+        $data['invoice_reports'] = $this->groupInvoice->getInvoices($grouped_invoice_id); //dd($data['invoice_details']->toArray());
         return view("Tenant::InvoiceReport/CollegeInvoice/show_grouped_invoices", $data);
     }
 
@@ -169,7 +171,6 @@ class InvoiceReportController extends BaseController
 
         $data['colleges'] = $this->institute->getList()->toArray();
         $data['clients'] = $this->client->getClientNameList();
-        array_unshift($data['colleges'], 'All');
 
         $data['users'] = $this->user->getList();
 
@@ -230,6 +231,20 @@ class InvoiceReportController extends BaseController
         } else {
             return view("Tenant::InvoiceReport/CollegeInvoice/partial/createGroupInvoice");
         }
+    }
+
+    public function addMoreGroupInvoice($group_invoice_id)
+    {
+        $this->groupInvoice->addMoreInvoices($this->request->all(), $group_invoice_id);
+        Flash::success('Invoices added successfully.');
+        return  redirect()->route('invoice.grouped.show', $group_invoice_id);
+    }
+
+    public function deleteGroupInvoices($group_invoice_id, $invoice_id)
+    {
+        $invoice = GroupCollegeInvoice::where('college_invoices_id', $invoice_id)->where('group_invoices_id', $group_invoice_id)->first();
+        $invoice->delete();
+        return $this->success(['message' => 'Success']);
     }
 
 

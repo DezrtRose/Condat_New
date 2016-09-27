@@ -96,7 +96,30 @@ class GroupInvoice extends Model
         return $grouped_invoices;
     }
 
-    function getInvocies($grouped_invoice_id)
+    function getDetails($group_invoice_id)
+    {
+        $grouped_invoice = GroupInvoice::join('group_college_invoices', 'group_college_invoices.group_invoices_id', '=', 'group_invoices.group_invoice_id')
+            ->groupBy('group_college_invoices.group_invoices_id')
+            ->select('group_invoices.*', DB::raw('COUNT(group_college_invoices.college_invoices_id) as invoiceCount'))
+            ->find($group_invoice_id);
+        $grouped_college_invoices = GroupCollegeInvoice::where('group_invoices_id', $group_invoice_id)->get();
+        $grouped_invoice->paid_amount = 0;
+        $grouped_invoice->outstanding_amount = 0;
+        $grouped_invoice->total_amount = 0;
+        $grouped_invoice->total_gst = 0;
+        foreach ($grouped_college_invoices as $col_key => $group_col) {
+            $col_invoice = new CollegeInvoice();
+            $grouped_invoice->paid_amount += $col_invoice->getPaidAmount($group_col->college_invoices_id);
+            $grouped_invoice->outstanding_amount += $col_invoice->getOutstandingAmount($group_col->college_invoices_id);
+
+            $invoice_details = CollegeInvoice::find($group_col->college_invoices_id);
+            $grouped_invoice->total_amount += $invoice_details->final_total;
+            $grouped_invoice->total_gst += $invoice_details->total_gst;
+        }
+        return $grouped_invoice;
+    }
+
+    function getInvoices($grouped_invoice_id)
     {
         $college_invoices_id = GroupCollegeInvoice::where('group_invoices_id', $grouped_invoice_id)->lists('college_invoices_id');
 
@@ -126,6 +149,28 @@ class GroupInvoice extends Model
             ->groupBy('college_invoices.college_invoice_id');
 
         $invoices = $invoices_query->get();
+        return $invoices;
+    }
+
+    function addMoreInvoices(array $request, $group_invoice_id)
+    {
+        foreach ($request['invoice_ids'] as $key => $invoice_id) {
+            GroupCollegeInvoice::create([
+                'group_invoices_id' => $group_invoice_id,
+                'college_invoices_id' => $invoice_id
+            ]);
+        }
+    }
+
+    function getOtherInvoicesList($grouped_invoice_id)
+    {
+        $college_invoices_ids = GroupCollegeInvoice::where('group_invoices_id', $grouped_invoice_id)->lists('college_invoices_id');
+
+        $invoices = CollegeInvoice::whereNotIn('college_invoices.college_invoice_id', $college_invoices_ids)
+            ->lists('college_invoice_id', 'college_invoice_id');
+        foreach($invoices as $key => $invoice) {
+            $invoices[$key] = format_id($invoice, 'CI');
+        }
         return $invoices;
     }
 }
