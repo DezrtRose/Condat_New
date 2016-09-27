@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Models\Tenant\Profile;
 use Illuminate\Support\Facades\Request as FacadeRequest;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
@@ -46,6 +47,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     protected $role = [1 => 'Admin', 2 => 'Staff', 3 => 'Accountant'];
 

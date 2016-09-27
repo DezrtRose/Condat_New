@@ -56,7 +56,7 @@
                     <li><a href="{{url('tenant/institute/search')}}"><i class="fa fa-circle-o"></i> Search Course</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            {{--<li class="treeview">
                 <a href="#">
                     <i class="fa fa-money"></i>
                     <span>Reports</span>
@@ -67,7 +67,7 @@
                     <li><a href="{{url('payment/search')}}"><i class="fa fa-circle-o"></i> Students by SubAgent</a></li>
                     <li><a href="{{url('payment/search')}}"><i class="fa fa-circle-o"></i> Financial Statistics</a></li>
                 </ul>
-            </li>
+            </li>--}}
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-users"></i>
@@ -79,7 +79,7 @@
                     <li><a href="{{url('tenant/agents/create')}}"><i class="fa fa-circle-o"></i> Add</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            {{--<li class="treeview">
                 <a href="#">
                     <i class="fa fa-users"></i>
                     <span>Mailbox</span>
@@ -88,7 +88,7 @@
                     <li><a href="{{url('tenant/agents')}}"><i class="fa fa-circle-o"></i> Compose</a></li>
                     <li><a href="{{url('tenant/agents/create')}}"><i class="fa fa-circle-o"></i> All Sent</a></li>
                 </ul>
-            </li>
+            </li>--}}
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-users"></i>
