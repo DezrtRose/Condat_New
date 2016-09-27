@@ -15,7 +15,7 @@
             <div class="form-group @if($errors->has('level')) {{'has-error'}} @endif">
                 {!!Form::label('level', 'Level *', array('class' => 'col-sm-3 control-label')) !!}
                 <div class="col-sm-8">
-                    {!!Form::text('level', null, array('class' => 'form-control'))!!}
+                    {!!Form::select('level_id', $course_levels, null, array('class' => 'form-control select2'))!!}
                 </div>
             </div>
 

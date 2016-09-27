@@ -27,7 +27,7 @@ class Course extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'broad_field', 'level', 'narrow_field', 'commission_percent'];
+    protected $fillable = ['name', 'broad_field', 'level_id', 'narrow_field', 'commission_percent'];
 
     /**
      * Disable default timestamp feature.
@@ -49,7 +49,7 @@ class Course extends Model
             $course = Course::create([
                 'name' => $request['name'],
                 'broad_field' => $request['broad_field'],
-                'level' => $request['level'],
+                'level_id' => $request['level_id'],
                 'narrow_field' => $request['narrow_field'],
                 'commission_percent' => $request['commission_percent']
             ]);
@@ -101,7 +101,7 @@ class Course extends Model
             $course = Course::find($course_id);
             $course->name = $request['name'];
             $course->broad_field = $request['broad_field'];
-            $course->level = $request['level'];
+            $course->level_id = $request['level_id'];
             $course->narrow_field = $request['narrow_field'];
             $course->commission_percent = $request['commission_percent'];
             $course->save();

@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Modules\Tenant\Models\Course\BroadField;
 use App\Modules\Tenant\Models\Course\Course;
+use App\Modules\Tenant\Models\Course\CourseLevel;
 use App\Modules\Tenant\Models\Course\NarrowField;
 use App\Modules\Tenant\Models\Document;
 use App\Modules\Tenant\Models\Institute\Institute;
@@ -59,6 +60,7 @@ class CourseController extends BaseController
         $data['commission_percent']= $courses['commission_percent'];
 
         $data['institution_id'] = $institution_id;
+        $data['course_levels'] = CourseLevel::lists('name', 'level_id');
         $data['broad_fields'] = BroadField::lists('name', 'id');
         $data['narrow_fields'] = NarrowField::where('broad_field_id', 1)->lists('name', 'id');
         /* send in data for dropdowns : fields and level */
