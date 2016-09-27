@@ -20,7 +20,6 @@ class CourseController extends BaseController
     protected $course;
     protected $rules = [
         'name'=>'required|min:2|max:255',
-        'level'=>'required|min:2|max:155',
         'coe_fee' => 'required|numeric',
         'total_tuition_fee' => 'required|numeric',
     ];
