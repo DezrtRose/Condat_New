@@ -18,6 +18,9 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('assets/css/skin-blue.css') }}">
 
+    <!-- select 2 dropdown -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
+
     {{-- Load Custom CSS --}}
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
 

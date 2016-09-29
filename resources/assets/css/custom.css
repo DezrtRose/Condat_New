@@ -199,3 +199,11 @@ body.modal-open .datepicker.dropdown-menu {
 .marginTop {
     margin-top: 10px;
 }
+
+.email-ids .select2-selection__choice {
+    background-color: #3c8dbc!important;
+    border-color: #3c8dbc!important;
+}
+.email-ids .select2-selection__choice .select2-selection__choice__remove {
+    color: #fff!important;
+}
