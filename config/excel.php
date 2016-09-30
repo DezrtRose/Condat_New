@@ -58,15 +58,15 @@ return array(
     ),
 
     'properties' => array(
-        'creator'        => 'Maatwebsite',
-        'lastModifiedBy' => 'Maatwebsite',
+        'creator'        => 'Condat Solutions',
+        'lastModifiedBy' => 'Condat Solutions',
         'title'          => 'Spreadsheet',
-        'description'    => 'Default spreadsheet export',
+        'description'    => 'Condat spreadsheet export',
         'subject'        => 'Spreadsheet export',
-        'keywords'       => 'maatwebsite, excel, export',
+        'keywords'       => 'condat, excel, export',
         'category'       => 'Excel',
-        'manager'        => 'Maatwebsite',
-        'company'        => 'Maatwebsite',
+        'manager'        => 'Condat Solutions',
+        'company'        => 'Condat Solutions',
     ),
 
     /*
@@ -106,7 +106,7 @@ return array(
     |
     */
 
-    'creator'    => 'Maatwebsite',
+    'creator'    => 'Condat Solutions',
 
     'csv'        => array(
         /*

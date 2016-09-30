@@ -163,8 +163,12 @@ return [
 
         /* Recaptcha */
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+
         /* PayPal */
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
+
+        /* Export PDF */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -222,6 +226,8 @@ return [
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
         /* PayPal */
         'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
+        /* Export */
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

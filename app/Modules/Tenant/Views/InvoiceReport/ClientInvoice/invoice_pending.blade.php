@@ -31,42 +31,57 @@
                     </thead>
                     <tbody>
                     @foreach($invoice_reports as $invoice)
-                            <tr>
-                                <td>{{ format_id($invoice->invoice_id, 'SI') }}</td>
-                                <td>{{ format_date($invoice->invoice_date) }}</td>
-                                <td>{{ $invoice->fullname }}</td>
-                                <td>{{ $invoice->number }}</td>
-                                <td>{{ $invoice->email }}</td>
-                                <td>{{ format_price($invoice->invoice_amount) }}</td>
-                                <td>{{ format_price($invoice->total_gst) }}</td>
+                        <tr>
+                            <td>{{ format_id($invoice->invoice_id, 'SI') }}</td>
+                            <td>{{ format_date($invoice->invoice_date) }}</td>
+                            <td>{{ $invoice->fullname }}</td>
+                            <td>{{ $invoice->number }}</td>
+                            <td>{{ $invoice->email }}</td>
+                            <td>{{ format_price($invoice->invoice_amount) }}</td>
+                            <td>{{ format_price($invoice->total_gst) }}</td>
 
-                                <td>
-                                    @if(($invoice->final_total) - ($invoice->total_paid) == 0)
-                                        {{ '-' }}
-                                    @else
-                                        {{ format_price(($invoice->final_total) - ($invoice->total_paid)) }}
-                                    @endif
-                                </td>
-                                <td>
-                                    <a data-toggle="modal" data-target="#condat-modal" data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
-                                                class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
-                                                data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
-                                    <a href="#" title="Print Invoice"><i
-                                                class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
-                                                data-toggle="tooltip" data-placement="top"
-                                                title="Print Invoice"></i></a>
-                                    <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}" title="View Invoice"><i
-                                                class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
-                                                data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
-                                    <a href="#" title="Email Invoice"><i
-                                                class="processing btn btn-primary btn-sm glyphicon glyphicon-send"
-                                                data-toggle="tooltip" data-placement="top"
-                                                title="Email Invoice"></i></a>
-                                </td>
-                            </tr>
+                            <td>
+                                @if(($invoice->final_total) - ($invoice->total_paid) == 0)
+                                    {{ '-' }}
+                                @else
+                                    {{ format_price(($invoice->final_total) - ($invoice->total_paid)) }}
+                                @endif
+                            </td>
+                            <td>
+                                <a data-toggle="modal" data-target="#condat-modal"
+                                   data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
+                                            class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
+                                            data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
+                                <a href="#" title="Print Invoice"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Print Invoice"></i></a>
+                                <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}"
+                                   title="View Invoice"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
+                                            data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
+                                <a href="#" title="Email Invoice"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-send"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Email Invoice"></i></a>
+                            </td>
+                        </tr>
                     @endforeach
                     </tbody>
                 </table>
+            </div>
+
+            <div class="box-footer">
+                <a href="{{ route('client.invoice.print.pending') }}" target="_blank" class="btn btn-default">
+                    <i class="fa fa-print"></i> Print
+                </a>
+                <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                    <i class="fa fa-download"></i> Generate PDF
+                </button>
+                <a href="{{ route('client.invoice.export.pending') }}" class="btn btn-primary pull-right"
+                   style="margin-right: 5px;">
+                    <i class="fa fa-file-excel-o"></i> Export CSV
+                </a>
             </div>
         </div>
     </div>

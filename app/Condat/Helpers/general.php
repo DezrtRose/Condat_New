@@ -251,6 +251,12 @@ function get_today_date()
     return $today->format('Y-m-d');
 }
 
+function get_formatted_today_date()
+{
+    $today = Carbon\Carbon::today();
+    return $today->format('d/m/Y');
+}
+
 function get_expiry_date($date = null, $years = null)
 {
     if($date == null)

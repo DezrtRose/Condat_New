@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "03fb16a8957e748cfa102dd388454b0e",
-    "content-hash": "86d18a497ca4be11cdf873bd819865eb",
+    "hash": "f929655942a148b8bf1071084e195a91",
+    "content-hash": "c9e3e1f06a69a1e0797998514524c56f",
     "packages": [
         {
             "name": "artem-schander/l5-modular",
@@ -1690,16 +1690,16 @@
         },
         {
             "name": "srmklive/paypal",
-            "version": "1.3.4",
+            "version": "1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/srmklive/laravel-paypal.git",
-                "reference": "c447e8fb9376643878560f5ee72952532396d6c3"
+                "reference": "886ff5bf5407b80333d0d512ed3b1e001708fce7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/srmklive/laravel-paypal/zipball/c447e8fb9376643878560f5ee72952532396d6c3",
-                "reference": "c447e8fb9376643878560f5ee72952532396d6c3",
+                "url": "https://api.github.com/repos/srmklive/laravel-paypal/zipball/886ff5bf5407b80333d0d512ed3b1e001708fce7",
+                "reference": "886ff5bf5407b80333d0d512ed3b1e001708fce7",
                 "shasum": ""
             },
             "require": {
@@ -1732,7 +1732,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-09-16 05:26:12"
+            "time": "2016-09-23 11:15:52"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2718,16 +2718,16 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v6.18.2",
+            "version": "v6.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "1b8c50b9e33a738ecc630e2cbf65138a32932ba7"
+                "reference": "818c2fc6186ad081c5ad3a8956acce8c39fb08c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/1b8c50b9e33a738ecc630e2cbf65138a32932ba7",
-                "reference": "1b8c50b9e33a738ecc630e2cbf65138a32932ba7",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/818c2fc6186ad081c5ad3a8956acce8c39fb08c2",
+                "reference": "818c2fc6186ad081c5ad3a8956acce8c39fb08c2",
                 "shasum": ""
             },
             "require": {
@@ -2774,7 +2774,7 @@
                 "laravel4",
                 "laravel5"
             ],
-            "time": "2016-09-13 07:59:37"
+            "time": "2016-09-24 02:58:13"
         }
     ],
     "packages-dev": [
@@ -3127,16 +3127,16 @@
         },
         {
             "name": "phpspec/phpspec",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/phpspec.git",
-                "reference": "7e7e104de01b5052195cefefcd0b29f1add4c116"
+                "reference": "153ebd99d9b842e0c99a024c41f970d79db46475"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/7e7e104de01b5052195cefefcd0b29f1add4c116",
-                "reference": "7e7e104de01b5052195cefefcd0b29f1add4c116",
+                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/153ebd99d9b842e0c99a024c41f970d79db46475",
+                "reference": "153ebd99d9b842e0c99a024c41f970d79db46475",
                 "shasum": ""
             },
             "require": {
@@ -3201,7 +3201,7 @@
                 "testing",
                 "tests"
             ],
-            "time": "2016-09-04 11:59:15"
+            "time": "2016-09-26 20:28:11"
         },
         {
             "name": "phpspec/prophecy",

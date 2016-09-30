@@ -119,7 +119,7 @@ class CourseController extends BaseController
     public function show($course_id)
     {
         $data['course'] = $this->course->getDetails($course_id);
-        $data['institute'] = $this->institute->getDetails($institution_id);
+        //work from here $data['institute'] = $this->institute->getDetails($institution_id);
         return view("Tenant::Course/show", $data);
     }
 

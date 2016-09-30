@@ -7,6 +7,7 @@ use App\Modules\Tenant\Models\Client\ApplicationNotes;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Application\CourseApplication;
 use App\Modules\Tenant\Models\Course\BroadField;
+use App\Modules\Tenant\Models\Course\CourseLevel;
 use App\Modules\Tenant\Models\Course\NarrowField;
 use App\Modules\Tenant\Models\Institute\Institute;
 use App\Modules\Tenant\Models\Invoice\CollegeInvoice;
@@ -133,6 +134,7 @@ class ApplicationController extends BaseController
      */
     function createCourse()
     {
+        $data['course_levels'] = CourseLevel::lists('name', 'level_id');
         $data['broad_fields'] = BroadField::lists('name', 'id');
         $data['narrow_fields'] = NarrowField::where('broad_field_id', 1)->lists('name', 'id');
         return view("Tenant::Client/Application/course", $data);
