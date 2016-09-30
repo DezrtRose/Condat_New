@@ -8,7 +8,7 @@
 @section('content')
     <div class="col-xs-12">
         @include('flash::message')
-        <div class="box">
+        <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Manage Agencies</h3>
                 <a href="{{route('agency.create')}}" class="btn btn-primary btn-flat pull-right">Add New Agency</a>

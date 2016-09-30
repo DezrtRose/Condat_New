@@ -36,12 +36,8 @@
                         </a>
                     </li>
                 </ul>
-                <div class="tab-content">
+                <div class="tab-content" style="margin-top: 15px">
                     <div role="tabpanel" class="tab-pane active" id="new">
-                        <div class="form-group">
-                            <a href="{{route('agency.create')}}" class="btn btn-primary btn-flat">Add New
-                                Agency</a>
-                        </div>
                         <table id="new-agencies" class="table table-bordered table-striped dataTable">
                             <thead>
                             <tr>

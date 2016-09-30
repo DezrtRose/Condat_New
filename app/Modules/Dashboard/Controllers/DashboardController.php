@@ -80,7 +80,12 @@ class DashboardController extends BaseController {
 
         $datatable = \Datatables::of($agencies)
 			->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
-			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Agency" class="delete-agency btn btn-action-box" href="{{ route( \'agency.destroy\', $agency_id) }}"><i class="fa fa-trash"></i></a>');
+			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a> 
+<form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
+    {{ method_field(\'DELETE\') }}
+    {{ csrf_field() }}
+    <button data-toggle="tooltip" title="Delete Agency" type="submit" class="delete-agency btn btn-action-box"><i class="fa fa-trash"></i></button>
+</form>');
 		return $datatable->make(true);
 	}
 
@@ -107,7 +112,12 @@ class DashboardController extends BaseController {
 
         $datatable = \Datatables::of($agencies)
 			->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
-			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Agency" class="delete-agency btn btn-action-box" href="{{ route( \'agency.destroy\', $agency_id) }}"><i class="fa fa-trash"></i></a>');
+			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a> 
+<form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
+    {{ method_field(\'DELETE\') }}
+    {{ csrf_field() }}
+    <button data-toggle="tooltip" title="Delete Agency" type="submit" class="delete-agency btn btn-action-box"><i class="fa fa-trash"></i></button>
+</form>');
 		return $datatable->make(true);
 	}
 }
