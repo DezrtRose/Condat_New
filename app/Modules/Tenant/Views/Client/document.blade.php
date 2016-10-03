@@ -39,7 +39,7 @@
                         @endif
                     </div>
                     <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
-                        {!!Form::label('description', 'Description *', array('class' => '')) !!}
+                        {!!Form::label('description', 'Description', array('class' => '')) !!}
                         {!!Form::textarea('description', null, array('class' => 'form-control'))!!}
                         @if($errors->has('description'))
                             {!! $errors->first('description', '<label class="control-label"

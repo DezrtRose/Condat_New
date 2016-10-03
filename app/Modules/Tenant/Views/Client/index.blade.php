@@ -21,6 +21,7 @@
                         <th>Client Name</th>
                         <th>Phone No</th>
                         <th>Email</th>
+                        <th>Country</th>
                         <th>Added By</th>
                         <th>Active</th>
                         <th>Actions</th>
@@ -41,6 +42,7 @@
                     {data: 'fullname', name: 'fullname'},
                     {data: 'number', name: 'number'},
                     {data: 'email', name: 'emails.email'},
+                    {data: 'country_id', name: 'country_id'},
                     {data: 'added_by', name: 'added_by'},
                     {data: 'active', name: 'active', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}

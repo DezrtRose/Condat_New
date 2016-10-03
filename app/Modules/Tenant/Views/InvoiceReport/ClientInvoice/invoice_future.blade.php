@@ -1,16 +1,16 @@
 @extends('layouts.tenant')
-@section('title', 'College Invoice Future')
-@section('heading', '<h1>College Invoice - <small>Future</small></h1>')
+@section('title', 'Client Invoice Future')
+@section('heading', '<h1>Client Invoice - <small>Future</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/college_invoice_report/invoice_pending')}}" title="All College Invoices"><i
-                    class="fa fa-users"></i> College Invoices</a></li>
+    <li><a href="{{url('tenant/client_invoice_report/invoice_pending')}}" title="All Client Invoices"><i
+                    class="fa fa-users"></i> Client Invoices</a></li>
     <li>Future Invoices</li>
 @stop
 
 @section('content')
     <div class="col-md-12">
-        @include('Tenant::InvoiceReport/CollegeInvoice/partial/navbar')
+        @include('Tenant::InvoiceReport/ClientInvoice/partial/navbar')
         @include('flash::message')
     </div>
 
@@ -20,7 +20,7 @@
                 <h3 class="box-title">Future Invoices</h3>
             </div>
             <div class="box-body">
-                @include('Tenant::InvoiceReport/CollegeInvoice/partial/table')
+                @include('Tenant::InvoiceReport/ClientInvoice/partial/table')
             </div>
         </div>
     </div>

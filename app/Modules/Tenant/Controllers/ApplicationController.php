@@ -67,8 +67,12 @@ class ApplicationController extends BaseController
             ->leftJoin('companies', 'institutes.company_id', '=', 'companies.company_id')
             ->leftJoin('courses', 'course_application.institution_course_id', '=', 'courses.course_id')
             ->leftJoin('intakes', 'course_application.intake_id', '=', 'intakes.intake_id')
+            ->join('application_status', 'application_status.course_application_id', '=', 'course_application.course_application_id')
+            ->join('status', 'application_status.status_id', '=', 'status.status_id')
             ->where('course_application.client_id', $client_id)
-            ->select(['companies.name', 'courses.name as course_name', 'course_application.end_date', 'intakes.orientation_date', 'course_application.student_id', 'course_application.course_application_id as application_id', 'course_application.tuition_fee', 'course_application.user_id as added_by']);
+            ->where('application_status.active', 1)
+            ->select(['companies.name', 'courses.name as course_name', 'course_application.end_date', 'intakes.intake_date', 'course_application.student_id', 'course_application.course_application_id as application_id', 'course_application.tuition_fee', 'course_application.user_id as added_by', 'status.name as status'])
+            ->orderBy('course_application.course_application_id', 'desc');
 
         $datatable = \Datatables::of($clients)
             ->addColumn('action', '<a data-toggle="tooltip" title="View Application" class="btn btn-action-box" href ="{{ route( \'tenant.application.show\', $application_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Application Documents" class="btn btn-action-box" href ="{{ route( \'tenant.application.document\', $application_id) }}"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Application" class="btn btn-action-box" href ="{{ route( \'tenant.application.edit\', $application_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Application" class="delete-user btn btn-action-box" href="{{ route( \'tenant.application.destroy\', $application_id) }}"><i class="fa fa-trash"></i></a>')
@@ -78,7 +82,12 @@ class ApplicationController extends BaseController
             ->editColumn('added_by', function ($data) {
                 return get_tenant_name($data->added_by);
             })
-            ->addColumn('status', 'COE Processing'); //change this later
+            ->editColumn('intake_date', function ($data) {
+                return format_date($data->intake_date);
+            })
+            ->editColumn('end_date', function ($data) {
+                return format_date($data->end_date);
+            });
         // Global search function
         return $datatable->make(true);
     }
@@ -212,15 +221,15 @@ class ApplicationController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($client_id)
+    public function edit($application_id)
     {
-        /* Getting the client details*/
-        $data['client'] = $this->client->getDetails($client_id);
-        if ($data['client'] != null) {
-            $data['client']->dob = format_date($data['client']->dob);
-            return view('Tenant::Client/edit', $data);
-        } else
-            return show_404();
+        $data['institutes'] = $this->institute->getList();
+        $data['courses'] = ['' => 'Select Course'];
+        $data['intakes'] = ['' => 'Select Intake'];
+        $data['agents'] = $this->agent->getAgents();
+        $data['application'] = $this->application->getDetails($application_id);
+        $data['client'] = $this->client->getDetails($data['application']->client_id);
+        return view('Tenant::Client/Application/edit', $data);
     }
 
     /**

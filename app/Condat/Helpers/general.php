@@ -207,7 +207,10 @@ function readable_date($date)
 function format_datetime($date)
 {
     //$formatted_date = date('M d, Y h:i a', strtotime($date));
-    $formatted_date = date('d/m/Y h:i a', strtotime($date));
+    if(!empty($date))
+        $formatted_date = date('d/m/Y h:i a', strtotime($date));
+    else
+        $formatted_date = '';
     return $formatted_date;
 }
 

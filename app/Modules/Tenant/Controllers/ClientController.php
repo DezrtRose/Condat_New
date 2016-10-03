@@ -5,6 +5,7 @@ use App\Modules\Tenant\Models\Client\ActiveClient;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Client\ClientDocument;
 use App\Modules\Tenant\Models\Client\ClientEmail;
+use App\Modules\Tenant\Models\Country;
 use App\Modules\Tenant\Models\Document;
 use App\Modules\Tenant\Models\Notes;
 use App\Modules\Tenant\Models\Client\ClientNotes;
@@ -61,6 +62,8 @@ class ClientController extends BaseController
         $clients = Client::leftJoin('persons', 'clients.person_id', '=', 'persons.person_id')
             ->leftJoin('person_emails', 'person_emails.person_id', '=', 'persons.person_id')
             ->leftJoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
+            ->leftJoin('person_addresses', 'person_addresses.person_id', '=', 'persons.person_id')
+            ->leftJoin('addresses', 'addresses.address_id', '=', 'person_addresses.address_id')
             ->join('users', 'clients.added_by', '=', 'users.user_id')
             ->join('persons as user_profile', 'user_profile.person_id', '=', 'users.person_id')
             ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
@@ -69,15 +72,21 @@ class ClientController extends BaseController
                 $q->on('active_clients.client_id', '=', 'clients.client_id');
                 $q->where('active_clients.user_id', '=', current_tenant_id());
             })
-            ->select(['clients.client_id', 'clients.added_by', 'clients.added_by', 'emails.email', 'phones.number', 'clients.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), DB::raw('CONCAT(user_profile.first_name, " ", user_profile.last_name) AS added_by'), 'active_clients.id as active_id']);
+            ->select(['clients.client_id', 'clients.added_by', 'clients.added_by', 'emails.email', 'phones.number', 'clients.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), DB::raw('CONCAT(user_profile.first_name, " ", user_profile.last_name) AS added_by'), 'active_clients.id as active_id', 'addresses.country_id']);
 
         $datatable = \Datatables::of($clients)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View Client" class="btn btn-action-box" href ="{{ route( \'tenant.client.show\', $client_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Client Documents" class="btn btn-action-box" href ="{{ route( \'tenant.client.document\', $client_id) }}"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Client" class="btn btn-action-box" href ="{{ route( \'tenant.client.edit\', $client_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Client" class="delete-user btn btn-action-box" href="{{ route( \'tenant.client.destroy\', $client_id) }}"><i class="fa fa-trash"></i></a>')
+            ->addColumn('action', '<a data-toggle="tooltip" title="View Client" class="btn btn-action-box" href ="{{ route( \'tenant.client.show\', $client_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Client Documents" class="btn btn-action-box" href ="{{ route( \'tenant.client.document\', $client_id) }}"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Client" class="btn btn-action-box" href ="{{ route( \'tenant.client.edit\', $client_id) }}"><i class="fa fa-edit"></i></a>')
             ->addColumn('active', function ($data) {
                 return ($data->active_id != null)? '<input type="checkbox" value=1 class="icheck active" id="'.$data->client_id.'" checked = "checked" />' : '<input type="checkbox" value=0 class="icheck active" id="'.$data->client_id.'"/>';
             })
             ->editColumn('created_at', function ($data) {
                 return format_datetime($data->created_at);
+            })
+            ->editColumn('country_id', function ($data) {
+                if(!empty($data->country_id))
+                    return Country::find($data->country_id)->name;
+                else
+                    return '';
             })
             ->editColumn('client_id', function ($data) {
                 return format_id($data->client_id, 'C');
@@ -222,7 +231,6 @@ class ClientController extends BaseController
     function uploadDocument($client_id)
     {
         $upload_rules = ['document' => 'required|mimes:jpeg,bmp,png,doc,docx,pdf,txt,xls,xlsx',
-            'description' => 'required',
             'type' => 'required',
         ];
         $this->validate($this->request, $upload_rules);
@@ -248,8 +256,8 @@ class ClientController extends BaseController
         $document = Document::find($id);
         if (empty($document))
             abort(404);
-
-        tenant()->folder('document')->download($document->name);
+        //dd($document->shelf_location);
+        return tenant()->folder('document')->download($document->name);
     }
 
     function notes($client_id)
