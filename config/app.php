@@ -167,8 +167,11 @@ return [
         /* PayPal */
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
-        /* Export PDF */
+        /* Export Excel */
         Maatwebsite\Excel\ExcelServiceProvider::class,
+
+        /* Export PDF */
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -228,6 +231,8 @@ return [
         'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
         /* Export */
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        /* Export PDF */
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

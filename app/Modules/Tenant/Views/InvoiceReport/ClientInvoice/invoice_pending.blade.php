@@ -75,10 +75,11 @@
                 <a href="{{ route('client.invoice.print.pending') }}" target="_blank" class="btn btn-default">
                     <i class="fa fa-print"></i> Print
                 </a>
-                <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                <a href="{{ route('client.invoice.pdf.pending') }}" target="_blank" class="btn btn-primary pull-right"
+                   style="margin-right: 5px;">
                     <i class="fa fa-download"></i> Generate PDF
-                </button>
-                <a href="{{ route('client.invoice.export.pending') }}" class="btn btn-primary pull-right"
+                </a>
+                <a href="{{ route('client.invoice.export.pending') }}" target="_blank" class="btn btn-primary pull-right"
                    style="margin-right: 5px;">
                     <i class="fa fa-file-excel-o"></i> Export CSV
                 </a>

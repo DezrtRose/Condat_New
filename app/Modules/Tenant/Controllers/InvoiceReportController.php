@@ -16,6 +16,7 @@ use App\Modules\Tenant\Models\User;
 use Flash;
 use DB;
 use Excel;
+use PDF;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -75,6 +76,16 @@ class InvoiceReportController extends BaseController
                 $sheet->setAutoSize(true);
             });
         })->download('csv');
+    }
+
+    public function pdfclientInvoicePending()
+    {
+        $data['invoice_reports'] = $this->student_invoice->getAll();
+
+            $pdf = PDF::loadView('Tenant::InvoiceReport/ClientInvoice/pdf/pending', $data);
+            return $pdf->setPaper('a4', 'landscape')->download('invoice.pdf');
+
+        //return view("Tenant::InvoiceReport/ClientInvoice/print/pending", $data);
     }
 
     public function printclientInvoicePending()
