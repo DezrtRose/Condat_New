@@ -106,6 +106,7 @@ class Subscription extends Model
         $data['cancel_url'] = $_SERVER['HTTP_REFERER'];
 
         $data['total'] = $parameters['total_amount'];
+        setcookie('paypal_payment_data', json_encode($data), time() + 3600, '/');
 
         $response = $provider->setExpressCheckout($data, true);
         header('location: ' . $response['paypal_link']);die;
