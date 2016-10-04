@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Support\Facades\Response;
 use Srmklive\PayPal\Services\ExpressCheckout;
+use Mockery\Exception;
 
 class AgencyController extends BaseController {
 
@@ -61,10 +62,11 @@ class AgencyController extends BaseController {
                 'subscription_statuses.status_id')
             ->select(['agencies.agency_id', 'agencies.created_at', DB::raw('case when companies.phone_id = 0 then "N/A" else companies.phone_id end as phone_id'), 'company_database_name', 'companies.name', 'companies.email_id', 'end_date', DB::raw('case when subscription_id = 1 then "Basic" when subscription_id = 2 then "Standard" else "Premium" end as subscription_id, subscription_statuses.name as subscription_name')])
             ->groupBy('agency_subscriptions.agency_id')
-            ->orderBy('agency_subscriptions.agency_subscription_id', 'desc');
+            ->orderBy('agencies.agency_id', 'desc');
 
 		$datatable = \Datatables::of($agencies)
 			->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
+			->editColumn('end_date', function($data){return format_date($data->end_date); })
 			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a>
  <form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
     {{ method_field(\'DELETE\') }}

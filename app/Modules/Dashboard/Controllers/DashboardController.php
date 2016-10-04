@@ -48,6 +48,7 @@ class DashboardController extends BaseController {
 
 		$datatable = \Datatables::of($agencies)
             ->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
+            ->editColumn('end_date', function($data){return format_date($data->end_date); })
             ->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a> 
 <form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
     {{ method_field(\'DELETE\') }}
@@ -80,6 +81,7 @@ class DashboardController extends BaseController {
 
         $datatable = \Datatables::of($agencies)
 			->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
+			->editColumn('end_date', function($data){return format_date($data->end_date); })
 			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a> 
 <form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
     {{ method_field(\'DELETE\') }}
@@ -112,7 +114,8 @@ class DashboardController extends BaseController {
 
         $datatable = \Datatables::of($agencies)
 			->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
-			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a> 
+            ->editColumn('end_date', function($data){return format_date($data->end_date); })
+            ->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a> 
 <form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
     {{ method_field(\'DELETE\') }}
     {{ csrf_field() }}
