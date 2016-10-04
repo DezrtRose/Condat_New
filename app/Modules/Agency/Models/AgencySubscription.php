@@ -16,7 +16,7 @@ Class AgencySubscription extends Model
      */
     protected $table = 'agency_subscriptions';
     protected $primaryKey = "agency_subscription_id";
-
+    protected $connection = 'master';
     protected $fillable = ['agency_id', 'is_current', 'start_date', 'end_date', 'subscription_status_id', 'subscription_id'];
 
     public static function view($id = null)

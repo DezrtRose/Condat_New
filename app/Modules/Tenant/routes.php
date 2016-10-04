@@ -262,7 +262,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('users/data', 'UserController@getData');
     Route::get('profile', 'UserController@edit');
     Route::post('profile', 'UserController@update');
-    Route::get('users/dashboard', 'UserController@dashboard');
+    Route::get('users/dashboard', ['as' => 'users.dashboard', 'uses' => 'UserController@dashboard']);
 
     /*routes for innerdocument*/
     Route::get('client/data', 'ClientController@getData');
@@ -355,7 +355,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::post('college_invoice_report/group_invoice', ['as' => 'college.invoice.groupInvoice', 'uses' => 'InvoiceReportController@groupInvoice']);
     Route::get('invoice/group', ['as' => 'college.groupInvoice.create', 'uses' => 'InvoiceReportController@createGroupInvoice']);
     Route::post('invoice/group/{group_invoice_id}/addmore', ['as' => 'group.invoice.addmore', 'uses' => 'InvoiceReportController@addMoreGroupInvoice']);
-
+    
     /* Print Client Invoices */
     Route::get('client/invoice/print/pending', ['as' => 'client.invoice.print.pending', 'uses' => 'InvoiceReportController@printclientInvoicePending']);
     Route::get('client/invoice/export/pending', ['as' => 'client.invoice.export.pending', 'uses' => 'InvoiceReportController@exportclientInvoicePending']);
@@ -365,5 +365,12 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('client/invoice/print/paid', ['as' => 'client.invoice.print.paid', 'uses' => 'InvoiceReportController@printclientInvoicePaid']);
     Route::get('client/invoice/export/paid', ['as' => 'client.invoice.export.paid', 'uses' => 'InvoiceReportController@exportclientInvoicePaid']);
     Route::get('client/invoice/pdf/paid', ['as' => 'client.invoice.pdf.paid', 'uses' => 'InvoiceReportController@pdfclientInvoicePaid']);
+
+    // checking subscription expiry
+    Route::get('subscription/check', 'SubscriptionController@checkSubscription');
+    Route::get('subscription/renew', 'SubscriptionController@renew');
+    Route::post('subscription/renew', 'SubscriptionController@submitRenew');
+    Route::post('subscription/get_subscription_amount', 'SubscriptionController@get_subscription_amount');
+    Route::get('subscription/complete_subscription_paypal', 'SubscriptionController@complete_subscription_paypal');
 
 });

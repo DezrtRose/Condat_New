@@ -28,5 +28,25 @@
 
 {{-- Load additional JS --}}
 <?php Condat::loadJS();?>
+<script>
+    $(function() {
+        'use strict';
+        var fn = function() {
+            $.ajax({
+                url: '<?= url('tenant/subscription/check') ?>',
+                type: 'get',
+                success: function(resp) {
+                    if(resp == 0 || resp == 2) {
+                        $('#renew-subscription').show();
+                    } else if(resp == 1) {
+                        $('#renew-subscription').hide();
+                    }
+                }
+            })
+        };
+        fn();
+
+    })();
+</script>
 
 {!! Condat::loadModal() !!}

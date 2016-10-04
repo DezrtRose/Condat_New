@@ -113,6 +113,9 @@
                     <li><a href="{{url('settings/subscription')}}"><i class="fa fa-circle-o"></i> Subscription</a></li>
                 </ul>
             </li>
+            <li id="renew-subscription">
+                <a href="{{url('tenant/subscription/renew')}}"><i class="fa fa-warning"></i><span>Add/Renew Subscription</span></a>
+            </li>
         </ul>
     </section>
 </aside>

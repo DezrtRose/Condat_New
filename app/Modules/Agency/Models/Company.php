@@ -12,6 +12,7 @@ class Company extends Model {
      */
     protected $table = 'companies';
     protected $primaryKey = 'company_id';
+    protected $connection = 'master';
 
     /**
      * The attributes that are mass assignable.

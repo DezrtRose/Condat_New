@@ -1,9 +1,7 @@
-@extends('layouts.main')
-@section('title', 'Renew Agency Subscription')
-@section('heading', 'Renew Agency Subscription')
+@extends('layouts.tenant')
+@section('title', 'Add User')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('agency')}}" title="All Agencies"><i class="fa fa-Agencies"></i> Agencies</a></li>
     <li>Subscription</li>
     <li>Renew</li>
 @stop
@@ -15,21 +13,9 @@
             </div>
             @include('flash::message')
             {!!Form::open(array('method' => 'post', 'class' => 'form-horizontal form-left'))!!}
-            <input type="hidden" name="return_url" value="{{url('agencies/complete_subscription_paypal')}}"/>
+            <input type="hidden" name="return_url" value="{{url('tenant/subscription/complete_subscription_paypal')}}"/>
             <div class="box-body">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="col-sm-4"><strong>Company Name</strong></div>
-                        <div class="col-sm-8">
-                            {{ $companyDetails->name }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {!!Form::label('renewal_date', 'Renewal Date', array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8">
-                            {{ format_date(get_today_date()) }}
-                        </div>
-                    </div>
                     <div class="form-group">
                         {!!Form::label('subscription_years', 'Years', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
@@ -43,30 +29,11 @@
                             $<span class="subscription-amount">0</span>
                         </div>
                     </div>
-                    {{--<div class="form-group @if($errors->has('payment_date')) {{'has-error'}} @endif">
-                        {!!Form::label('payment_date', 'Payment Date', array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                {!!Form::text('payment_date', null, array('class' =>
-                                'form-control datemask', 'data-inputmask' => "'alias': 'dd/mm/yyyy'", 'data-mask'=> ''))!!}
-                                @if($errors->has('payment_date'))
-                                    {!! $errors->first('payment_date', '<label class="control-label"
-                                                                              for="inputError">:message</label>') !!}
-                                @endif
-                            </div>
-                        </div>
-                    </div>--}}
                     <div class="form-group">
                         {!!Form::label('', 'Payment Type', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
-                            @foreach(config('constants.payment_type') as $key => $value)
-                                {!! Form::radio('payment_type', $key, false, ['id' => $key]) !!}
-                                {!! Form::label($key, $value, array('class' => 'control-label')) !!}
-                                
-                            @endforeach
+                            {!! Form::radio('payment_type', 'Paypal', true, ['id' => 'Paypal']) !!}
+                            {!! Form::label('Paypal', 'Paypal', array('class' => 'control-label')) !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -79,7 +46,7 @@
                 </div>
             </div>
             <div class="box-footer clearfix">
-                <input type="submit" class="btn btn-primary pull-right" value="Renew" />
+                <input type="submit" class="btn btn-primary pull-right" value="Renew Now" />
             </div>
             {!!Form::close()!!}
         </div>
@@ -92,7 +59,7 @@
             e.preventDefault();
             var subscription_years = $('#subscription_years').val();
             var subscription_type = $('#subscription_type').val();
-            $.post("<?php echo url('agency/get_subscription_amount') ?>", {'subscription_years': subscription_years, 'subscription_type': subscription_type, _token: CSRF_TOKEN})
+            $.post("<?php echo url('tenant/subscription/get_subscription_amount') ?>", {'subscription_years': subscription_years, 'subscription_type': subscription_type, _token: CSRF_TOKEN})
             .done(function(resp) {
                 if(resp != 'false') {
                     $('.subscription-amount').html(resp);

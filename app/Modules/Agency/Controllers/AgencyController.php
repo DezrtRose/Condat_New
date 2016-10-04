@@ -9,6 +9,7 @@ use DB;
 use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Support\Facades\Response;
+use Srmklive\PayPal\Services\ExpressCheckout;
 
 class AgencyController extends BaseController {
 
@@ -251,4 +252,12 @@ class AgencyController extends BaseController {
         echo $resp;
     }
 
+    public function complete_subscription_paypal()
+    {
+        $provider = new ExpressCheckout;
+        $payment_data = $provider->getExpressCheckoutDetails($_GET['token']);
+        $update = $this->subscription->renew_paypal($payment_data['CUSTOM']);
+        ($update) ? Flash::success('Subscription has been renewed successfully.') : Flash::success('Subscription could not be renewed.');
+        return redirect()->route('agency.index');
+    }
 }
