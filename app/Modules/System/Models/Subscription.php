@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Carbon\Carbon;
 use Srmklive\PayPal\Services\ExpressCheckout;
+use Flash;
 
 class Subscription extends Model
 {
@@ -48,7 +49,7 @@ class Subscription extends Model
                 $paypal_parameters['total_amount'] = $amount;
                 $paypal_parameters['return_url'] = $return_url;
                 $paypal_parameters['agency_id'] = $agency_id;
-                $this->_process_paypal($paypal_parameters);
+                return $this->_process_paypal($paypal_parameters);
             } else {
                 $previous_sub = AgencySubscription::where('agency_id', $agency_id)->orderBy('agency_subscription_id', 'desc')->first();
                 $expiry_date = get_expiry_date(null, $request['subscription_years']);
@@ -80,8 +81,8 @@ class Subscription extends Model
                     'agency_subscription_id' => $agency_subs->agency_subscription_id
                 ]);
                 DB::commit();
+                return true;
             }
-            return true;
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);
@@ -93,8 +94,8 @@ class Subscription extends Model
         $provider = new ExpressCheckout;
         $data = $parameters;
         $data['custom'] = implode('-', $parameters);
-        $data['invoice_id'] = 1;
-        $data['invoice_description'] = "Order #$data[invoice_id] Invoice";
+        $data['invoice_id'] = uniqid();
+        $data['invoice_description'] = "Order Invoice";
         $data['items'] = [
             [
                 'name' => 'Subscription for ' . $parameters['subscription_years'] . ' year(s)',
@@ -109,7 +110,11 @@ class Subscription extends Model
         setcookie('paypal_payment_data', json_encode($data), time() + 3600, '/');
 
         $response = $provider->setExpressCheckout($data, true);
-        header('location: ' . $response['paypal_link']);die;
+        if(isset($response['paypal_link'])) {
+            header('location: ' . $response['paypal_link']);die;
+        } else {
+            return false;
+        }
     }
 
     function activateTrail(array $request, $agency_id)
