@@ -8,12 +8,28 @@
 @stop
 
 @section('content')
-    <div class="col-md-12">
+    <div class="col-md-12">       
+        
+        @include('Tenant::InvoiceReport/ClientInvoice/partial/messages')
 
         @include('Tenant::InvoiceReport/ClientInvoice/partial/navbar')
-
-        @include('flash::message')
+    </div>
+    <div class="col-md-12">   
         <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Pending Invoices</h3>
+                <a href="{{ route('client.invoice.print.pending') }}" target="_blank" class="btn btn-primary pull-right">
+                    <i class="fa fa-print"></i> Print
+                </a>
+                <a href="{{ route('client.invoice.pdf.pending') }}" target="_blank" class="btn btn-primary pull-right"
+                   style="margin-right: 5px;">
+                    <i class="fa fa-download"></i> Generate PDF
+                </a>
+                <a href="{{ route('client.invoice.export.pending') }}" target="_blank" class="btn btn-primary pull-right"
+                   style="margin-right: 5px;">
+                    <i class="fa fa-file-excel-o"></i> Export Excel
+                </a>
+            </div>
             <div class="box-body">
                 <table class="table table-striped table-bordered table-condensed" id="invoice_report_table">
                     <thead>
@@ -71,19 +87,7 @@
                 </table>
             </div>
 
-            <div class="box-footer">
-                <a href="{{ route('client.invoice.print.pending') }}" target="_blank" class="btn btn-default">
-                    <i class="fa fa-print"></i> Print
-                </a>
-                <a href="{{ route('client.invoice.pdf.pending') }}" target="_blank" class="btn btn-primary pull-right"
-                   style="margin-right: 5px;">
-                    <i class="fa fa-download"></i> Generate PDF
-                </a>
-                <a href="{{ route('client.invoice.export.pending') }}" target="_blank" class="btn btn-primary pull-right"
-                   style="margin-right: 5px;">
-                    <i class="fa fa-file-excel-o"></i> Export CSV
-                </a>
-            </div>
+           
         </div>
     </div>
     <script type="text/javascript">

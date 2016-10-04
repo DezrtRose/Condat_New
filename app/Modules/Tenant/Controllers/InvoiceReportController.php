@@ -94,6 +94,106 @@ class InvoiceReportController extends BaseController
         return view("Tenant::InvoiceReport/ClientInvoice/print/pending", $data);
     }
 
+     public function exportclientInvoicePaid()
+    {
+        $data = $this->student_invoice->getAll()->toArray();
+        $invoice_array = array();
+        // Heading
+        $invoice_array[0] = ['Invoice ID', 'Invoice Date', 'Client Name', 'Phone', 'Email', 'Invoice Amount', 'Total GST', 'Outstanding'];
+
+        foreach($data as $key => $invoice)
+        {
+            $invoice_array[$key+1]['invoice_id'] = format_id($invoice['student_invoice_id'], 'SI');
+            $invoice_array[$key+1]['date'] = format_date($invoice['invoice_date']);
+            $invoice_array[$key+1]['client_name'] = $invoice['fullname'];
+            $invoice_array[$key+1]['phone'] = $invoice['number'];
+            $invoice_array[$key+1]['email'] = $invoice['email'];
+            $invoice_array[$key+1]['amount'] = format_price($invoice['invoice_amount']);
+            $invoice_array[$key+1]['total_gst'] = format_price($invoice['total_gst']);
+            $invoice_array[$key+1]['outstanding'] = format_price($invoice['final_total']- $invoice['total_paid']);
+        }
+        return Excel::create('paid_client_invoice', function($excel) use ($invoice_array) {
+            $excel->setTitle('Paid Client Invoices');
+            $excel->setDescription('Paid invoices for clients.');
+
+            $excel->sheet('invoices', function($sheet) use ($invoice_array)
+            {
+                $sheet->fromArray($invoice_array, null, 'A1', false, false);
+                $sheet->row(1, function($row) {
+                    $row->setFontSize(12);
+                    $row->setFontWeight('bold');
+                });
+                $sheet->setAutoSize(true);
+            });
+        })->download('csv');
+    }
+
+    public function pdfclientInvoicePaid()
+    {
+        $data['invoice_reports'] = $this->student_invoice->getAll();
+
+            $pdf = PDF::loadView('Tenant::InvoiceReport/ClientInvoice/pdf/paid', $data);
+            return $pdf->setPaper('a4', 'landscape')->download('invoice.pdf');
+
+        //return view("Tenant::InvoiceReport/ClientInvoice/print/pending", $data);
+    }
+
+    public function printclientInvoicePaid()
+    {
+        $data['invoice_reports'] = $this->student_invoice->getAll();
+        return view("Tenant::InvoiceReport/ClientInvoice/print/paid", $data);
+    }
+    //Export College Invoice
+    public function exportCollegeInvoicePending()
+    {
+        $data = $this->student_invoice->getAll()->toArray();
+        $invoice_array = array();
+        // Heading
+        $invoice_array[0] = ['Invoice ID', 'Invoice Date', 'Client Name', 'Phone', 'Email', 'Invoice Amount', 'Total GST', 'Outstanding'];
+
+        foreach($data as $key => $invoice)
+        {
+            $invoice_array[$key+1]['invoice_id'] = format_id($invoice['student_invoice_id'], 'SI');
+            $invoice_array[$key+1]['date'] = format_date($invoice['invoice_date']);
+            $invoice_array[$key+1]['client_name'] = $invoice['fullname'];
+            $invoice_array[$key+1]['phone'] = $invoice['number'];
+            $invoice_array[$key+1]['email'] = $invoice['email'];
+            $invoice_array[$key+1]['amount'] = format_price($invoice['invoice_amount']);
+            $invoice_array[$key+1]['total_gst'] = format_price($invoice['total_gst']);
+            $invoice_array[$key+1]['outstanding'] = format_price($invoice['final_total']- $invoice['total_paid']);
+        }
+        return Excel::create('pending_client_invoice', function($excel) use ($invoice_array) {
+            $excel->setTitle('Pending Client Invoices');
+            $excel->setDescription('Pending invoices for clients.');
+
+            $excel->sheet('invoices', function($sheet) use ($invoice_array)
+            {
+                $sheet->fromArray($invoice_array, null, 'A1', false, false);
+                $sheet->row(1, function($row) {
+                    $row->setFontSize(12);
+                    $row->setFontWeight('bold');
+                });
+                $sheet->setAutoSize(true);
+            });
+        })->download('csv');
+    }
+
+    public function pdfCollegeInvoicePending()
+    {
+        $data['invoice_reports'] = $this->student_invoice->getAll();
+
+            $pdf = PDF::loadView('Tenant::InvoiceReport/ClientInvoice/pdf/pending', $data);
+            return $pdf->setPaper('a4', 'landscape')->download('invoice.pdf');
+
+        //return view("Tenant::InvoiceReport/ClientInvoice/print/pending", $data);
+    }
+
+    public function printCollegeInvoicePending()
+    {
+        $data['invoice_reports'] = $this->student_invoice->getAll();
+        return view("Tenant::InvoiceReport/ClientInvoice/print/pending", $data);
+    }
+
     public function clientInvoicePaid()
     {
         $data['invoice_reports'] = $this->invoice->getInvoiceDetails();

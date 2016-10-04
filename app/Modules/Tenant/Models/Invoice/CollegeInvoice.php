@@ -242,7 +242,7 @@ class CollegeInvoice extends Model
                     WHERE ag.agent_id = course_application.super_agent_id)
                 END
                 AS invoice_to')])
-            ->orderBy('college_invoices.created_at', 'desc')
+            ->orderBy('college_invoices.college_invoice_id', 'desc')
             //->where('college_invoices.invoice_date', '<=', get_today_datetime())
             ->groupBy('college_invoices.college_invoice_id');
 
@@ -253,7 +253,7 @@ class CollegeInvoice extends Model
         } elseif ($status == 3) { // Future
             $invoices_query = $invoices_query->where('college_invoices.invoice_date', '>', get_today_datetime());
         }
-
+        
         $invoices = $invoices_query->get();
         //dd($invoices->toArray());
         return $invoices;
@@ -282,10 +282,9 @@ class CollegeInvoice extends Model
                     WHERE ag.agent_id = course_application.super_agent_id)
                 END
                 AS invoice_to')])
-            ->orderBy('college_invoices.created_at', 'desc')
+            ->orderBy('college_invoices.college_invoice_id', 'desc')
             //->where('college_invoices.invoice_date', '<=', get_today_datetime())
             ->groupBy('college_invoices.college_invoice_id');
-
         if ($status == 1) { // Pending
             $invoices_query = $invoices_query->havingRaw('college_invoices.total_commission - IFNULL(SUM(college_payments.amount), 0) > 0'); //->where('college_invoices.invoice_date', '<=', get_today_datetime());
         } elseif ($status == 2) { // Paid

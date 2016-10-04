@@ -1,5 +1,6 @@
 @extends('layouts.tenant')
 @section('title', 'Application Enquiry')
+@section('heading', 'Client Invoices - <small>Pending Invoices</small>')
 @section('breadcrumb')
     @parent
     <li><a href="{{url('tenant/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
@@ -9,17 +10,30 @@
 @section('content')
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
+       <div class="col-md-12">       
         
         @include('Tenant::InvoiceReport/ClientInvoice/partial/messages')
-        
-        <h1>Client Invoices - <small>Paid Invoices</small></h1>
 
         @include('Tenant::InvoiceReport/ClientInvoice/partial/navbar')
-
-          
+    </div>
+      <div class="col-md-12">
+        
         <section>
           <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Paid Invoices</h3>
+                <a href="{{ route('client.invoice.print.paid') }}" target="_blank" class="btn btn-primary pull-right">
+                    <i class="fa fa-print"></i> Print
+                </a>
+                <a href="{{ route('client.invoice.pdf.paid') }}" target="_blank" class="btn btn-primary pull-right"
+                   style="margin-right: 5px;">
+                    <i class="fa fa-download"></i> Generate PDF
+                </a>
+                <a href="{{ route('client.invoice.export.paid') }}" target="_blank" class="btn btn-primary pull-right"
+                   style="margin-right: 5px;">
+                    <i class="fa fa-file-excel-o"></i> Export Excel
+                </a>
+            </div>
             <div class="box-body">
               <section>
                 <table class="table table-striped table-bordered table-condensed" id="invoice_report_table">
@@ -57,10 +71,22 @@
                               @endif
                             </td>
                             <td>
-                              <a href="#" title="Add Payment"><i class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart" data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
-                              <a href="#" title="Print Invoice"><i class="processing btn btn-primary btn-sm glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Print Invoice"></i></a>
-                              <a href="#" title="View Invoice"><i class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
-                              <a href="#" title="Email Invoice"><i class="processing btn btn-primary btn-sm glyphicon glyphicon-send" data-toggle="tooltip" data-placement="top" title="Email Invoice"></i></a>
+                                <a data-toggle="modal" data-target="#condat-modal"
+                                   data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
+                                            class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
+                                            data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
+                                <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}" title="Print Invoice"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Print Invoice"></i></a>
+                                <a href="{{route("tenant.invoice.payments", [$invoice->invoice_id, 2])}}"
+                                   title="View Invoice"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
+                                            data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
+                                <a href="#" title="Email Invoice"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-send"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Email Invoice"></i></a>
                             </td>
                           </tr>
                         @else

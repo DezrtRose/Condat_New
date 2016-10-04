@@ -361,4 +361,9 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('client/invoice/export/pending', ['as' => 'client.invoice.export.pending', 'uses' => 'InvoiceReportController@exportclientInvoicePending']);
     Route::get('client/invoice/pdf/pending', ['as' => 'client.invoice.pdf.pending', 'uses' => 'InvoiceReportController@pdfclientInvoicePending']);
 
+    /* Print Client Invoices */
+    Route::get('client/invoice/print/paid', ['as' => 'client.invoice.print.paid', 'uses' => 'InvoiceReportController@printclientInvoicePaid']);
+    Route::get('client/invoice/export/paid', ['as' => 'client.invoice.export.paid', 'uses' => 'InvoiceReportController@exportclientInvoicePaid']);
+    Route::get('client/invoice/pdf/paid', ['as' => 'client.invoice.pdf.paid', 'uses' => 'InvoiceReportController@pdfclientInvoicePaid']);
+
 });
