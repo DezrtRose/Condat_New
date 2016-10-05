@@ -62,7 +62,8 @@
                     {data: 'invoice_id', name: 'invoice_id', orderable: false, searchable: false},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

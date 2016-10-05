@@ -122,7 +122,8 @@
                     {data: 'invoice_id', name: 'invoice_id', orderable: false, searchable: false},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[0, 'desc']]
             });
 
             iTable = $('#invoices').DataTable({
@@ -146,7 +147,8 @@
                     {data: 'status', name: 'status'},
                     {data: 'outstanding_amount', name: 'outstanding_amount'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

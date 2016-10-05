@@ -14,9 +14,9 @@
         @include('flash::message')
 
         <div class="box box-primary">
-            <div class="box-header">
+            <div class="box-header with-border">
                 <h3 class="box-title">Pending Invoices</h3>
-                <a href="{{ route('client.invoice.print.pending') }}" target="_blank"
+                {{--<a href="{{ route('client.invoice.print.pending') }}" target="_blank"
                    class="btn btn-primary pull-right">
                     <i class="fa fa-print"></i> Print
                 </a>
@@ -28,7 +28,7 @@
                    class="btn btn-primary pull-right"
                    style="margin-right: 5px;">
                     <i class="fa fa-file-excel-o"></i> Export Excel
-                </a>
+                </a>--}}
             </div>
             <div class="box-body">
                 <table class="table table-striped table-bordered table-condensed" id="invoice_report_table">
@@ -98,7 +98,8 @@
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

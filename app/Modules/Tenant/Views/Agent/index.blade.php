@@ -45,7 +45,8 @@
                     {data: 'website', name: 'website'},
                     {data: 'user_email', name: 'user_email'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

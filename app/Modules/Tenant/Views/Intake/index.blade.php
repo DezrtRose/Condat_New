@@ -107,7 +107,8 @@
                     {data: 'intake_date', name: 'intake_date'},
                     {data: 'description', name: 'description'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

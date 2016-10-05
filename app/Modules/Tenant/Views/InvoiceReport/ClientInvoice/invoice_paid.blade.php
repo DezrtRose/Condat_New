@@ -16,20 +16,6 @@
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Paid Invoices</h3>
-                <a href="{{ route('client.invoice.print.paid') }}" target="_blank"
-                   class="btn btn-primary pull-right">
-                    <i class="fa fa-print"></i> Print
-                </a>
-                <a href="{{ route('client.invoice.pdf.paid') }}" target="_blank"
-                   class="btn btn-primary pull-right"
-                   style="margin-right: 5px;">
-                    <i class="fa fa-download"></i> Generate PDF
-                </a>
-                <a href="{{ route('client.invoice.export.paid') }}" target="_blank"
-                   class="btn btn-primary pull-right"
-                   style="margin-right: 5px;">
-                    <i class="fa fa-file-excel-o"></i> Export Excel
-                </a>
             </div>
             <div class="box-body">
                 <section>
@@ -93,7 +79,8 @@
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

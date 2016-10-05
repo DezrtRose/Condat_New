@@ -48,7 +48,8 @@
                     {data: 'website', name: 'website'},
                     {data: 'added_by', name: 'added_by'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

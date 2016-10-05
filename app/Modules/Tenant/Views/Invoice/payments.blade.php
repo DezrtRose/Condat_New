@@ -7,8 +7,6 @@
 @stop
 @section('content')
     @include('Tenant::Client/Application/navbar')
-    
-<div>
 
     <div class="col-xs-3">
         
@@ -103,7 +101,8 @@
                     {data: 'payment_type', name: 'payment_type'},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

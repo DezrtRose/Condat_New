@@ -61,7 +61,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#invoice_report_table').DataTable({
-                "pageLength": 10
+                "pageLength": 50,
+                order: [[0, 'desc']]
             });
 
             $('.dateranger').daterangepicker({

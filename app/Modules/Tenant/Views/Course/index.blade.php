@@ -84,7 +84,8 @@
                     {data: 'total_tuition_fee', name: 'total_tuition_fee'},
                     {data: 'commission_percent', name: 'commission_percent'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[0, 'desc']]
             });
         });
     </script>

@@ -124,7 +124,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#payments').DataTable({
-                "pageLength": 10
+                "pageLength": 50,
+                order: [[0, 'desc']]
             });
 
             $('.dateranger').daterangepicker({
