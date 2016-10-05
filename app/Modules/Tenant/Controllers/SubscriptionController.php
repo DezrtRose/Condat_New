@@ -9,6 +9,7 @@ use App\Modules\Agency\Models\AgencySubscription;
 use Illuminate\Support\Facades\Auth;
 use App\Modules\Agency\Models\Company;
 use App\Modules\System\Models\Subscription;
+use Mockery\Exception;
 use Srmklive\PayPal\Services\ExpressCheckout;
 
 class SubscriptionController extends BaseController
@@ -67,10 +68,21 @@ class SubscriptionController extends BaseController
 
     public function complete_subscription_paypal()
     {
-        $provider = new ExpressCheckout;
-        $payment_data = $provider->getExpressCheckoutDetails($_GET['token']);
-        $update = $this->subscription->renew_paypal($payment_data['CUSTOM']);
-        ($update) ? Flash::success('Subscription has been renewed successfully.') : Flash::success('Subscription could not be renewed.');
-        return redirect()->route('tenant.client.index');
+        try {
+            $provider = new ExpressCheckout;
+            if(!isset($_GET['token'])) throw new Exception('Paypal account not verified.');
+            $payment_data = $provider->getExpressCheckoutDetails($_GET['token']);
+            if(!isset($_COOKIE['paypal_payment_data'])) throw new Exception('Payment data not found. Please try again.');
+            $data = $_COOKIE['paypal_payment_data'];
+            $data = json_decode($data, true);
+            unset($_COOKIE['paypal_payment_data']);
+            $provider->doExpressCheckoutPayment($data, $payment_data['TOKEN'], $payment_data['PAYERID']);
+            $update = $this->subscription->renew_paypal($payment_data['CUSTOM']);
+            ($update) ? Flash::success('Subscription has been renewed successfully.') : Flash::success('Subscription could not be renewed.');
+            return redirect()->route('tenant.client.index');
+        } catch (Exception $e) {
+            Flash::success($e->getMessage());
+            return redirect()->route('tenant.client.index');
+        }
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Support\Facades\Response;
 use Srmklive\PayPal\Services\ExpressCheckout;
+use Mockery\Exception;
 
 class AgencyController extends BaseController {
 
@@ -61,10 +62,11 @@ class AgencyController extends BaseController {
                 'subscription_statuses.status_id')
             ->select(['agencies.agency_id', 'agencies.created_at', DB::raw('case when companies.phone_id = 0 then "N/A" else companies.phone_id end as phone_id'), 'company_database_name', 'companies.name', 'companies.email_id', 'end_date', DB::raw('case when subscription_id = 1 then "Basic" when subscription_id = 2 then "Standard" else "Premium" end as subscription_id, subscription_statuses.name as subscription_name')])
             ->groupBy('agency_subscriptions.agency_id')
-            ->orderBy('agency_subscriptions.agency_subscription_id', 'desc');
+            ->orderBy('agencies.agency_id', 'desc');
 
 		$datatable = \Datatables::of($agencies)
 			->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
+			->editColumn('end_date', function($data){return format_date($data->end_date); })
 			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a>
  <form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
     {{ method_field(\'DELETE\') }}
@@ -235,6 +237,9 @@ class AgencyController extends BaseController {
 		$updated = $this->subscription->renew($this->request->all(), $agency_id);
 		if($updated)
 			Flash::success('Subscription has been renewed successfully.');
+        else
+            Flash::success('Subscription failed. Please try again later.');
+
 		return redirect()->route('agency.index');
 	}
 
@@ -254,10 +259,21 @@ class AgencyController extends BaseController {
 
     public function complete_subscription_paypal()
     {
-        $provider = new ExpressCheckout;
-        $payment_data = $provider->getExpressCheckoutDetails($_GET['token']);
-        $update = $this->subscription->renew_paypal($payment_data['CUSTOM']);
-        ($update) ? Flash::success('Subscription has been renewed successfully.') : Flash::success('Subscription could not be renewed.');
-        return redirect()->route('agency.index');
+        try {
+            $provider = new ExpressCheckout;
+            if(!isset($_GET['token'])) throw new Exception('Paypal account not verified.');
+            $payment_data = $provider->getExpressCheckoutDetails($_GET['token']);
+            if(!isset($_COOKIE['paypal_payment_data'])) throw new Exception('Payment data not found. Please try again.');
+            $data = $_COOKIE['paypal_payment_data'];
+            $data = json_decode($data, true);
+            unset($_COOKIE['paypal_payment_data']);
+            $provider->doExpressCheckoutPayment($data, $payment_data['TOKEN'], $payment_data['PAYERID']);
+            $update = $this->subscription->renew_paypal($payment_data['CUSTOM']);
+            ($update) ? Flash::success('Subscription has been renewed successfully.') : Flash::success('Subscription could not be renewed.');
+            return redirect()->route('agency.index');
+        } catch (Exception $e) {
+            Flash::success($e->getMessage());
+            return redirect()->route('agency.index');
+        }
     }
 }

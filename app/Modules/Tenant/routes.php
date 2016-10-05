@@ -355,7 +355,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::post('college_invoice_report/group_invoice', ['as' => 'college.invoice.groupInvoice', 'uses' => 'InvoiceReportController@groupInvoice']);
     Route::get('invoice/group', ['as' => 'college.groupInvoice.create', 'uses' => 'InvoiceReportController@createGroupInvoice']);
     Route::post('invoice/group/{group_invoice_id}/addmore', ['as' => 'group.invoice.addmore', 'uses' => 'InvoiceReportController@addMoreGroupInvoice']);
-    
+
     /* Print Client Invoices */
     Route::get('client/invoice/print/pending', ['as' => 'client.invoice.print.pending', 'uses' => 'InvoiceReportController@printclientInvoicePending']);
     Route::get('client/invoice/export/pending', ['as' => 'client.invoice.export.pending', 'uses' => 'InvoiceReportController@exportclientInvoicePending']);
