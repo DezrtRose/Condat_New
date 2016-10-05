@@ -68,7 +68,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#invoice_report_table').DataTable({
-                "pageLength": 10
+                "pageLength": 50,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
             });
         });
     </script>
