@@ -1,3 +1,4 @@
+@if(isset($client)) {{-- Only for Client timeline --}}
 <div class="active tab-pane" id="activity">
     <!-- Post -->
     <div>
@@ -14,6 +15,7 @@
     </div>
     <!-- /.post -->
 </div>
+@endif
 
 {{-- The actual timeline --}}
 <ul class="timeline timeline-inverse">

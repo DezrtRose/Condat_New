@@ -2,6 +2,8 @@
 
 use App\Modules\Tenant\Models\Application\CourseApplication;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
+use App\Modules\Tenant\Models\Client\Client;
+use App\Modules\Tenant\Models\PaymentInvoiceBreakdown;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
@@ -236,5 +238,32 @@ class StudentInvoice extends Model
         $invoice->save();
 
         return $student_invoice->application_id;
+    }
+
+    function getOutstandingPayments()
+    {
+        $invoices = Client::join('student_invoices', 'student_invoices.client_id', '=', 'clients.client_id')
+            ->join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
+            ->leftjoin('persons', 'persons.person_id', '=', 'clients.person_id')
+            ->select('clients.client_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), DB::raw('SUM(invoices.final_total) as total_amount'))
+            ->groupBy('student_invoices.client_id')
+            ->get();
+
+        $outstanding_payments = array();
+
+        foreach($invoices as $key => $invoice){
+            $paid_amount = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
+                ->join('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+                ->where('client_id', $invoice->client_id)
+                ->sum('client_payments.amount');
+            $outstanding = $invoice->total_amount - $paid_amount;
+            if($outstanding > 0)
+            {
+                $outstanding_payments[$invoice->client_id]['client_name'] = $invoice->fullname;
+                $outstanding_payments[$invoice->client_id]['outstanding_amount'] = $outstanding;
+                $outstanding_payments[$invoice->client_id]['paid_amount'] = $paid_amount;
+            }
+        }
+        return $outstanding_payments;
     }
 }

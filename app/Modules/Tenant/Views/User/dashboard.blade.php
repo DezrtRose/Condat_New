@@ -5,177 +5,16 @@
 
     <div class="col-md-6">
         <div class="box box-primary">
-            <div class="box-header ui-sortable-handle">
+            <div class="box-header with-border">
                 <h3 class="box-title">Recent Activity</h3>
             </div>
-            <div class="box">
-                <ul class="timeline timeline-inverse">
-    <!-- timeline time label -->
-                    <li>
-                       
-                          &nbsp;
-                    
-                    </li>
-                    <li class="time-label">
-                        <span class="bg-red">
-                          Sep 16, 2016
-                        </span>
-                    </li>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Wants to apply for Diploma of Business starting from November. Will have PTE Test on 20 sep 2016<br></div>
-                        </div>
-                    </li>
-                    <li>
-                            <i class="fa fa-user bg-aqua"></i>
-
-                            <div class="timeline-item">
-                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                                <h3 class="timeline-header no-border">Client Created</h3>
-                            </div>
-                    </li>
-                    <li>
-                            <i class="fa fa-user bg-aqua"></i>
-
-                            <div class="timeline-item">
-                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                                <h3 class="timeline-header no-border">Client Created</h3>
-                            </div>
-                    </li>
-                    <li>
-                            <i class="fa fa-user bg-aqua"></i>
-
-                            <div class="timeline-item">
-                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                                <h3 class="timeline-header no-border">Client Created</h3>
-                            </div>
-                    </li>
-                    <li>
-                            <i class="fa fa-user bg-aqua"></i>
-
-                            <div class="timeline-item">
-                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                                <h3 class="timeline-header no-border">Client Created</h3>
-                            </div>
-                    </li>
-                    <li>
-                            <i class="fa fa-user bg-aqua"></i>
-
-                            <div class="timeline-item">
-                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                                <h3 class="timeline-header no-border">Client Created</h3>
-                            </div>
-                    </li><li>
-                            <i class="fa fa-user bg-aqua"></i>
-
-                            <div class="timeline-item">
-                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                                <h3 class="timeline-header no-border">Client Created</h3>
-                            </div>
-                    </li>
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
-                        </div>
-                    </li>
-                    <li class="time-label">
-                        <span class="bg-red">
-                          Sep 16, 2016
-                        </span>
-                    </li>
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fa fa-sticky-note bg-blue"></i>
-
-                        <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                            <h3 class="timeline-header">Krita Maharjan added a note</h3><div class="timeline-body">Visa Expiring on Jan 2016<br><strong>Reminder Date : </strong>30/12/2016</div>
-                        </div>
-                    </li>
-                    <li>
-                            <i class="fa fa-user bg-aqua"></i>
-
-                            <div class="timeline-item">
-                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                                <h3 class="timeline-header no-border">Client Created</h3>
-                            </div>
-                    </li>
-                    <li>
-                            <i class="fa fa-user bg-aqua"></i>
-
-                            <div class="timeline-item">
-                                                    <span class="time"><i class="fa fa-clock-o"></i> 1 week ago</span>
-                                <h3 class="timeline-header no-border">Client Created</h3>
-                            </div>
-                    </li>
-                    <li>
-                        <i class="fa fa-clock-o bg-gray"></i>
-                    </li>
-                </ul>
-                <!-- /.post -->
+            <div class="box-body">
+                @include('Tenant::Client/Show/timeline')
             </div>
         </div>
-        
-
-        --------
 
         <div class="box box-primary">
-            <div class="box-header ui-sortable-handle">
+            <div class="box-header with-border">
                 <i class="ion ion-clipboard"></i>
 
                 <h3 class="box-title">To Do List</h3>
@@ -250,7 +89,7 @@
     </div>
     <div class="col-md-6">
         <div class="box box-primary">
-            <div class="box-header ui-sortable-handle">
+            <div class="box-header with-border">
                 <h3 class="box-title">Active Clients</h3>
 
                 <div class="box-tools pull-right">
@@ -268,31 +107,35 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <?php 
+                    <?php
                     foreach ($active_clients as $key => $value) {
-                        ?>
-                        <tr>
+                    ?>
+                    <tr>
                         <td>{{ $value->first_name }} {{ $value->middle_name }} {{ $value->last_name }} </td>
                         <td>{{ $value->number }}</td>
                         <td>{{ $value->email }}</td>
 
                         <td>
                             <div class="box-tools pull-left">
-                                <a class="btn btn-primary btn-sm" href="{{ route('tenant.client.show',[$value->client_id])}}" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye" ></i></a>
-                                <a class="btn btn-primary btn-sm inactive" id="{{$value->client_id}}" data-toggle="tooltip" data-placement="top" title="Make Inactive"><i class="fa fa-remove"></i></a>
+                                <a class="btn btn-primary btn-sm"
+                                   href="{{ route('tenant.client.show',[$value->client_id])}}" data-toggle="tooltip"
+                                   data-placement="top" title="View"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-primary btn-sm inactive" id="{{$value->client_id}}"
+                                   data-toggle="tooltip" data-placement="top" title="Make Inactive"><i
+                                            class="fa fa-remove"></i></a>
                             </div>
                         </td>
                     </tr>
                     <?php
                     }
                     ?>
-                    
+
                 </table>
             </div>
         </div>
 
         <div class="box box-primary">
-            <div class="box-header ui-sortable-handle">
+            <div class="box-header with-border">
                 <h3 class="box-title">Application List</h3>
             </div>
             <div class="box-body"> <?php //dd($app_stat) ?>
@@ -323,28 +166,30 @@
     </div>
     <div class="col-md-6">
         <div class="box box-primary">
-            <div class="box-header ui-sortable-handle">
+            <div class="box-header with-border">
                 <h3 class="box-title">Outstanding Payments</h3>
             </div>
             <div class="box-body">
                 <table id="clients" class="table table-bordered table-striped dataTable">
+                    <thead>
                     <tr>
-                        <td>Jenish Maskey</td>
-                        <th>$1000</th>
-                        <th>
-                            <a data-toggle="tooltip" title="View Client Account" class="btn btn-action-box"
-                               href=""><i class="fa fa-eye"></i></a>
-                        </th>
+                        <th>Client Name</th>
+                        <th>Outstanding Amount</th>
+                        <th></th>
                     </tr>
-                    <tr>
-                        <td>Jenish Maskey</td>
-                        <th>$1000</th>
-                        <th>
-                            <a data-toggle="tooltip" title="View Client Account" class="btn btn-action-box"
-                               href=""><i class="fa fa-eye"></i></a>
-                        </th>
-                    </tr>
-
+                    </thead>
+                    <tbody>
+                    @foreach($outstanding_payments as $client_id => $outstanding_payment)
+                        <tr>
+                            <td>{{ $outstanding_payment['client_name'] }}</td>
+                            <td>{{ format_price($outstanding_payment['outstanding_amount']) }}</td>
+                            <td>
+                                <a data-toggle="tooltip" title="View Client Account" class="btn btn-action-box"
+                                   href="{{ route('tenant.client.show', $client_id) }}"><i class="fa fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -358,16 +203,18 @@
         /* Make clients inactive */
         $(document).on('click', '.inactive', function (event) {
             var clientId = $(this).attr('id');
-            var parentTr =  $(this).closest('tr');
+            var parentTr = $(this).closest('tr');
             $.ajax({
-                url: appUrl + "/tenant/clients/"+clientId+"/inactive",
+                url: appUrl + "/tenant/clients/" + clientId + "/inactive",
                 success: function (result) {
                     $('.content .box-primary').first().before(notify('success', 'Client Made Inactive Successfully!'));
                     setTimeout(function () {
                         $('.callout').remove()
                     }, 2500);
 
-                    parentTr.slideUp("slow", function() { $(this).remove(); } );
+                    parentTr.slideUp("slow", function () {
+                        $(this).remove();
+                    });
                 }
             });
         });
