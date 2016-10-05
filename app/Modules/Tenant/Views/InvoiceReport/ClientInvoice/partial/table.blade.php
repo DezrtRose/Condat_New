@@ -4,10 +4,9 @@
         <th>Invoice Id</th>
         <th>Date</th>
         <th>Client Name</th>
-        <th>Institute Name</th>
-        <th>Course Name</th>
-        <th>Invoice To</th>
-        <th>Total Amount</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Invoice Amount</th>
         <th>Total GST</th>
         <th>Outstanding</th>
         <th></th>
@@ -16,20 +15,19 @@
     <tbody>
     @foreach($invoice_reports as $invoice)
         <tr>
-            <td>{{ format_id($invoice->invoice_id, 'CI') }}</td>
+            <td>{{ format_id($invoice->invoice_id, 'SI') }}</td>
             <td>{{ format_date($invoice->invoice_date) }}</td>
             <td>{{ $invoice->fullname }}</td>
-            <td>{{ $invoice->institute_name }}</td>
-            <td>{{ $invoice->course_name }}</td>
-            <td>{{ $invoice->invoice_to }}</td>
-            <td>{{ format_price($invoice->total_commission) }}</td>
+            <td>{{ $invoice->number }}</td>
+            <td>{{ $invoice->email }}</td>
+            <td>{{ format_price($invoice->invoice_amount) }}</td>
             <td>{{ format_price($invoice->total_gst) }}</td>
 
             <td>
-                @if(($invoice->total_commission) - ($invoice->total_paid) == 0)
+                @if(($invoice->final_total) - ($invoice->total_paid) == 0)
                     {{ '-' }}
                 @else
-                    {{ format_price(($invoice->total_commission) - ($invoice->total_paid)) }}
+                    {{ format_price(($invoice->final_total) - ($invoice->total_paid)) }}
                 @endif
             </td>
             <td>
@@ -52,3 +50,4 @@
     @endforeach
     </tbody>
 </table>
+{!! Condat::registerModal() !!}

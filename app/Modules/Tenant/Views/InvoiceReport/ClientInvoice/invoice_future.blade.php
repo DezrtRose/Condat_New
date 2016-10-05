@@ -12,9 +12,7 @@
     <div class="col-md-12">
         @include('Tenant::InvoiceReport/ClientInvoice/partial/navbar')
         @include('flash::message')
-    </div>
 
-    <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Future Invoices</h3>
@@ -28,7 +26,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#invoice_report_table').DataTable({
-                "pageLength": 10
+                "pageLength": 50
             });
         });
     </script>

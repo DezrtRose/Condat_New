@@ -8,24 +8,24 @@
 @stop
 
 @section('content')
-    <div class="col-md-12">       
-        
-        @include('Tenant::InvoiceReport/ClientInvoice/partial/messages')
+    <div class="col-md-12">
 
         @include('Tenant::InvoiceReport/ClientInvoice/partial/navbar')
-    </div>
-    <div class="col-md-12">   
+        @include('flash::message')
+
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Pending Invoices</h3>
-                <a href="{{ route('client.invoice.print.pending') }}" target="_blank" class="btn btn-primary pull-right">
+                <a href="{{ route('client.invoice.print.pending') }}" target="_blank"
+                   class="btn btn-primary pull-right">
                     <i class="fa fa-print"></i> Print
                 </a>
                 <a href="{{ route('client.invoice.pdf.pending') }}" target="_blank" class="btn btn-primary pull-right"
                    style="margin-right: 5px;">
                     <i class="fa fa-download"></i> Generate PDF
                 </a>
-                <a href="{{ route('client.invoice.export.pending') }}" target="_blank" class="btn btn-primary pull-right"
+                <a href="{{ route('client.invoice.export.pending') }}" target="_blank"
+                   class="btn btn-primary pull-right"
                    style="margin-right: 5px;">
                     <i class="fa fa-file-excel-o"></i> Export Excel
                 </a>
@@ -48,7 +48,7 @@
                     <tbody>
                     @foreach($invoice_reports as $invoice)
                         <tr>
-                            <td>{{ format_id($invoice->invoice_id, 'SI') }}</td>
+                            <td>{{ format_id($invoice->invoice_id, 'CI') }}</td>
                             <td>{{ format_date($invoice->invoice_date) }}</td>
                             <td>{{ $invoice->fullname }}</td>
                             <td>{{ $invoice->number }}</td>
@@ -68,7 +68,8 @@
                                    data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
                                             class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                                             data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
-                                <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}" title="Print Invoice"><i
+                                <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}"
+                                   title="Print Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Invoice"></i></a>
@@ -87,24 +88,13 @@
                 </table>
             </div>
 
-           
+
         </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#invoice_report_table').DataTable({
-                "columns": [
-                    {data: 'invoice_id', name: 'invoice_id'},
-                    {data: 'invoice_date', name: 'invoice_date'},
-                    {data: 'fullname', name: 'fullname'},
-                    {data: 'number', name: 'number'},
-                    {data: 'email', name: 'email'},
-                    {data: 'invoice_amount', name: 'invoice_amount'},
-                    {data: 'total_gst', name: 'total_gst'},
-                    {data: 'outstanding_amount', name: 'outstanding_amount'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
-                order: [[0, 'desc']]
+                "pageLength": 50
             });
         });
     </script>

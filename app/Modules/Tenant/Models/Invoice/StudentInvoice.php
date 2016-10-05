@@ -124,9 +124,9 @@ class StudentInvoice extends Model
         return $invoice_list;
     }
 
-    function getAll()
+    function getAll($status = 1)
     {
-        $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
+        $invoices_query = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->leftjoin('payment_invoice_breakdowns', 'payment_invoice_breakdowns.invoice_id', '=', 'invoices.invoice_id')
             ->leftjoin('client_payments', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
             ->leftjoin('clients', 'clients.client_id', '=', 'student_invoices.client_id')
@@ -135,11 +135,19 @@ class StudentInvoice extends Model
             ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
-            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'invoices.invoice_amount', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date', DB::raw('SUM(client_payments.amount) AS total_paid')])
-            ->orderBy('invoices.created_at', 'desc')
-            ->where('invoices.invoice_date', '<=', get_today_datetime())
-            ->groupBy('invoices.invoice_id')
-            ->get(); //dd($invoices->toArray());
+            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'emails.email', 'phones.number', 'invoices.invoice_amount', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date', DB::raw('SUM(client_payments.amount) AS total_paid')])
+            ->orderBy('invoices.invoice_id', 'desc')
+            //->where('invoices.invoice_date', '<=', get_today_datetime())
+            ->groupBy('invoices.invoice_id');
+
+        if ($status == 1) { // Pending
+            $invoices_query = $invoices_query->havingRaw('invoices.final_total - IFNULL(SUM(client_payments.amount), 0) > 0'); //->where('college_invoices.invoice_date', '<=', get_today_datetime());
+        } elseif ($status == 2) { // Paid
+            $invoices_query = $invoices_query->havingRaw('invoices.final_total - IFNULL(SUM(client_payments.amount), 0) <= 0')->where('invoices.invoice_date', '<=', get_today_datetime());
+        } elseif ($status == 3) { // Future
+            $invoices_query = $invoices_query->where('invoices.invoice_date', '>', get_today_datetime());
+        }
+        $invoices = $invoices_query->get(); //dd($invoices->toArray());
         return $invoices;
     }
 

@@ -196,21 +196,14 @@ class InvoiceReportController extends BaseController
 
     public function clientInvoicePaid()
     {
-        $data['invoice_reports'] = $this->invoice->getInvoiceDetails();
-
-        $data['date'] = Carbon::now();
-
+        $data['invoice_reports'] = $this->student_invoice->getAll(2);
         return view("Tenant::InvoiceReport/ClientInvoice/invoice_paid", $data);
-
     }
 
 
     public function clientInvoiceFuture()
     {
-        $data['invoice_reports'] = $this->invoice->getInvoiceDetails();
-
-        $data['date'] = Carbon::now();
-
+        $data['invoice_reports'] = $this->student_invoice->getAll(3);
         return view("Tenant::InvoiceReport/ClientInvoice/invoice_future", $data);
     }
 
