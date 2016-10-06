@@ -135,7 +135,9 @@ class StudentInvoice extends Model
             ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
-            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'emails.email', 'phones.number', 'invoices.invoice_amount', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date', DB::raw('SUM(client_payments.amount) AS total_paid')])
+            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'emails.email', 'phones.number', 'invoices.invoice_amount', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date',
+                DB::raw('SUM(client_payments.amount) AS total_paid')
+            ])
             ->orderBy('invoices.invoice_id', 'desc')
             //->where('invoices.invoice_date', '<=', get_today_datetime())
             ->groupBy('invoices.invoice_id');
@@ -218,8 +220,18 @@ class StudentInvoice extends Model
     function getDetails($invoice_id)
     {
         $student_invoice = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-            ->select(['invoices.*', 'student_invoices.*'])
-            ->find($invoice_id);
+            ->leftJoin('course_application', 'student_invoices.application_id', '=', 'course_application.course_application_id')
+            ->leftjoin('institutes', 'course_application.institute_id', '=', 'institutes.institution_id')
+            ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id') //Only for the ones that are associated with application
+            ->select(['invoices.*', 'student_invoices.*',
+                DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
+                THEN (companies.invoice_to_name)
+                ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
+                    ON ag.company_id = comp.company_id
+                    WHERE ag.agent_id = course_application.super_agent_id)
+                END
+                AS invoice_to')])
+            ->find($invoice_id); //dd($student_invoice->toArray());
         return $student_invoice;
     }
 

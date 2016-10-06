@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Modules\Tenant\Models\Application\CourseApplication;
+use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Client\ClientPayment;
 use App\Modules\Tenant\Models\Invoice\Invoice;
@@ -120,22 +121,26 @@ class AccountController extends BaseController
      */
     function getPaymentsData($client_id)
     {
-        $payments = ClientPayment::where('client_id', $client_id)->whereIn('payment_type', config('constants.payment_by'))->select(['*']);
+        $payments = ClientPayment::where('client_id', $client_id)
+            ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+            ->whereIn('payment_type', config('constants.payment_by'))
+            ->select(['client_payments.*', 'payment_invoice_breakdowns.invoice_id']);
 
         $datatable = \Datatables::of($payments)
-            ->addColumn('action', '<div class="btn-group">
+            ->addColumn('action', function ($data) {
+                return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="http://localhost/condat/tenant/contact/2">Add payment</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">View</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Edit</a></li>
+                    <li><a href="' . url("tenant/students/payment/receipt/" . $data->student_payments_id) . '">Print Receipt</a></li>
+                    <li><a href="' . route("application.students.editPayment", $data->student_payments_id) . '">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
-                </div>')
+                </div>';
+            })
             ->addColumn('invoice_id', function ($data) {
                 if (empty($data->invoice_id) || $data->invoice_id == 0)
                     return 'Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/account/payment/' . $data->client_payment_id . '/' . $data->client_id . '/assign') . '"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>';
@@ -146,7 +151,7 @@ class AccountController extends BaseController
                 return format_date($data->date_paid);
             })
             ->editColumn('client_payment_id', function ($data) {
-                return format_id($data->client_payment_id, 'P');
+                return format_id($data->student_payments_id, 'CP');
             });
         return $datatable->make(true);
     }
@@ -169,23 +174,21 @@ class AccountController extends BaseController
     function getInvoicesData($client_id)
     {
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-            ->leftJoin('course_application', 'course_application.course_application_id', '=', 'student_invoices.application_id')
-            ->where('student_invoices.client_id', $client_id)
             ->select(['invoices.*', 'student_invoices.student_invoice_id'])
-            ->orderBy('invoices.created_at', 'desc');
-
+            ->where('student_invoices.client_id', $client_id)
+            ->orderBy('created_at', 'desc');
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) {
                 return '<div class="btn-group">
-                    <button class="btn btn-primary" type="button">Action</button>
+                  <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                  <li><a href="' . route("tenant.invoice.payments", [$data->invoice_id, 2]) . '">View Payments</a></li>
+                    <li><a href="' . route("tenant.invoice.payments", [$data->invoice_id, 2]) . '">View Payments</a></li>
                     <li><a href="' . route('tenant.student.invoice', $data->student_invoice_id) . '">View Invoice</a></li>
-                    <li><a href="' . route("tenant.invoice.edit", $data->student_invoice_id) . '">Edit</a></li>
+                    <li><a href="' . route("tenant.student.editInvoice", $data->student_invoice_id) . '">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
                 </div>';

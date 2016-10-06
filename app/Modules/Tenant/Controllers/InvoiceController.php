@@ -72,7 +72,10 @@ class InvoiceController extends BaseController
         /* For Navbar */
         $data['application'] = new \stdClass();
         $data['application']->application_id = $app_id = $this->getApplicationId($invoice_id, $type);
-        $client_id = CourseApplication::find($app_id)->client_id;
+        if($app_id != null)
+            $client_id = CourseApplication::find($app_id)->client_id;
+        else
+            $client_id = $data['invoice']->client_id;
         $data['client'] = $this->client->getDetails($client_id);
 
         return view("Tenant::Invoice/payments", $data);
@@ -108,7 +111,7 @@ class InvoiceController extends BaseController
                 break;
             case 2:
                 $invoice = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-                    ->select(['student_invoice_id as invoice_id', 'invoice_date', 'amount as total_amount', 'total_gst', 'final_total'])
+                    ->select(['student_invoice_id as invoice_id', 'student_invoices.client_id', 'invoice_date', 'amount as total_amount', 'total_gst', 'final_total'])
                     ->where('student_invoices.invoice_id', $invoice_id)
                     ->first();
                 $invoice->formatted_id = format_id($invoice->invoice_id, 'SI');

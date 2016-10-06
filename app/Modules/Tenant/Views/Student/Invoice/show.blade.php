@@ -45,7 +45,7 @@
             </div>
             <div class="panel-body">
               <p>
-                Thom Zheng
+                {{ $invoice->invoice_to }}
                 <h3><small>Invoice #{{ format_id($invoice->invoice_id, 'SI') }}</small></h3>
                 <h3><small>Date {{ format_date($invoice->invoice_date) }}</small></h3>
               </p>

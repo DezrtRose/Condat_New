@@ -62,9 +62,6 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Future Invoices</h3>
-                <button class="btn btn-success btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Create
-                    Invoice
-                </button>
             </div>
             <div class="box-body">
                 <table id="future" class="table table-bordered table-striped dataTable">
