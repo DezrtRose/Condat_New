@@ -111,6 +111,13 @@ class AccountController extends BaseController
         return redirect()->route('tenant.accounts.index', $client_id);
     }
 
+    public function deleteClientPayment($payment_id)
+    {
+        ClientPayment::find($payment_id)->delete();
+        Flash::success('Payment has been deleted successfully.');
+        return redirect()->back();
+    }
+
 
     public function showClientInvoice()
     {
@@ -146,7 +153,7 @@ class AccountController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("client.payment.edit", $data->client_payment_id) . '">Edit</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
+                    <li><a href="' . route("client.payment.delete", $data->client_payment_id) . '" onclick="return confirm(\'Are you sure?\')">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -160,7 +167,7 @@ class AccountController extends BaseController
                 return format_date($data->date_paid);
             })
             ->editColumn('client_payment_id', function ($data) {
-                return format_id($data->student_payments_id, 'CP');
+                return format_id($data->client_payment_id, 'CP');
             });
         return $datatable->make(true);
     }

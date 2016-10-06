@@ -82,6 +82,8 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('payment/{payment_id}/edit', ['as' => 'client.payment.edit', 'uses' => 'AccountController@editClientPayment']);
     Route::post('payment/{payment_id}/edit', ['as' => 'client.payment.update', 'uses' => 'AccountController@updateClientPayment']);
 
+    Route::get('payment/{payment_id}/delete', ['as' => 'client.payment.delete', 'uses' => 'AccountController@deleteClientPayment']);
+
     Route::get('payments/client/{client_id}/data', 'AccountController@getPaymentsData');
 
     /* Create invoices for a client */
