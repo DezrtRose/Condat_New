@@ -13,6 +13,8 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Invoice Details</h3>
+                    <a href="{{route('tenant.student.invoice', $invoice->invoice_id)}}"
+                       class="btn btn-primary btn-flat pull-right"><i class="fa fa-print"></i> Print Invoice</a>
                 </div>
                 <!-- Recent Payments -->
                 <div class="box-body">
@@ -24,6 +26,10 @@
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Invoice Date </strong>
 
                     <p class="text-muted">{{ format_date($invoice->invoice_date) }}</p>
+
+                    <strong><i class="fa fa-file-text-o margin-r-5"></i> Application ID </strong>
+
+                    <p class="text-muted">{{ ($invoice->application_id != null)? format_id($invoice->application_id, 'A') : 'No Application' }}</p>
 
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Total Amount</strong>
 

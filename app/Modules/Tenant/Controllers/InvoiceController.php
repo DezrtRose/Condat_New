@@ -100,7 +100,7 @@ class InvoiceController extends BaseController
     {
         switch ($type) {
             case 1:
-                $invoice = CollegeInvoice::select(['college_invoice_id as invoice_id', 'invoice_date', 'total_commission as total_amount', 'total_gst', 'final_total']) //, 'total_paid', 'status', 'outstanding_amount'
+                $invoice = CollegeInvoice::select(['course_application_id as application_id', 'college_invoice_id as invoice_id', 'invoice_date', 'total_commission as total_amount', 'total_gst', 'final_total']) //, 'total_paid', 'status', 'outstanding_amount'
                     ->find($invoice_id);
                 $invoice->formatted_id = format_id($invoice_id, 'CI');
                 $invoice->paid = $this->college_invoice->getPaidAmount($invoice_id);
@@ -111,13 +111,13 @@ class InvoiceController extends BaseController
                 break;
             case 2:
                 $invoice = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-                    ->select(['student_invoice_id as invoice_id', 'student_invoices.client_id', 'invoice_date', 'amount as total_amount', 'total_gst', 'final_total'])
+                    ->select(['student_invoice_id as invoice_id', 'student_invoices.application_id', 'student_invoices.client_id', 'invoice_date', 'amount as total_amount', 'total_gst', 'final_total'])
                     ->where('student_invoices.invoice_id', $invoice_id)
                     ->first();
                 $invoice->formatted_id = format_id($invoice->invoice_id, 'SI');
                 break;
             default:
-                $invoice = SubAgentInvoice::where('invoice_id', $invoice_id)->first();
+                $invoice = SubAgentInvoice::where('invoice_id', $invoice_id)->select('*', 'course_application_id as application_id')->first();
                 $invoice->formatted_id = format_id($invoice->subagent_invoice_id, 'SAI');
         }
         //dd($invoice->toArray());
