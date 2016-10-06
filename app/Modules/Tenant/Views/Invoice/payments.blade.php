@@ -9,12 +9,10 @@
     @include('Tenant::Client/Application/navbar')
 
     <div class="col-xs-3">
-        
+        <?php if($type == 1) $route_type = 'college'; elseif($type == 2) $route_type = 'student'; else $route_type = 'subagents'; ?>
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Invoice Details</h3>
-                    <a href="{{route('tenant.student.invoice', $invoice->invoice_id)}}"
-                       class="btn btn-primary btn-flat pull-right"><i class="fa fa-print"></i> Print Invoice</a>
                 </div>
                 <!-- Recent Payments -->
                 <div class="box-body">
@@ -63,9 +61,9 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Invoice Payments</h3>
-                {{--<a href="{{ route('application.subagents.payment', $application->application_id) }}"
-                   class="btn btn-success btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Add
-                    Payments</a>--}}
+
+                <a href="{{route('tenant.'.$route_type.'.invoice', $invoice->invoice_id)}}"
+                   class="btn btn-primary btn-flat pull-right"><i class="fa fa-print"></i> Print Invoice</a>
             </div>
             <div class="box-body">
                 <table id="payments" class="table table-bordered table-striped dataTable">

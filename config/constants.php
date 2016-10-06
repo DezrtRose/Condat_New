@@ -20,7 +20,7 @@ return [
 
     'payment_type' => ['Cash' => 'Cash', 'Card' => 'Card', 'Paypal' => 'Paypal', 'Others' => 'Others'],
 
-    'payment_by' => ['Agent To Student' => 'Agent To Student', 'Student To Agent' => 'Student To Agent'],
+    'payment_by' => ['Student To Agent' => 'Student To Agent', 'Agent To Student' => 'Agent To Student'],
 
     'college_payment_type' => ['College to Agent' => 'College to Agent', 'Agent to College' => 'Agent to College', 'Student to College' => 'Student to College', 'College to Student' => 'College to Student'],
 

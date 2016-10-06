@@ -86,4 +86,24 @@ class ClientDocument extends Model
             return false;
         }
     }
+
+    function deleteDocument($document_id)
+    {
+
+        DB::beginTransaction();
+
+        try {
+            ClientDocument::where('document_id', $document_id)->delete();
+            $document = Document::find($document_id);
+            $document->delete();
+
+            DB::commit();
+            return $document->name;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return false;
+        }
+    }
 }

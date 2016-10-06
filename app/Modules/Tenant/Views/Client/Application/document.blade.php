@@ -2,25 +2,18 @@
 @section('title', 'Client Documents')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('client')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
+    <li><a href="{{url('client')}}" title="All Clients"><i class="fa fa-users"></i> Application</a></li>
     <li><i class="fa fa-file"></i> Documents</li>
 @stop
 @section('content')
 
-    <div class="container">
-        <div class="row">
-            @include('Tenant::Client/client_header')
-        </div>
-    </div>
+    @include('Tenant::Client/Application/navbar')
 
     <div class="pad margin no-print">
         <div class="callout callout-info" style="margin-bottom: 0!important;">
             <h4><i class="fa fa-info"></i> Note:</h4>
             The supported mime types for the documents are Images, Word, TXT, PDF and Excel files.
         </div>
-    </div>
-    <div class="col-xs-12 mainContainer">
-        @include('flash::message')
     </div>
 
     <div class="col-md-4 col-xs-12">
@@ -102,9 +95,9 @@
                                 <td>{{ $document->document->description }}</td>
                                 <td><a class="btn btn-xs btn-primary" href="{{ $document->document->shelf_location }}"
                                        target="_blank"><i class="fa fa-eye"></i> View</a>
-                                    <a class="btn btn-xs btn-primary" href="{{route('tenant.client.document.download', $document->document_id)}}"
+                                    <a class="btn btn-xs btn-primary" href="{{route('tenant.application.document.download', $document->document_id)}}"
                                        target="_blank"><i class="fa fa-download"></i> Download</a>
-                                    <a class="btn btn-xs btn-warning" href="{{route('tenant.client.document.delete', $document->document_id)}}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i> Delete</a>
+                                    <a class="btn btn-xs btn-warning" href="{{route('tenant.application.document.delete', $document->document_id)}}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i> Delete</a>
                                 </td>
                             </tr>
                         @endforeach

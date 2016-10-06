@@ -66,6 +66,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('clients/{client_id}/document', ['as' => 'tenant.client.document', 'uses' => 'ClientController@document']);
     Route::post('clients/{client_id}/document', 'ClientController@uploadDocument');
     Route::get('clients/document/{document_id}/download', ['as' => 'tenant.client.document.download', 'uses' => 'ClientController@downloadDocument']);
+    Route::get('clients/document/{document_id}/delete', ['as' => 'tenant.client.document.delete', 'uses' => 'ClientController@deleteDocument']);
 
     Route::get('clients/{client_id}/accounts', ['as' => 'tenant.accounts.index', 'uses' => 'AccountController@index']);
     Route::get('courses/{institute_id}', ['as' => 'tenant.institute.course', 'uses' => 'CourseController@getCourses']);
@@ -108,7 +109,14 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('applications/{id}/edit', ['as' => 'tenant.application.edit', 'uses' => 'ApplicationController@edit']);
     Route::put('applications/{id}', ['as' => 'tenant.application.update', 'uses' => 'ApplicationController@update']);
     Route::delete('applications/{id}', ['as' => 'tenant.application.destroy', 'uses' => 'ApplicationController@destroy']);
-    Route::get('applications/{id}/documents', ['as' => 'tenant.application.document', 'uses' => 'ApplicationController@documents']);
+
+    /* Routes for Application document */
+    Route::get('applications/{id}/document', ['as' => 'tenant.application.document', 'uses' => 'ApplicationController@document']);
+    Route::post('applications/{client_id}/document', 'ApplicationController@uploadDocument');
+    Route::get('applications/document/{document_id}/download', ['as' => 'tenant.application.document.download', 'uses' => 'ApplicationController@downloadDocument']);
+    Route::get('applications/document/{document_id}/delete', ['as' => 'tenant.application.document.delete', 'uses' => 'ApplicationController@deleteDocument']);
+
+    /* Routes for Application Notes */
     Route::get('applications/{id}/notes', ['as' => 'tenant.application.notes', 'uses' => 'ApplicationController@notes']);
     Route::post('applications/{id}/notes', ['as' => 'tenant.application.notes', 'uses' => 'ApplicationController@saveNote']);
 

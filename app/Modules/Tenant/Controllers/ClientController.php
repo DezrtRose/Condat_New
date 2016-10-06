@@ -260,6 +260,15 @@ class ClientController extends BaseController
         return tenant()->folder('document')->download($document->name);
     }
 
+    function deleteDocument($id)
+    {
+        $deleted = $this->document->deleteDocument($id);
+        if ($deleted)
+            tenant()->folder('document')->delete($deleted);
+        \Flash::success('Document deleted successfully!');
+        return redirect()->back();
+    }
+
     function notes($client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);

@@ -33,8 +33,10 @@
                     <li class="{{($current == 'show')? 'active' : ''}}"><a
                                 href="{{route('tenant.application.show', $application->application_id)}}">Dashboard</a>
                     </li>
-                    <li><a href="{{route('tenant.application.details', $application->application_id)}}">Application Details</a></li>
                     <li class="{{($current == 'details')? 'active' : ''}}"><a
+                                href="{{route('tenant.application.details', $application->application_id)}}">Application
+                            Details</a></li>
+                    <li class="{{($current == 'college')? 'active' : ''}}"><a
                                 href="{{route('tenant.application.college', $application->application_id)}}">College
                             Accounts</a></li>
                     <li class="{{($current == 'students')? 'active' : ''}}"><a
@@ -43,8 +45,10 @@
                     <li class="{{($current == 'subagents')? 'active' : ''}}"><a
                                 href="{{route('tenant.application.subagents', $application->application_id)}}">Sub Agent
                             Accounts</a></li>
-                    <li><a href="{{url("tenant/clients/$client->client_id/innerdocument")}}">Documents</a></li>
-                    <li class="{{($current == 'notes')? 'active' : ''}}"><a href="{{route('tenant.application.notes', $application->application_id)}}">Notes</a></li>
+                    <li><a href="{{route("tenant.application.document", $application->application_id)}}">Documents</a></li>
+                    <li class="{{($current == 'notes')? 'active' : ''}}"><a
+                                href="{{route('tenant.application.notes', $application->application_id)}}">Notes</a>
+                    </li>
                 </ul>
             </div>
             <!--/.nav-collapse -->

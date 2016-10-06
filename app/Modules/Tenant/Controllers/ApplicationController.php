@@ -3,12 +3,14 @@
 use App\Http\Requests;
 use App\Modules\Tenant\Models\Agent;
 use App\Modules\Tenant\Models\Application\ApplicationStatus;
+use App\Modules\Tenant\Models\Application\ApplicationStatusDocument;
 use App\Modules\Tenant\Models\Client\ApplicationNotes;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Application\CourseApplication;
 use App\Modules\Tenant\Models\Course\BroadField;
 use App\Modules\Tenant\Models\Course\CourseLevel;
 use App\Modules\Tenant\Models\Course\NarrowField;
+use App\Modules\Tenant\Models\Document;
 use App\Modules\Tenant\Models\Institute\Institute;
 use App\Modules\Tenant\Models\Invoice\CollegeInvoice;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
@@ -29,7 +31,7 @@ class ApplicationController extends BaseController
         'payment_method' => 'required|min:2|max:45'
     ];
 
-    function __construct(Client $client, Request $request, CourseApplication $application, Institute $institute, Agent $agent, CollegePayment $payment, CollegeInvoice $invoice, StudentInvoice $student_invoice, ApplicationNotes $notes, ClientTimeline $timeline, ApplicationStatus $status)
+    function __construct(Client $client, Request $request, CourseApplication $application, Institute $institute, Agent $agent, CollegePayment $payment, CollegeInvoice $invoice, StudentInvoice $student_invoice, ApplicationNotes $notes, ClientTimeline $timeline, ApplicationStatus $status, ApplicationStatusDocument $document)
     {
         $this->client = $client;
         $this->request = $request;
@@ -42,6 +44,7 @@ class ApplicationController extends BaseController
         $this->timeline = $timeline;
         $this->student_invoice = $student_invoice;
         $this->status = $status;
+        $this->document = $document;
         parent::__construct();
     }
 
@@ -301,6 +304,67 @@ class ApplicationController extends BaseController
         if($created)
             Flash::success('Note has been added successfully.');
         return redirect()->route('tenant.application.notes', $application_id);
+    }
+
+
+
+    /**
+     * Attach document to the client.
+     *
+     * @param  int $client_id
+     * @return Response
+     */
+    function document($application_id)
+    {
+        $client_id = CourseApplication::find($application_id)->client_id;
+        $app = new \stdClass();
+        $app->application_id = $application_id;
+        $data['application'] = $app;
+        $data['client'] = $this->client->getDetails($client_id);
+        $data['documents'] = $this->document->getApplicationDocuments($application_id);
+        return view("Tenant::Client/Application/document", $data);
+    }
+
+    function uploadDocument($application_id)
+    {
+        $upload_rules = ['document' => 'required|mimes:jpeg,bmp,png,doc,docx,pdf,txt,xls,xlsx',
+            'type' => 'required',
+        ];
+        $this->validate($this->request, $upload_rules);
+
+        $folder = 'document';
+        $file = $this->request->input('document');
+        $file = ($file == '') ? 'document' : $file;
+
+        if ($file_info = tenant()->folder($folder, true)->upload($file)) {
+            $document_id = $this->document->uploadDocument($application_id, $file_info, $this->request->all());
+            $document = Document::find($document_id);
+            $client_id = CourseApplication::find($application_id)->client_id;
+            $this->client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.application.document.download', $document_id)]);
+            \Flash::success('File uploaded successfully!');
+            return redirect()->route('tenant.application.document', $application_id);
+        }
+
+        \Flash::danger('Uploaded file is not valid!');
+        return redirect()->back();
+    }
+
+    function downloadDocument($id)
+    {
+        $document = Document::find($id);
+        if (empty($document))
+            abort(404);
+        //dd($document->shelf_location);
+        return tenant()->folder('document')->download($document->name);
+    }
+
+    function deleteDocument($id)
+    {
+        $deleted = $this->document->deleteDocument($id);
+        if ($deleted)
+            tenant()->folder('document')->delete($deleted);
+        \Flash::success('Document deleted successfully!');
+        return redirect()->back();
     }
 
 }

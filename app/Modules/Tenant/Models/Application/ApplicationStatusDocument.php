@@ -97,4 +97,24 @@ class ApplicationStatusDocument extends Model
             ->first();
         return $document;
     }
+
+    function deleteDocument($document_id)
+    {
+
+        DB::beginTransaction();
+
+        try {
+            ApplicationStatusDocument::where('document_id', $document_id)->delete();
+            $document = Document::find($document_id);
+            $document->delete();
+
+            DB::commit();
+            return $document->name;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return false;
+        }
+    }
 }
