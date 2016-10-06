@@ -203,7 +203,7 @@ class StudentInvoice extends Model
     function getOutstandingAmount($invoice_id)
     {
         $paid = $this->getPaidAmount($invoice_id);
-        $final_total = Invoice::find($invoice_id)->invoice_amount;
+        $final_total = Invoice::find($invoice_id)->final_total;
         $outstanding = ($final_total - $paid > 0) ? $final_total - $paid : 0;
         return $outstanding;
     }

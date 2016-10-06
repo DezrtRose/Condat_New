@@ -123,7 +123,7 @@
 
                 "ajax": appUrl + "/tenant/invoices/client/" + <?php echo $client->client_id ?> +"/data",
                 "columns": [
-                    {data: 'invoice_id', name: 'invoice_id'},
+                    {data: 'invoice_id', name: 'invoices.invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
                     {data: 'invoice_amount', name: 'invoice_amount'},
