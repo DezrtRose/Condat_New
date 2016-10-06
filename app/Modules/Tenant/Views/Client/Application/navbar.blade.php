@@ -45,7 +45,9 @@
                     <li class="{{($current == 'subagents')? 'active' : ''}}"><a
                                 href="{{route('tenant.application.subagents', $application->application_id)}}">Sub Agent
                             Accounts</a></li>
-                    <li><a href="{{route("tenant.application.document", $application->application_id)}}">Documents</a></li>
+                    <li class="{{($current == 'document')? 'active' : ''}}"><a
+                                href="{{route("tenant.application.document", $application->application_id)}}">
+                            Documents</a></li>
                     <li class="{{($current == 'notes')? 'active' : ''}}"><a
                                 href="{{route('tenant.application.notes', $application->application_id)}}">Notes</a>
                     </li>

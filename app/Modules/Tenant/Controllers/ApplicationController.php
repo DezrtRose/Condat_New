@@ -74,11 +74,10 @@ class ApplicationController extends BaseController
             ->join('status', 'application_status.status_id', '=', 'status.status_id')
             ->where('course_application.client_id', $client_id)
             ->where('application_status.active', 1)
-            ->select(['companies.name', 'courses.name as course_name', 'course_application.end_date', 'intakes.intake_date', 'course_application.student_id', 'course_application.course_application_id as application_id', 'course_application.tuition_fee', 'course_application.user_id as added_by', 'status.name as status'])
-            ->orderBy('course_application.course_application_id', 'desc');
+            ->select(['companies.name', 'courses.name as course_name', 'course_application.end_date', 'intakes.intake_date', 'course_application.student_id', 'course_application.course_application_id as application_id', 'course_application.tuition_fee', 'course_application.user_id as added_by', 'status.name as status']);
 
         $datatable = \Datatables::of($clients)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View Application" class="btn btn-action-box" href ="{{ route( \'tenant.application.show\', $application_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Application Documents" class="btn btn-action-box" href ="{{ route( \'tenant.application.document\', $application_id) }}"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Application" class="btn btn-action-box" href ="{{ route( \'tenant.application.edit\', $application_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Application" class="delete-user btn btn-action-box" href="{{ route( \'tenant.application.destroy\', $application_id) }}"><i class="fa fa-trash"></i></a>')
+            ->addColumn('action', '<a data-toggle="tooltip" title="View Application" class="btn btn-action-box" href ="{{ route( \'tenant.application.show\', $application_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Application Documents" class="btn btn-action-box" href ="{{ route( \'tenant.application.document\', $application_id) }}"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Application" class="btn btn-action-box" href ="{{ route( \'tenant.application.edit\', $application_id) }}"><i class="fa fa-edit"></i></a>')
             ->editColumn('application_id', function ($data) {
                 return format_id($data->application_id, 'App');
             })
