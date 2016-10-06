@@ -185,7 +185,25 @@ class AccountController extends BaseController
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->select(['invoices.*', 'student_invoices.student_invoice_id'])
             ->where('student_invoices.client_id', $client_id)
-            ->orderBy('created_at', 'desc');
+            ->select('invoices.invoice_id', 'invoices..invoice_date', 'invoices.description', 'invoices.invoice_amount', 'invoices.total_gst', DB::raw('(SELECT 
+    IF((invoices.`final_total` - SUM(client_payments.amount) > 0 OR ISNULL(SUM(client_payments.amount))), \'Outstanding\', \'Paid\')
+  FROM
+    client_payments 
+    JOIN payment_invoice_breakdowns 
+      ON payment_invoice_breakdowns.payment_id = client_payments.client_payment_id 
+  WHERE payment_invoice_breakdowns.invoice_id = invoices.invoice_id) AS status'), DB::raw('(SELECT 
+    CASE WHEN ((invoices.`final_total` - SUM(client_payments.amount) < 0))
+    THEN 0
+    WHEN (ISNULL(SUM(client_payments.amount)))
+    THEN invoices.`final_total`
+    ELSE
+    (invoices.`final_total` - SUM(client_payments.amount)) END
+  FROM
+    client_payments 
+    JOIN payment_invoice_breakdowns 
+      ON payment_invoice_breakdowns.payment_id = client_payments.client_payment_id 
+  WHERE payment_invoice_breakdowns.invoice_id = invoices.invoice_id) AS outstanding_amount'))
+            /*->orderBy('created_at', 'desc')*/;
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) {
                 return '<div class="btn-group">
@@ -202,7 +220,7 @@ class AccountController extends BaseController
                   </ul>
                 </div>';
             })
-            ->addColumn('status', function ($data) {
+            /*->addColumn('status', function ($data) {
                 $outstanding = $this->invoice->getOutstandingAmount($data->invoice_id);
                 return ($outstanding != 0) ? 'Outstanding' : 'Paid';
             })
@@ -212,9 +230,21 @@ class AccountController extends BaseController
                     return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
                     return 0;
+            })*/
+            ->editColumn('outstanding_amount', function($data) {
+                if ($data->outstanding_amount != 0)
+                    return format_price($data->outstanding_amount) . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                else
+                    return format_price(0);
             })
             ->editColumn('invoice_date', function ($data) {
                 return format_date($data->invoice_date);
+            })
+            ->editColumn('total_gst', function ($data) {
+                return format_price($data->total_gst);
+            })
+            ->editColumn('invoice_amount', function ($data) {
+                return format_price($data->invoice_amount);
             })
             ->editColumn('invoice_id', function ($data) {
                 return format_id($data->invoice_id, 'I');

@@ -55,7 +55,7 @@
 
                 </div>
             </div>
-        
+
     </div>
     <div class="col-xs-9">
         <div class="box box-primary">
