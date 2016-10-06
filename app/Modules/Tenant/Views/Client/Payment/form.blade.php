@@ -8,7 +8,11 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    {!!Form::text('date_paid', null, array('class' => 'form-control', 'id'=>'date_paid'))!!}
+                    @if(isset($payment->date_paid) && $payment->date_paid != null)
+                        {!!Form::text('date_paid', format_date($payment->date_paid), array('class' => 'form-control', 'id'=>'date_paid'))!!}
+                    @else
+                        {!!Form::text('date_paid', null, array('class' => 'form-control', 'id'=>'date_paid'))!!}
+                    @endif
                 </div>
                 @if($errors->has('date_paid'))
                     {!! $errors->first('date_paid', '<label class="control-label"

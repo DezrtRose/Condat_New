@@ -61,7 +61,7 @@ class ClientPayment extends Model
         $payment->description = $request['description'];
         $payment->save();
 
-        return $payment->client_payment_id;
+        return $payment->client_id;
     }
 
 }

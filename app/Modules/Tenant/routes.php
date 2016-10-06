@@ -77,6 +77,11 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     /* Create payments for a client */
     Route::get('payment/{client_id}/add', ['as' => 'tenant.payment.create', 'uses' => 'AccountController@createClientPayment']);
     Route::post('payment/{client_id}/store', ['as' => 'tenant.client.payment', 'uses' => 'AccountController@storeClientPayment']);
+
+    /* Edit Payments for client */
+    Route::get('payment/{payment_id}/edit', ['as' => 'client.payment.edit', 'uses' => 'AccountController@editClientPayment']);
+    Route::post('payment/{payment_id}/edit', ['as' => 'client.payment.update', 'uses' => 'AccountController@updateClientPayment']);
+
     Route::get('payments/client/{client_id}/data', 'AccountController@getPaymentsData');
 
     /* Create invoices for a client */

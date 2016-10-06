@@ -96,9 +96,19 @@ class AccountController extends BaseController
         return redirect()->route('tenant.accounts.index', $client_id);
     }
 
-    public function editClientPayment()
+    public function editClientPayment($payment_id)
     {
-        return view("Tenant::Client/index");
+        $data['payment'] = ClientPayment::find($payment_id);
+        return view("Tenant::Client/Payment/edit", $data);
+    }
+
+    public function updateClientPayment($payment_id)
+    {
+        $this->validate($this->request, $this->rules);
+        $client_id = $this->payment->edit($this->request->all(), $payment_id);
+        if ($client_id)
+            Flash::success('Payment has been updated successfully.');
+        return redirect()->route('tenant.accounts.index', $client_id);
     }
 
 
@@ -135,7 +145,7 @@ class AccountController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . route("application.students.editPayment", $data->student_payments_id) . '">Edit</a></li>
+                    <li><a href="' . route("client.payment.edit", $data->client_payment_id) . '">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
                 </div>';
