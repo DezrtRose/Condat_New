@@ -4,6 +4,7 @@ namespace App\Condat\Libraries;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use DB;
 
 
 class TenantTable {
@@ -23,11 +24,13 @@ class TenantTable {
      */
     public function run()
     {
-        $this->users();
+        $create_database = file_get_contents(base_path('resources\assets\condat_fresh.sql'));
+        DB::unprepared($create_database);
+        /*$this->users();
         $this->settings();
         $this->passwordReset();
         $this->profile();
-        $this->customers();
+        $this->customers();*/
     }
 
     /**

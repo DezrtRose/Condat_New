@@ -186,7 +186,7 @@ class Tenant {
      */
     function createTenantTables()
     {
-        $this->createTable->run();
+        $this->createTable->run($this->tenant_db);
     }
 
 
@@ -201,15 +201,15 @@ class Tenant {
         $user = $this->tenatUser->findOrNew(1);
         $user->email = $tenantInfoInSystem->email_id;
         $user->role = 1; // Admin Role
-        $user->guid = $tenantInfoInSystem->guid;
+        //$user->guid = $tenantInfoInSystem->guid;
         $user->status = 1; // Activated
-        $user->first_time = 1; // yes first time
+        //$user->first_time = 1; // yes first time
         $user->auth_code = $request['unique_auth_code']; // yes first time
         $user->save();
 
         // add profile
         $profile = ['user_id' => $user->user_id];
-        Profile::create($profile);
+        Person::create($profile);
 
         // update company name in setting table
         $setting = $this->tenantSettings->firstOrNew(['name' => 'company']);
