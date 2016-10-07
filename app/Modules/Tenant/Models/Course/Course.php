@@ -136,4 +136,13 @@ class Course extends Model
             ->find($course_id);
         return $course;
     }
+
+    function getFee($course_id)
+    {
+        $course = Course::leftJoin('course_fees', 'course_fees.course_id', '=', 'courses.course_id')
+            ->leftJoin('fees', 'fees.fee_id', '=', 'course_fees.fees_id')
+            ->select('fees.total_tuition_fee', 'fees.coe_fee')
+            ->find($course_id);
+        return (!empty($course))? $course->total_tuition_fee : '0';
+    }
 }

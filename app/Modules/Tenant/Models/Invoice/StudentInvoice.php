@@ -220,10 +220,12 @@ class StudentInvoice extends Model
     function getDetails($invoice_id)
     {
         $student_invoice = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
+            ->join('clients', 'student_invoices.client_id', '=', 'clients.client_id')
+            ->leftjoin('persons', 'persons.person_id', '=', 'clients.person_id')
             ->leftJoin('course_application', 'student_invoices.application_id', '=', 'course_application.course_application_id')
             ->leftjoin('institutes', 'course_application.institute_id', '=', 'institutes.institution_id')
             ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id') //Only for the ones that are associated with application
-            ->select(['invoices.*', 'student_invoices.*',
+            ->select(['invoices.*', 'student_invoices.*', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name'),
                 DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
                 THEN (companies.invoice_to_name)
                 ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag

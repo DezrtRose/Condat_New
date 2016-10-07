@@ -184,4 +184,10 @@ class CourseController extends BaseController
             return $this->fail(['error' => 'The method is not authorized.']);
         }
     }
+
+    public function getCourseFee($course_id)
+    {
+        $fee = $this->course->getFee($course_id);
+        return $this->success(['fee' => $fee]);
+    }
 }

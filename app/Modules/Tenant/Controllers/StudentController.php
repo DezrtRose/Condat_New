@@ -4,9 +4,12 @@ use App\Http\Requests;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Application\CourseApplication;
+use App\Modules\Tenant\Models\Client\ClientPayment;
+use App\Modules\Tenant\Models\Invoice\CollegeInvoicePayment;
 use App\Modules\Tenant\Models\Invoice\Invoice;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
 use App\Modules\Tenant\Models\Agent;
+use App\Modules\Tenant\Models\Payment\CollegePayment;
 use App\Modules\Tenant\Models\Setting;
 use Flash;
 use DB;
@@ -143,7 +146,7 @@ class StudentController extends BaseController
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . url("tenant/students/payment/receipt/" . $data->student_payments_id) . '">Print Receipt</a></li>
                     <li><a href="' . route("application.students.editPayment", $data->student_payments_id) . '">Edit</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
+                    <li><a href=" . route("application.students.deletePayment", $data->student_payments_id) . ">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -177,6 +180,7 @@ class StudentController extends BaseController
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->select(['invoices.*', 'student_invoices.student_invoice_id'])
             ->where('student_invoices.application_id', $application_id)
+            ->where('invoices.deleted_at', null)
             ->where('invoices.deleted_at', null);
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) {
@@ -320,6 +324,14 @@ class StudentController extends BaseController
     {
         Invoice::find($invoice_id)->delete();
         Flash::success('Invoice has been deleted successfully.');
+        return redirect()->back();
+    }
+
+    public function deletePayment($payment_id)
+    {
+        StudentApplicationPayment::where('client_payment_id', $payment_id)->delete();
+        ClientPayment::find($payment_id)->delete();
+        Flash::success('Payment has been deleted successfully.');
         return redirect()->back();
     }
 

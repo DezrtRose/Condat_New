@@ -173,6 +173,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::post('students/{application_id}/storePayment', ['as' => 'application.students.storePayment', 'uses' => 'StudentController@storePayment']);
     Route::get('students/{payment_id}/editPayment', ['as' => 'application.students.editPayment', 'uses' => 'StudentController@editPayment']);
     Route::put('students/{payment_id}/editPayment', ['as' => 'application.students.updatePayment', 'uses' => 'StudentController@updatePayment']);
+    Route::get('students/{payment_id}/deletePayment', ['as' => 'application.students.deletePayment', 'uses' => 'StudentController@deletePayment']);
     Route::get('students/payments/{client_id}/data', 'StudentController@getPaymentsData');
 
     /* Create invoices for a application college */
@@ -263,6 +264,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::put('course/{id}/update', ['as' => 'tenant.course.update', 'uses' => 'CourseController@update']);
     Route::delete('course', ['as' => 'tenant.course.destroy', 'uses' => 'CourseController@destroy']);
     Route::get('narrowfield/{broad_id}', ['as' => 'tenant.course.narrow', 'uses' => 'CourseController@getNarrowField']);
+    Route::get('course/fee/{course_id}', ['as' => 'tenant.course.fee', 'uses' => 'CourseController@getCourseFee']);
 
     /* Routes for Intake module */
     Route::get('institutes/{institute_id}/intakes', ['as' => 'tenant.intake.index', 'uses' => 'IntakeController@index']);

@@ -111,14 +111,20 @@ class InvoiceController extends BaseController
                 break;
             case 2:
                 $invoice = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-                    ->select(['student_invoice_id as invoice_id', 'student_invoices.application_id', 'student_invoices.client_id', 'invoice_date', 'amount as total_amount', 'total_gst', 'final_total'])
+                    ->select(['student_invoice_id as invoice_id', 'student_invoices.application_id', 'student_invoices.client_id', 'invoice_date', 'invoice_amount as total_amount', 'total_gst', 'final_total'])
                     ->where('student_invoices.invoice_id', $invoice_id)
                     ->first();
-                $invoice->formatted_id = format_id($invoice->invoice_id, 'SI');
+                $invoice->paid = $this->student_invoice->getPaidAmount($invoice_id);
+
+                $outstanding = $invoice->final_total - $invoice->paid;
+                $invoice->outstanding = ($outstanding > 0 )? $invoice->final_total - $invoice->paid : 0;
+                $invoice->status = ($outstanding > 0 )? 'Outstanding' : 'Paid';
+
+                $invoice->formatted_id = format_id($invoice->invoice_id, 'I');
                 break;
             default:
                 $invoice = SubAgentInvoice::where('invoice_id', $invoice_id)->select('*', 'course_application_id as application_id')->first();
-                $invoice->formatted_id = format_id($invoice->subagent_invoice_id, 'SAI');
+                $invoice->formatted_id = format_id($invoice->invoice_id, 'I');
         }
         //dd($invoice->toArray());
         return $invoice;
@@ -144,17 +150,19 @@ class InvoiceController extends BaseController
         }
 
         $datatable = \Datatables::of($payments)
-            ->addColumn('action', '<div class="btn-group">
+            ->addColumn('action', function ($data) {
+                return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="http://localhost/condat/tenant/contact/2">Edit</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
+                    <li><a href="' . route("application.students.editPayment", $data->student_payments_id) . '">Edit</a></li>
+                    <li><a href="' . route("application.students.deletePayment", $data->student_payments_id) . '">Delete</a></li>
                   </ul>
-                </div>')
+                </div>';
+            })
             ->editColumn('date_paid', function ($data) {
                 return format_date($data->date_paid);
             })

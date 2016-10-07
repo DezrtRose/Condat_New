@@ -102,10 +102,10 @@ class CollegeInvoice extends Model
 
     function getTotalAmount($application_id)
     {
-        $invoices = CollegeInvoice::select('total_commission')
+        $invoices = CollegeInvoice::select('final_total')
             ->where('course_application_id', $application_id)
             ->orderBy('created_at', 'desc')
-            ->sum('total_commission');
+            ->sum('final_total');
         return $invoices;
     }
 

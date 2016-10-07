@@ -35,7 +35,7 @@
     <div class="col-sm-10">
         <div class='input-group date'>
             <input type="text" name="end_date" class="form-control datepicker" id="end_date"
-                   placeholder="yyyy-mm-dd">
+                   placeholder="dd/mm/yyyy">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -86,13 +86,7 @@
     });
 
     $("#course").change(function () {
-        var course = $("#course").val();
-        $.ajax({
-            url: appUrl + "/tenant/courses/" + course + "getTuitionFee",
-            success: function (result) {
-                $("#course").html(result.data.options);
-            }
-        });
+        getTuitionFee();
     });
 
     function getCourses() {
@@ -105,6 +99,7 @@
             },
             success: function (result) {
                 $("#course").html(result.data.options);
+                getTuitionFee();
             }
         }).complete(function () {
             $("#course").show();
@@ -126,6 +121,23 @@
         }).complete(function () {
             $("#intake").show();
             $('.intake-loading').remove();
+        });
+    }
+
+    function getTuitionFee() {
+        var course = $("#course").val();
+        $.ajax({
+            url: appUrl + "/tenant/course/fee/" + course,
+            beforeSend: function () {
+                $("#fee").before('<div class="form-control fee-loading"><i class = "fa fa-spinner fa-spin"></i> Loading...</div>');
+                $('#fee').hide();
+            },
+            success: function (result) {
+                $("#fee").val(result.data.fee);
+            }
+        }).complete(function () {
+            $("#fee").show();
+            $('.fee-loading').remove();
         });
     }
 
