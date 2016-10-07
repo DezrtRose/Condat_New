@@ -279,6 +279,9 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::post('profile', 'UserController@update');
     Route::get('users/dashboard', ['as' => 'users.dashboard', 'uses' => 'UserController@dashboard']);
 
+    /* Set reminder as completed */
+    Route::get('reminder/{id}', ['as' => 'tenant.reminder.complete', 'uses' => 'UserController@completeReminder']);
+
     /*routes for innerdocument*/
     Route::get('client/data', 'ClientController@getData');
     Route::get('clients/{client_id}/innerdocument', ['as' => 'tenant.client.innerdocument', 'uses' => 'ClientController@innerdocument']);

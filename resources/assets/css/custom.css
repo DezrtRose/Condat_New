@@ -207,3 +207,21 @@ body.modal-open .datepicker.dropdown-menu {
 .email-ids .select2-selection__choice .select2-selection__choice__remove {
     color: #fff!important;
 }
+
+.navbar-custom-menu .menu>li>a {
+    color: #444444;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 10px;
+}
+
+.navbar-custom-menu .menu>li>a>h3 {
+    font-size: 14px;
+    padding: 0;
+    margin: 0 0 10px 0;
+    color: #666666;
+}
+
+.icheckbox_square-blue {
+    margin-right: 5px;
+}

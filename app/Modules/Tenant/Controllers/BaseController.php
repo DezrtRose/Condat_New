@@ -3,8 +3,10 @@
 namespace App\Modules\Tenant\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Tenant\Models\Client\ClientNotes;
 use App\Modules\Tenant\Models\Country;
 use App\Modules\Tenant\Models\Person\Person;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
@@ -18,6 +20,8 @@ class BaseController extends Controller{
 		View::share('current_url', Route::current()->getPath());
 		// share current logged in user details all views
 		View::share('current_user', $this->current_user());
+		// share current logged in user details all views
+		View::share('reminders', $this->getReminders());
 		// share list of countries in all views
 		View::share('countries', $this->get_country_list());
 	}
@@ -81,6 +85,20 @@ class BaseController extends Controller{
 		{
 			$this->layout = View::make($this->layout);
 		}
+	}
+
+	function getReminders()
+	{
+		$reminders = ClientNotes::join('notes', 'notes.notes_id', '=', 'client_notes.note_id')
+			->select('notes.*')
+			->orderBy('reminder_date', 'desc')
+			->where('remind', 1)
+			->where('status', 0)
+			->whereDate('reminder_date', '<=', Carbon::today())
+			->get();
+
+		return $reminders;
+
 	}
 
 }

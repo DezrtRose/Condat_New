@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
+use App\Modules\Tenant\Models\Notes;
 use App\Modules\Tenant\Models\Timeline\Timeline;
 use App\Modules\Tenant\Models\User;
 use App\Modules\Tenant\Models\UserLevel;
@@ -23,12 +24,13 @@ class UserController extends BaseController
         'number' => 'required'
     ];
 
-    function __construct(User $user, ApplicationStatus $applicationStatus, Timeline $timeline, StudentInvoice $invoice)
+    function __construct(User $user, ApplicationStatus $applicationStatus, Timeline $timeline, StudentInvoice $invoice, Notes $note)
     {
         $this->user = $user;
         $this->applicationStatus = $applicationStatus;
         $this->timeline = $timeline;
         $this->invoice = $invoice;
+        $this->note = $note;
         parent::__construct();
     }
 
@@ -192,6 +194,12 @@ class UserController extends BaseController
     public function profile()
     {
 
+    }
+
+    public function completeReminder($note_id)
+    {
+        $this->note->markComplete($note_id);
+        return $this->success();
     }
 
 }
