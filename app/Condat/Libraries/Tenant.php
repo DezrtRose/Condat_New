@@ -10,6 +10,7 @@ use App\Models\Tenant\Setting as TenantSettings;
 use App\Modules\Tenant\Models\User as User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tenant\Profile;
+use App\Modules\Tenant\Models\Person\Person;
 
 /**
  * Class Tenant
