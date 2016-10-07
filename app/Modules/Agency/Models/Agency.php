@@ -37,7 +37,7 @@ class Agency extends Model
     function add(array $request)
     {
         $subscription = new Subscription();
-        DB::beginTransaction();
+        //DB::beginTransaction();
 
         try {
 
@@ -103,10 +103,10 @@ EOD;
                     ->from($data['from_email'], $data['from_name']);
             });
 
-            DB::commit();
+            //DB::commit();
             // all good
         } catch (\Exception $e) {
-            DB::rollback();
+            //DB::rollback();
             dd($e);
             // something went wrong
         }

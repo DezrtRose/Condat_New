@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Session;
 
 class Authenticate
 {
@@ -38,6 +39,12 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
+                unset($_COOKIE['database_name']);
+                unset($_COOKIE['paypal_payment_data']);
+                setcookie('database_name', null, -1, '/');
+                setcookie('paypal_payment_data', null, -1, '/');
+                $this->auth->logout();
+                Session::flush();
                 return redirect()->guest('login');
             }
         }
