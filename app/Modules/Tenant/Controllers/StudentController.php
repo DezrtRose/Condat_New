@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Application\CourseApplication;
+use App\Modules\Tenant\Models\Invoice\Invoice;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
 use App\Modules\Tenant\Models\Agent;
 use App\Modules\Tenant\Models\Setting;
@@ -176,7 +177,7 @@ class StudentController extends BaseController
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->select(['invoices.*', 'student_invoices.student_invoice_id'])
             ->where('student_invoices.application_id', $application_id)
-            ->orderBy('created_at', 'desc');
+            ->where('invoices.deleted_at', null);
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) {
                 return '<div class="btn-group">
@@ -189,7 +190,7 @@ class StudentController extends BaseController
                     <li><a href="' . route("tenant.invoice.payments", [$data->invoice_id, 2]) . '">View Payments</a></li>
                     <li><a href="' . route('tenant.student.invoice', $data->student_invoice_id) . '">View Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", $data->student_invoice_id) . '">Edit</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
+                    <li><a href="' . route("tenant.student.deleteInvoice", $data->invoice_id) . '" onclick="return confirm(\'Are you sure you want to delete the record?\')">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -229,7 +230,7 @@ class StudentController extends BaseController
             ->select(['invoices.*', 'student_invoices.student_invoice_id'])
             ->where('invoice_date', '>=', Carbon\Carbon::now())
             ->where('student_invoices.application_id', $application_id)
-            ->orderBy('created_at', 'desc');
+            ->where('invoices.deleted_at', null);
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) {
                 return '<div class="btn-group">
@@ -242,7 +243,7 @@ class StudentController extends BaseController
                     <li><a href="' . route("tenant.invoice.payments", [$data->student_invoice_id, 2]) . '">View payments</a></li>
                     <li><a href="' . route('tenant.student.invoice', $data->student_invoice_id) . '">View Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", $data->student_invoice_id) . '">Edit</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
+                    <li><a href="' . route("tenant.student.deleteInvoice", $data->invoice_id) . '" onclick="return confirm(\'Are you sure you want to delete the record?\')">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -313,6 +314,13 @@ class StudentController extends BaseController
         $application_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
         Flash::success('Invoice has been updated successfully.');
         return redirect()->route('tenant.application.students', $application_id);
+    }
+
+    public function deleteInvoice($invoice_id)
+    {
+        Invoice::find($invoice_id)->delete();
+        Flash::success('Invoice has been deleted successfully.');
+        return redirect()->back();
     }
 
 }

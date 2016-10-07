@@ -163,6 +163,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('college/{invoice_id}/invoice', ['as' => 'tenant.college.invoice', 'uses' => 'CollegeController@show']);
     Route::get('college/{invoice_id}/editInvoice', ['as' => 'tenant.college.editInvoice', 'uses' => 'CollegeController@editInvoice']);
     Route::put('college/{invoice_id}/editInvoice', ['as' => 'tenant.college.editInvoice', 'uses' => 'CollegeController@updateInvoice']);
+    Route::get('college/{invoice_id}/deleteInvoice', ['as' => 'tenant.college.deleteInvoice', 'uses' => 'CollegeController@deleteInvoice']);
 
     /* Routes for student section */
     Route::get('applications/{application_id}/students', ['as' => 'tenant.application.students', 'uses' => 'StudentController@index']);
@@ -185,6 +186,7 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::get('student/{invoice_id}/invoice', ['as' => 'tenant.student.invoice', 'uses' => 'StudentController@show']);
     Route::get('student/{invoice_id}/editInvoice', ['as' => 'tenant.student.editInvoice', 'uses' => 'StudentController@editInvoice']);
     Route::put('student/{invoice_id}/editInvoice', ['as' => 'tenant.student.editInvoice', 'uses' => 'StudentController@updateInvoice']);
+    Route::get('student/{invoice_id}/deleteInvoice', ['as' => 'tenant.student.deleteInvoice', 'uses' => 'StudentController@deleteInvoice']);
 
     /* Routes for subagent section */
     Route::get('applications/{application_id}/subagents', ['as' => 'tenant.application.subagents', 'uses' => 'SubAgentController@index']);

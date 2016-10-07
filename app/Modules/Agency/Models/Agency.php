@@ -85,16 +85,16 @@ class Agency extends Model
 <a href="">$unique_auth_code</a>
 EOD;
 
-            $param = ['content'    => $agency_message,
-                'subject'    => 'Agency Created Successfully',
-                'heading'    => 'Condat Solutions',
+            $param = ['content' => $agency_message,
+                'subject' => 'Agency Created Successfully',
+                'heading' => 'Condat Solutions',
                 'subheading' => 'All your business in one space',
             ];
-            $data = ['to_email'   => $request['email_id'],
-                'to_name'    => $request['name'],
-                'subject'    => 'Agency Created Successfully',
+            $data = ['to_email' => $request['email_id'],
+                'to_name' => $request['name'],
+                'subject' => 'Agency Created Successfully',
                 'from_email' => 'krita@condat.com', //change this later
-                'from_name'  => 'Condat Solutions', //change this later
+                'from_name' => 'Condat Solutions', //change this later
             ];
 
             Mail::send('template.master', $param, function ($message) use ($data) {

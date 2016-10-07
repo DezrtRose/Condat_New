@@ -192,7 +192,7 @@ class AccountController extends BaseController
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->select(['invoices.*', 'student_invoices.student_invoice_id'])
             ->where('student_invoices.client_id', $client_id)
-            ->select('invoices.invoice_id', 'invoices..invoice_date', 'invoices.description', 'invoices.invoice_amount', 'invoices.total_gst', DB::raw('(SELECT 
+            ->select('student_invoices.student_invoice_id', 'invoices.invoice_id', 'invoices.invoice_date', 'invoices.description', 'invoices.invoice_amount', 'invoices.total_gst', DB::raw('(SELECT
     IF((invoices.`final_total` - SUM(client_payments.amount) > 0 OR ISNULL(SUM(client_payments.amount))), \'Outstanding\', \'Paid\')
   FROM
     client_payments 
@@ -269,8 +269,9 @@ class AccountController extends BaseController
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->join('course_application', 'course_application.course_application_id', '=', 'student_invoices.application_id')
             ->where('course_application.client_id', $client_id)
+            ->where('invoices.deleted_at', null)
             ->where('invoice_date', '>=', Carbon\Carbon::now())
-            ->select(['invoices.*'])
+            ->select(['invoices.*', 'student_invoices.student_invoice_id', ])
             ->orderBy('invoices.created_at', 'desc');
 
         $datatable = \Datatables::of($invoices)

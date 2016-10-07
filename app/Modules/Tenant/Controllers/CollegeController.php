@@ -317,4 +317,9 @@ class CollegeController extends BaseController
         return redirect()->route('tenant.application.students', $application_id);
     }
 
+    public function deleteInvoice($college_invoice_id)
+    {
+        $this->invoice->deleteInvoice($college_invoice_id);
+    }
+
 }

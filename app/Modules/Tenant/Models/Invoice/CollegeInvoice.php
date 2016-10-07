@@ -337,4 +337,25 @@ class CollegeInvoice extends Model
 
         return $list;
     }
+
+    function deleteInvoice($college_invoice_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $invoice = CollegeInvoice::find($college_invoice_id);
+            TuitionCommission::where('college_invoice_id', $college_invoice_id)->delete();
+            OtherCommission::where('college_invoice_id', $college_invoice_id)->delete();
+
+            $payments = new CollegePayment();
+            $payments->deleteInvoicePayment($college_invoice_id);
+            DB::commit();
+            return true;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            // something went wrong
+        }
+    }
 }

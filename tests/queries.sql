@@ -429,3 +429,5 @@ ALTER TABLE `courses` CHANGE `level` `level_id` INT NULL DEFAULT NULL COMMENT 'D
 ALTER TABLE `notes` ADD `status` BOOLEAN NOT NULL DEFAULT FALSE COMMENT '0: incomplete, 1: complete' , ADD `completed_date` DATETIME NULL DEFAULT NULL ;
 
 ALTER TABLE `notes` ADD `completed_by` INT NULL ;
+
+ALTER TABLE `invoices` ADD `deleted_at` DATETIME NULL DEFAULT NULL ;
