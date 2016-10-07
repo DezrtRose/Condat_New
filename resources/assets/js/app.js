@@ -806,10 +806,14 @@ $(function () {
     });
 
 
-    $('.com-reminder').on('ifChecked', function (event) {
+    $('.com-reminder').on('ifClicked', function (event) {
 
-        if (!confirm('Are you sure you want to mark the reminder as complete?')) {$('.com-reminder').iCheck('uncheck'); return false;}
-
+        if (!confirm('Are you sure you want to mark the reminder as complete?')) {
+            setTimeout(function () {
+                $(".com-reminder").iCheck('uncheck');
+            }, 0.5);
+            return false;
+        }
         var id = $(this).attr('id');
         var parentLi = $(this).closest('li');
         $.ajax({
@@ -818,7 +822,7 @@ $(function () {
             success: function (response) {
                 if (response.status == 1) {
                     parentLi.slideUp('slow');
-                    var count = parseInt($('.reminder-count').text());
+                    var count = parseInt($('.reminder-count').first().text());
                     $('.reminder-count').html(count - 1);
                 }
             }
