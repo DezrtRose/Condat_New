@@ -53,10 +53,14 @@ class Agency extends Model
 
             $agency = Agency::create([
                 'description' => isset($request['description']) ? $request['description'] : '',
-                'company_database_name' => $request['company_database_name'],
+                //'company_database_name' => $request['company_database_name'],
                 //'company_database_name' => 'test',
                 'guid' => \Condat::uniqueKey(10, 'agencies', 'guid')
             ]);
+            $agencyData = Agency::find($agency->agency_id);
+            $agencyData->company_database_name = 'tenant' . $agency->agency_id;
+            $agencyData->save();
+            $request['company_database_name'] = $agencyData->company_database_name;
 
             $subscription->activateTrail($request, $agency->agency_id);
 

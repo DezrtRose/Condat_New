@@ -158,7 +158,7 @@ class Tenant {
         $this->tenant_db = $this->DB_prefix . $request['company_database_name'];
 
         // create tenant DB
-        $this->createNewTenantDB();
+        // $this->createNewTenantDB();
 
         //Connect to Tenant DB
         $this->connectTenantDB();

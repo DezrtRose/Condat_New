@@ -24,7 +24,7 @@ class TenantTable {
      */
     public function run()
     {
-        $create_database = file_get_contents(base_path('resources\assets\condat_fresh.sql'));
+        $create_database = file_get_contents(base_path('resources/assets/condat_fresh.sql'));
         DB::unprepared($create_database);
         /*$this->users();
         $this->settings();

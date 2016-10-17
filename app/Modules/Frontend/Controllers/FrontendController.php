@@ -55,10 +55,9 @@ class FrontendController extends BaseController {
 		'g-recaptcha-response' => 'required|recaptcha',
 		];
 
-		$this->validate($this->request, $rules);
+		//$this->validate($this->request, $rules);
 		// if validates
 		$request = $this->request->all();
-		$request['company_database_name'] = $this->createDomain($request['name']);
 		$created = $this->agency->add($request);
 		if($created)
 			Flash::success('Agency has been registered successfully. Please check your email for further set up details.');
