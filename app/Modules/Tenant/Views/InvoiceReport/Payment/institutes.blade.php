@@ -60,7 +60,11 @@
         $(document).ready(function () {
             oTable = $('#payments').DataTable({
                 "pageLength": 50,
-                order: [[0, 'desc']]
+                order: [[0, 'desc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
             });
         });
     </script>
