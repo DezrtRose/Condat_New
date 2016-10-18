@@ -182,7 +182,7 @@ class StudentInvoice extends Model
             $invoices_query = $invoices_query->whereBetween('invoices.invoice_date', array(insert_dateformat($dates[0]), insert_dateformat($dates[1])));
         }
 
-        if ($request['client_name'] != '')
+        if (isset($request['client_name']) && $request['client_name'] != '')
             $invoices_query = $invoices_query->where(DB::raw('CONCAT(persons.first_name, " ", persons.last_name)'), 'LIKE', '%' . $request['client_name'] . '%');
 
         if (isset($request['college_name']) && !empty($request['college_name']))

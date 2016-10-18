@@ -845,4 +845,8 @@ $(function () {
     };
     fn();
 
+    $('.slimscroll').slimscroll({
+        allowPageScroll: true
+    });
+
 });

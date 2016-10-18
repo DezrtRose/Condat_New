@@ -359,6 +359,7 @@ class ApplicationStatus extends Model
             ->select(DB::raw('count(application_status.status_id) as total'), 'status.name')
             ->groupBy('status.name')
             ->orderBy('status.status_id', 'asc')
+            ->limit(5)
             ->get();
         return $status;
     }

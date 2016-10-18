@@ -14,7 +14,9 @@
         // width in pixels of the visible scroll area
         width: 'auto',
         // height in pixels of the visible scroll area
-        height: '250px',
+        //height: '250px',
+        // height in pixels of the visible scroll area
+        height: '1000px',
         // width in pixels of the scrollbar and rail
         size: '7px',
         // scrollbar color, accepts any hex/color value
@@ -138,14 +140,14 @@
                   position: 'relative',
                   overflow: 'hidden',
                   width: o.width,
-                  height: o.height
+                  'max-height': o.height //changed height to max-height
                 });
 
         // update style for the div
         me.css({
           overflow: 'hidden',
           width: o.width,
-          height: o.height,
+          'max-height': o.height,
           //Fix for IE10
           "-ms-touch-action": "none"
         });

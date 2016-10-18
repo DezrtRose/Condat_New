@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('payment_type', 'Payment Type', array('class' => 'control-label')) !!}
-                    {!!Form::text('payment_type', null, array('class' => 'form-control', 'id'=>'payment_type'))!!}
+                    {!!Form::select('type', config('constants.student_payment_type'), null, array('class' => 'form-control select2 payment-type'))!!}
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('client_name', 'Client Name', array('class' => 'control-label')) !!}

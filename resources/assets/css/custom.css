@@ -225,3 +225,7 @@ body.modal-open .datepicker.dropdown-menu {
 .icheckbox_square-blue {
     margin-right: 5px;
 }
+
+.input-num {
+    width: 48%;
+}

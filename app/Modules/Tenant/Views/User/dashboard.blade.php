@@ -2,14 +2,15 @@
 @section('title', 'Dashboard')
 
 @section('content')
-
     <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Recent Activity</h3>
             </div>
             <div class="box-body">
-                @include('Tenant::Client/Show/timeline')
+                <div class="inbox-widget slimscroll">
+                    @include('Tenant::Client/Show/timeline')
+                </div>
             </div>
         </div>
     </div>
@@ -59,7 +60,10 @@
                 </table>
             </div>
         </div>
-
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Application List</h3>
@@ -88,7 +92,6 @@
             </div>
             <br>
         </div>
-
     </div>
     <div class="col-md-6">
         <div class="box box-primary">
@@ -120,7 +123,6 @@
             </div>
         </div>
     </div>
-
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('/local/public/css/chart.css') }}"/>
 
     <script src="{{ URL::asset('/local/public/js/chart.js') }}"></script>

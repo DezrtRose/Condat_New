@@ -44,7 +44,8 @@
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('amount', 'Amount', array('class' => 'control-label')) !!}
-                    {!!Form::text('amount', null, array('class' => 'form-control', 'id'=>'amount'))!!}
+                    {!!Form::text('amount', null, array('class' => 'form-control input-num', 'placeholder' => 'From', 'id'=>'from'))!!}
+                    {!!Form::text('amount', null, array('class' => 'form-control input-num', 'placeholder' => 'To', 'id'=>'to'))!!}
 
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
@@ -100,14 +101,16 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a data-toggle="modal" data-target="#condat-modal" data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
+                                    <a data-toggle="modal" data-target="#condat-modal"
+                                       data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
                                                 class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                                                 data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
                                     <a href="#" title="Print Invoice"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Print Invoice"></i></a>
-                                    <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}" title="View Invoice"><i
+                                    <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}"
+                                       title="View Invoice"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                                 data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
                                     <a href="#" title="Email Invoice"><i
@@ -135,7 +138,11 @@
         $(document).ready(function () {
             $('#invoice_report_table').DataTable({
                 "pageLength": 50,
-                order: [[0, 'desc']]
+                order: [[0, 'desc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
             });
 
             $('.dateranger').daterangepicker({
@@ -145,11 +152,11 @@
                 }
             });
 
-            $('.dateranger').on('apply.daterangepicker', function(ev, picker) {
+            $('.dateranger').on('apply.daterangepicker', function (ev, picker) {
                 $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
             });
 
-            $('.dateranger').on('cancel.daterangepicker', function(ev, picker) {
+            $('.dateranger').on('cancel.daterangepicker', function (ev, picker) {
                 $(this).val('');
             });
         });
