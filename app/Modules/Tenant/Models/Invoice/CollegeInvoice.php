@@ -301,6 +301,13 @@ class CollegeInvoice extends Model
         if (isset($request['college_name']) && !empty($request['college_name']))
             $invoices_query = $invoices_query->whereIn('course_application.institute_id', $request['college_name']);
 
+        if ($request['from'] != '' && $request['to'] != '')
+            $invoices_query = $invoices_query->whereBetween('college_invoices.final_total', [$request['from'], $request['to']]);
+        elseif($request['from'])
+            $invoices_query = $invoices_query->where('college_invoices.final_total', '>=', $request['from']);
+        elseif($request['to'])
+            $invoices_query = $invoices_query->where('college_invoices.final_total', '<=', $request['to']);
+
         /*if ($request['invoice_to'] != 0)
             $invoices_query = $invoices_query->where('invoice_to', $request['invoice_to']);*/
 

@@ -24,7 +24,7 @@
             <td>{{ $invoice->institute_name }}</td>
             <td>{{ $invoice->course_name }}</td>
             <td>{{ $invoice->invoice_to }}</td>
-            <td>{{ format_price($invoice->total_commission) }}</td>
+            <td>{{ format_price($invoice->final_total) }}</td>
             <td>{{ format_price($invoice->total_gst) }}</td>
 
             <td>

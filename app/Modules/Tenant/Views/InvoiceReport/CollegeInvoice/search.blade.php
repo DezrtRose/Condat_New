@@ -51,7 +51,10 @@
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('amount', 'Amount', array('class' => 'control-label')) !!}
-                    {!!Form::text('amount', null, array('class' => 'form-control', 'id'=>'amount'))!!}
+                    <div class="row">
+                        <div class="col-xs-6"> {!!Form::number('from', null, array('class' => 'form-control', 'placeholder' => 'From', 'id'=>'from'))!!}</div>
+                        <div class="col-xs-6"> {!!Form::number('to', null, array('class' => 'form-control', 'placeholder' => 'To', 'id'=>'to'))!!}</div>
+                    </div>
                 </div>
             </div>
             {!!Form::close()!!}
@@ -80,9 +83,13 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#application_table').DataTable({
+            $('#invoice_report_table').DataTable({
                 "pageLength": 50,
-                order: [[0, 'desc']]
+                order: [[0, 'desc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
             });
 
             $('.datepicker').datepicker({
