@@ -185,6 +185,13 @@ class StudentInvoice extends Model
         if (isset($request['client_name']) && $request['client_name'] != '')
             $invoices_query = $invoices_query->where(DB::raw('CONCAT(persons.first_name, " ", persons.last_name)'), 'LIKE', '%' . $request['client_name'] . '%');
 
+        if ($request['from'] != '' && $request['to'] != '')
+            $invoices_query = $invoices_query->whereBetween('invoices.invoice_amount', [$request['from'], $request['to']]);
+        elseif($request['from'])
+            $invoices_query = $invoices_query->where('invoices.invoice_amount', '>=', $request['from']);
+        elseif($request['to'])
+            $invoices_query = $invoices_query->where('invoices.invoice_amount', '<=', $request['to']);
+
         if (isset($request['college_name']) && !empty($request['college_name']))
             $invoices_query = $invoices_query->whereIn('course_application.institute_id', $request['college_name']);
 
