@@ -98,7 +98,7 @@ EOD;
             $data = ['to_email' => $request['email_id'],
                 'to_name' => $request['name'],
                 'subject' => 'Agency Created Successfully',
-                'from_email' => 'krita@condat.com', //change this later
+                'from_email' => env('FROM_EMAIL', 'info@condat.com.au'), //change this later
                 'from_name' => 'Condat Solutions', //change this later
             ];
 

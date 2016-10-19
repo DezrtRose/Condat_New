@@ -46,7 +46,7 @@ class ConnectController extends BaseController {
                 'to_email'   => $data[1],
                 'to_name'    => $data[0],
                 'subject'    => $post['subject'],
-                'from_email' => 'krita@condat.com', //change this later
+                'from_email' => env('FROM_EMAIL', 'info@condat.com.au'), //change this later
                 'from_name'  => 'Condat Solutions', //change this later
             ];
             Mail::send('template.master', $param, function ($message) use ($data) {

@@ -140,10 +140,10 @@ EOD;
             'heading' => 'Condat Solutions',
             'subheading' => 'All your business in one space',
         ];
-        $data = ['to_email' => 'satshanker.01@gmail.com',
+        $data = ['to_email' => $profile_data['email'],
             'to_name' => '',
             'subject' => 'Profile complete',
-            'from_email' => 'krita@condat.com', //change this later
+            'from_email' => env('FROM_EMAIL', 'info@condat.com.au'), //change this later
             'from_name' => 'Condat Solutions', //change this later
         ];
 
