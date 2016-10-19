@@ -6,6 +6,7 @@ use App\Modules\Agency\Models\Agency;
 use App\Modules\System\Models\Subscription;
 use Illuminate\Http\Request;
 use Flash;
+use Mail;
 
 class FrontendController extends BaseController {
 
@@ -35,6 +36,25 @@ class FrontendController extends BaseController {
 	 */
 	public function register(Subscription $subscription)
 	{
+        $agency_message = "Test message";
+
+        $param = ['content' => $agency_message,
+            'subject' => 'Profile complete',
+            'heading' => 'Condat Solutions',
+            'subheading' => 'All your business in one space',
+        ];
+        $data = ['to_email' => 'satshanker.01@gmail.com',
+            'to_name' => '',
+            'subject' => 'Profile complete',
+            'from_email' => 'info@condat.com.au', //change this later
+            'from_name' => 'Condat Solutions', //change this later
+        ];
+
+        Mail::send('template.master', $param, function ($message) use ($data) {
+            $message->to($data['to_email'], $data['to_name'])
+                ->subject($data['subject'])
+                ->from($data['from_email'], $data['from_name']);
+        });
 	    $subscriptions = $subscription->lists('name', 'subscription_id');
 		return view('Frontend::Agency/add', compact('subscriptions'));
 	}

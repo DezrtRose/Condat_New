@@ -83,10 +83,11 @@ class Agency extends Model
             $tenant->newTenant($request);
 
             // sending email to agency
+            $complete_profile_url = url('tenant/login?tenant=' . $agency->agency_id . '&auth_code=' . $unique_auth_code);
             $agency_message = <<<EOD
 <strong>Respected {$request['name']}, </srtong>
-<p>Your agency account has been created successfully on Condat Solutions. Please <a href="">click here</a> or follow the link below to complete the registration process.</p>
-<a href="">$unique_auth_code</a>
+<p>Your agency account has been created successfully on Condat Solutions. Please <a href="$complete_profile_url">click here</a> or follow the link below to complete the registration process.</p>
+<a href="$complete_profile_url">$complete_profile_url</a>
 EOD;
 
             $param = ['content' => $agency_message,
@@ -97,7 +98,7 @@ EOD;
             $data = ['to_email' => $request['email_id'],
                 'to_name' => $request['name'],
                 'subject' => 'Agency Created Successfully',
-                'from_email' => 'krita@condat.com', //change this later
+                'from_email' => env('FROM_EMAIL', 'info@condat.com.au'), //change this later
                 'from_name' => 'Condat Solutions', //change this later
             ];
 

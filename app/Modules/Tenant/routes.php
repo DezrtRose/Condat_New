@@ -41,6 +41,7 @@ Route::group($group_auth, function () {
 Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => 'guest.tenant', 'namespace' => 'App\Modules\Tenant\Controllers'), function () {
     Route::get('login', ['as' => 'tenant.login', 'uses' => 'AuthController@getLogin']);
     Route::post('login', 'AuthController@postLogin');
+    Route::post('complete', 'AuthController@complete');
 });
 
 /* Tenant Routes for pages that need authentication */
