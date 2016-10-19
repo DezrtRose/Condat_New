@@ -196,6 +196,9 @@ class Tenant {
      */
     function dataInsert($request)
     {
+        // add profile
+        $profile = ['first_name' => 'Tenant'];
+        $new_person = Person::create($profile);
 
         //add Admin user
         $tenantInfoInSystem = $this->getTenantinfo();
@@ -206,11 +209,8 @@ class Tenant {
         $user->status = 1; // Activated
         //$user->first_time = 1; // yes first time
         $user->auth_code = $request['unique_auth_code']; // yes first time
+        $user->person_id = $new_person->person_id;
         $user->save();
-
-        // add profile
-        $profile = ['user_id' => $user->user_id];
-        Person::create($profile);
 
         // update company name in setting table
         $setting = $this->tenantSettings->firstOrNew(['name' => 'company']);
