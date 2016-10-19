@@ -1,27 +1,13 @@
-<section class="margin-to-up margin-to-down">
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="{{ Request::is('tenant/client_invoice_report/invoice_pending') ? 'active' : '' }}"><a href="{{ route('client.invoice.pending') }}">Pending Invoices</a></li>
-        
-        <li class="{{ Request::is('tenant/client_invoice_report/invoice_paid') ? 'active' : '' }}"><a href="{{ route('client.invoice.paid') }}">Paid Invoices</a></li>
-        
-        <li class="{{ Request::is('tenant/client_invoice_report/invoice_future') ? 'active' : '' }}"><a href="{{ route('client.invoice.future') }}">Future Invoices</a></li>
-
-        <li class="{{ Request::is('tenant/client_invoice_report/search') ? 'active' : '' }}"><a href="{{ route('client.invoice.search') }}">Advance Search</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<nav class="nav-bar">
+  <div class="nav-container">
+    <a id="nav-menu" class="nav-menu">&#9776; Menu</a>
+    <ul class="nav-list " id="nav">
+      <li> <a href="#" id="tile1" class="text-uppercase"> Client Invoices</a></li>
+      <li class="{{ Request::is('tenant/client_invoice_report/invoice_pending') ? 'active' : '' }}"> <a href="{{ route('client.invoice.pending') }}" id="tile2"><i class="fa fa-hourglass-half"></i> Pending Invoices</a></li>
+      <li class="{{ Request::is('tenant/client_invoice_report/invoice_paid') ? 'active' : '' }}"> <a href="{{ route('client.invoice.paid') }}" id="tile3"><i class="fa fa-money"></i> Paid Invoices</a></li>
+      <li class="{{ Request::is('tenant/client_invoice_report/invoice_future') ? 'active' : '' }}"> <a href="{{ route('client.invoice.future') }}" id="tile4"><i class="glyphicon glyphicon-piggy-bank"></i> Future Invoices</a></li>
+      <li class="{{ Request::is('tenant/client_invoice_report/search') ? 'active' : '' }}"> <a href="{{ route('client.invoice.search') }}" id="tile5"><i class="fa fa-search-plus"></i> Advance Search</a></li>
+    </ul>
+  </div>
 </nav>
-</section>
