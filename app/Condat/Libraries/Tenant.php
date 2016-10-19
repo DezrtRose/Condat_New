@@ -319,12 +319,14 @@ class Tenant {
         $database_name = 'tenant';
         if(isset($_COOKIE['database_name'])) {
             $database_name = $_COOKIE['database_name'];
+            return $database_name;
         } elseif(isset($query_string['tenant'])) {
             $agency = new Agency();
             $database_name = $agency->where('agency_id', $query_string['tenant'])->first()->company_database_name;
             setcookie('database_name', $database_name, time() + 86400, '/');
+            return $database_name;
         }
-        return $database_name;
+        header('location: ' . url('/'));die;
     }
 
     /**
