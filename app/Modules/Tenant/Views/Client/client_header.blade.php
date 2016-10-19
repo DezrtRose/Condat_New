@@ -1,20 +1,20 @@
 <div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="col-sm-2">
-
+            <div class="col-sm-2 text-center">
                 <img src="{{ ($client->filename != null)? url($client->shelf_location.$client->filename) : asset('assets/img/default-user.png') }}"
                      class=""
                      alt="{{$client->first_name}} {{$client->middle_name}} {{$client->last_name}}"
                      height="150"/>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#url-modal">
+                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#url-modal">
                     <i class="fa fa-upload"></i>Upload From URL
                 </button>
 
             </div>
-            <div class="col-sm-10">
+            <div class="col-sm-10 mar-top-40">
                 <div class="row margin-top">
-                    <div class="col-md-2"><h4 class="text-uppercase">{{$client->first_name}} {{$client->middle_name}}<br/>
+                    <div class="col-md-2"><h4 class="text-uppercase">{{$client->first_name}} {{$client->middle_name}}
+                            <br/>
                             <b>{{$client->last_name}}</b></h4></div>
                     <div class="col-md-3"><span class="text-muted"><i class="fa fa-phone"></i> PHONE</span> <br/>
 
@@ -43,26 +43,9 @@
                         </div>
                     </div>
                 </div>
-                {{--                <div class="container">
-                                    <nav class="navbar navbar-default">
-                                        <div class="container-fluid">
-                                            <div class="navbar-header">
-                                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                                    <span class="sr-only">Toggle navigation</span>
-                                                    <span class="icon-bar"></span>
-                                                    <span class="icon-bar"></span>
-                                                    <span class="icon-bar"></span>
-                                                </button>
-                                                <a class="navbar-brand visible-xs" href="#">AMS</a>
-                                            </div>
-
-                                            @include('Tenant::Client/navbar')
-                                        </div>
-                                        <!--/.container-fluid -->
-                                    </nav>
-
-                                </div>--}}
+                <div class="row margin-top">
+                    @include('Tenant::Client/navbar')
+                </div>
             </div>
         </div>
     </div>
