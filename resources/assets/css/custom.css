@@ -229,3 +229,15 @@ body.modal-open .datepicker.dropdown-menu {
 .input-num {
     width: 48%;
 }
+
+.text-blue {
+    color: #3c8dbc;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
