@@ -281,7 +281,8 @@ Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => '
     Route::resource('user', 'UserController');
     Route::get('users/data', 'UserController@getData');
     Route::get('profile', 'UserController@edit');
-    Route::post('profile', 'UserController@update');
+    //Route::post('profile', 'UserController@update');
+    Route::post('users/{user_id}/update', ['as' => 'tenant.users.update', 'uses' => 'UserController@update']);
     Route::get('users/dashboard', ['as' => 'users.dashboard', 'uses' => 'UserController@dashboard']);
 
     /* Set reminder as completed */

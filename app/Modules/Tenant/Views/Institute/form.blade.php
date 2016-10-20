@@ -138,13 +138,3 @@
         </div>
     @endif
 </div>
-
-<script>
-    $(function () {
-        var date = new Date();
-        $("#dob").datepicker({
-            autoclose: true,
-            endDate: date
-        });
-    });
-</script>

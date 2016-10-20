@@ -37,7 +37,8 @@ class Timeline extends Model
     public function getTimeline()
     {
         $logs = Timeline::join('timeline_types', 'timeline_types.type_id', '=', 'timelines.timeline_type_id')
-            ->select('timelines.*', 'timeline_types.image')
+            ->join('client_timeline', 'client_timeline.timeline_id', '=', 'timelines.timeline_id')
+            ->select('timelines.*', 'timeline_types.image', 'client_timeline.client_id')
             ->orderBy('created_at', 'desc')
             ->get()
             ->groupBy('created_date');

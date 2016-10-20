@@ -53,7 +53,7 @@ class AuthController extends BaseController {
 	public function logout()
 	{
 		$this->auth->logout();
-		return redirect('login');
+		return redirect()->route('tenant.login');
 	}
 
 	/**

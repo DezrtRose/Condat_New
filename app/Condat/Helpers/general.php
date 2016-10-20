@@ -307,6 +307,15 @@ function get_tenant_name($user_id = null)
             return 'Undefined';
 }
 
+function get_client_name($client_id)
+{
+    $client = \App\Modules\Tenant\Models\Client\Client::find($client_id);
+        if (!empty($client))
+            return $client->person->first_name . ' ' . $client->person->last_name;
+        else
+            return 'Undefined';
+}
+
 function get_agent_name($agent_id = null)
 {
     if($agent_id != null) {

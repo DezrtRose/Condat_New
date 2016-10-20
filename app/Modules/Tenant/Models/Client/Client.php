@@ -46,7 +46,7 @@ class Client extends Model
      */
     public function person()
     {
-        return $this->belongsTo('App\Modules\Tenant\Models\Person\Person');
+        return $this->belongsTo('App\Modules\Tenant\Models\Person\Person', 'person_id');
     }
 
     /**

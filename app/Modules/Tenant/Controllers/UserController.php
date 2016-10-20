@@ -18,19 +18,20 @@ class UserController extends BaseController
     /* Validation rules for user create and edit */
     protected $rules = [
         'first_name' => 'required|min:2|max:55',
-        'last_name' => 'required|alpha|min:2|max:55',
-        'middle_name' => 'alpha|min:2|max:55',
+        'last_name' => 'required|min:2|max:55',
+        'middle_name' => 'min:2|max:55',
         'dob' => 'required',
         'number' => 'required'
     ];
 
-    function __construct(User $user, ApplicationStatus $applicationStatus, Timeline $timeline, StudentInvoice $invoice, Notes $note)
+    function __construct(User $user, ApplicationStatus $applicationStatus, Timeline $timeline, StudentInvoice $invoice, Notes $note, Request $request)
     {
         $this->user = $user;
         $this->applicationStatus = $applicationStatus;
         $this->timeline = $timeline;
         $this->invoice = $invoice;
         $this->note = $note;
+        $this->request = $request;
         parent::__construct();
     }
 
@@ -67,7 +68,9 @@ class UserController extends BaseController
     function getData(Request $request)
     {
         $users = User::join('persons', 'persons.person_id', '=', 'users.person_id')
-            ->select(['users.user_id', 'persons.first_name', 'persons.last_name', 'users.email', 'users.status', 'users.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname')]);
+            ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
+            ->leftJoin('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
+            ->select(['users.user_id', 'persons.first_name', 'persons.last_name', 'users.email', 'phones.number', 'users.status', 'users.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname')]);
 
         $datatable = \Datatables::of($users)
             ->addColumn('action', '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="{{ route( \'tenant.user.show\', $user_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="{{ route( \'tenant.user.edit\', $user_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete User" class="delete-user btn btn-action-box" href="{{ route( \'tenant.user.destroy\', $user_id) }}"><i class="fa fa-trash"></i></a>')
@@ -163,18 +166,18 @@ class UserController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($user_id = null, Request $request)
+    public function update($user_id = null)
     {
         // Update Own Profile
         if ($user_id == null)
             $user_id = current_user_id();
 
         /* Additional validation rules checking for uniqueness */
-        $this->rules['email'] = 'required|email|min:5|max:55|unique:users,email,' . $user_id;
+        $this->rules['email'] = 'required|email|min:5|max:55|unique:users,email,' . $user_id .',user_id';
 
-        $this->validate($request, $this->rules);
+        $this->validate($this->request, $this->rules);
         // if validates
-        $updated = $this->user->edit($request->all(), $user_id);
+        $updated = $this->user->edit($this->request->all(), $user_id);
         if ($updated)
             Flash::success('User has been updated successfully.');
         return redirect()->route('tenant.user.index');

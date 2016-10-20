@@ -315,6 +315,7 @@ class Tenant {
 
     function tenantDb()
     {
+        return 'tenant';
         $query_string = $this->request->all();
         $database_name = 'tenant';
         if(isset($_COOKIE['database_name'])) {

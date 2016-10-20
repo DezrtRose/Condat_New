@@ -20,7 +20,6 @@
                         <th>Full Name</th>
                         <th>Phone No</th>
                         <th>Email</th>
-                        <th>Role</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -39,12 +38,9 @@
                     "columns": [
                         {data: 'user_id', name: 'user_id'},
                         {data: 'fullname', name: 'fullname'},
+                        {data: 'number', name: 'number'},
                         {data: 'email', name: 'email'},
-                        {data: 'email', name: 'email'},
-                        {data: 'email', name: 'email'},
-                        
                         {data: 'status', name: 'status'},
-                       
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                     ],
                     order: [ [0, 'desc'] ]

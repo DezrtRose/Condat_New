@@ -50,7 +50,11 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    {!!Form::text('dob', null, array('class' => 'form-control', 'id'=>'dob'))!!}
+                    @if(isset($user->dob))
+                        {!!Form::text('dob', format_date($user->dob), array('class' => 'form-control', 'id'=>'dob'))!!}
+                    @else
+                        {!!Form::text('dob', null, array('class' => 'form-control', 'id'=>'dob'))!!}
+                    @endif
                 </div>
                 @if($errors->has('dob'))
                     {!! $errors->first('dob', '<label class="control-label"

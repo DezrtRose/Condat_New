@@ -1,7 +1,9 @@
 <?php namespace App\Modules\Tenant\Models;
 
 use App\Modules\Tenant\Models\Person\PersonAddress;
+use App\Modules\Tenant\Models\Person\PersonEmail;
 use App\Modules\Tenant\Models\Person\PersonPhone;
+use App\Modules\Tenant\Models\Phone;
 use App\Modules\Tenant\Models\Person\Person;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Authenticatable;
@@ -73,7 +75,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             \Auth::logout();
             return redirect()->route('system.login')->withInput()->with('message', 'Your account has been permanently blocked.');
         }*/
-        return redirect()->route('tenant.client.index');
+        return redirect()->route('users.dashboard');
     }
 
     function saveUser($email = '', $details = array())
@@ -89,7 +91,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return isset($this->role[$this->role]) ? $this->role[$this->role] : 'Unknown';
     }
-
 
     function withGuid($guid)
     {
@@ -127,11 +128,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ]);
 
             $user = User::create([
-                'email' => $request['email'],
                 'role' => $request['role'], // 0 : client, 1 : admin, 2 : super-admin
                 'status' => 0, // Pending
                 'person_id' => $person->person_id, // pending
             ]);
+
+            $email = Email::create([
+                'email' => $request['email']
+            ]);
+
+            PersonEmail::create([
+                'person_id' => $person->person_id,
+                'email_id' => $email->email_id,
+                'is_primary' => 1
+            ]);
+
 
             // Add address
             $address = Address::create([
@@ -234,51 +245,80 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
 
-    public function updateUser($details = '')
+    public function edit(array $request, $user_id)
     {
-        $guid = $details['guid'];
-        if (isset($details['permissions'])) {
-            $per = serialize($details['permissions']);
-        } else {
-            $per = '';
+        DB::beginTransaction();
+
+        try {
+            $user = User::find($user_id);
+            $user->role = $request['role'];
+            $user->save();
+
+            $person_email = PersonEmail::firstOrCreate(['person_id' => $user->person_id]);
+
+            //for when not saved, remove this when no old records
+            if ($person_email->email_id != 0) {
+                $email = Email::find($person_email->email_id);
+                $email->email = $request['email'];
+                $email->save();
+
+            } else { //remove this one
+                $email = Email::create([
+                    'email' => $request['email']
+                ]);
+                $person_email->email_id = $email->email_id;
+                $person_email->save();
+            }
+
+            $person = Person::find($user->person_id);
+            $person->first_name = $request['first_name'];
+            $person->middle_name = $request['middle_name'];
+            $person->last_name = $request['last_name'];
+            $person->dob = insert_dateformat($request['dob']);
+            $person->sex = $request['sex'];
+            $person->save();
+
+            $person_add = PersonAddress::where('person_id', $person->person_id)->first();
+            if (empty($person_add)) {
+                $address = Address::create();
+                PersonAddress::create([
+                    'person_id' => $person->person_id,
+                    'is_current' => 1,
+                    'address_id' => $address->address_id
+                ]);
+            } else {
+                $address = Address::find($person_add->address_id);
+            }
+            $address->street = $request['street'];
+            $address->suburb = $request['suburb'];
+            $address->postcode = $request['postcode'];
+            $address->state = $request['state'];
+            $address->country_id = $request['country_id'];
+            $address->save();
+
+            // Add Phone Number
+            $person_ph = PersonPhone::where('person_id', $person->person_id)->first();
+            if (empty($person_ph)) {
+                $phone = Phone::create();
+                PersonPhone::create([
+                    'person_id' => $person->person_id,
+                    'is_primary' => 1,
+                    'phone_id' => $phone->phone_id
+                ]);
+            } else {
+                $phone = Phone::find($person_ph->phone_id);
+            }
+            $phone->number = $request['number'];
+            $phone->save();
+
+            DB::commit();
+            return $user->user_id;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            // something went wrong
         }
-        $user = User::where('guid', $guid)->first();
-        $user->fullname = $details['fullname'];
-        $user->role = 2;
-        $user->email = $details['email'];
-        $user->permissions = $per;
-        $user->save();
-
-        $user_id = $user->id;
-
-        $fileName = null;
-        if (FacadeRequest::hasFile('photo')) {
-            $file = FacadeRequest::file('photo');
-            $fileName = \FB::uploadFile($file);
-        }
-
-        $email_setting_details = $details->only('incoming_server', 'outgoing_server', 'email_username', 'email_password');
-        $personal_email_setting = json_encode($email_setting_details);
-
-        $profile = Profile::where('user_id', $user_id)->first();
-        $profile->user_id = $user_id;
-        $profile->phone = $details['phone'];
-        $profile->address = $details['address'];
-        $profile->postcode = $details['postcode'];
-        $profile->town = $details['town'];
-        $profile->comment = $details['comment'];
-        if ($fileName != null) {
-            $profile->photo = $fileName; //unlink images
-        }
-        $profile->tax_card = $details['tax_card'];
-        $profile->social_security_number = $details['social_security_number'];
-        $profile->smtp = $personal_email_setting;
-        $profile->save();
-
-        $updated_user['data'] = $this->toFomatedData($user);
-        $updated_user['template'] = $this->getTemplate($user);
-
-        return $updated_user;
     }
 
     public function getTemplate($details = '')
@@ -336,6 +376,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->leftJoin('addresses', 'addresses.address_id', '=', 'person_addresses.address_id')
             ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
+            ->leftJoin('person_emails', 'person_emails.person_id', '=', 'persons.person_id')
+            ->leftJoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->where('users.user_id', $user_id)//and user for email?
             ->first();
         return $user;

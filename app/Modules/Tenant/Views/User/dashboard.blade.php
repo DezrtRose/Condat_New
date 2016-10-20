@@ -48,27 +48,34 @@
                 <h3 class="box-title">Outstanding Payments</h3>
             </div>
             <div class="box-body">
-                <table id="clients" class="table table-bordered table-striped dataTable">
-                    <thead>
-                    <tr>
-                        <th>Client Name</th>
-                        <th>Outstanding Amount</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($outstanding_payments as $client_id => $outstanding_payment)
+                @if(!empty($outstanding_payments))
+                    <table id="clients" class="table table-bordered table-striped dataTable">
+                        <thead>
                         <tr>
-                            <td>{{ $outstanding_payment['client_name'] }}</td>
-                            <td>{{ format_price($outstanding_payment['outstanding_amount']) }}</td>
-                            <td>
-                                <a data-toggle="tooltip" title="View Client Account" class="btn btn-action-box"
-                                   href="{{ route('tenant.client.show', $client_id) }}"><i class="fa fa-eye"></i></a>
-                            </td>
+                            <th>Client Name</th>
+                            <th>Outstanding Amount</th>
+                            <th></th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @foreach($outstanding_payments as $client_id => $outstanding_payment)
+                            <tr>
+                                <td>{{ $outstanding_payment['client_name'] }}</td>
+                                <td>{{ format_price($outstanding_payment['outstanding_amount']) }}</td>
+                                <td>
+                                    <a data-toggle="tooltip" title="View Client Account" class="btn btn-action-box"
+                                       href="{{ route('tenant.client.show', $client_id) }}"><i
+                                                class="fa fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <p class="text-muted well">
+                        No outstanding payment.
+                    </p>
+                @endif
             </div>
         </div>
         <div class="box box-primary">
@@ -81,6 +88,7 @@
                 </div>
             </div>
             <div class="box-body">
+                @if(!empty($active_clients))
                 <table id="clients" class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr>
@@ -112,8 +120,12 @@
                     <?php
                     }
                     ?>
-
                 </table>
+                @else
+                    <p class="text-muted well">
+                        No active clients.
+                    </p>
+                @endif
             </div>
         </div>
     </div>
