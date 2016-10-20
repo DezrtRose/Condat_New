@@ -75,7 +75,7 @@ class FrontendController extends BaseController {
 		'g-recaptcha-response' => 'required|recaptcha',
 		];
 
-		//$this->validate($this->request, $rules);
+		$this->validate($this->request, $rules);
 		// if validates
 		$request = $this->request->all();
 		$created = $this->agency->add($request);

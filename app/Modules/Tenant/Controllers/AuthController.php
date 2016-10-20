@@ -1,6 +1,10 @@
 <?php namespace App\Modules\Tenant\Controllers;
 
 use App\Http\Requests;
+use App\Modules\Tenant\Models\Address;
+use App\Modules\Tenant\Models\Person\Person;
+use App\Modules\Tenant\Models\Person\PersonAddress;
+use App\Modules\Tenant\Models\Person\PersonPhone;
 use App\Modules\Tenant\Models\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -125,10 +129,45 @@ class AuthController extends BaseController {
 
 	public function complete(Request $request)
     {
+        $rules = [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'phone_id' => 'required',
+            'password' => 'required',
+            'repassword' => 'required',
+            'sex' => 'required'
+        ];
+
+        $this->validate($request, $rules);
+
         $profile_data = $request->all();
         $user = User::where('email', $profile_data['email'])->first();
         $user->password = bcrypt($profile_data['password']);
         $user->save();
+
+        $person = Person::find($user->person_id);
+        $person->first_name = $profile_data['first_name'];
+        $person->last_name = $profile_data['last_name'];
+        $person->sex = $profile_data['sex'];
+        $person->save();
+
+        PersonPhone::create([
+            'person_id' => $person->person_id,
+            'phone_id' => $profile_data['phone_id']
+        ]);
+
+        $address = Address::create([
+            'street' => $profile_data['street'],
+            'suburb' => $profile_data['suburb'],
+            'postcode' => $profile_data['postcode'],
+            'state' => $profile_data['state'],
+            'country_id' => $profile_data['country_id']
+        ]);
+
+        PersonAddress::create([
+            'address_id' => $address->address_id,
+            'person_id' => $person->person_id
+        ]);
 
         $login_url = url('tenant/login?tenant=' . $profile_data['tenant']);
         $agency_message = <<<EOD
@@ -147,11 +186,11 @@ EOD;
             'from_name' => 'Condat Solutions', //change this later
         ];
 
-        Mail::send('template.master', $param, function ($message) use ($data) {
+        /*Mail::send('template.master', $param, function ($message) use ($data) {
             $message->to($data['to_email'], $data['to_name'])
                 ->subject($data['subject'])
                 ->from($data['from_email'], $data['from_name']);
-        });
+        });*/
 
         Flash::success('Profile has been completed. Please login.');
         return redirect()->route('tenant.login');
