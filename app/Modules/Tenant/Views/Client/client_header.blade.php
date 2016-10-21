@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-md-3"><span class="text-muted"><i class="fa fa-envelope"></i> EMAIL</span> <br/>
 
-                        <p class="text-blue">{{$client->email}}</p>
+                        <a href="mailto:{{$client->email}}" class="text-blue">{{$client->email}}</a>
                     </div>
                     <div class="col-md-3"><span class="text-muted"><i class="fa fa-map-marker"></i> ADDRESS</span> <br/>
 

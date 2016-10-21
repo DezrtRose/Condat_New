@@ -508,3 +508,7 @@ nav.nav-bar ul {
             padding-top: 30px ;
         }
     }
+
+.strike-through td {
+    text-decoration: line-through;
+}

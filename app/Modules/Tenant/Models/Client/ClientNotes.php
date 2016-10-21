@@ -44,8 +44,10 @@ class ClientNotes extends Model
             ->orderBy('notes_id', 'desc')
             ->where('client_notes.client_id', $client_id);
 
-        if($remainders_only)
-            $notes = $notes->where('remind', 1);
+        if($remainders_only) {
+            $notes = $notes->where('remind', 1)
+                ->where('notes.status', 0);
+        }
 
         $notes = $notes->get();
         return $notes;
@@ -69,10 +71,12 @@ class ClientNotes extends Model
 
     public function deleteNote($note_id)
     {
+        $client_notes = ClientNotes::where('note_id', $note_id)->first();
+        $client_id = $client_notes->client_id;
+        $client_notes->delete();
         Notes::destroy($note_id);
-        $client_notes = ClientNotes::where('note_id', $note_id)->first()->delete();
-        if (!empty($client_notes))
-            return $client_notes->client_id;
+        if (!empty($client_id))
+            return $client_id;
         else
             dd('Something went wrong');
 

@@ -90,7 +90,9 @@ class BaseController extends Controller{
 	function getReminders()
 	{
 		$reminders = ClientNotes::join('notes', 'notes.notes_id', '=', 'client_notes.note_id')
-			->select('notes.*')
+            ->join('clients', 'clients.client_id', '=', 'client_notes.client_id')
+            ->join('persons', 'clients.person_id', '=', 'persons.person_id')
+			->select('notes.*', 'clients.client_id', 'persons.first_name', 'persons.last_name')
 			->orderBy('reminder_date', 'desc')
 			->where('remind', 1)
 			->where('status', 0)

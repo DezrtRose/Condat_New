@@ -204,16 +204,16 @@ class TenantFileSystem {
     {
         $destinationPath = $this->path();
         $external_path = str_replace('local', '', base_path());
-        $file = $external_path.$destinationPath;
+        $file = $external_path.$destinationPath.$fileName;
 
-        if(\File::exists($file.$fileName.$fileName)) {
+        if(\File::exists($file)) {
             $headers = array(
                 'Content-Type: application/pdf',
             );
             return response()->download($file, $fileName, $headers);
             //return \Response::download($file);
         } else {
-            return false;
+            abort(404);
         }
     }
 

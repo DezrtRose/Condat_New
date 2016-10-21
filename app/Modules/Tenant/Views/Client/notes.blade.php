@@ -77,7 +77,7 @@
                         <tbody>
                         @foreach($notes as $key => $note)
 
-                            <tr>
+                            <tr class="@if($note->status == 1){{'strike-through'}}@endif">
                                 <td>{{ get_tenant_name($note->added_by_user_id)}}</td>
                                 <td>{{ $note->description }}</td>
                                 <td>{{ ($note->remind == 1) ? 'yes' : 'no' }}</td>

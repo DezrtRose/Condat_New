@@ -39,10 +39,10 @@
                                 @if(count($reminders) > 0)
                                     @foreach($reminders as $key => $reminder)
                                         <li><!-- Task item -->
-                                            <a href="#">
+                                            <a href="{{route('tenant.client.show', $reminder->client_id)}}">
                                                 <h3>
                                                     <input type="checkbox" class="icheck com-reminder" id="{{ $reminder->notes_id }}" />
-                                                    {{ $reminder->description }}
+                                                    {{$reminder->first_name . ' ' . $reminder->last_name}} - {{ $reminder->description }}
                                                     <small class="pull-right">{{ format_date($reminder->reminder_date) }}</small>
                                                 </h3>
                                             </a>
