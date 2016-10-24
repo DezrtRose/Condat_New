@@ -2,21 +2,22 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="col-sm-2 text-center">
-                <img src="{{ ($client->filename != null)? url($client->shelf_location.$client->filename) : asset('assets/img/default-user.png') }}"
-                     class=""
-                     alt="{{$client->first_name}} {{$client->middle_name}} {{$client->last_name}}"
-                     height="150"/>
-                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#url-modal">
-                    <i class="fa fa-upload"></i>Upload From URL
-                </button>
-
+                <div class="client-header-img">
+                    <img src="{{ ($client->filename != null)? url($client->shelf_location.$client->filename) : asset('assets/img/default-user.png') }}"
+                         class=""
+                         alt="{{$client->first_name}} {{$client->middle_name}} {{$client->last_name}}"
+                         height="150"/>
+                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#url-modal">
+                        <i class="fa fa-camera fa-fw"></i>Upload From URL
+                    </button>
+                </div>
             </div>
-            <div class="col-sm-10 mar-top-40">
-                <div class="row margin-top">
+            <div class="col-sm-10">
+                <div class="row margin-top client-header-body">
                     <div class="col-md-2"><h4 class="text-uppercase">{{$client->first_name}} {{$client->middle_name}}
                             <br/>
                             <b>{{$client->last_name}}</b></h4></div>
-                    <div class="col-md-3"><span class="text-muted"><i class="fa fa-phone"></i> PHONE</span> <br/>
+                    <div class="col-md-2"><span class="text-muted"><i class="fa fa-phone"></i> PHONE</span> <br/>
 
                         <p class="text-blue">{{$client->number}}</p>
                     </div>
@@ -28,18 +29,29 @@
 
                         <p class="text-blue">
                             {{ $client->street }}&nbsp;,
-                            {{ $client->suburb }}&nbsp;
-                            {{ $client->state }}&nbsp;
+                            {{ $client->suburb }}&nbsp;<br/>
+                            {{ $client->state }} , &nbsp;
                             {{ $client->postcode }}&nbsp;
                             <strong>{{ get_country($client->country_id) }}</strong>
                         </p>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <div class="pull-right">
-                            <a href="{{ route('tenant.client.edit', $client->client_id) }}"
-                               class="btn btn-flat btn-primary"><i class="fa fa-edit"></i> Edit &nbsp;&nbsp;</a><br/>
-                            <a href="{{ route('tenant.client.compose', $client->client_id) }}"
-                               class="btn btn-flat btn-success margin-top"><i class="fa fa-envelope"></i> Email</a>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success">Action</button>
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{ route('tenant.client.edit', $client->client_id) }}"><i class="fa fa-edit"></i> Edit</a><br/>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('tenant.client.compose', $client->client_id) }}"><i class="fa fa-envelope"></i> Email</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

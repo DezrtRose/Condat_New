@@ -512,3 +512,27 @@ nav.nav-bar ul {
 .strike-through td {
     text-decoration: line-through;
 }
+.client-header-img {
+    position: relative;
+}
+.client-header-img img {
+    width: 100%;
+}
+.client-header-img .btn {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+.client-header-img i {
+    margin-right: 5px;
+}
+.client-header-body {
+    border-bottom: 1px solid #eee;
+}
+.client-header-body h4 {
+    margin-top: 0;
+}
+.client-header-body ul {
+    left: -70px;
+}
