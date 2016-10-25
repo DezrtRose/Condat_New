@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `active_clients` (
   `user_id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `type` varchar(145) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `agencies` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `company_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `agency_subscriptions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `subscription_status_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `agency_users` (
   `agency_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `level_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `agents` (
   `address_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `application_notes` (
   `id` int(11) NOT NULL,
   `application_id` int(11) NOT NULL,
   `note_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `application_status` (
   `date_applied` datetime DEFAULT NULL,
   `date_removed` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -215,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `application_status_documents` (
   `application_id` int(11) NOT NULL,
   `application_status_id` int(11) NOT NULL,
   `document_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -259,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `ci_other_commissions` (
   `gst` float NOT NULL,
   `description` varchar(155) NOT NULL,
   `college_invoice_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -280,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `ci_tuition_commissions` (
   `commission_amount` float NOT NULL,
   `commission_gst` float NOT NULL,
   `college_invoice_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `created_at` timestamp NULL DEFAULT NULL,
   `referred_by` varchar(155) NOT NULL,
   `description` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -310,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `client_documents` (
   `document_id` int(11) NOT NULL,
   `status_id` int(11) DEFAULT NULL,
   `client_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -327,7 +327,7 @@ CREATE TABLE IF NOT EXISTS `client_emails` (
   `user_id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -339,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `client_notes` (
   `id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
   `note_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -358,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `client_payments` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `payment_type` varchar(145) DEFAULT NULL COMMENT 'this is to find if payment is made by student or made to student',
   `added_by` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1 COMMENT='invoice items';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='invoice items';
 
 -- --------------------------------------------------------
 
@@ -371,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `client_timeline` (
   `client_id` int(11) NOT NULL,
   `timeline_id` int(11) NOT NULL,
   `application_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -390,7 +390,7 @@ CREATE TABLE IF NOT EXISTS `college_invoices` (
   `invoice_date` datetime DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -402,7 +402,7 @@ CREATE TABLE IF NOT EXISTS `college_invoice_payments` (
   `invoice_payments_id` int(11) NOT NULL,
   `ci_payment_id` int(11) NOT NULL,
   `college_invoice_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -422,7 +422,7 @@ CREATE TABLE IF NOT EXISTS `college_payments` (
   `added_by` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COMMENT='invoice items';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='invoice items';
 
 -- --------------------------------------------------------
 
@@ -436,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `commissions` (
   `description` varchar(45) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -454,7 +454,7 @@ CREATE TABLE IF NOT EXISTS `companies` (
   `invoice_to_name` varchar(145) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -508,7 +508,7 @@ CREATE TABLE IF NOT EXISTS `company_contacts` (
   `person_id` int(11) DEFAULT NULL,
   `department` varchar(45) DEFAULT NULL,
   `position` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -520,7 +520,7 @@ CREATE TABLE IF NOT EXISTS `company_default_contacts` (
   `company_default_contact_id` int(11) NOT NULL,
   `company_id` int(11) NOT NULL,
   `phone_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -828,7 +828,7 @@ CREATE TABLE IF NOT EXISTS `courses` (
   `broad_field` int(11) DEFAULT NULL COMMENT 'Broad Category ID',
   `level_id` int(11) DEFAULT NULL COMMENT 'Diploma, Bachelor etc..',
   `narrow_field` int(11) DEFAULT NULL COMMENT 'Narrow category mainly for search\n'
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -852,7 +852,7 @@ CREATE TABLE IF NOT EXISTS `course_application` (
   `institute_id` int(11) DEFAULT NULL,
   `location_id` int(11) DEFAULT NULL,
   `sub_agent_commission` float DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COMMENT='course application table	';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='course application table	';
 
 -- --------------------------------------------------------
 
@@ -878,7 +878,7 @@ CREATE TABLE IF NOT EXISTS `course_fees` (
   `description` text,
   `fees_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -942,7 +942,7 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `description` varchar(45) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COMMENT='Document table';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Document table';
 
 -- --------------------------------------------------------
 
@@ -955,7 +955,7 @@ CREATE TABLE IF NOT EXISTS `emails` (
   `email` varchar(245) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -997,7 +997,7 @@ CREATE TABLE IF NOT EXISTS `fees` (
   `other_fee` float DEFAULT NULL,
   `coe_initial_deposit` float DEFAULT NULL,
   `description` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1009,7 +1009,7 @@ CREATE TABLE IF NOT EXISTS `group_college_invoices` (
   `group_college_invoice_id` int(11) NOT NULL,
   `group_invoices_id` int(11) NOT NULL,
   `college_invoices_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1022,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS `group_invoices` (
   `date` datetime DEFAULT NULL,
   `description` text,
   `due_date` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1037,7 +1037,7 @@ CREATE TABLE IF NOT EXISTS `institutes` (
   `added_by` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1050,7 +1050,7 @@ CREATE TABLE IF NOT EXISTS `institute_addresses` (
   `institute_id` int(11) NOT NULL,
   `address_id` int(11) NOT NULL,
   `email` varchar(55) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1063,7 +1063,7 @@ CREATE TABLE IF NOT EXISTS `institute_courses` (
   `course_id` int(11) DEFAULT NULL,
   `institute_id` int(11) DEFAULT NULL,
   `description` varchar(145) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1101,7 +1101,7 @@ CREATE TABLE IF NOT EXISTS `institute_intakes` (
   `institute_intake_id` int(11) NOT NULL,
   `intake_id` int(11) DEFAULT NULL,
   `institute_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1129,7 +1129,7 @@ CREATE TABLE IF NOT EXISTS `intakes` (
   `description` varchar(45) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1150,7 +1150,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
   `invoice_date` datetime DEFAULT NULL,
   `due_date` date NOT NULL,
   `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1290,7 +1290,7 @@ CREATE TABLE IF NOT EXISTS `notes` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0: incomplete, 1: complete',
   `completed_date` datetime DEFAULT NULL,
   `completed_by` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1302,7 +1302,7 @@ CREATE TABLE IF NOT EXISTS `payment_invoice_breakdowns` (
   `payment_invoice_breakdown_id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
   `payment_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1 COMMENT='invoice items';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='invoice items';
 
 -- --------------------------------------------------------
 
@@ -1344,7 +1344,7 @@ CREATE TABLE IF NOT EXISTS `persons` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `passport_no` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1357,7 +1357,7 @@ CREATE TABLE IF NOT EXISTS `person_addresses` (
   `address_id` int(11) DEFAULT NULL,
   `person_id` int(11) DEFAULT NULL,
   `is_current` tinyint(1) DEFAULT NULL COMMENT 'Need to reset the previous current flag ... USE \nStored Procedure'
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1370,7 +1370,7 @@ CREATE TABLE IF NOT EXISTS `person_emails` (
   `person_id` int(11) NOT NULL,
   `email_id` int(11) NOT NULL,
   `is_primary` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1383,7 +1383,7 @@ CREATE TABLE IF NOT EXISTS `person_phones` (
   `phone_id` int(11) NOT NULL,
   `person_id` int(11) NOT NULL,
   `is_primary` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1399,7 +1399,7 @@ CREATE TABLE IF NOT EXISTS `phones` (
   `country_code` varchar(45) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1413,7 +1413,7 @@ CREATE TABLE IF NOT EXISTS `photos` (
   `title` varchar(255) NOT NULL,
   `shelf_location` text NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1497,7 +1497,7 @@ CREATE TABLE IF NOT EXISTS `student_application_payments` (
   `student_payments_id` int(11) NOT NULL,
   `course_application_id` int(11) NOT NULL,
   `client_payment_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1510,7 +1510,7 @@ CREATE TABLE IF NOT EXISTS `student_invoices` (
   `invoice_id` int(11) NOT NULL,
   `application_id` int(11) DEFAULT NULL,
   `client_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1522,7 +1522,7 @@ CREATE TABLE IF NOT EXISTS `subagent_application_payments` (
   `subagent_payments_id` int(11) NOT NULL,
   `course_application_id` int(11) NOT NULL,
   `client_payment_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1534,7 +1534,7 @@ CREATE TABLE IF NOT EXISTS `subagent_invoices` (
   `subagent_invoice_id` int(11) NOT NULL,
   `course_application_id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1594,7 +1594,7 @@ CREATE TABLE IF NOT EXISTS `superagent_institutes` (
   `agents_id` int(11) DEFAULT NULL,
   `institute_id` int(11) DEFAULT NULL,
   `commissions_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1622,7 +1622,7 @@ CREATE TABLE IF NOT EXISTS `timelines` (
   `message` text NOT NULL,
   `added_by` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1638,6 +1638,33 @@ CREATE TABLE IF NOT EXISTS `timeline_types` (
   `body` text,
   `footer` text
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+-- phpMyAdmin SQL Dump
+-- version 4.3.11
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Oct 25, 2016 at 10:43 AM
+-- Server version: 5.6.24
+-- PHP Version: 5.6.8
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Dumping data for table `timeline_types`
+--
+
+INSERT INTO `timeline_types` (`type_id`, `description`, `image`, `header`, `body`, `footer`) VALUES
+(1, 'Client Created', 'fa-user bg-aqua', 'Client Created', NULL, NULL),
+(2, 'Notes Added', 'fa-sticky-note bg-blue', '{{NAME}} added a note', '{{DESCRIPTION}}', NULL),
+(3, 'Document Uploaded', 'fa-clipboard bg-yellow', '{{NAME}} uploaded a document', '<strong>Description : </strong> {{DESCRIPTION}}<br/>\n<strong>Type : </strong> {{TYPE}}<br/>\n<strong>File Name: </strong> {{FILE_NAME}}', '<a href="{{VIEW_LINK}}" target="_blank" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>\n<a href="{{DOWNLOAD_LINK}}" target="_blank" class="btn btn-success btn-xs"><i class="fa fa-download"></i> Download</a>'),
+(4, 'Invoice Created', 'fa-book bg-orange', '{{NAME}} created an invoice', '<strong>Description : </strong> {{DESCRIPTION}}<br/>\n<strong>Invoice Date : </strong> {{DATE}}<br/>\n<strong>Invoice Amount : </strong> {{AMOUNT}}', '<a href="{{VIEW_LINK}}" target="_blank" class="btn btn-primary btn-xs btn-flat"><i class="glyphicon glyphicon-eye-open"></i> View Invoice</a>'),
+(5, 'Payment Added', 'fa-money bg-purple', '{{NAME}} made a payment', '<strong>Payment Type: </strong> {{TYPE}}<br/>\n<strong>Payment Date : </strong> {{DATE}}<br/>\n<strong>Payment Amount : </strong> {{AMOUNT}}<br/>\n<strong>Description : </strong> {{DESCRIPTION}}<br/>', '<a href="{{VIEW_LINK}}" target="_blank" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-print"></i> Print Receipt</a>'),
+(6, 'Application Added', 'fa-graduation-cap bg-maroon', 'Enrolled in {{COURSE}} from {{INSTITUTE}} ', '{{NAME}} created an application. <br/>\n<strong>Tuition fee: </strong>{{TUITION_FEE}}<br/>\n\n<strong>Intake Date: </strong>{{INTAKE_DATE}}<br/>', '<a href="{{VIEW_LINK}}" target="_blank" class="btn btn-primary btn-xs btn-flat"><i class="glyphicon glyphicon-eye-open"></i> View Application</a>'),
+(7, 'Application Status Changed', 'fa-exchange bg-gray', 'Application Status Changed by {{NAME}}', 'Application Status Changed From {{STATUS1}} To {{STATUS2}}', '<a href="{{VIEW_LINK}}" target="_blank" class="btn btn-primary btn-xs btn-flat"><i class="glyphicon glyphicon-eye-open"></i> View Application</a>'),
+(8, 'Email Sent', 'bg-teal fa-envelope', '{{NAME}} sent an email to {{CLIENT_NAME}}', '<strong>To Email Address : </strong>{{CLIENT_EMAIL}}<br/>\n<strong>Subject : </strong>{{SUBJECT}}<br/>\n<strong>Body : </strong>{{BODY}}\n', NULL);
+
 
 -- --------------------------------------------------------
 
@@ -1665,7 +1692,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `given_name` varchar(55) NOT NULL,
   `auth_code` varchar(255)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1 COMMENT='users';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='users';
 
 -- --------------------------------------------------------
 
@@ -1699,9 +1726,9 @@ CREATE TABLE IF NOT EXISTS `user_levels` (
 --
 
 INSERT INTO `user_levels` (`user_level_id`, `name`, `description`, `value`) VALUES
-(5, 'staff', 'staff members of agency', 9),
-(6, 'accountant', 'accountant of agency', 3),
-(7, 'admin', 'adminstrator of all system', 12);
+(1, 'staff', 'staff members of agency', 9),
+(2, 'accountant', 'accountant of agency', 3),
+(3, 'admin', 'adminstrator of all system', 12);
 
 --
 -- Indexes for dumped tables
@@ -2236,17 +2263,17 @@ ALTER TABLE `actions`
 -- AUTO_INCREMENT for table `active_clients`
 --
 ALTER TABLE `active_clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `agencies`
 --
 ALTER TABLE `agencies`
-  MODIFY `agency_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'consultancy who buys our software is termed as agency',AUTO_INCREMENT=16;
+  MODIFY `agency_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'consultancy who buys our software is termed as agency';
 --
 -- AUTO_INCREMENT for table `agency_clients`
 --
@@ -2271,87 +2298,87 @@ ALTER TABLE `agency_institute_courses`
 -- AUTO_INCREMENT for table `agency_subscriptions`
 --
 ALTER TABLE `agency_subscriptions`
-  MODIFY `agency_subscription_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `agency_subscription_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `agency_users`
 --
 ALTER TABLE `agency_users`
-  MODIFY `agency_user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+  MODIFY `agency_user_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `agent_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `agent_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `application_notes`
 --
 ALTER TABLE `application_notes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `application_status`
 --
 ALTER TABLE `application_status`
-  MODIFY `application_status_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+  MODIFY `application_status_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `application_status_documents`
 --
 ALTER TABLE `application_status_documents`
-  MODIFY `application_status_document_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `application_status_document_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `broad_field`
 --
 ALTER TABLE `broad_field`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `ci_other_commissions`
 --
 ALTER TABLE `ci_other_commissions`
-  MODIFY `other_commission_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `other_commission_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `ci_tuition_commissions`
 --
 ALTER TABLE `ci_tuition_commissions`
-  MODIFY `tuition_commission_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `tuition_commission_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `client_documents`
 --
 ALTER TABLE `client_documents`
-  MODIFY `client_document_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'if agent attached documents without applying for courses for e.g. passport, visa copy,marriage certificate\n',AUTO_INCREMENT=9;
+  MODIFY `client_document_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'if agent attached documents without applying for courses for e.g. passport, visa copy,marriage certificate\n';
 --
 -- AUTO_INCREMENT for table `client_emails`
 --
 ALTER TABLE `client_emails`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `client_notes`
 --
 ALTER TABLE `client_notes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `client_payments`
 --
 ALTER TABLE `client_payments`
-  MODIFY `client_payment_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+  MODIFY `client_payment_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `client_timeline`
 --
 ALTER TABLE `client_timeline`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `college_invoices`
 --
 ALTER TABLE `college_invoices`
-  MODIFY `college_invoice_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `college_invoice_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `college_invoice_payments`
 --
 ALTER TABLE `college_invoice_payments`
-  MODIFY `invoice_payments_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `invoice_payments_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `college_payments`
 --

@@ -367,32 +367,36 @@ class ClientController extends BaseController
         $request = $this->request->all();
         $request['email'] = $client->email;
 
-        $param = ['content'    => $request['body'],
-            'subject'    => $request['subject'],
-            'heading'    => 'Condat Solutions',
-            'subheading' => 'All your business in one space',
-        ];
-
-        $data = ['to_email'   => $client->email,
-            'to_name'    => $client->first_name . ' ' . $client->last_name,
-            'subject'    => $request['subject'],
-            'from_email' => 'krita@condat.com', //change this later
-            'from_name'  => 'Condat Solutions', //change this later
+        if($request['email'] != '') {
+            $param = ['content' => $request['body'],
+                'subject' => $request['subject'],
+                'heading' => 'Condat Solutions',
+                'subheading' => 'All your business in one space',
             ];
 
-        $sent = Mail::send('template.master', $param, function ($message) use ($data) {
-            $message->to($data['to_email'], $data['to_name'])
-                ->subject($data['subject'])
-                ->from($data['from_email'], $data['from_name']);
-        });
+            $data = ['to_email' => $client->email,
+                'to_name' => $client->first_name . ' ' . $client->last_name,
+                'subject' => $request['subject'],
+                'from_email' => env('MAIL_USERNAME'),
+                'from_name' => 'Condat Solutions', //change this later
+            ];
 
-        if($sent) {
-            $this->email->storeMail($client_id, $request);
-            \Flash::success('Email sent successfully!');
-            $this->client->addLog($client_id, 8, ['{{CLIENT_NAME}}' => $client->first_name . ' ' . $client->last_name, '{{CLIENT_EMAIL}}' => $client->email, '{{SUBJECT}}' => $request['subject'], '{{BODY}}' => limit_char($request['body'], 100), '{{NAME}}' => get_tenant_name()]);
+            $sent = Mail::send('template.master', $param, function ($message) use ($data) {
+                $message->to($data['to_email'], $data['to_name'])
+                    ->subject($data['subject'])
+                    ->from($data['from_email'], $data['from_name']);
+            });
+
+            if ($sent) {
+                $this->email->storeMail($client_id, $request);
+                \Flash::success('Email sent successfully!');
+                $this->client->addLog($client_id, 8, ['{{CLIENT_NAME}}' => $client->first_name . ' ' . $client->last_name, '{{CLIENT_EMAIL}}' => $client->email, '{{SUBJECT}}' => $request['subject'], '{{BODY}}' => limit_char($request['body'], 100), '{{NAME}}' => get_tenant_name()]);
+            }
+        } else {
+            \Flash::error('Email not set!');
         }
 
-        return redirect()->route('tenant.client.show', $client_id);
+        return redirect()->back();
     }
 
     function urlUpload($client_id)
