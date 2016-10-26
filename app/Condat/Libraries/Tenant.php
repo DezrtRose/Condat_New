@@ -214,7 +214,20 @@ class Tenant {
 
         // update company name in setting table
         $setting = $this->tenantSettings->firstOrNew(['name' => 'company']);
-        $setting->value = serialize(array('company_name' => $tenantInfoInSystem->name));
+        $setting->value = serialize(array(
+            'company_name' => $tenantInfoInSystem->name,
+            'phone_number' => $tenantInfoInSystem->phone_id,
+            'abn' => $tenantInfoInSystem->abn,
+            'email' => $tenantInfoInSystem->email_id,
+            'website' => $tenantInfoInSystem->website,
+            'invoice_to_name' => $tenantInfoInSystem->invoice_to_name,
+            'street' => '',
+            'suburb' => '',
+            'state' => '',
+            'postcode' => '',
+            'country_id' => '',
+            'description' => '',
+        ));
         $setting->save();
 
         // update domain in setting table
