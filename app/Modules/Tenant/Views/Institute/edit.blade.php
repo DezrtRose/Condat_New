@@ -13,7 +13,7 @@
                 <h3 class="box-title">Institute Details</h3>
             </div>
             @include('flash::message')
-            {!!Form::model($institute, array('route' => array('tenant.institute.update', $institute->institution_id), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
+            {!!Form::model($institute, array('route' => array('tenant.institute.update', [$tenant_id, $institute->institution_id]), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
             {!!Form::hidden('user_id', $institute->user_id)!!}
             @include('Tenant::Institute/form')
             <div class="box-footer clearfix">

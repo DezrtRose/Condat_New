@@ -25,7 +25,7 @@
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><a href="{{ route('tenant.client.sent', $client->client_id) }}"><i class="fa fa-envelope-o"></i>
+                    <li><a href="{{ route('tenant.client.sent', [$tenant_id, $client->client_id]) }}"><i class="fa fa-envelope-o"></i>
                             Sent</a></li>
                     <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
                     <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
@@ -58,7 +58,7 @@
                         <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body"
                                 title="Delete">
                             <i class="fa fa-trash-o"></i></button>
-                        <a href="{{ route('tenant.client.sent', $client->client_id) }}" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body"
+                        <a href="{{ route('tenant.client.sent', [$tenant_id, $client->client_id]) }}" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body"
                                 title="" data-original-title="Reply">
                             <i class="fa fa-reply"></i></a>
                     </div>

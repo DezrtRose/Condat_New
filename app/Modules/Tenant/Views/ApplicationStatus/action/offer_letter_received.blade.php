@@ -21,7 +21,7 @@
                     'class'=>'form-horizontal',
                     'files'=>true,
                     'method'=>'POST',
-                    'route'=>['applications.offer_letter.update',$application->application_id]
+                    'route'=>['applications.offer_letter.update', [$tenant_id, $application->application_id]]
                     ])!!}
 
                 <div class="form-group">

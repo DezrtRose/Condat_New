@@ -63,7 +63,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->belongsTo('App\Modules\Tenant\Models\Person\Person', 'person_id');
     }
 
-    function redirectIfValid($user)
+    function redirectIfValid($tenant_id)
     {
         /*if ($user->status == 0) {
             \Auth::logout();
@@ -75,7 +75,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             \Auth::logout();
             return redirect()->route('system.login')->withInput()->with('message', 'Your account has been permanently blocked.');
         }*/
-        return redirect()->route('users.dashboard');
+        return redirect()->route('users.dashboard', $tenant_id);
     }
 
     function saveUser($email = '', $details = array())

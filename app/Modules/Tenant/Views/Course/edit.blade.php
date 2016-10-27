@@ -12,7 +12,7 @@
                 <h3 class="box-title">Course Details</h3>
             </div>
             @include('flash::message')
-            {!!Form::model($course, array('route' => array('tenant.course.update', $course->course_id), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
+            {!!Form::model($course, array('route' => array('tenant.course.update', [$tenant_id, $course->course_id]), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
             @include('Tenant::Course/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Update"/>

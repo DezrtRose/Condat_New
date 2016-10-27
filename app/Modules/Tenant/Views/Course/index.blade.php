@@ -52,7 +52,7 @@
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Manage Courses</h3>
-                <a href="{{route('tenant.course.create', $institution_id)}}"
+                <a href="{{route('tenant.course.create', [$tenant_id, $institution_id])}}"
                    class="btn btn-primary btn-flat pull-right">Add New Course</a>
             </div>
             <div class="box-body">

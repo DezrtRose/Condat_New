@@ -16,7 +16,7 @@
 
     <div class="col-md-12 col-xs-12">
         <div class="box box-primary">
-            {!!Form::model($search_attributes, array('route' => 'payments.search', 'method' => 'post', 'class' => ''))!!}
+            {!!Form::model($search_attributes, array('route' => ['payments.search', $tenant_id], 'method' => 'post', 'class' => ''))!!}
             <div class="box-header">
                 <h3 class="box-title">Filter Options</h3>
                 <input type="submit" class="btn btn-primary pull-right" value="Search"/>
@@ -104,7 +104,7 @@
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Print Payment"></i></a>
-                                    <a href="{{route("application.students.editPayment", $payment->student_payments_id)}}" title="Edit Payment"><i
+                                    <a href="{{route("application.students.editPayment", [$tenant_id, $payment->student_payments_id])}}" title="Edit Payment"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-pencil"
                                                 data-toggle="tooltip" data-placement="top" title="Edit Payment"></i></a>
                                 </td>

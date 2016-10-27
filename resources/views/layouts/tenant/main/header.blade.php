@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.html" class="logo">
+    <a href="{{ route('users.dashboard', $tenant_id) }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>C</b>S</span>
         <!-- logo for regular state and mobile devices -->
@@ -18,7 +18,7 @@
 
         <ol class="tenant-breadcrumb">
             @section('breadcrumb')
-                <li><a href="{{ url('/')}}" data-push="true"><i class="fa fa-dashboard"></i> Home </a></li>
+                <li><a href="{{ route('users.dashboard', $tenant_id) }}" data-push="true"><i class="fa fa-dashboard"></i> Home </a></li>
             @show
         </ol>
 
@@ -39,7 +39,7 @@
                                 @if(count($reminders) > 0)
                                     @foreach($reminders as $key => $reminder)
                                         <li><!-- Task item -->
-                                            <a href="{{route('tenant.client.show', $reminder->client_id)}}">
+                                            <a href="{{route('tenant.client.show', [$tenant_id, $reminder->client_id])}}">
                                                 <h3>
                                                     <input type="checkbox" class="icheck com-reminder" id="{{ $reminder->notes_id }}" />
                                                     {{$reminder->first_name . ' ' . $reminder->last_name}} - {{ $reminder->description }}

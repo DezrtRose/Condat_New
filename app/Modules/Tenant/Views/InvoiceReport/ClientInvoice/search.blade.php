@@ -16,7 +16,7 @@
 
     <div class="col-md-12 col-xs-12">
         <div class="box box-primary">
-            {!!Form::model($search_attributes, array('route' => 'client.invoice', 'method' => 'post', 'class' => ''))!!}
+            {!!Form::model($search_attributes, array('route' => ['client.invoice', $tenant_id], 'method' => 'post', 'class' => ''))!!}
             <div class="box-header">
                 <h3 class="box-title">Filter Options</h3>
                 <input type="submit" class="btn btn-primary pull-right" value="Search"/>
@@ -110,7 +110,7 @@
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Print Invoice"></i></a>
-                                    <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}"
+                                    <a href="{{route('tenant.student.invoice', [$tenant_id, $invoice->student_invoice_id])}}"
                                        title="View Invoice"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                                 data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>

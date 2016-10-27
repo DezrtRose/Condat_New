@@ -46,7 +46,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <span class="panel-title">Payment to College</span>
-                                <a href="{{ route('tenant.application.college.payment', [$application->application_id, 2]) }}" class="btn btn-primary btn-xs btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>
+                                <a href="{{ route('tenant.application.college.payment', [$tenant_id, $application->application_id, 2]) }}" class="btn btn-primary btn-xs btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>
                             </div>
                             <div class="panel-body">
                                 <table class="table table-striped table-bordered">
@@ -124,7 +124,7 @@
                                 <div class="well well-sm">
                                     @if($application->super_agent_id != null)
                                         {{ get_agent_name($application->super_agent_id) }}
-                                        <a href="{{ route('tenant.agents.show', $application->super_agent_id) }}" class="pull-right" target="_blank">view</a>
+                                        <a href="{{ route('tenant.agents.show', [$tenant_id, $application->super_agent_id]) }}" class="pull-right" target="_blank">view</a>
                                     @else
                                         None
                                         <button class="btn btn-primary btn-xs pull-right" data-toggle="modal"
@@ -144,7 +144,7 @@
                                 <div class="well well-sm">
                                     @if($application->sub_agent_id != null)
                                         {{ get_agent_name($application->sub_agent_id) }}
-                                        <a href="{{ route('tenant.agents.show', $application->sub_agent_id) }}" class="pull-right" target="_blank">view</a>
+                                        <a href="{{ route('tenant.agents.show', [$tenant_id, $application->sub_agent_id]) }}" class="pull-right" target="_blank">view</a>
                                     @else
                                         None
                                         <button class="btn btn-primary btn-xs pull-right" data-toggle="modal"

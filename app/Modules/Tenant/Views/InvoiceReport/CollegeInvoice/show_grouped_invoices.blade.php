@@ -64,7 +64,7 @@
             </div>
             <div class="box-body table-responsive">
                 <div class="well well-sm">
-                    {!! Form::open(['route'=>['group.invoice.addmore', $invoice_details->group_invoice_id], 'method' => 'post', 'class' => "form-horizontal"]) !!}
+                    {!! Form::open(['route'=>['group.invoice.addmore', [$tenant_id, $invoice_details->group_invoice_id]], 'method' => 'post', 'class' => "form-horizontal"]) !!}
                         <div class="form-group">
                             <label for="invoice_ids" class="col-sm-22 col-md-3 control-label">Add More Invoices</label>
 

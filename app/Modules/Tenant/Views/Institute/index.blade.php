@@ -10,7 +10,7 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">All Institutions</h3>
-                <a href="{{route('tenant.institute.create')}}" class="btn btn-primary btn-flat pull-right">Add New Institute</a>
+                <a href="{{route('tenant.institute.create', $tenant_id)}}" class="btn btn-primary btn-flat pull-right">Add New Institute</a>
             </div>
             <div class="search">
                 

@@ -64,7 +64,7 @@
                                 <td>{{ format_price($outstanding_payment['outstanding_amount']) }}</td>
                                 <td>
                                     <a data-toggle="tooltip" title="View Client Account" class="btn btn-action-box"
-                                       href="{{ route('tenant.client.show', $client_id) }}"><i
+                                       href="{{ route('tenant.client.show', [$tenant_id, $client_id]) }}"><i
                                                 class="fa fa-eye"></i></a>
                                 </td>
                             </tr>
@@ -83,7 +83,7 @@
                 <h3 class="box-title">Active Clients</h3>
 
                 <div class="box-tools pull-right">
-                    <a class="btn btn-primary" href="{{ route('tenant.client.create')}}"><i
+                    <a class="btn btn-primary" href="{{ route('tenant.client.create', $tenant_id)}}"><i
                                 class="fa fa-plus"></i> Add Client</a>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                         <td>
                             <div class="box-tools pull-left">
                                 <a class="btn btn-primary btn-sm"
-                                   href="{{ route('tenant.client.show',[$value->client_id])}}" data-toggle="tooltip"
+                                   href="{{ route('tenant.client.show',[$tenant_id, $value->client_id])}}" data-toggle="tooltip"
                                    data-placement="top" title="View"><i class="fa fa-eye"></i></a>
                                 <a class="btn btn-primary btn-sm inactive" id="{{$value->client_id}}"
                                    data-toggle="tooltip" data-placement="top" title="Make Inactive"><i

@@ -35,12 +35,12 @@
                    data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
                             class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                             data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
-                <a href="{{route('tenant.student.invoice', $invoice->student_invoice_id)}}"
+                <a href="{{route('tenant.student.invoice', [$tenant_id, $invoice->student_invoice_id])}}"
                    title="Print Invoice"><i
                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                             data-toggle="tooltip" data-placement="top"
                             title="Print Invoice"></i></a>
-                <a href="{{route("tenant.invoice.payments", [$invoice->invoice_id, 2])}}"
+                <a href="{{route("tenant.invoice.payments", [$tenant_id, $invoice->invoice_id, 2])}}"
                    title="View Invoice"><i
                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                             data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>

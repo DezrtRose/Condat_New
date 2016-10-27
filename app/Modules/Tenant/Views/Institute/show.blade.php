@@ -12,7 +12,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">General Information</h3>
-                <div class="box-tools pull-right"><a data-toggle="tooltip" title="Edit Institute" class="btn btn-action-box" href ="{{ route( 'tenant.institute.edit', $institute->institution_id) }}"><i class="fa fa-edit"></i></a> </div>
+                <div class="box-tools pull-right"><a data-toggle="tooltip" title="Edit Institute" class="btn btn-action-box" href ="{{ route( 'tenant.institute.edit', [$tenant_id, $institute->institution_id]) }}"><i class="fa fa-edit"></i></a> </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -69,7 +69,7 @@
                         <tr>
                             <td>{{$super_agent->name}}</td>
                             <td>{{$super_agent->commission_percent}}%</td>
-                            <td><a data-toggle="tooltip" title="Remove Super Agent" class="btn btn-action-box" href ="{{ route('tenant.superagent.remove', ['institute_id' => $institute->institution_id, 'agent_id' => $super_agent->agent_id]) }}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></a></td>
+                            <td><a data-toggle="tooltip" title="Remove Super Agent" class="btn btn-action-box" href ="{{ route('tenant.superagent.remove', ['tenant_id' => $tenant_id, 'institute_id' => $institute->institution_id, 'agent_id' => $super_agent->agent_id]) }}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></a></td>
                         </tr>
                     @endforeach
                     </tbody>

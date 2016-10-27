@@ -38,14 +38,14 @@ Route::group($group_auth, function () {
 });*/
 
 /* Tenant Routes for pages that don't need login */
-Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => 'guest.tenant', 'namespace' => 'App\Modules\Tenant\Controllers'), function () {
+Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware' => 'guest.tenant', 'namespace' => 'App\Modules\Tenant\Controllers'), function () {
     Route::get('login', ['as' => 'tenant.login', 'uses' => 'AuthController@getLogin']);
     Route::post('login', 'AuthController@postLogin');
     Route::post('complete', 'AuthController@complete');
 });
 
 /* Tenant Routes for pages that need authentication */
-Route::group(array('prefix' => 'tenant', 'module' => 'Tenant', 'middleware' => 'auth.tenant', 'namespace' => 'App\Modules\Tenant\Controllers'), function () {
+Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware' => 'auth.tenant', 'namespace' => 'App\Modules\Tenant\Controllers'), function () {
 
     /* Routes for File upload */
     Route::post('file/upload', 'FileController@upload');

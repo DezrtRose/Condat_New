@@ -81,7 +81,7 @@
                                     <td>{{ ($note->remind == 1) ? 'yes' : 'no' }}</td>
                                     <td>{{($note->remind == 1) ? format_date($note->reminder_date) : ''}}</td>
                                     <td>
-                                        <a href="{{route('tenant.client.notes.delete', $note->notes_id)}}"
+                                        <a href="{{route('tenant.client.notes.delete', [$tenant_id, $note->notes_id])}}"
                                            target="_blank"
                                            onClick="return confirm('Are you sure want to delete this record')"><i
                                                     class="fa fa-trash"></i> Delete</a>

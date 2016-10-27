@@ -13,15 +13,15 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="{{ Request::is('tenant/college_invoice_report/invoice_pending') ? 'active' : '' }}"><a href="{{ route('college.invoice.pending') }}">Pending Invoices</a></li>
+        <li class="{{ Request::is('tenant/college_invoice_report/invoice_pending') ? 'active' : '' }}"><a href="{{ route('college.invoice.pending', $tenant_id) }}">Pending Invoices</a></li>
         
-        <li class="{{ Request::is('tenant/college_invoice_report/invoice_paid') ? 'active' : '' }}"><a href="{{ route('college.invoice.paid') }}">Paid Invoices</a></li>
+        <li class="{{ Request::is('tenant/college_invoice_report/invoice_paid') ? 'active' : '' }}"><a href="{{ route('college.invoice.paid', $tenant_id) }}">Paid Invoices</a></li>
         
-        <li class="{{ Request::is('tenant/college_invoice_report/invoice_future') ? 'active' : '' }}"><a href="{{ route('college.invoice.future') }}">Future Invoices</a></li>
+        <li class="{{ Request::is('tenant/college_invoice_report/invoice_future') ? 'active' : '' }}"><a href="{{ route('college.invoice.future', $tenant_id) }}">Future Invoices</a></li>
 
-        <li class="{{ Request::is('tenant/college_invoice_report/invoice_grouped') ? 'active' : '' }}"><a href="{{ route('college.invoice.grouped') }}">Group Invoices</a></li>
+        <li class="{{ Request::is('tenant/college_invoice_report/invoice_grouped') ? 'active' : '' }}"><a href="{{ route('college.invoice.grouped', $tenant_id) }}">Group Invoices</a></li>
 
-        <li class="{{ Request::is('tenant/college_invoice_report/search') ? 'active' : '' }}"><a href="{{ route('college.invoice.search') }}">Advance Search</a></li>
+        <li class="{{ Request::is('tenant/college_invoice_report/search') ? 'active' : '' }}"><a href="{{ route('college.invoice.search', $tenant_id) }}">Advance Search</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

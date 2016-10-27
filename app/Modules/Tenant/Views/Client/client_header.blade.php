@@ -45,10 +45,10 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="{{ route('tenant.client.edit', $client->client_id) }}"><i class="fa fa-edit"></i> Edit</a><br/>
+                                        <a href="{{ route('tenant.client.edit', [$tenant_id, $client->client_id]) }}"><i class="fa fa-edit"></i> Edit</a><br/>
                                     </li>
                                     <li>
-                                        <a href="{{ route('tenant.client.compose', $client->client_id) }}"><i class="fa fa-envelope"></i> Email</a>
+                                        <a href="{{ route('tenant.client.compose', [$tenant_id, $client->client_id]) }}"><i class="fa fa-envelope"></i> Email</a>
                                     </li>
                                 </ul>
                             </div>
@@ -71,7 +71,7 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Save Image From URL</h4>
                 </div>
-                {!!Form::open(['route' => ['tenant.client.urlUpload', $client->client_id], 'method'=> 'post', 'files' => 'true', 'class' => 'form-left'])!!}
+                {!!Form::open(['route' => ['tenant.client.urlUpload', [$tenant_id, $client->client_id]], 'method'=> 'post', 'files' => 'true', 'class' => 'form-left'])!!}
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">URL * </label>

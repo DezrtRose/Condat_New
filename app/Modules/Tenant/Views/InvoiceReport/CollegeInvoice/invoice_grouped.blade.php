@@ -40,10 +40,10 @@
                             <td>{{ $invoice->total_amount }}</td>
                             <td>{{ $invoice->total_gst }}</td>
                             <td>
-                                <a href="{{ route('invoice.grouped.show', $invoice->group_invoice_id) }}" title="View Invoice"><i
+                                <a href="{{ route('invoice.grouped.show', [$tenant_id, $invoice->group_invoice_id]) }}" title="View Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
-                                <a href="{{ route('invoice.grouped.print', $invoice->group_invoice_id) }}" title="Print Invoice"><i
+                                <a href="{{ route('invoice.grouped.print', [$tenant_id, $invoice->group_invoice_id]) }}" title="Print Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Invoice"></i></a>

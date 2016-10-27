@@ -10,7 +10,7 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">Manage Users</h3>
-                <a href="{{route('tenant.user.create')}}" class="btn btn-primary btn-flat pull-right">Add New User</a>
+                <a href="{{route('tenant.user.create', $tenant_id)}}" class="btn btn-primary btn-flat pull-right">Add New User</a>
             </div>
             <div class="box-body">
                 <table id="users" class="table table-bordered table-striped dataTable">

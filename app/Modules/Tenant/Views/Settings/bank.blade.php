@@ -11,7 +11,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Bank Details</h3>
             </div>
-            {!!Form::model($bank, array('route' => ['tenant.bank.store'], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::model($bank, array('route' => ['tenant.bank.store', $tenant_id], 'class' => 'form-horizontal form-left'))!!}
             <div class="box-body">
                 <div class="form-group @if($errors->has('name')) {{'has-error'}} @endif">
                     {!!Form::label('name', 'Bank Name *', array('class' => 'col-sm-2 control-label')) !!}

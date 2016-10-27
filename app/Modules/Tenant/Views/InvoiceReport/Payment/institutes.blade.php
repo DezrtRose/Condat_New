@@ -44,7 +44,7 @@
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Payment"></i></a>
-                                <a href="{{route("tenant.application.editPayment", $payment->college_payment_id)}}" title="Edit Payment"><i
+                                <a href="{{route("tenant.application.editPayment", [$tenant_id, $payment->college_payment_id])}}" title="Edit Payment"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-pencil"
                                             data-toggle="tooltip" data-placement="top" title="Edit Payment"></i></a>
                             </td>

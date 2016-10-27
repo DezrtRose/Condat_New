@@ -31,7 +31,7 @@
                     </li>
                 </ul>
 
-                <a href="{{route('tenant.client.edit', $client->client_id)}}" class="btn btn-primary btn-block"><b>Update</b></a>
+                <a href="{{route('tenant.client.edit', [$tenant_id, $client->client_id])}}" class="btn btn-primary btn-block"><b>Update</b></a>
             </div>
             <!-- /.box-body -->
         </div>

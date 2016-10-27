@@ -14,7 +14,7 @@
                 <h3 class="box-title">Client Details</h3>
             </div>
             @include('flash::message')
-            {!!Form::open(array('route' => 'tenant.client.store', 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::open(array('route' => ['tenant.client.store', $tenant_id], 'class' => 'form-horizontal form-left'))!!}
             @include('Tenant::Client/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Add"/>

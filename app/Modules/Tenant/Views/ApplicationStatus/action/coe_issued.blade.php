@@ -19,7 +19,7 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-7 col-md-offset-1">
-                        {!! Form::model($application, ['class'=>'form-horizontal', 'method'=>'POST', 'route'=>['applications.action.update.coe.issued', $application->application_id], 'files'=>true])!!}
+                        {!! Form::model($application, ['class'=>'form-horizontal', 'method'=>'POST', 'route'=>['applications.action.update.coe.issued', [$tenant_id, $application->application_id]], 'files'=>true])!!}
 
                         <div class="form-group @if($errors->has('tuition_fee')) {{'has-error'}} @endif">
                             {!! Form::label('tuition_fee', 'Total Tuition Fee', ['class'=>'col-md-3 form-label text-right']) !!}

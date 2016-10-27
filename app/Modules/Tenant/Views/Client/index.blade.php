@@ -10,7 +10,7 @@
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">All Clients</h3>
-                <a href="{{route('tenant.client.create')}}" class="btn btn-primary btn-flat pull-right">Add New
+                <a href="{{route('tenant.client.create', $tenant_id)}}" class="btn btn-primary btn-flat pull-right">Add New
                     Client</a>
             </div>
             <div class="box-body">

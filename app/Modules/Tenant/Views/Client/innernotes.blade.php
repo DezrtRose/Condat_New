@@ -156,7 +156,7 @@
                                 <td>{{ ($client_note->remind == 1) ? 'yes' : 'no' }}</td>
                                  <td>{{($client_note->remind == 1) ? format_date($client_note->reminder_date) : ''}}</td>
                                  <td><a href="" target="_blank"><i class="fa fa-eye"></i> View</a>&nbsp;&nbsp;
-                                    <a href="{{route('tenant.client.innernotes.delete', $client_note->notes_id)}}" target="_blank" onClick="return confirm('Are you sure want to delete this record')" target="_blank"><i class="fa fa-trash"></i> Delete</a>
+                                    <a href="{{route('tenant.client.innernotes.delete', [$tenant_id, $client_note->notes_id])}}" target="_blank" onClick="return confirm('Are you sure want to delete this record')" target="_blank"><i class="fa fa-trash"></i> Delete</a>
                                 </td>
                                
                             </tr>

@@ -45,7 +45,7 @@
                             <td>{{ format_date($application->intake_date) }}</td>
                             <td>{{ $application->company }}</td>
                             <td>
-                                <a href="{{ route('applications.offer.received', $application->course_application_id) }}"
+                                <a href="{{ route('applications.offer.received', [$tenant_id, $application->course_application_id]) }}"
                                    title="Offer Received"><i
                                             class=" btn btn-primary btn-sm glyphicon glyphicon-education"
                                             data-toggle="tooltip" data-placement="top"

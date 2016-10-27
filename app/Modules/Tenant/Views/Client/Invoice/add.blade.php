@@ -13,7 +13,7 @@
                 <h3 class="box-title">Add Invoice</h3>
             </div>
             @include('flash::message')
-            {!!Form::open(array('route' => ['tenant.client.invoice', $client_id], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::open(array('route' => ['tenant.client.invoice', [$tenant_id, $client_id]], 'class' => 'form-horizontal form-left'))!!}
             @include('Tenant::Client/Invoice/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Add"/>

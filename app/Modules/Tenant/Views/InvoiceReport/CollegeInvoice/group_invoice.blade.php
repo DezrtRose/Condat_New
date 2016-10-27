@@ -12,7 +12,7 @@
 
         @include('flash::message')
         <div class="box box-primary">
-            {!!Form::model($search_attributes, array('route' => 'college.invoice.groupInvoice', 'method' => 'post', 'class' => ''))!!}
+            {!!Form::model($search_attributes, array('route' => ['college.invoice.groupInvoice', $tenant_id], 'method' => 'post', 'class' => ''))!!}
             <div class="box-header">
                 <h3 class="box-title">Filter Options</h3>
                 <input type="submit" class="btn btn-primary pull-right" value="Search"/>

@@ -87,7 +87,7 @@
                                     <td>{{ $document->document->description }}</td>
                                     <td><a href="{{ $document->document->shelf_location }}"
                                            target="_blank"><i class="fa fa-eye"></i> View</a>
-                                        <a href="{{route('tenant.client.document.download', $document->document_id)}}"
+                                        <a href="{{route('tenant.client.document.download', [$tenant_id, $document->document_id])}}"
                                            target="_blank"><i class="fa fa-download"></i> Download</a>
                                     </td>
                                 </tr>
@@ -109,5 +109,5 @@
             </div>
         </div>
     </div>
-    {!! Condat::js('client/document.js'); !!}
+    {!! Condat::js('client/document.js') !!}
 @stop

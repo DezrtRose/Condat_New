@@ -81,7 +81,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add Intake</h4>
                 </div>
-                {!!Form::open(array('route' => ['tenant.intake.store', $institute->institution_id], 'class' => 'form-horizontal form-left'))!!}
+                {!!Form::open(array('route' => ['tenant.intake.store', [$tenant_id, $institute->institution_id]], 'class' => 'form-horizontal form-left'))!!}
 
                 @include('Tenant::Intake/form')
 

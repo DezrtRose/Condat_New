@@ -15,7 +15,7 @@
 
     <div class="col-md-12 col-xs-12">
         <div class="box box-primary">
-            {!!Form::model($search_attributes, array('route' => 'application.search', 'method' => 'post', 'class' => ''))!!}
+            {!!Form::model($search_attributes, array('route' => ['application.search', $tenant_id], 'method' => 'post', 'class' => ''))!!}
             <div class="box-header">
                 <h3 class="box-title">Filter Options</h3>
                 <input type="submit" class="btn btn-primary pull-right" value="Search"/>
@@ -117,7 +117,7 @@
                                 <td>{{ format_date($application->intake_date) }}</td>
                                 <td>{{ $application->invoice_to }}</td>
                                 <td>
-                                    <a href="{{ route('applications.apply.offer',[$application->course_application_id])}}"
+                                    <a href="{{ route('applications.apply.offer',[$tenant_id, $application->course_application_id])}}"
                                        title="Apply Offer"><i
                                                 class=" btn btn-primary btn-sm glyphicon glyphicon-education"
                                                 data-toggle="tooltip" data-placement="top"
@@ -128,7 +128,7 @@
                                     <a href="#" title="edit"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-edit"
                                                 data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
-                                    <a href="{{ route('applications.cancel.application',[$application->course_application_id])}}"
+                                    <a href="{{ route('applications.cancel.application',[$tenant_id, $application->course_application_id])}}"
                                        title="cancel/quarantine"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-trash"
                                                 data-toggle="tooltip" data-placement="top"

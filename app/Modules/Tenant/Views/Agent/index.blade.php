@@ -11,7 +11,7 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">Manage Agents</h3>
-                <a href="{{route('tenant.agents.create')}}" class="btn btn-primary btn-flat pull-right">Add New Agent</a>
+                <a href="{{route('tenant.agents.create', $tenant_id)}}" class="btn btn-primary btn-flat pull-right">Add New Agent</a>
             </div>
             <div class="box-body">
                 <table id="agents" class="table table-bordered table-striped dataTable">

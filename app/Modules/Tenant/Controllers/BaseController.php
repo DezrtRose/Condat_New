@@ -24,6 +24,8 @@ class BaseController extends Controller{
 		View::share('reminders', $this->getReminders());
 		// share list of countries in all views
 		View::share('countries', $this->get_country_list());
+		// get tenant_id
+		View::share('tenant_id', \Illuminate\Support\Facades\Request::segment(1));
 	}
 
 	/**

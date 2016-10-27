@@ -43,7 +43,6 @@ class RedirectTenantUserIfAuthenticated {
             return tenant()->route('tenant.index');
         }
         //redirect to setup page if tenant has not completed setup
-
 		return $next($request);
 	}
 

@@ -95,9 +95,9 @@
                                 <td>{{ $document->document->description }}</td>
                                 <td><a class="btn btn-xs btn-primary" href="{{ $document->document->shelf_location }}"
                                        target="_blank"><i class="fa fa-eye"></i> View</a>
-                                    <a class="btn btn-xs btn-primary" href="{{route('tenant.application.document.download', $document->document_id)}}"
+                                    <a class="btn btn-xs btn-primary" href="{{route('tenant.application.document.download', [$tenant_id, $document->document_id])}}"
                                        target="_blank"><i class="fa fa-download"></i> Download</a>
-                                    <a class="btn btn-xs btn-warning" href="{{route('tenant.application.document.delete', $document->document_id)}}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i> Delete</a>
+                                    <a class="btn btn-xs btn-warning" href="{{route('tenant.application.document.delete', [$tenant_id, $document->document_id])}}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i> Delete</a>
                                 </td>
                             </tr>
                         @endforeach

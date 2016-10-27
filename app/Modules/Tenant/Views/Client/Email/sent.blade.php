@@ -11,7 +11,7 @@
 
     <div class="col-md-3">
 
-        <a href="{{ route('tenant.client.compose', $client->client_id) }}"
+        <a href="{{ route('tenant.client.compose', [$tenant_id, $client->client_id]) }}"
            class="btn btn-primary btn-block margin-bottom">Compose</a>
 
         <div class="box box-solid">
@@ -26,7 +26,7 @@
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="{{ route('tenant.client.sent', $client->client_id) }}"><i
+                    <li class="active"><a href="{{ route('tenant.client.sent', [$tenant_id, $client->client_id]) }}"><i
                                     class="fa fa-envelope-o"></i> Sent</a></li>
                     <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
                     <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
@@ -89,7 +89,7 @@
                                     </div>
                                 </td>
                                 <td class="mailbox-name"><a
-                                            href="{{ route('tenant.client.readMail', [$client->client_id, $email->id]) }}">{{ get_tenant_name($email->user_id) }}</a>
+                                            href="{{ route('tenant.client.readMail', [$tenant_id, $client->client_id, $email->id]) }}">{{ get_tenant_name($email->user_id) }}</a>
                                 </td>
                                 <td class="mailbox-subject"><b>{{ $email->subject }}</b>
                                     - {!! limit_char(strip_tags($email->body), 80) !!}

@@ -40,11 +40,11 @@
                             <td>{{ format_id($payment->invoice_id, 'CI')}}</td>
                             <td>{{ $payment->description }}</td>
                             <td>
-                                <a href="{{route('subagents.payment.view', $payment->subagent_payments_id)}}" title="Print Payment"><i
+                                <a href="{{route('subagents.payment.view', [$tenant_id, $payment->subagent_payments_id])}}" title="Print Payment"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Payment"></i></a>
-                                <a href="{{route("application.subagents.editPayment", $payment->subagent_payments_id)}}" title="Edit Payment"><i
+                                <a href="{{route("application.subagents.editPayment", [$tenant_id, $payment->subagent_payments_id])}}" title="Edit Payment"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-pencil"
                                             data-toggle="tooltip" data-placement="top" title="Edit Payment"></i></a>
                             </td>

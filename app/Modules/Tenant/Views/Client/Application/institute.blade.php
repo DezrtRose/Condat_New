@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal">&times;</button>
     <h4 class="modal-title">Add Institute</h4>
 </div>
-{!!Form::open(array('route' => 'tenant.institute.store', 'class' => 'form-horizontal form-left', 'id' => 'add-institute'))!!}
+{!!Form::open(array('route' => ['tenant.institute.store', $tenant_id], 'class' => 'form-horizontal form-left', 'id' => 'add-institute'))!!}
 <div class="modal-body">
     @include('Tenant::Institute/form')
 </div>

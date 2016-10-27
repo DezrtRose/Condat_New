@@ -14,7 +14,7 @@
                 <h3 class="box-title">Add Payment</h3>
             </div>
             @include('flash::message')
-            {!!Form::open(array('route' => ['application.subagents.storePayment', $application_id], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::open(array('route' => ['application.subagents.storePayment', [$tenant_id, $application_id]], 'class' => 'form-horizontal form-left'))!!}
             @include('Tenant::SubAgent/Payment/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Add" />

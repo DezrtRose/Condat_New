@@ -12,7 +12,7 @@
                 <h3 class="box-title">Agent Details</h3>
             </div>
             @include('flash::message')
-            {!!Form::open(array('route' => ['tenant.agents.store'], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::open(array('route' => ['tenant.agents.store', $tenant_id], 'class' => 'form-horizontal form-left'))!!}
             @include('Tenant::Agent/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Add"/>

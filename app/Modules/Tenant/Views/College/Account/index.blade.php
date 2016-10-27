@@ -13,7 +13,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Recent Invoices</h3>
-                <a href='{{ route('tenant.application.invoice', $application->application_id) }}'
+                <a href='{{ route('tenant.application.invoice', [$tenant_id, $application->application_id]) }}'
                    class="btn btn-success btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Create
                     Invoice</a>
             </div>
@@ -37,7 +37,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Recent Payments</h3>
-                <a href="{{ route('tenant.application.payment', $application->application_id) }}"
+                <a href="{{ route('tenant.application.payment', [$tenant_id, $application->application_id]) }}"
                    class="btn btn-success btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Add
                     Payments</a>
             </div>

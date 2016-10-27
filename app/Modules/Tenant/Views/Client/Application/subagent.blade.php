@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal">&times;</button>
     <h4 class="modal-title">Add Sub Agent</h4>
 </div>
-{!!Form::open(array('route' => 'tenant.agents.store', 'class' => 'form-horizontal form-left', 'id' => 'add-subagent'))!!}
+{!!Form::open(array('route' => ['tenant.agents.store', $tenant_id], 'class' => 'form-horizontal form-left', 'id' => 'add-subagent'))!!}
 <div class="modal-body">
     @include('Tenant::Agent/form')
 </div>

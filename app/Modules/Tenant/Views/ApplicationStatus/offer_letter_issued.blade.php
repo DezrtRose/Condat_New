@@ -42,7 +42,7 @@
                             <td>{{ $application->name }}</td>
                             <td>{{ format_date($application->intake_date) }}</td>
                             <td>{{ $application->invoice_to }}</td>
-                            <td><a href="{{ route('applications.apply.coe', $application->course_application_id) }}"
+                            <td><a href="{{ route('applications.apply.coe', [$tenant_id, $application->course_application_id]) }}"
                                    title="Apply COE"><i class=" btn btn-primary btn-sm glyphicon glyphicon-education"
                                                         data-toggle="tooltip" data-placement="top"
                                                         title="Apply COE"></i></a>

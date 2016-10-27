@@ -13,7 +13,7 @@
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Manage Applications</h3>
-                <a href="{{route('tenant.application.create', $client->client_id)}}"
+                <a href="{{route('tenant.application.create', [$tenant_id, $client->client_id])}}"
                    class="btn btn-primary btn-flat pull-right"><i class="fa  fa-graduation-cap"></i> Enroll Now</a>
             </div>
             <div class="box-body table-responsive">

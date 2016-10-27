@@ -38,7 +38,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Company Details</h3>
-                <div class="box-tools pull-right"><a data-toggle="tooltip" title="Edit Agent" class="btn btn-action-box" href ="{{route('tenant.agents.edit', $agent->agent_id)}}"><i class="fa fa-edit"></i></a> </div>
+                <div class="box-tools pull-right"><a data-toggle="tooltip" title="Edit Agent" class="btn btn-action-box" href ="{{route('tenant.agents.edit', [$tenant_id, $agent->agent_id])}}"><i class="fa fa-edit"></i></a> </div>
             </div>
             <div class="box-body">
                 <table class="table table-hover">
