@@ -196,7 +196,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add Sub Agent</h4>
                 </div>
-                {!!Form::open(['url' => 'tenant/applications/'.$application->application_id.'/subagent', 'id' => 'add-agent', 'class' => 'form-horizontal form-left'])!!}
+                {!!Form::open(['url' => $tenant_id.'/applications/'.$application->application_id.'/subagent', 'id' => 'add-agent', 'class' => 'form-horizontal form-left'])!!}
                 <div class="modal-body">
 
                     <div class="form-group">
@@ -226,7 +226,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add Super Agent</h4>
                 </div>
-                {!!Form::open(['url' => 'tenant/applications/'.$application->application_id.'/superagent', 'id' => 'add-agent', 'class' => 'form-horizontal form-left'])!!}
+                {!!Form::open(['url' => $tenant_id.'/applications/'.$application->application_id.'/superagent', 'id' => 'add-agent', 'class' => 'form-horizontal form-left'])!!}
                 <div class="modal-body">
 
                     <div class="form-group">

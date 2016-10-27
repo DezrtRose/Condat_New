@@ -3,7 +3,7 @@
 @section('heading', '<h1>Client Invoice - <small>Advanced Search</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Client Invoices"><i class="fa fa-users"></i> Client Invoices</a>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Client Invoices"><i class="fa fa-users"></i> Client Invoices</a>
     </li>
     <li>Advanced Search</li>
 @stop
@@ -103,7 +103,7 @@
                                 </td>
                                 <td>
                                     <a data-toggle="modal" data-target="#condat-modal"
-                                       data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
+                                       data-url="{{url($tenant_id.'/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
                                                 class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                                                 data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
                                     <a href="#" title="Print Invoice"><i

@@ -39,7 +39,7 @@
             oTable = $('#institutes').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": appUrl + "/tenant/institutes/data",
+                "ajax": appUrl + "/institutes/data",
                 "columns": [
                     {data: 'institution_id', name: 'institution_id'},
                     {data: 'name', name: 'name'},

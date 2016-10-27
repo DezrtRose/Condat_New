@@ -3,7 +3,7 @@
 @section('heading', '<h1>' . $client_name . '- <small>Apply Offer</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a></li>
     <li>Notes</li>
 @stop
 
@@ -48,7 +48,7 @@
                             <div class="col-sm-9">
                                 {!!Form::select('intake_id', $intakes, null, array('class' => 'form-control intake', 'id' => 'intake'))!!}
                                 <a class="btn btn-success btn-xs marginTop" data-toggle="modal" data-target="#condat-modal"
-                                   data-url="{{ url('tenant/application/intake/add')}}"><i
+                                   data-url="{{ url($tenant_id.'/application/intake/add')}}"><i
                                             class="glyphicon glyphicon-plus-sign"></i> Add Intake</a>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
     $(document).on("submit", "#add-intake", function (event) {
         var formData = $(this).serialize();
         var institute_id = '<?php echo $application->institute_id ?>';
-        var url = appUrl + '/tenant/intakes/' + institute_id + '/store';
+        var url = appUrl + '/intakes/' + institute_id + '/store';
 
         // process the form
         $.ajax({

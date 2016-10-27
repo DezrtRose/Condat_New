@@ -96,7 +96,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/invoices/payments/" + <?php echo $invoice_id ?> + "/" + <?php echo $type ?> + "/data",
+                "ajax": appUrl + "/invoices/payments/" + <?php echo $invoice_id ?> + "/" + <?php echo $type ?> + "/data",
                 "columns": [
                     {data: 'payment_id', name: 'payment_id'},
                     {data: 'date_paid', name: 'date_paid'},

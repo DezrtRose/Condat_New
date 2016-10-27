@@ -32,7 +32,7 @@
             </td>
             <td>
                 <a data-toggle="modal" data-target="#condat-modal"
-                   data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
+                   data-url="{{url($tenant_id.'/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
                             class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                             data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
                 <a href="{{route('tenant.student.invoice', [$tenant_id, $invoice->student_invoice_id])}}"

@@ -2,7 +2,7 @@
 <div class="active tab-pane" id="activity">
     <!-- Post -->
     <div>
-        {!! Form::open(['url' => 'tenant/clients/'.$client->client_id.'/notes', 'method' => 'post']) !!}
+        {!! Form::open(['url' => $tenant_id.'/clients/'.$client->client_id.'/notes', 'method' => 'post']) !!}
         <div class="col-sm-10">
             <input type="hidden" value=1 name="timeline"/>
             <input name="description" class="form-control input-sm" type="text" placeholder="Type a Comment">

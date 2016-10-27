@@ -96,7 +96,7 @@
 <script type="text/javascript">
     $("#broad_field").change(function() {
         var broad_field = $(this).val();
-        $.ajax({url: appUrl + "/tenant/narrowfield/" + broad_field,
+        $.ajax({url: appUrl + "/narrowfield/" + broad_field,
             success: function(result){
                 $("#narrow_field").html("tenant/narrowfield/" + result.data.options);
             }});

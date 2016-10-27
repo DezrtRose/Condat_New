@@ -2,7 +2,7 @@
 @section('title', 'Institute View')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/institute')}}" title="All Institutes"><i class="fa fa-building"></i> Institutes</a></li>
+    <li><a href="{{url($tenant_id.'/institute')}}" title="All Institutes"><i class="fa fa-building"></i> Institutes</a></li>
     <li>View</li>
 @stop
 @section('content')
@@ -107,7 +107,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add Super Agent</h4>
                 </div>
-                {!!Form::open(['url' => 'tenant/superagents/'.$institute->institution_id.'/store', 'id' => 'add-agent', 'class' => 'form-horizontal form-left'])!!}
+                {!!Form::open(['url' => $tenant_id.'/superagents/'.$institute->institution_id.'/store', 'id' => 'add-agent', 'class' => 'form-horizontal form-left'])!!}
                 <div class="modal-body">
 
                     <div class="form-group">

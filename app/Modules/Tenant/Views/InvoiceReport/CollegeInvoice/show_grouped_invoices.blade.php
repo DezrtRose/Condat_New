@@ -3,7 +3,7 @@
 @section('heading', '<h1>Group Invoice - <small>Details</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/college_invoice_report/invoice_grouped')}}" title="All Group Invoices"><i
+    <li><a href="{{url($tenant_id.'/college_invoice_report/invoice_grouped')}}" title="All Group Invoices"><i
                     class="fa fa-users"></i> Group Invoices</a></li>
     <li>View</li>
 @stop
@@ -152,7 +152,7 @@
                 var parentTr = $(this).parent().parent();
                 var invoiceId = $(this).attr('id');
                 $.ajax({
-                    url: appUrl + "/tenant/group/{{$invoice_details->group_invoice_id}}" + "/invoice/" + invoiceId,
+                    url: appUrl + "/group/{{$invoice_details->group_invoice_id}}" + "/invoice/" + invoiceId,
                     success: function (result) {
                         parentTr.slideUp('slow');
                         $('.content .box-primary').before(notify('success', 'Invoice Removed Successfully!'));

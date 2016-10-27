@@ -31,7 +31,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Add Contact</h4>
             </div>
-            {!!Form::open(['url' => 'tenant/institutes/'.$institute->institution_id.'/contact/store', 'id' => 'add-contact', 'class' => 'form-horizontal form-left'])!!}
+            {!!Form::open(['url' => $tenant_id.'/institutes/'.$institute->institution_id.'/contact/store', 'id' => 'add-contact', 'class' => 'form-horizontal form-left'])!!}
             <div class="modal-body">
 
                 <div class="form-group">
@@ -108,7 +108,7 @@
         oTable = $('#contacts').DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": appUrl + "/tenant/institutes/<?= $institute->institution_id ?>/contacts",
+            "ajax": appUrl + "/institutes/<?= $institute->institution_id ?>/contacts",
             "columns": [
                 {data: 'name', name: 'name'},
                 {data: 'position', name: 'position'},

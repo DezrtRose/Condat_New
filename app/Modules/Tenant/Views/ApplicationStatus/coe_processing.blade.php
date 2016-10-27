@@ -3,7 +3,7 @@
 @section('heading', '<h1>Application - <small>COE Processing</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a></li>
     <li>COE Processing</li>
 @stop
 

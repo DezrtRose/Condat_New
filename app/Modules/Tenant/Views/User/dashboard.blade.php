@@ -139,7 +139,7 @@
             var clientId = $(this).attr('id');
             var parentTr = $(this).closest('tr');
             $.ajax({
-                url: appUrl + "/tenant/clients/" + clientId + "/inactive",
+                url: appUrl + "/clients/" + clientId + "/inactive",
                 success: function (result) {
                     $('.content .box-primary').first().before(notify('success', 'Client Made Inactive Successfully!'));
                     setTimeout(function () {

@@ -3,7 +3,7 @@
 @section('heading', 'Invoice - <small>Group</small>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
     <li>Invoices</li>
 @stop
 
@@ -54,7 +54,7 @@
             </div>
             <div class="box-footer clearfix">
                 <input type="button" class="btn btn-primary pull-left check" value="Check All"/>
-                <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#condat-modal" data-url="{{ url('tenant/invoice/group') }}"><i class="glyphicon glyphicon-plus-sign"></i> Generate Group Invoice</a>
+                <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#condat-modal" data-url="{{ url($tenant_id.'/invoice/group') }}"><i class="glyphicon glyphicon-plus-sign"></i> Generate Group Invoice</a>
             </div>
         </div>
     </div>

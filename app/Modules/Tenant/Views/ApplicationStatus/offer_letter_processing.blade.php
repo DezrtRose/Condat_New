@@ -3,7 +3,7 @@
 @section('heading', '<h1>Application - <small>Offer Letter Processing</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
     <li>Offer Letter Processing</li>
 @stop
 

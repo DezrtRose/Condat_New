@@ -14,13 +14,13 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <ul class="nav navbar-nav">
-                        <li class="{{($current == '')? 'active' : ''}}"><a href={{url("tenant/institute/$institute->institution_id")}}>Dashboard</a>
+                        <li class="{{($current == '')? 'active' : ''}}"><a href={{url($tenant_id."/institute/$institute->institution_id")}}>Dashboard</a>
                         </li>
-                        <li class="{{($current == 'courses')? 'active' : ''}}"><a href={{url("tenant/institutes/$institute->institution_id/courses")}}>Courses</a>
+                        <li class="{{($current == 'courses')? 'active' : ''}}"><a href={{url($tenant_id."/institutes/$institute->institution_id/courses")}}>Courses</a>
                         </li>
-                        <li class="{{($current == 'intakes')? 'active' : ''}}"><a href={{url("tenant/institutes/$institute->institution_id/intakes")}}>Intakes</a>
+                        <li class="{{($current == 'intakes')? 'active' : ''}}"><a href={{url($tenant_id."/institutes/$institute->institution_id/intakes")}}>Intakes</a>
                         </li>
-                        <li class="{{($current == 'document')? 'active' : ''}}"><a href={{url("tenant/institutes/$institute->institution_id/document")}}>Documents</a>
+                        <li class="{{($current == 'document')? 'active' : ''}}"><a href={{url($tenant_id."/institutes/$institute->institution_id/document")}}>Documents</a>
                         </li>
                     </ul>
                 </ul>

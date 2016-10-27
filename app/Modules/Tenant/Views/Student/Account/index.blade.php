@@ -96,7 +96,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/students/payments/" + <?php echo $application->application_id ?> +"/data",
+                "ajax": appUrl + "/students/payments/" + <?php echo $application->application_id ?> +"/data",
                 "columns": [
                     {data: 'student_payments_id', name: 'student_payments_id'},
                     {data: 'date_paid', name: 'date_paid'},
@@ -121,7 +121,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/students/invoices/" + <?php echo $application->application_id ?> +"/data",
+                "ajax": appUrl + "/students/invoices/" + <?php echo $application->application_id ?> +"/data",
                 "columns": [
                     {data: 'invoice_id', name: 'invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},
@@ -146,7 +146,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/students/recent/" + <?php echo $application->application_id ?> +"/data",
+                "ajax": appUrl + "/students/recent/" + <?php echo $application->application_id ?> +"/data",
                 "columns": [
                     {data: 'invoice_id', name: 'invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},

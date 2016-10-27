@@ -13,7 +13,7 @@
             </div>
             @include('flash::message')
             {!!Form::open(array('method' => 'post', 'class' => 'form-horizontal form-left'))!!}
-            <input type="hidden" name="return_url" value="{{url('tenant/subscription/complete_subscription_paypal')}}"/>
+            <input type="hidden" name="return_url" value="{{url($tenant_id.'/subscription/complete_subscription_paypal')}}"/>
             <div class="box-body">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -59,7 +59,7 @@
             e.preventDefault();
             var subscription_years = $('#subscription_years').val();
             var subscription_type = $('#subscription_type').val();
-            $.post("<?php echo url('tenant/subscription/get_subscription_amount') ?>", {'subscription_years': subscription_years, 'subscription_type': subscription_type, _token: CSRF_TOKEN})
+            $.post("<?php echo url($tenant_id.'/subscription/get_subscription_amount') ?>", {'subscription_years': subscription_years, 'subscription_type': subscription_type, _token: CSRF_TOKEN})
             .done(function(resp) {
                 if(resp != 'false') {
                     $('.subscription-amount').html(resp);

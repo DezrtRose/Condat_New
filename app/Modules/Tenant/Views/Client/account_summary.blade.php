@@ -15,7 +15,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Recent Invoices</h3>
-                <a href='{{url("tenant/invoice/".$client->client_id."/add")}}'
+                <a href='{{url($tenant_id."/invoice/".$client->client_id."/add")}}'
                    class="btn btn-success btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Create
                     Invoice</a>
             </div>
@@ -40,7 +40,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Recent Payments</h3>
-                <a href="{{url("tenant/payment/".$client->client_id."/add")}}"
+                <a href="{{url($tenant_id."/payment/".$client->client_id."/add")}}"
                    class="btn btn-success btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Add
                     Payments</a>
             </div>
@@ -97,7 +97,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/payments/client/" + <?php echo $client->client_id ?> +"/data",
+                "ajax": appUrl + "/payments/client/" + <?php echo $client->client_id ?> +"/data",
                 "columns": [
                     {data: 'client_payment_id', name: 'client_payment_id'},
                     {data: 'date_paid', name: 'date_paid'},
@@ -121,7 +121,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/invoices/client/" + <?php echo $client->client_id ?> +"/data",
+                "ajax": appUrl + "/invoices/client/" + <?php echo $client->client_id ?> +"/data",
                 "columns": [
                     {data: 'invoice_id', name: 'invoices.invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},
@@ -145,7 +145,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/invoices/future/" + <?php echo $client->client_id ?> +"/data",
+                "ajax": appUrl + "/invoices/future/" + <?php echo $client->client_id ?> +"/data",
                 "columns": [
                     {data: 'invoice_id', name: 'invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},

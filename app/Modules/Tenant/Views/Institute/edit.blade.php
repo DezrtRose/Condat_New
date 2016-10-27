@@ -3,7 +3,7 @@
 @section('heading', 'Update Institute')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/institute')}}" title="All Institutes"><i class="fa fa-building"></i> Institutes</a></li>
+    <li><a href="{{url($tenant_id.'/institute')}}" title="All Institutes"><i class="fa fa-building"></i> Institutes</a></li>
     <li>Update</li>
 @stop
 @section('content')

@@ -101,7 +101,7 @@
             oTable = $('#intakes').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": appUrl + "/tenant/intakes/" + <?php echo $institution_id ?> +"/data",
+                "ajax": appUrl + "/intakes/" + <?php echo $institution_id ?> +"/data",
                 "columns": [
                     {data: 'intake_id', name: 'intake_id'},
                     {data: 'intake_date', name: 'intake_date'},

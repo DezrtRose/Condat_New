@@ -56,5 +56,5 @@
 
 </head>
 <script>
-    var appUrl = "{{ url('/') }}";
+    var appUrl = "{{ url('/').'/'.$tenant_id }}";
 </script>

@@ -3,7 +3,7 @@
 @section('heading', 'Client Invoices - <small>Paid Invoices</small>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
     <li>Paid Invoices</li>
 @stop
 
@@ -45,7 +45,7 @@
                                 <td>{{ $invoice->total_gst }}</td>
                                 <td>
                                     <a data-toggle="modal" data-target="#condat-modal"
-                                       data-url="{{url('tenant/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
+                                       data-url="{{url($tenant_id.'/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
                                                 class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Add Payment"></i></a>

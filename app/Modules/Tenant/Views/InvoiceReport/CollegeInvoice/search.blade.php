@@ -3,7 +3,7 @@
 @section('heading', '<h1>College Invoice - <small>Advanced Search</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All College Invoices"><i class="fa fa-users"></i> College
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All College Invoices"><i class="fa fa-users"></i> College
             Invoices</a></li>
     <li>Advanced Search</li>
 @stop

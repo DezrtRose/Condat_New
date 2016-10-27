@@ -23,7 +23,7 @@
             <td>{{ $payment->payment_method }}</td>
             <td>{{ $payment->payment_method }}</td>
             <td>
-                <a href="{{url("tenant/students/payment/receipt/" . $payment->student_payments_id)}}" title="Print Payment"><i
+                <a href="{{url($tenant_id."/students/payment/receipt/" . $payment->student_payments_id)}}" title="Print Payment"><i
                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                             data-toggle="tooltip" data-placement="top"
                             title="Print Payment"></i></a>

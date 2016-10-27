@@ -34,7 +34,7 @@
                 oTable = $('#users').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    "ajax": appUrl + "/tenant/users/data",
+                    "ajax": appUrl + "/users/data",
                     "columns": [
                         {data: 'user_id', name: 'user_id'},
                         {data: 'fullname', name: 'fullname'},

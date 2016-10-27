@@ -36,7 +36,7 @@
             oTable = $('#clients').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": appUrl + "/tenant/client/data",
+                "ajax": appUrl + "/client/data",
                 "columns": [
                     {data: 'client_id', name: 'clients.client_id'},
                     {data: 'fullname', name: 'fullname'},
@@ -54,7 +54,7 @@
         $(document).on('ifChecked', '.active', function (event) {
             var clientId = $(this).attr('id');
             $.ajax({
-                url: appUrl + "/tenant/clients/"+clientId+"/active",
+                url: appUrl + "/clients/"+clientId+"/active",
                 success: function (result) {
                     $('.content .box-primary').before(notify('success', 'Client Made Active Successfully!'));
                     setTimeout(function () {
@@ -67,7 +67,7 @@
         $(document).on('ifUnchecked', '.active', function (event) {
             var clientId = $(this).attr('id');
             $.ajax({
-                url: appUrl + "/tenant/clients/"+clientId+"/inactive",
+                url: appUrl + "/clients/"+clientId+"/inactive",
                 success: function (result) {
                     $('.content .box-primary').before(notify('success', 'Client Made Inactive Successfully!'));
                     setTimeout(function () {

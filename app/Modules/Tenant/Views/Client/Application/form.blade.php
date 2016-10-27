@@ -3,7 +3,7 @@
     <div class="col-md-10 col-sm-12">
         {!!Form::select('institute_id', $institutes, null, array('class' => 'form-control institute', 'id' => 'institute'))!!}
         <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal"
-           data-url="{{ url('tenant/application/institute/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
+           data-url="{{ url($tenant_id.'/application/institute/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
             Institute</a>
     </div>
 </div>
@@ -13,7 +13,7 @@
     <div class="col-md-10 col-sm-12">
         {!!Form::select('institution_course_id', $courses, null, array('class' => 'form-control course', 'id' => 'course'))!!}
         <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal"
-           data-url="{{ url('tenant/application/course/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
+           data-url="{{ url($tenant_id.'/application/course/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
             Course</a>
     </div>
 </div>
@@ -25,7 +25,7 @@
         {!!Form::select('intake_id', $intakes, null, array('class' =>
        'form-control intake', 'id' => 'intake'))!!}
         <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal"
-           data-url="{{ url('tenant/application/intake/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
+           data-url="{{ url($tenant_id.'/application/intake/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
             Intake</a>
     </div>
 </div>
@@ -62,7 +62,7 @@
     <div class="col-sm-10">
         {!!Form::select('super_agent_id', $agents, null, array('class' => 'form-control superagent', 'id' => 'superagent'))!!}
         <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal"
-           data-url="{{ url('tenant/application/superagent/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
+           data-url="{{ url($tenant_id.'/application/superagent/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
             Super Agent</a>
     </div>
 </div>
@@ -72,7 +72,7 @@
     <div class="col-sm-10">
         {!!Form::select('sub_agent_id', $agents, null, array('class' => 'form-control subagent', 'id' => 'subagent'))!!}
         <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal"
-           data-url="{{ url('tenant/application/subagent/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
+           data-url="{{ url($tenant_id.'/application/subagent/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
             Sub Agent</a>
     </div>
 </div>
@@ -92,7 +92,7 @@
     function getCourses() {
         var institute = $("#institute").val();
         $.ajax({
-            url: appUrl + "/tenant/courses/" + institute,
+            url: appUrl + "/courses/" + institute,
             beforeSend: function () {
                 $("#course").before('<div class="form-control course-loading"><i class = "fa fa-spinner fa-spin"></i> Loading...</div>');
                 $('#course').hide();
@@ -110,7 +110,7 @@
     function getIntakes() {
         var institute = $("#institute").val();
         $.ajax({
-            url: appUrl + "/tenant/intakes/" + institute,
+            url: appUrl + "/intakes/" + institute,
             beforeSend: function () {
                 $("#intake").before('<div class="form-control intake-loading"><i class = "fa fa-spinner fa-spin"></i> Loading...</div>');
                 $('#intake').hide();
@@ -127,7 +127,7 @@
     function getTuitionFee() {
         var course = $("#course").val();
         $.ajax({
-            url: appUrl + "/tenant/course/fee/" + course,
+            url: appUrl + "/course/fee/" + course,
             beforeSend: function () {
                 $("#fee").before('<div class="form-control fee-loading"><i class = "fa fa-spinner fa-spin"></i> Loading...</div>');
                 $('#fee').hide();
@@ -188,7 +188,7 @@
     $(document).on("submit", "#add-course", function (event) {
         var formData = $(this).serialize();
         var institute_id = $('#institute').val();
-        var url = appUrl + '/tenant/course/' + institute_id + '/store';
+        var url = appUrl + '/course/' + institute_id + '/store';
 
         // process the form
         $.ajax({
@@ -227,7 +227,7 @@
     $(document).on("submit", "#add-intake", function (event) {
         var formData = $(this).serialize();
         var institute_id = $('#institute').val();
-        var url = appUrl + '/tenant/intakes/' + institute_id + '/store';
+        var url = appUrl + '/intakes/' + institute_id + '/store';
 
         // process the form
         $.ajax({

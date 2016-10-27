@@ -40,7 +40,7 @@
                             <td>{{ format_id($payment->college_invoice_id, 'CI')}}</td>
                             <td>{{ $payment->description }}</td>
                             <td>
-                                <a href="{{url("tenant/students/payment/receipt/" . $payment->college_payment_id)}}" title="Print Payment"><i
+                                <a href="{{url($tenant_id."/students/payment/receipt/" . $payment->college_payment_id)}}" title="Print Payment"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Payment"></i></a>

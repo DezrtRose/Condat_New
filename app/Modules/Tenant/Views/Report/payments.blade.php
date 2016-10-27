@@ -52,7 +52,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/students/payments/" + <?php echo $application->application_id ?> +"/data",
+                "ajax": appUrl + "/students/payments/" + <?php echo $application->application_id ?> +"/data",
                 "columns": [
                     {data: 'student_payments_id', name: 'student_payments_id'},
                     {data: 'date_paid', name: 'date_paid'},

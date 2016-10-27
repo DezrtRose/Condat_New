@@ -2,7 +2,7 @@
 @section('title', 'Add Intake')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/intake')}}" title="All Intakes"><i class="fa fa-graduation-cap"></i> Intakes</a></li>
+    <li><a href="{{url($tenant_id.'/intake')}}" title="All Intakes"><i class="fa fa-graduation-cap"></i> Intakes</a></li>
     <li>Add</li>
 @stop
 @section('content')

@@ -29,14 +29,14 @@
                     <div class="row">
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
-                                <li><a href={{url("tenant/clients/$client->client_id")}}>Dashboard</a></li>
-                                <li><a href={{url("tenant/clients/$client->client_id/personal_details")}}>Personal
+                                <li><a href={{url($tenant_id."/clients/$client->client_id")}}>Dashboard</a></li>
+                                <li><a href={{url($tenant_id."/clients/$client->client_id/personal_details")}}>Personal
                                         Details</a></li>
-                                <li class="active"><a href={{url("tenant/clients/$client->client_id/applications")}}>College
+                                <li class="active"><a href={{url($tenant_id."/clients/$client->client_id/applications")}}>College
                                         Application</a></li>
-                                <li><a href={{url("tenant/clients/$client->client_id/accounts")}}>Accounts</a></li>
-                                <li><a href={{url("tenant/clients/$client->client_id/document")}}>Documents</a></li>
-                                <li><a href={{url("tenant/clients/$client->client_id/notes")}}>Notes</a></li>
+                                <li><a href={{url($tenant_id."/clients/$client->client_id/accounts")}}>Accounts</a></li>
+                                <li><a href={{url($tenant_id."/clients/$client->client_id/document")}}>Documents</a></li>
+                                <li><a href={{url($tenant_id."/clients/$client->client_id/notes")}}>Notes</a></li>
                             </ul>
                         </div>
                     </div>
@@ -69,8 +69,8 @@
                     <li><a href="#">College Invoice</a></li>
                     <li><a href="#">Students Payments</a></li>
                     <li><a href="#">Sub Agent Payments</a></li>
-                    <li ><a href="{{url("tenant/clients/$client->client_id/innerdocument")}}">Documents</a></li>
-                    <li><a href="{{url("tenant/clients/$client->client_id/innernotes")}}">Notes</a></li>
+                    <li ><a href="{{url($tenant_id."/clients/$client->client_id/innerdocument")}}">Documents</a></li>
+                    <li><a href="{{url($tenant_id."/clients/$client->client_id/innernotes")}}">Notes</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->

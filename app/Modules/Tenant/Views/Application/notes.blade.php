@@ -2,7 +2,7 @@
 @section('title', 'Application Notes')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/application')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a>
+    <li><a href="{{url($tenant_id.'/application')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a>
     </li>
     <li>Notes</li>
 @stop

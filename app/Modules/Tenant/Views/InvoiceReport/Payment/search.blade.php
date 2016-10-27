@@ -3,7 +3,7 @@
 @section('heading', '<h1>Payment - <small>Advanced Search</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Payments"><i class="fa fa-users"></i> Payments</a>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Payments"><i class="fa fa-users"></i> Payments</a>
     </li>
     <li>Advanced Search</li>
 @stop
@@ -100,7 +100,7 @@
                                 <td>{{ $payment->payment_method }}</td>
                                 <td>{{ $payment->payment_method }}</td>
                                 <td>
-                                    <a href="{{url("tenant/students/payment/receipt/" . $payment->student_payments_id)}}" title="Print Payment"><i
+                                    <a href="{{url($tenant_id."/students/payment/receipt/" . $payment->student_payments_id)}}" title="Print Payment"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Print Payment"></i></a>

@@ -76,7 +76,7 @@
             oTable = $('#courses').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": appUrl + "/tenant/courses/" + <?php echo $institution_id ?> +"/data",
+                "ajax": appUrl + "/courses/" + <?php echo $institution_id ?> +"/data",
                 "columns": [
                     {data: 'course_id', name: 'course_id'},
                     {data: 'name', name: 'name'},

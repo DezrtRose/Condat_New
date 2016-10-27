@@ -90,7 +90,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Assign To Invoice</h4>
                 </div>
-                {!!Form::open(['url' => 'tenant/applications/'.$application->application_id.'/subinvoice', 'id' => 'add-invoice', 'class' => 'form-horizontal form-left'])!!}
+                {!!Form::open(['url' => $tenant_id.'/applications/'.$application->application_id.'/subinvoice', 'id' => 'add-invoice', 'class' => 'form-horizontal form-left'])!!}
                 <div class="modal-body">
 
                     <div class="form-group">
@@ -125,7 +125,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/subagents/payments/" + <?php echo $application->application_id ?> +"/data",
+                "ajax": appUrl + "/subagents/payments/" + <?php echo $application->application_id ?> +"/data",
                 "columns": [
                     {data: 'subagent_payments_id', name: 'subagent_payments_id'},
                     {data: 'date_paid', name: 'date_paid'},
@@ -150,7 +150,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/subagents/invoices/" + <?php echo $application->application_id ?> +"/data",
+                "ajax": appUrl + "/subagents/invoices/" + <?php echo $application->application_id ?> +"/data",
                 "columns": [
                     {data: 'invoice_id', name: 'invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},
@@ -174,7 +174,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/subagents/future/" + <?php echo $application->application_id ?> +"/data",
+                "ajax": appUrl + "/subagents/future/" + <?php echo $application->application_id ?> +"/data",
                 "columns": [
                     {data: 'invoice_id', name: 'invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},

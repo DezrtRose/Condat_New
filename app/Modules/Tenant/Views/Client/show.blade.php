@@ -2,7 +2,7 @@
 @section('title', 'Client View')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
     <li>View</li>
 @stop
 @section('content')
@@ -55,7 +55,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Reminders</h3>
 
-                        <a href="{{url("tenant/clients/$client->client_id/notes")}}"
+                        <a href="{{url($tenant_id."/clients/$client->client_id/notes")}}"
                            class="btn btn-success pull-right btn-sm"><i class="fa fa-plus"></i> Add New</a>
 
 

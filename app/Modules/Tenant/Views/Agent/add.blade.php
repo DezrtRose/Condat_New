@@ -2,7 +2,7 @@
 @section('title', 'Add Agent')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/agents')}}" title="All Agents"><i class="fa fa-briefcase"></i> Agents</a></li>
+    <li><a href="{{url($tenant_id.'/agents')}}" title="All Agents"><i class="fa fa-briefcase"></i> Agents</a></li>
     <li>Add</li>
 @stop
 @section('content')

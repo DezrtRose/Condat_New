@@ -51,7 +51,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/applications/" + <?php echo $client->client_id ?> +"/data",
+                "ajax": appUrl + "/applications/" + <?php echo $client->client_id ?> +"/data",
                 "columns": [
                     {data: 'application_id', name: 'application_id'},
                     {data: 'name', name: 'name'},

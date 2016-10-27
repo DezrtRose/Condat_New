@@ -29,7 +29,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Add Address</h4>
             </div>
-            {!!Form::open(['url' => 'tenant/institutes/'.$institute->institution_id.'/address/store', 'id' =>
+            {!!Form::open(['url' => $tenant_id.'/institutes/'.$institute->institution_id.'/address/store', 'id' =>
             'add-address', 'class' => 'form-horizontal form-left'])!!}
             <div class="modal-body">
                 @include('Tenant::Address/form')
@@ -51,7 +51,7 @@
         aTable = $('#addresses').DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": appUrl + "/tenant/institutes/<?= $institute->institution_id ?>/addresses",
+            "ajax": appUrl + "/institutes/<?= $institute->institution_id ?>/addresses",
             "columns": [
                 {data: 'address', name: 'address'},
                 {data: 'state', name: 'state'},

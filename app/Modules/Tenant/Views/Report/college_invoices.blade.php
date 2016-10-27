@@ -45,7 +45,7 @@
                 "info": true,
                 "autoWidth": true,
 
-                "ajax": appUrl + "/tenant/applications/invoices/" + <?php echo $invoices->course_application_id ?> +"/data",
+                "ajax": appUrl + "/applications/invoices/" + <?php echo $invoices->course_application_id ?> +"/data",
                 "columns": [
                     {data: 'college_invoice_id', name: 'college_invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},

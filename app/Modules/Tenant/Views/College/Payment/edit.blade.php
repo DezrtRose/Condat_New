@@ -3,7 +3,7 @@
 @section('heading', 'Update Payment')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/clients')}}" title="All Clients"><i class="fa fa-users"></i> Client</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Client</a></li>
     <li>Add</li>
 @stop
 @section('content')
