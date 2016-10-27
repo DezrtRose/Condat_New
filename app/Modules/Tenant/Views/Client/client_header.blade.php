@@ -8,7 +8,8 @@
                          alt="{{$client->first_name}} {{$client->middle_name}} {{$client->last_name}}"
                          height="150"/>
                     <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#url-modal">
-                        <i class="fa fa-camera fa-fw"></i>Upload From URL
+                        <i class="fa fa-camera fa-fw"></i>
+                        <span class="hidden-sm" style="font-size: 13px">Upload From URL</span>
                     </button>
                 </div>
             </div>
