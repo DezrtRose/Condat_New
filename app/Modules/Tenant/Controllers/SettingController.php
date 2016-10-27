@@ -22,7 +22,7 @@ class SettingController extends BaseController {
 	 */
 	public function company()
 	{
-		$data['company'] = $this->agent->getAgentDetails();
+		$data['company'] = (object) $this->setting->getCompany();
 		return view('Tenant::Settings/company', $data);
 	}
 
@@ -83,19 +83,20 @@ class SettingController extends BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function updateCompany($agent_id)
+	public function updateCompany()
 	{
 		$company_rules = [
-			'number' => 'required',
+			'phone_number' => 'required',
 			'email' => 'email|required',
-			'name' => 'required',
+			'company_name' => 'required',
 		];
 
 		$this->validate($this->request, $company_rules);
 		// if validates
-		$updated = $this->agent->edit($this->request->all(), $agent_id);
-		if ($updated)
-			Flash::success('Company details has been updated successfully!');
+        $company_data = $this->request->all();
+        unset($company_data['_token']);
+		$this->setting->saveSetup('company', serialize($company_data));
+        Flash::success('Company details has been updated successfully!');
 		return redirect()->route('tenant.company.edit');
 	}
 

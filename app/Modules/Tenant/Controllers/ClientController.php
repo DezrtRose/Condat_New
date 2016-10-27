@@ -404,25 +404,25 @@ class ClientController extends BaseController
         $url = $this->request->get('url');
         $title = $this->request->get('title');
 
-        //$extension =
-        $extension = pathinfo($url, PATHINFO_EXTENSION);
-        //remove get request
-        $extension = strtok($extension, '?');
-        $filename = str_random(4).'-'.str_slug($title).'.'. $extension;
-        //get file content from url
-        $file = file_get_contents($url);
+        if(is_array(getimagesize($url))) {
+            //$extension =
+            $extension = pathinfo($url, PATHINFO_EXTENSION);
+            //remove get request
+            $extension = strtok($extension, '?');
+            $filename = str_random(4).'-'.str_slug($title).'.'. $extension;
+            //get file content from url
+            $file = file_get_contents($url);
 
-        $location = tenant()->folder('customer', true)->path();
-        //dd($location);
-        $file_info = array();
-        $file_info['fileName'] = $filename;
-        $file_info['pathName'] = $location;
-        $file = file_put_contents($location.$filename, $file);
-        if ($file) {
+            $location = tenant()->folder('customer', true)->path();
+            //dd($location);
+            $file_info = array();
+            $file_info['fileName'] = $filename;
+            $file_info['pathName'] = $location;
+            $file = file_put_contents($location.$filename, $file);
             $photo_id = $this->client->uploadImage($client_id, $file_info, $this->request->all());
             \Flash::success('Photo uploaded successfully!');
         } else {
-            \Flash::error('Something went wrong! Please try again later');
+            \Flash::error('Unable to upload. Please try another image');
         }
         return redirect()->back();
     }

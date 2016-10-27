@@ -18,28 +18,28 @@
                         Company Details
 
                         <div class="">
-                            <div class="form-group @if($errors->has('name')) {{'has-error'}} @endif">
-                                {!!Form::label('name', 'Company Name *', array('class' => 'col-sm-4 control-label')) !!}
+                            <div class="form-group @if($errors->has('company_name')) {{'has-error'}} @endif">
+                                {!!Form::label('company_name', 'Company Name *', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
-                                    {!!Form::text('name', null, array('class' => 'form-control', 'id'=>'name'))!!}
-                                    @if($errors->has('name'))
-                                        {!! $errors->first('name', '<label class="control-label"
+                                    {!!Form::text('company_name', null, array('class' => 'form-control', 'id'=>'company_name'))!!}
+                                    @if($errors->has('company_name'))
+                                        {!! $errors->first('company_name', '<label class="control-label"
                                                                            for="inputError">:message</label>') !!}
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group @if($errors->has('number')) {{'has-error'}} @endif">
-                                {!!Form::label('number', 'Phone Number *', array('class' => 'col-sm-4 control-label')) !!}
+                            <div class="form-group @if($errors->has('phone_number')) {{'has-error'}} @endif">
+                                {!!Form::label('phone_number', 'Phone Number *', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-phone"></i>
                                         </div>
-                                        {!!Form::text('number', null, array('class' => 'form-control phone-input', 'id'=>'phone'))!!}
+                                        {!!Form::text('phone_number', null, array('class' => 'form-control phone-input', 'id'=>'phone_number'))!!}
                                     </div>
-                                    @if($errors->has('number'))
-                                        {!! $errors->first('number', '<label class="control-label"
+                                    @if($errors->has('phone_number'))
+                                        {!! $errors->first('phone_number', '<label class="control-label"
                                                                             for="inputError">:message</label>') !!}
                                     @endif
                                 </div>
@@ -135,7 +135,7 @@
                             <div class="form-group @if($errors->has('country_id')) {{'has-error'}} @endif">
                                 {!!Form::label('country_id', 'Country', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
-                                    {!!Form::select('country_id', $countries, 263, array('class' =>
+                                    {!!Form::select('country_id', $countries, $company->country_id, array('class' =>
                                     'form-control'))!!}
                                     @if($errors->has('country_id'))
                                         {!! $errors->first('country_id', '<label class="control-label"
@@ -156,7 +156,7 @@
                         <div class="col-sm-8">
                             {!!Form::textarea('description', null, array('class' => 'form-control'))!!}
                             @if($errors->has('description'))
-                                {!! $errors->first('country_id', '<label class="control-label"
+                                {!! $errors->first('description', '<label class="control-label"
                                                                          for="inputError">:message</label>')
                                 !!}
                             @endif
