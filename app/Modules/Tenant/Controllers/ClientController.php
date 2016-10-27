@@ -57,7 +57,7 @@ class ClientController extends BaseController
      *
      * @return JSON response
      */
-    function getData()
+    function getData($tenant_id)
     {
         $clients = Client::leftJoin('persons', 'clients.person_id', '=', 'persons.person_id')
             ->leftJoin('person_emails', 'person_emails.person_id', '=', 'persons.person_id')
@@ -75,7 +75,9 @@ class ClientController extends BaseController
             ->select(['clients.client_id', 'clients.added_by', 'clients.added_by', 'emails.email', 'phones.number', 'clients.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), DB::raw('CONCAT(user_profile.first_name, " ", user_profile.last_name) AS added_by'), 'active_clients.id as active_id', 'addresses.country_id']);
 
         $datatable = \Datatables::of($clients)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View Client" class="btn btn-action-box" href ="{{ route( \'tenant.client.show\', $client_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Client Documents" class="btn btn-action-box" href ="{{ route( \'tenant.client.document\', $client_id) }}"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Client" class="btn btn-action-box" href ="{{ route( \'tenant.client.edit\', $client_id) }}"><i class="fa fa-edit"></i></a>')
+            ->addColumn('action', function ($data) use($tenant_id) {
+               return '<a data-toggle="tooltip" title="View Client" class="btn btn-action-box" href ="'.route('tenant.client.show', [$tenant_id, $data->client_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Client Documents" class="btn btn-action-box" href ="'.route('tenant.client.document', [$tenant_id, $data->client_id]) .'"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Client" class="btn btn-action-box" href ="'.route('tenant.client.edit', [$tenant_id, $data->client_id]) .'"><i class="fa fa-edit"></i></a>';
+            })
             ->addColumn('active', function ($data) {
                 return ($data->active_id != null)? '<input type="checkbox" value=1 class="icheck active" id="'.$data->client_id.'" checked = "checked" />' : '<input type="checkbox" value=0 class="icheck active" id="'.$data->client_id.'"/>';
             })
@@ -119,7 +121,7 @@ class ClientController extends BaseController
      *
      * @return Response
      */
-    public function store()
+    public function store($tenant_id)
     {
         /* Additional validations for creating user */
         $this->rules['email'] = 'email|min:5|max:55|unique:emails';
@@ -137,7 +139,7 @@ class ClientController extends BaseController
             $this->client->addLog($created, 1);
         }
 
-        return redirect()->route('tenant.client.index');
+        return redirect()->route('tenant.client.index', $tenant_id);
     }
 
     /**
@@ -228,7 +230,7 @@ class ClientController extends BaseController
         return view("Tenant::Client/document", $data);
     }
 
-    function uploadDocument($client_id)
+    function uploadDocument($tenant_id, $client_id)
     {
         $upload_rules = ['document' => 'required|mimes:jpeg,bmp,png,doc,docx,pdf,txt,xls,xlsx',
             'type' => 'required',
@@ -242,9 +244,9 @@ class ClientController extends BaseController
         if ($file_info = tenant()->folder($folder, true)->upload($file)) {
             $document_id = $this->document->uploadDocument($client_id, $file_info, $this->request->all());
             $document = Document::find($document_id);
-            $this->client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.client.document.download', $document_id)]);
+            $this->client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.client.document.download', [$tenant_id, $document_id])]);
             \Flash::success('File uploaded successfully!');
-            return redirect()->route('tenant.client.document', $client_id);
+            return redirect()->route('tenant.client.document', [$tenant_id, $client_id]);
         }
 
         \Flash::danger('Uploaded file is not valid!');
@@ -282,7 +284,7 @@ class ClientController extends BaseController
         return view("Tenant::Client/payments", $data);
     }
 
-    function uploadClientNotes($client_id)
+    function uploadClientNotes($tenant_id, $client_id)
     {
         $upload_rules = ['description' => 'required'];
 
@@ -298,9 +300,9 @@ class ClientController extends BaseController
             $this->client->addLog($client_id, 2, ['{{DESCRIPTION}}' => $this->getNoteFormat($note_id), '{{NAME}}' => get_tenant_name()]);
         }
         if($this->request->get('timeline') == 1)
-            return redirect()->route('tenant.client.show', $client_id);
+            return redirect()->route('tenant.client.show', [$tenant_id, $client_id]);
         else
-            return redirect()->route('tenant.client.notes', $client_id);
+            return redirect()->route('tenant.client.notes', [$tenant_id, $client_id]);
     }
 
 
@@ -313,12 +315,12 @@ class ClientController extends BaseController
         return $format;
     }
 
-    function deleteNote($note_id)
+    function deleteNote($tenant_id, $note_id)
     {
         $client_id = $this->client_notes->deleteNote($note_id);
 
         \Flash::success('Note deleted successfully!');
-        return redirect()->route('tenant.client.notes', $client_id);
+        return redirect()->route('tenant.client.notes', [$tenant_id, $client_id]);
     }
 
     /* Krita */

@@ -22,10 +22,11 @@ class SubscriptionController extends BaseController
         parent::__construct();
     }
 
-    public function checkSubscription()
+    public function checkSubscription($tenant_id)
     {
         $code = 0; // no subscription
         $agency_id = current_tenant_id();
+        //$agency_id = $tenant_id;
         $agency_subscription = AgencySubscription::where('agency_id', '=', $agency_id)
         ->where('is_current', '=', 1)->first();
 

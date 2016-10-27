@@ -38,7 +38,7 @@ class AccountController extends BaseController
      *
      * @return Response
      */
-    public function index($client_id)
+    public function index($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         return view("Tenant::Client/account_summary", $data);
@@ -50,14 +50,14 @@ class AccountController extends BaseController
      *
      * @return Response
      */
-    public function createClientInvoice($client_id)
+    public function createClientInvoice($tenant_id, $client_id)
     {
         $data['client_id'] = $client_id;
         $data['applications'] = $this->application->getClientApplication($client_id);
         return view("Tenant::Client/Invoice/add", $data);
     }
 
-    public function storeClientInvoice($client_id)
+    public function storeClientInvoice($tenant_id, $client_id)
     {
         $rules = [
             'amount' => 'required|numeric',
@@ -74,16 +74,16 @@ class AccountController extends BaseController
             $invoice = StudentInvoice::join('invoices', 'invoices.invoice_id', '=', 'student_invoices.invoice_id')->find($created);
             $this->client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $invoice->description, '{{DATE}}' => format_date($invoice->invoice_date), '{{AMOUNT}}' => $invoice->amount, '{{VIEW_LINK}}' => route("tenant.student.invoice", $invoice->student_invoice_id)], $invoice->application_id);
         }
-        return redirect()->route('tenant.accounts.index', $client_id);
+        return redirect()->route('tenant.accounts.index', [$tenant_id, $client_id]);
     }
 
-    public function createClientPayment($client_id)
+    public function createClientPayment($tenant_id, $client_id)
     {
         $data['client_id'] = $client_id;
         return view("Tenant::Client/Payment/add", $data);
     }
 
-    public function storeClientPayment($client_id)
+    public function storeClientPayment($tenant_id, $client_id)
     {
         $this->validate($this->request, $this->rules);
         // if validates
@@ -93,7 +93,7 @@ class AccountController extends BaseController
             $payment = ClientPayment::find($created);
             $this->client->addLog($client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => '']);
         }
-        return redirect()->route('tenant.accounts.index', $client_id);
+        return redirect()->route('tenant.accounts.index', [$tenant_id, $client_id]);
     }
 
     public function editClientPayment($payment_id)

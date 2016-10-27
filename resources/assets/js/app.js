@@ -832,7 +832,7 @@ $(function () {
     'use strict';
     var fn = function () {
         $.ajax({
-            url: appUrl + '/tenant/subscription/check',
+            url: appUrl + '/subscription/check',
             type: 'get',
             success: function (resp) {
                 if (resp == 0 || resp == 2) {
