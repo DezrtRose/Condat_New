@@ -96,22 +96,22 @@ class AccountController extends BaseController
         return redirect()->route('tenant.accounts.index', [$tenant_id, $client_id]);
     }
 
-    public function editClientPayment($payment_id)
+    public function editClientPayment($tenant_id, $payment_id)
     {
         $data['payment'] = ClientPayment::find($payment_id);
         return view("Tenant::Client/Payment/edit", $data);
     }
 
-    public function updateClientPayment($payment_id)
+    public function updateClientPayment($tenant_id, $payment_id)
     {
         $this->validate($this->request, $this->rules);
         $client_id = $this->payment->edit($this->request->all(), $payment_id);
         if ($client_id)
             Flash::success('Payment has been updated successfully.');
-        return redirect()->route('tenant.accounts.index', $client_id);
+        return redirect()->route('tenant.accounts.index', [$tenant_id, $client_id]);
     }
 
-    public function deleteClientPayment($payment_id)
+    public function deleteClientPayment($tenant_id, $payment_id)
     {
         ClientPayment::find($payment_id)->delete();
         Flash::success('Payment has been deleted successfully.');
@@ -136,7 +136,7 @@ class AccountController extends BaseController
      *
      * @return JSON response
      */
-    function getPaymentsData($client_id)
+    function getPaymentsData($tenant_id, $client_id)
     {
         $payments = ClientPayment::where('client_id', $client_id)
             ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
@@ -144,7 +144,7 @@ class AccountController extends BaseController
             ->select(['client_payments.*', 'payment_invoice_breakdowns.invoice_id']);
 
         $datatable = \Datatables::of($payments)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
@@ -152,8 +152,8 @@ class AccountController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . route("client.payment.edit", $data->client_payment_id) . '">Edit</a></li>
-                    <li><a href="' . route("client.payment.delete", $data->client_payment_id) . '" onclick="return confirm(\'Are you sure?\')">Delete</a></li>
+                    <li><a href="' . route("client.payment.edit", [$tenant_id, $data->client_payment_id]) . '">Edit</a></li>
+                    <li><a href="' . route("client.payment.delete", [$tenant_id, $data->client_payment_id]) . '" onclick="return confirm(\'Are you sure?\')">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -175,7 +175,7 @@ class AccountController extends BaseController
     /**
      * Assign payment to invoice
      */
-    function assignInvoice($payment_id, $client_id)
+    function assignInvoice($tenant_id, $payment_id, $client_id)
     {
         $data['invoice_array'] = $this->invoice->getListByClient($client_id);
         $data['payment_id'] = $payment_id;
@@ -187,7 +187,7 @@ class AccountController extends BaseController
      *
      * @return JSON response
      */
-    function getInvoicesData($client_id)
+    function getInvoicesData($tenant_id, $client_id)
     {
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->select(['invoices.*', 'student_invoices.student_invoice_id'])
@@ -212,7 +212,7 @@ class AccountController extends BaseController
   WHERE payment_invoice_breakdowns.invoice_id = invoices.invoice_id) AS outstanding_amount'))
             /*->orderBy('created_at', 'desc')*/;
         $datatable = \Datatables::of($invoices)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
@@ -220,9 +220,9 @@ class AccountController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . route("tenant.invoice.payments", [$data->invoice_id, 2]) . '">View Payments</a></li>
-                    <li><a href="' . route('tenant.student.invoice', $data->student_invoice_id) . '">View Invoice</a></li>
-                    <li><a href="' . route("tenant.student.editInvoice", $data->student_invoice_id) . '">Edit</a></li>
+                    <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
+                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '">View Invoice</a></li>
+                    <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
                 </div>';
@@ -264,7 +264,7 @@ class AccountController extends BaseController
      *
      * @return JSON response
      */
-    function getFutureData($client_id)
+    function getFutureData($tenant_id, $client_id)
     {
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->join('course_application', 'course_application.course_application_id', '=', 'student_invoices.application_id')
@@ -275,7 +275,7 @@ class AccountController extends BaseController
             ->orderBy('invoices.created_at', 'desc');
 
         $datatable = \Datatables::of($invoices)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
@@ -283,9 +283,9 @@ class AccountController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . route("tenant.invoice.payments", [$data->invoice_id, 2]) . '">View Payments</a></li>
-                    <li><a href="' . route('tenant.student.invoice', $data->student_invoice_id) . '">View Invoice</a></li>
-                    <li><a href="' . route("tenant.student.editInvoice", $data->student_invoice_id) . '">Edit</a></li>
+                    <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
+                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '">View Invoice</a></li>
+                    <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
                 </div>';
@@ -345,13 +345,13 @@ class AccountController extends BaseController
      * @param  int $client_payment_id
      * @return Response
      */
-    public function show($client_id)
+    public function show($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         return view("Tenant::Client/show", $data);
     }
 
-    public function personal_details($client_id)
+    public function personal_details($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         return view("Tenant::Client/personal_details", $data);
@@ -363,7 +363,7 @@ class AccountController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($client_id)
+    public function edit($tenant_id, $client_id)
     {
         /* Getting the client details*/
         $data['client'] = $this->client->getDetails($client_id);
@@ -380,7 +380,7 @@ class AccountController extends BaseController
      * @param  int $client_id
      * @return Response
      */
-    public function update($client_id)
+    public function update($tenant_id, $client_id)
     {
         $user_id = $this->request->get('user_id');
         /* Additional validation rules checking for uniqueness */
@@ -391,7 +391,7 @@ class AccountController extends BaseController
         $updated = $this->client->edit($this->request->all(), $client_id);
         if ($updated)
             Flash::success('Client has been updated successfully.');
-        return redirect()->route('tenant.client.index');
+        return redirect()->route('tenant.client.index', $tenant_id);
     }
 
     /**
@@ -405,7 +405,7 @@ class AccountController extends BaseController
         //
     }
 
-    public function editInvoice($invoice_id)
+    public function editInvoice($tenant_id, $invoice_id)
     {
         $data['invoice'] = $invoice = $this->invoice->getDetails($invoice_id);
         $data['client_id'] = $invoice->client_id;
@@ -414,7 +414,7 @@ class AccountController extends BaseController
         return view("Tenant::Client/Invoice/edit", $data);
     }
 
-    public function updateInvoice($invoice_id)
+    public function updateInvoice($tenant_id, $invoice_id)
     {
         $rules = [
             'invoice_amount' => 'required|numeric',
@@ -425,7 +425,7 @@ class AccountController extends BaseController
 
         $application_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
         Flash::success('Invoice has been updated successfully.');
-        return redirect()->route('tenant.application.students', $application_id);
+        return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
     }
 
 }

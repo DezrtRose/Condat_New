@@ -43,7 +43,7 @@ class InvoiceController extends BaseController
      * Assign payment to invoice
      * Same for both student and sub agent
      */
-    function postAssign($payment_id)
+    function postAssign($tenant_id, $payment_id)
     {
         $assigned = $this->payment_invoice->assign($this->request->all(), $payment_id);
         if ($assigned) {
@@ -55,7 +55,7 @@ class InvoiceController extends BaseController
     /**
      * Assign payment to college invoice
      */
-    function postCollegeAssign($payment_id)
+    function postCollegeAssign($tenant_id, $payment_id)
     {
         $assigned = $this->college_payment->assign($this->request->all(), $payment_id);
         if ($assigned) {
@@ -64,7 +64,7 @@ class InvoiceController extends BaseController
         }
     }
 
-    function payments($invoice_id, $type = 1)
+    function payments($tenant_id, $invoice_id, $type = 1)
     {
         $data['invoice'] = $this->getInvoiceDetails($invoice_id, $type);
         $data['invoice_id'] = $invoice_id;
@@ -136,7 +136,7 @@ class InvoiceController extends BaseController
      * Type - 1 : college, 2 : student, 3 : subagent
      * @return JSON response
      */
-    function getPaymentsData($invoice_id, $type = 1)
+    function getPaymentsData($tenant_id, $invoice_id, $type = 1)
     {
         switch ($type) {
             case 1:
@@ -150,7 +150,7 @@ class InvoiceController extends BaseController
         }
 
         $datatable = \Datatables::of($payments)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
@@ -158,8 +158,8 @@ class InvoiceController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . route("application.students.editPayment", $data->student_payments_id) . '">Edit</a></li>
-                    <li><a href="' . route("application.students.deletePayment", $data->student_payments_id) . '">Delete</a></li>
+                    <li><a href="' . route("application.students.editPayment", [$tenant_id, $data->student_payments_id]) . '">Edit</a></li>
+                    <li><a href="' . route("application.students.deletePayment", [$tenant_id, $data->student_payments_id]) . '">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -199,7 +199,7 @@ class InvoiceController extends BaseController
         return $payments;
     }
 
-    function createPayment($invoice_id, $type = 1)
+    function createPayment($tenant_id, $invoice_id, $type = 1)
     {
         $data['invoice_id'] = $invoice_id;
         $data['type'] = $type;
@@ -207,7 +207,7 @@ class InvoiceController extends BaseController
 
     }
 
-    function postPayment($invoice_id, $type = 1)
+    function postPayment($tenant_id, $invoice_id, $type = 1)
     {
         switch ($type) {
             case 1:

@@ -44,7 +44,7 @@ class CollegeController extends BaseController
      *
      * @return Response
      */
-    public function index($application_id)
+    public function index($tenant_id, $application_id)
     {
         $data['stats'] = $this->invoice->getStats($application_id);
         $data['application'] = $application = $this->application->getDetails($application_id);
@@ -55,30 +55,30 @@ class CollegeController extends BaseController
     /*
      * Controllers for payment
      * */
-    public function createPayment($application_id, $type = 1)
+    public function createPayment($tenant_id, $application_id, $type = 1)
     {
         $data['application_id'] = $application_id;
         $data['pay_type'] = $type;
         return view("Tenant::College/Payment/add", $data);
     }
 
-    public function editPayment($payment_id)
+    public function editPayment($tenant_id, $payment_id)
     {
         $data['payment'] = $this->payment->getDetails($payment_id);
         $data['pay_type'] = 1; // Can change to any payment type
         return view("Tenant::College/Payment/edit", $data);
     }
 
-    public function updatePayment($payment_id)
+    public function updatePayment($tenant_id, $payment_id)
     {
         $this->validate($this->request, $this->rules);
 
         $application_id = $this->payment->editPayment($this->request->all(), $payment_id);
         Flash::success('Payment has been updated successfully.');
-        return redirect()->route('tenant.application.college', $application_id);
+        return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
     }
 
-    public function storePayment($application_id)
+    public function storePayment($tenant_id, $application_id)
     {
         $this->validate($this->request, $this->rules);
         // if validates
@@ -89,7 +89,7 @@ class CollegeController extends BaseController
             $client_id = CourseApplication::find($application_id)->client_id;
             $this->client->addLog($client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => url("tenant/college/payment/receipt/" . $payment->college_payment_id)], $application_id);
         }
-        return redirect()->route('tenant.application.college', $application_id);
+        return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
     }
 
     /**
@@ -97,13 +97,13 @@ class CollegeController extends BaseController
      *
      * @return Response
      */
-    public function createInvoice($application_id)
+    public function createInvoice($tenant_id, $application_id)
     {
         $data['application_id'] = $application_id;
         return view("Tenant::College/Invoice/add", $data);
     }
 
-    public function printInvoice($invoice_id)
+    public function printInvoice($tenant_id, $invoice_id)
     {
         $data['agency'] = $this->agency->getAgencyDetails('33');
         $data['invoice_id'] = $invoice_id;
@@ -111,7 +111,7 @@ class CollegeController extends BaseController
     }
 
 
-    public function storeInvoice($application_id)
+    public function storeInvoice($tenant_id, $application_id)
     {
         $rules = [
             'total_commission' => 'required|numeric',
@@ -126,7 +126,7 @@ class CollegeController extends BaseController
             $client_id = $this->invoice->getClientId($created);
             $this->client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => 'College Invoice', '{{DATE}}' => format_date($invoice->invoice_date), '{{AMOUNT}}' => $invoice->total_commission, '{{VIEW_LINK}}' => route('tenant.college.invoice', $invoice->college_invoice_id)], $application_id);
         }
-        return redirect()->route('tenant.application.college', $application_id);
+        return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
     }
 
 
@@ -135,14 +135,14 @@ class CollegeController extends BaseController
      *
      * @return JSON response
      */
-    function getPaymentsData($application_id)
+    function getPaymentsData($tenant_id, $application_id)
     {
         $payments = CollegePayment::where('course_application_id', $application_id)
             ->leftJoin('college_invoice_payments', 'college_payments.college_payment_id', '=', 'college_invoice_payments.ci_payment_id')
             ->select(['college_payments.*', 'college_invoice_payments.college_invoice_id']);
 
         $datatable = \Datatables::of($payments)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
@@ -151,14 +151,14 @@ class CollegeController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="http://localhost/condat/tenant/contact/2">View</a></li>
-                    <li><a href="'.route("tenant.application.editPayment", $data->college_payment_id).'">Edit</a></li>
+                    <li><a href="'.route("tenant.application.editPayment", [$tenant_id, $data->college_payment_id]).'">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
                 </div>';
             })
-            ->addColumn('invoice_id', function ($data) {
+            ->addColumn('invoice_id', function ($data) use($tenant_id) {
                 if ((empty($data->college_invoice_id) || $data->college_invoice_id == 0) && $data->payment_type == 'College to Agent')
-                    return 'Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/college/payment/' . $data->college_payment_id . '/' . $data->course_application_id . '/assign') . '"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>';
+                    return 'Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id.'/college/payment/' . $data->college_payment_id . '/' . $data->course_application_id . '/assign') . '"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>';
                 elseif ($data->payment_type == 'College to Agent')
                     return format_id($data->college_invoice_id, 'CI');
                 else
@@ -178,7 +178,7 @@ class CollegeController extends BaseController
      *
      * @return JSON response
      */
-    function getInvoicesData($application_id)
+    function getInvoicesData($tenant_id, $application_id)
     {
         /*$invoices = CollegeInvoice::join('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
             ->where('course_application.course_application_id', $application_id)
@@ -187,7 +187,7 @@ class CollegeController extends BaseController
 
         $invoices = CollegeInvoice::where('course_application_id', $application_id)->select(['*'])->orderBy('created_at', 'desc');
         $datatable = \Datatables::of($invoices)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
@@ -195,9 +195,9 @@ class CollegeController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . route("tenant.invoice.payments", [$data->college_invoice_id, 1]) . '">View payments</a></li>
-                    <li><a href="' . route('tenant.college.invoice', $data->college_invoice_id) . '">View Invoice</a></li>
-                    <li><a href="'.route("tenant.college.editInvoice", $data->college_invoice_id).'">Edit</a></li>
+                    <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->college_invoice_id, 1]) . '">View payments</a></li>
+                    <li><a href="' . route('tenant.college.invoice', [$tenant_id, $data->college_invoice_id]) . '">View Invoice</a></li>
+                    <li><a href="'.route("tenant.college.editInvoice", [$tenant_id, $data->college_invoice_id]).'">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
                 </div>';
@@ -206,10 +206,10 @@ class CollegeController extends BaseController
                 $outstanding = $this->invoice->getOutstandingAmount($data->college_invoice_id);
                 return ($outstanding != 0) ? 'Outstanding' : 'Paid';
             })
-            ->addColumn('outstanding_amount', function ($data) {
+            ->addColumn('outstanding_amount', function ($data) use($tenant_id) {
                 $outstanding = $this->invoice->getOutstandingAmount($data->college_invoice_id);
                 if ($outstanding != 0)
-                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/invoices/' . $data->college_invoice_id . '/payment/add/1') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id.'/invoices/' . $data->college_invoice_id . '/payment/add/1') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
                     return 0;
             })
@@ -227,7 +227,7 @@ class CollegeController extends BaseController
      *
      * @return JSON response
      */
-    function getRecentData($application_id)
+    function getRecentData($tenant_id, $application_id)
     {
         /*$invoices = CollegeInvoice::join('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
             ->where('course_application.course_application_id', $application_id)
@@ -236,7 +236,7 @@ class CollegeController extends BaseController
 
         $invoices = CollegeInvoice::where('course_application_id', $application_id)->where('invoice_date', '>=', Carbon\Carbon::now())->select(['*'])->orderBy('created_at', 'desc');
         $datatable = \Datatables::of($invoices)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use($tenant_id) {
                 return '<div class="btn-group">
                   <button class="btn btn-primary" type="button">Action</button>
                   <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
@@ -244,9 +244,9 @@ class CollegeController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . route("tenant.invoice.payments", [$data->college_invoice_id, 1]) . '">View payments</a></li>
-                    <li><a href="' . route('tenant.college.invoice', $data->college_invoice_id) . '">View Invoice</a></li>
-                    <li><a href="'.route("tenant.college.editInvoice", $data->college_invoice_id).'">Edit</a></li>
+                    <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->college_invoice_id, 1]) . '">View payments</a></li>
+                    <li><a href="' . route('tenant.college.invoice', [$tenant_id, $data->college_invoice_id]) . '">View Invoice</a></li>
+                    <li><a href="'.route("tenant.college.editInvoice", [$tenant_id, $data->college_invoice_id]).'">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
                 </div>';
@@ -255,10 +255,10 @@ class CollegeController extends BaseController
                 $outstanding = $this->invoice->getOutstandingAmount($data->college_invoice_id);
                 return ($outstanding != 0) ? 'Outstanding' : 'Paid';
             })
-            ->addColumn('outstanding_amount', function ($data) {
+            ->addColumn('outstanding_amount', function ($data) use ($tenant_id) {
                 $outstanding = $this->invoice->getOutstandingAmount($data->college_invoice_id);
                 if ($outstanding != 0)
-                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/invoices/' . $data->college_invoice_id . '/payment/add/1') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id.'/invoices/' . $data->college_invoice_id . '/payment/add/1') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
                     return 0;
             })
@@ -271,7 +271,7 @@ class CollegeController extends BaseController
         return $datatable->make(true);
     }
 
-    public function show($invoice_id)
+    public function show($tenant_id, $invoice_id)
     {
         $data['agency'] = $this->agent->getAgentDetails();
         $data['bank'] = $this->setting->getBankDetails();
@@ -289,7 +289,7 @@ class CollegeController extends BaseController
     /**
      * Assign payment to invoice
      */
-    function assignInvoice($payment_id, $application_id)
+    function assignInvoice($tenant_id, $payment_id, $application_id)
     {
         $data['invoice_array'] = $this->invoice->getList($application_id);
         $data['payment_id'] = $payment_id;
@@ -297,13 +297,13 @@ class CollegeController extends BaseController
         return view("Tenant::Client/Payment/assign", $data);
     }
 
-    public function editInvoice($invoice_id)
+    public function editInvoice($tenant_id, $invoice_id)
     {
         $data['invoice'] = $this->invoice->getDetails($invoice_id);
         return view("Tenant::Student/Invoice/edit", $data);
     }
 
-    public function updateInvoice($invoice_id)
+    public function updateInvoice($tenant_id, $invoice_id)
     {
         $rules = [
             'invoice_amount' => 'required|numeric',
@@ -314,10 +314,10 @@ class CollegeController extends BaseController
 
         $application_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
         Flash::success('Invoice has been updated successfully.');
-        return redirect()->route('tenant.application.students', $application_id);
+        return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
     }
 
-    public function deleteInvoice($college_invoice_id)
+    public function deleteInvoice($tenant_id, $college_invoice_id)
     {
         $this->invoice->deleteInvoice($college_invoice_id);
     }

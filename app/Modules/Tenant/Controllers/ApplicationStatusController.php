@@ -40,7 +40,7 @@ class ApplicationStatusController extends BaseController
         return view('Tenant::ApplicationStatus/enquiry', ['applications' => $applications]);
     }
 
-    public function apply_offer($course_application_id)
+    public function apply_offer($tenant_id, $course_application_id)
     {
         $data['application'] = $this->application->getDetails($course_application_id);
         $data['client_name'] = $this->application->getClientName($course_application_id);
@@ -51,16 +51,16 @@ class ApplicationStatusController extends BaseController
     }
 
     //updates for apply_offer
-    public function update($course_application_id)
+    public function update($tenant_id, $course_application_id)
     {
         $this->application_status->apply_offer($this->request->all(), $course_application_id);
         Flash::success('Offer Applied Successfully.');
-        return redirect()->route('applications.offer_letter_processing.index');
+        return redirect()->route('applications.offer_letter_processing.index', $tenant_id);
     }
 
 
     //Information for cancel/quarantine action page whose parent page is Enquiry
-    public function cancel_application($course_application_id)
+    public function cancel_application($tenant_id, $course_application_id)
     {
         $applications = CourseApplication::leftjoin('users', 'users.user_id', '=', 'course_application.user_id')
             ->leftjoin('persons', 'persons.person_id', '=', 'users.person_id')
@@ -80,24 +80,24 @@ class ApplicationStatusController extends BaseController
     }
 
     //cancel/qurantine actions
-    public function cancel_qurantine()
+    public function cancel_qurantine($tenant_id)
     {
         $created = $this->note->note_create($this->request->all());
         if ($created)
 
             Session::flash('success', 'Quarantinded Successfully');
-        return redirect()->route('applications.offer_letter_processing.index');
+        return redirect()->route('applications.offer_letter_processing.index', $tenant_id);
     }
 
     //Information for offer letter processing page
-    public function offerLetterProcessing()
+    public function offerLetterProcessing($tenant_id)
     {
         $applications = $this->application_status->getApplications(2);
         return view('Tenant::ApplicationStatus/offer_letter_processing', compact('applications'));
     }
 
     //Information for offer_received action page whose parent page is Offer Letter Processing
-    public function offer_letter_received($course_application_id)
+    public function offer_letter_received($tenant_id, $course_application_id)
     {
         $data['application'] = $this->application->getDetails($course_application_id);
         $data['client_name'] = $this->application->getClientName($course_application_id);
@@ -108,7 +108,7 @@ class ApplicationStatusController extends BaseController
 
 
     //updates for offer_received
-    public function offer_received_update($course_application_id)
+    public function offer_received_update($tenant_id, $course_application_id)
     {
         $upload_rules = ['document' => 'required|mimes:jpg,jpeg,bmp,png,doc,docx,pdf,txt,xls,xlsx',
             'description' => 'required',
@@ -117,7 +117,7 @@ class ApplicationStatusController extends BaseController
         $this->validate($this->request, $upload_rules);
         $this->application_status->offer_received($this->request->all(), $course_application_id);
         Flash::success('Offer letter received.');
-        return redirect()->route('applications.offer_letter_issued.index');
+        return redirect()->route('applications.offer_letter_issued.index', $tenant_id);
     }
 
     //information for offer letter issued
@@ -127,7 +127,7 @@ class ApplicationStatusController extends BaseController
         return view('Tenant::ApplicationStatus/offer_letter_issued', compact('applications'));
     }
 
-    public function apply_coe($course_application_id)
+    public function apply_coe($tenant_id, $course_application_id)
     {
         $data['application'] = $this->application->getDetails($course_application_id);
         $data['offer_letter'] = $this->document->getDocument($course_application_id, 2);
@@ -135,7 +135,7 @@ class ApplicationStatusController extends BaseController
     }
 
     //updates for applied_offer
-    public function update_applied_coe($course_application_id)
+    public function update_applied_coe($tenant_id, $course_application_id)
     {
         $this->application_status->coe_update($this->request->all(), $course_application_id);
         Flash::success('Status Updated Successfully.');
@@ -150,7 +150,7 @@ class ApplicationStatusController extends BaseController
     }
 
     //Information for action of coe processing page
-    public function action_coe_issued($course_application_id)
+    public function action_coe_issued($tenant_id, $course_application_id)
     {
         $data['application'] = $this->application->getDetails($course_application_id);
         $data['intakes'] = $this->intake->getIntakes($data['application']->institute_id);
@@ -158,7 +158,7 @@ class ApplicationStatusController extends BaseController
     }
 
     //updates for action_coe_issued
-    public function update_coe_issued($course_application_id)
+    public function update_coe_issued($tenant_id, $course_application_id)
     {
         $updated = $this->application_status->coe_issued_update($this->request->all(), $course_application_id);
         if ($updated)
@@ -168,7 +168,7 @@ class ApplicationStatusController extends BaseController
             $updated = $this->application_status->coe_issued_create($this->request->all(), $course_application_id);
 
         Session::flash('success', 'Updated Successfully');
-        return redirect()->route('applications.coe_issued.index');
+        return redirect()->route('applications.coe_issued.index', $tenant_id);
     }
 
 

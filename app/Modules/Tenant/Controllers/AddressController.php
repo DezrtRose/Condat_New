@@ -26,7 +26,7 @@ class AddressController extends BaseController
      *
      * @return JSON response
      */
-    function getData($institute_id)
+    function getData($tenant_id, $institute_id)
     {
         $institutes = Institute::join('institute_addresses', 'institutes.institution_id', '=', 'institute_addresses.institute_id')
             ->leftJoin('addresses', 'addresses.address_id', '=', 'institute_addresses.address_id')
@@ -36,7 +36,7 @@ class AddressController extends BaseController
             ->where('institutes.institution_id', $institute_id);
 
         $datatable = \Datatables::of($institutes)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use ($tenant_id){
                 return '<div class="btn-group">
                     <button type="button" class="btn btn-primary">Action</button>
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -45,7 +45,7 @@ class AddressController extends BaseController
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.address.edit', $data->address_id) . '">Edit</a></li>
-                        <li><a href="{{ route( \'tenant.address.destroy\', $address_id) }}">Delete</a></li>
+                        <li><a href="'.route( 'tenant.address.destroy', [$tenant_id, $data->address_id]) .'">Delete</a></li>
                     </ul>
                 </div>
                 </div>';
@@ -56,7 +56,7 @@ class AddressController extends BaseController
     /**
      * Edit address
      */
-    function edit($address_id)
+    function edit($tenant_id, $address_id)
     {
         // check if from institute...
         if($this->request->ajax())
@@ -66,7 +66,7 @@ class AddressController extends BaseController
         }
     }
 
-    function update($address_id)
+    function update($tenant_id, $address_id)
     {
         $data['address'] = $this->institute->editAddress($address_id, $this->request->all());
         \Flash::success('Address Updated Successfully!');

@@ -25,7 +25,7 @@ class ContactController extends BaseController
      *
      * @return JSON response
      */
-    function getData($institute_id)
+    function getData($tenant_id, $institute_id)
     {
         $institutes = Institute::join('company_contacts', 'institutes.company_id', '=', 'company_contacts.company_id')
             ->leftJoin('persons', 'persons.person_id', '=', 'company_contacts.person_id')
@@ -36,7 +36,7 @@ class ContactController extends BaseController
             ->where('institutes.institution_id', $institute_id);
 
         $datatable = \Datatables::of($institutes)
-            ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) use($tenant_id) {
                 return '<div class="btn-group">
                   <button type="button" class="btn btn-primary">Action</button>
                   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -44,8 +44,8 @@ class ContactController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu" role="menu">
-                  <li><a data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.contact.edit', $data->company_contact_id) . '">Edit</a></li>
-                    <li><a href="{{ route( \'tenant.contact.destroy\', $company_contact_id) }}">Delete</a></li>
+                  <li><a data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.contact.edit', [$tenant_id, $data->company_contact_id]) . '">Edit</a></li>
+                    <li><a href="'.route( 'tenant.contact.destroy', [$tenant_id, $data->company_contact_id]) .'">Delete</a></li>
                   </ul>
                 </div>';
             });
@@ -55,7 +55,7 @@ class ContactController extends BaseController
     /*
      * Edit contact
      */
-    function edit($contact_id)
+    function edit($tenant_id, $contact_id)
     {
         // check if from institute...
         if($this->request->ajax())
@@ -65,7 +65,7 @@ class ContactController extends BaseController
         }
     }
 
-    function update($contact_id)
+    function update($tenant_id, $contact_id)
     {
         $data['contact'] = $this->institute->editContact($contact_id, $this->request->all());
         \Flash::success('Contact Updated Successfully!');

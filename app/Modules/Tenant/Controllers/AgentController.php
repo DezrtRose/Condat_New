@@ -42,7 +42,7 @@ class AgentController extends BaseController
      *
      * @return JSON response
      */
-    function getData()
+    function getData($tenant_id)
     {
         $agents = Agent::join('companies', 'companies.company_id', '=', 'agents.company_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'companies.phone_id')
@@ -51,7 +51,9 @@ class AgentController extends BaseController
             ->select(['companies.name', 'companies.website', 'agents.description', 'agents.agent_id', 'agents.email', 'agents.added_by', 'agents.created_at', 'phones.number', 'users.email as user_email']);
 
         $datatable = \Datatables::of($agents)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View Agent" class="btn btn-action-box" href ="{{ route( \'tenant.agents.show\', $agent_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit Agent" class="btn btn-action-box" href ="{{ route( \'tenant.agents.edit\', $agent_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Agent" class="delete-user btn btn-action-box" href="{{ route( \'tenant.agents.destroy\', $agent_id) }}"><i class="fa fa-trash"></i></a>')
+            ->addColumn('action', function ($data) use ($tenant_id) {
+                return '<a data-toggle="tooltip" title="View Agent" class="btn btn-action-box" href ="'.route('tenant.agents.show', [$tenant_id, $data->agent_id]).'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit Agent" class="btn btn-action-box" href ="'.route('tenant.agents.edit', [$tenant_id, $data->agent_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Agent" class="delete-user btn btn-action-box" href="'.route( 'tenant.agents.destroy', [$tenant_id, $data->agent_id]) .'"><i class="fa fa-trash"></i></a>';
+            })
             ->editColumn('created_at', function ($data) {
                 return format_datetime($data->created_at);
             })
@@ -76,7 +78,7 @@ class AgentController extends BaseController
      *
      * @return Response
      */
-    public function store()
+    public function store($tenant_id)
     {
         /* Additional validations for creating institution */
         $this->rules['name'] = 'required|min:2|max:255|unique:companies';
@@ -95,7 +97,7 @@ class AgentController extends BaseController
             $agent_id = $this->agent->add($this->request->all());
             if ($agent_id)
                 Flash::success('Agent has been created successfully.');
-            return redirect()->route('tenant.agents.index');
+            return redirect()->route('tenant.agents.index', $tenant_id);
         }
     }
 
@@ -105,7 +107,7 @@ class AgentController extends BaseController
      * @param  int $agent_id
      * @return Response
      */
-    public function show($agent_id)
+    public function show($tenant_id, $agent_id)
     {
         $data['agent'] = $this->agent->getDetails($agent_id);
         return view("Tenant::Agent/show", $data);
@@ -117,7 +119,7 @@ class AgentController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($agent_id)
+    public function edit($tenant_id, $agent_id)
     {
         /* Getting the agent details*/
         $data['agent'] = $this->agent->getDetails($agent_id);
@@ -130,7 +132,7 @@ class AgentController extends BaseController
      * @param  int $agent_id
      * @return Response
      */
-    public function update($agent_id)
+    public function update($tenant_id, $agent_id)
     {
         $user_id = $this->request->get('user_id');
         /* Additional validation rules checking for uniqueness */
@@ -141,7 +143,7 @@ class AgentController extends BaseController
         $updated = $this->agent->edit($this->request->all(), $agent_id);
         if ($updated)
             Flash::success('Agent has been updated successfully.');
-        return redirect()->route('tenant.agents.index');
+        return redirect()->route('tenant.agents.index', $tenant_id);
     }
 
     /**
@@ -162,12 +164,12 @@ class AgentController extends BaseController
      * @param  int $agent_id
      * @return Response
      */
-    function storeSuperAgent($institution_id)
+    function storeSuperAgent($tenant_id, $institution_id)
     {
         $agent_id = $this->superagent->add($institution_id, $this->request->all());
         if ($agent_id) {
             \Flash::success('Super agent added successfully!');
-            return redirect()->route('tenant.institute.show', $institution_id);
+            return redirect()->route('tenant.institute.show', [$tenant_id, $institution_id]);
         }
     }
 
@@ -178,13 +180,13 @@ class AgentController extends BaseController
      * @param  int $institute_id
      * @return Response
      */
-    function removeSuperAgent($institute_id, $agent_id)
+    function removeSuperAgent($tenant_id, $institute_id, $agent_id)
     {
         $agent = SuperAgentInstitute::where('institute_id', $institute_id)->where('agents_id', $agent_id)->first();
         if ($agent) {
             $agent->delete();
             \Flash::success('Super agent added successfully!');
-            return redirect()->route('tenant.institute.show', $institute_id);
+            return redirect()->route('tenant.institute.show', [$tenant_id, $institute_id]);
         }
     }
 

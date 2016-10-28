@@ -57,7 +57,7 @@ class ReportController extends BaseController
         return view("Tenant::Report/college_invoices",$data);
     }
 
-    function payments($invoice_id, $type = 1)
+    function payments($tenant_id, $invoice_id, $type = 1)
     {
         $data['invoice'] = $this->getInvoiceDetails($invoice_id, $type);
         $data['type'] = $type;
@@ -178,7 +178,7 @@ class ReportController extends BaseController
         return $payments;
     }
 
-    function createPayment($invoice_id, $type = 1)
+    function createPayment($tenant_id, $invoice_id, $type = 1)
     {
         $data['invoice_id'] = $invoice_id;
         $data['type'] = $type;
@@ -186,7 +186,7 @@ class ReportController extends BaseController
 
     }
 
-    function postPayment($invoice_id, $type = 1)
+    function postPayment($tenant_id, $invoice_id, $type = 1)
     {
         switch ($type) {
             case 1:

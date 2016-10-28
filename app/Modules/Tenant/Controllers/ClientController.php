@@ -148,7 +148,7 @@ class ClientController extends BaseController
      * @param  int $client_id
      * @return Response
      */
-    public function show($client_id)
+    public function show($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         $data['remainders'] = $this->client_notes->getAll($client_id, true);
@@ -158,7 +158,7 @@ class ClientController extends BaseController
         return view("Tenant::Client/show", $data);
     }
 
-    public function personal_details($client_id)
+    public function personal_details($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         return view("Tenant::Client/personal_details", $data);
@@ -170,7 +170,7 @@ class ClientController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($client_id)
+    public function edit($tenant_id, $client_id)
     {
         /* Getting the client details*/
         $data['client'] = $this->client->getDetails($client_id);
@@ -190,7 +190,7 @@ class ClientController extends BaseController
      * @param  int $client_id
      * @return Response
      */
-    public function update($client_id)
+    public function update($tenant_id, $client_id)
     {
         $email_id = $this->request->get('email_id');
         /* Additional validation rules checking for uniqueness */
@@ -223,7 +223,7 @@ class ClientController extends BaseController
      * @param  int $client_id
      * @return Response
      */
-    function document($client_id)
+    function document($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         $data['documents'] = $this->document->getClientDocuments($client_id);
@@ -253,7 +253,7 @@ class ClientController extends BaseController
         return redirect()->back();
     }
 
-    function downloadDocument($id)
+    function downloadDocument($tenant_id, $id)
     {
         $document = Document::find($id);
         if (empty($document))
@@ -262,7 +262,7 @@ class ClientController extends BaseController
         return tenant()->folder('document')->download($document->name);
     }
 
-    function deleteDocument($id)
+    function deleteDocument($tenant_id, $id)
     {
         $deleted = $this->document->deleteDocument($id);
         if ($deleted)
@@ -271,14 +271,14 @@ class ClientController extends BaseController
         return redirect()->back();
     }
 
-    function notes($client_id)
+    function notes($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         $data['notes'] = $this->client_notes->getAll($client_id);
         return view("Tenant::Client/notes", $data);
     }
 
-    function payment_dashboard($client_id)
+    function payment_dashboard($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         return view("Tenant::Client/payments", $data);
@@ -306,7 +306,7 @@ class ClientController extends BaseController
     }
 
 
-    function getNoteFormat($note_id)
+    function getNoteFormat($tenant_id, $note_id)
     {
         $note = Notes::find($note_id);
         $format = $note->description. "<br/>";
@@ -324,7 +324,7 @@ class ClientController extends BaseController
     }
 
     /* Krita */
-    function setActive($client_id)
+    function setActive($tenant_id, $client_id)
     {
         ActiveClient::create([
             'client_id' => $client_id,
@@ -333,33 +333,33 @@ class ClientController extends BaseController
         ]);
     }
 
-    function removeActive($client_id)
+    function removeActive($tenant_id, $client_id)
     {
         $active = ActiveClient::where('client_id', $client_id)->where('user_id', current_tenant_id())->first();
         if(!empty($active)) $active->delete();
     }
 
-    function compose($client_id)
+    function compose($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         return view("Tenant::Client/Email/compose", $data);
     }
 
-    function sent($client_id)
+    function sent($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         $data['emails'] = $this->email->getEmails($client_id);
         return view("Tenant::Client/Email/sent", $data);
     }
 
-    function readMail($client_id, $mail_id)
+    function readMail($tenant_id, $client_id, $mail_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         $data['mail'] = ClientEmail::find($mail_id);
         return view("Tenant::Client/Email/read", $data);
     }
 
-    function sendMail($client_id)
+    function sendMail($tenant_id, $client_id)
     {
         $upload_rules = ['subject' => 'required|max:255', 'body' => 'required'];
         $client = $this->client->getDetails($client_id);
@@ -401,7 +401,7 @@ class ClientController extends BaseController
         return redirect()->back();
     }
 
-    function urlUpload($client_id)
+    function urlUpload($tenant_id, $client_id)
     {
         $url = $this->request->get('url');
         $title = $this->request->get('title');

@@ -33,7 +33,7 @@ class IntakeController extends BaseController
      *
      * @return Response
      */
-    public function index($institution_id)
+    public function index($tenant_id, $institution_id)
     {
         $data['institute'] = $this->institute->getDetails($institution_id);
         $data['institution_id'] = $institution_id;
@@ -45,7 +45,7 @@ class IntakeController extends BaseController
      *
      * @return Response
      */
-    public function create($institution_id)
+    public function create($tenant_id, $institution_id)
     {
         $data['institution_id'] = $institution_id;
         /* send in data for dropdowns : fields and level */
@@ -57,7 +57,7 @@ class IntakeController extends BaseController
      *
      * @return Response
      */
-    public function store($institution_id)
+    public function store($tenant_id, $institution_id)
     {
         if($this->request->ajax()) {
             $validator = \Validator::make($this->request->all(), $this->rules);
@@ -73,7 +73,7 @@ class IntakeController extends BaseController
             $intake_id = $this->intake->add($this->request->all(), $institution_id);
             if ($intake_id)
                 Flash::success('Intake has been created successfully.');
-            return redirect()->route('tenant.intake.index', $institution_id);
+            return redirect()->route('tenant.intake.index', [$tenant_id, $institution_id]);
         }
 
     }
@@ -83,7 +83,7 @@ class IntakeController extends BaseController
      *
      * @return JSON Array
      */
-    public function getIntakes($institute_id)
+    public function getIntakes($tenant_id, $institute_id)
     {
         if ($this->request->ajax()) {
             $intakes = $this->intake->getIntakes($institute_id);
@@ -103,7 +103,7 @@ class IntakeController extends BaseController
      * @param  int $intake_id
      * @return Response
      */
-    public function show($intake_id)
+    public function show($tenant_id, $intake_id)
     {
         $data['intake'] = $this->course->getDetails($intake_id);
         return view("Tenant::Intake/show", $data);
@@ -115,7 +115,7 @@ class IntakeController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($intake_id)
+    public function edit($tenant_id, $intake_id)
     {
         /* Getting the course details*/
         $data['intake'] = $this->intake->getDetails($intake_id);
@@ -128,7 +128,7 @@ class IntakeController extends BaseController
      * @param  int $institution_id
      * @return Response
      */
-    public function update($institution_id)
+    public function update($tenant_id, $institution_id)
     {
         $user_id = $this->request->get('user_id');
 
@@ -137,7 +137,7 @@ class IntakeController extends BaseController
         $updated = $this->course->edit($this->request->all(), $institution_id);
         if ($updated)
             Flash::success('Intake has been updated successfully.');
-        return redirect()->route('tenant.course.index');
+        return redirect()->route('tenant.course.index', $tenant_id);
     }
 
     /**

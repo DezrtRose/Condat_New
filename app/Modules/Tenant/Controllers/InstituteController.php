@@ -48,7 +48,7 @@ class InstituteController extends BaseController
      *
      * @return JSON response
      */
-    function getData()
+    function getData($tenant_id)
     {
         $institutes = Institute::leftJoin('companies', 'institutes.company_id', '=', 'companies.company_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'companies.phone_id')
@@ -57,7 +57,9 @@ class InstituteController extends BaseController
             ->orderBy('institution_id', 'desc');
 
         $datatable = \Datatables::of($institutes)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View Institute" class="btn btn-action-box" href ="{{ route( \'tenant.institute.show\', $institution_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Institute Documents" class="btn btn-action-box" href ="{{ route( \'tenant.institute.document\', $institution_id) }}"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Delete Institute" class="delete-user btn btn-action-box" href="{{ route( \'tenant.institute.destroy\', $institution_id) }}"><i class="fa fa-trash"></i></a>')
+            ->addColumn('action', function ($data) use ($tenant_id) {
+                return '<a data-toggle="tooltip" title="View Institute" class="btn btn-action-box" href ="'. route( 'tenant.institute.show', [$tenant_id, $data->institution_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Institute Documents" class="btn btn-action-box" href ="'. route( 'tenant.institute.document', [$tenant_id, $data->institution_id]) .'"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Delete Institute" class="delete-user btn btn-action-box" href="'. route( 'tenant.institute.destroy', [$tenant_id, $data->institution_id]) .'"><i class="fa fa-trash"></i></a>';
+            })
             ->editColumn('created_at', function ($data) {
                 return format_datetime($data->created_at);
             })
@@ -75,7 +77,7 @@ class InstituteController extends BaseController
      *
      * @return JSON response
      */
-    function getCoursesData($institute_id)
+    function getCoursesData($tenant_id, $institute_id)
     {
         $courses = InstituteCourse::join('courses', 'institute_courses.course_id', '=', 'courses.course_id')
             ->leftJoin('course_fees', 'course_fees.course_id', '=', 'courses.course_id')
@@ -86,7 +88,9 @@ class InstituteController extends BaseController
             ->orderBy('course_id', 'desc');
 
         $datatable = \Datatables::of($courses)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View Course" class="btn btn-action-box" href ="{{ route( \'tenant.course.show\', $course_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit Course" class="btn btn-action-box" href ="{{ route( \'tenant.course.edit\', $course_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Course" class="delete-user btn btn-action-box" href="{{ route( \'tenant.course.destroy\', $course_id) }}"><i class="fa fa-trash"></i></a>')
+            ->addColumn('action', function ($data) use ($tenant_id) {
+                return '<a data-toggle="tooltip" title="View Course" class="btn btn-action-box" href ="'. route( 'tenant.course.show', [$tenant_id, $data->course_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit Course" class="btn btn-action-box" href ="'. route( 'tenant.course.edit', [$tenant_id, $data->course_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Course" class="delete-user btn btn-action-box" href="'. route('tenant.course.destroy', [$tenant_id, $data->course_id]) .'"><i class="fa fa-trash"></i></a>';
+            })
             ->editColumn('course_id', function ($data) {
                 return format_id($data->course_id, 'Cou');
             });
@@ -98,7 +102,7 @@ class InstituteController extends BaseController
      *
      * @return JSON response
      */
-    function getIntakesData($institute_id)
+    function getIntakesData($tenant_id, $institute_id)
     {
         $intakes = Institute::join('institute_intakes', 'institute_intakes.institute_id', '=', 'institutes.institution_id')
             ->join('intakes', 'intakes.intake_id', '=', 'institute_intakes.intake_id')
@@ -107,7 +111,9 @@ class InstituteController extends BaseController
             ->orderBy('intake_id', 'desc');
 
         $datatable = \Datatables::of($intakes)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View Intake" class="btn btn-action-box" href ="{{ route( \'tenant.intake.show\', $intake_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="modal" title="Edit Intake" class="btn btn-action-box" data-tooltip="tooltip" data-target="#condat-modal" data-url="{{ route( \'tenant.intake.edit\', $intake_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Intake" class="delete-user btn btn-action-box" href="{{ route( \'tenant.intake.destroy\', $intake_id) }}"><i class="fa fa-trash"></i></a>')
+            ->addColumn('action', function ($data) use ($tenant_id) {
+                return '<a data-toggle="tooltip" title="View Intake" class="btn btn-action-box" href ="'. route( 'tenant.intake.show', [$tenant_id, $data->intake_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="modal" title="Edit Intake" class="btn btn-action-box" data-tooltip="tooltip" data-target="#condat-modal" data-url="'.route( 'tenant.intake.edit', [$tenant_id, $data->intake_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Intake" class="delete-user btn btn-action-box" href="'. route( 'tenant.intake.destroy', [$tenant_id, $data->intake_id]) .'"><i class="fa fa-trash"></i></a>';
+            })
             ->editColumn('intake_id', function ($data) {
                 return format_id($data->intake_id, 'Int');
             })
@@ -132,7 +138,7 @@ class InstituteController extends BaseController
      *
      * @return Response
      */
-    public function store()
+    public function store($tenant_id)
     {
         /* Additional validations for creating institution */
         //$this->rules['name'] = 'required|min:2|max:255|unique:companies';
@@ -152,7 +158,7 @@ class InstituteController extends BaseController
             if ($institute_id)
                 Flash::success('Institute has been created successfully.');
 
-            return redirect()->route('tenant.institute.index');
+            return redirect()->route('tenant.institute.index', $tenant_id);
         }
     }
 
@@ -162,7 +168,7 @@ class InstituteController extends BaseController
      * @param  int $institution_id
      * @return Response
      */
-    public function show($institution_id)
+    public function show($tenant_id, $institution_id)
     {
         $data['super_agents'] = $this->superagent->getDetails($institution_id);
         $data['agents'] = $this->agent->getRemaining($institution_id);
@@ -176,7 +182,7 @@ class InstituteController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($institution_id)
+    public function edit($tenant_id, $institution_id)
     {
         /* Getting the institute details*/
         $data['institute'] = $this->institute->getDetails($institution_id);
@@ -193,7 +199,7 @@ class InstituteController extends BaseController
      * @param  int $institution_id
      * @return Response
      */
-    public function update($institution_id)
+    public function update($tenant_id, $institution_id)
     {
         /* Additional validation rules checking for uniqueness */
         //$this->rules['email'] = 'required|email|min:5|max:55|unique:users,email,' . $user_id . ',user_id';
@@ -203,7 +209,7 @@ class InstituteController extends BaseController
         $updated = $this->institute->edit($this->request->all(), $institution_id);
         if ($updated)
             Flash::success('Institute has been updated successfully.');
-        return redirect()->route('tenant.institute.index');
+        return redirect()->route('tenant.institute.index', $tenant_id);
     }
 
     /**
@@ -224,14 +230,14 @@ class InstituteController extends BaseController
      * @param  int $institution_id
      * @return Response
      */
-    function document($institution_id)
+    function document($tenant_id, $institution_id)
     {
         $data['institute'] = $this->institute->getDetails($institution_id);
         $data['documents'] = $this->document->getInstituteDocuments($institution_id);
         return view("Tenant::Institute/document", $data);
     }
 
-    function uploadDocument($institution_id)
+    function uploadDocument($tenant_id, $institution_id)
     {
         $upload_rules = ['document' => 'required|mimes:jpeg,jpg,bmp,png,doc,docx,pdf,txt,xls,xlsx',
             'description' => 'required',
@@ -253,7 +259,7 @@ class InstituteController extends BaseController
         return redirect()->back();
     }
 
-    function downloadDocument($id)
+    function downloadDocument($tenant_id, $id)
     {
         $document = Document::find($id);
         if (empty($document))
@@ -268,12 +274,12 @@ class InstituteController extends BaseController
      * @param  int $institution_id
      * @return Response
      */
-    function storeContact($institution_id)
+    function storeContact($tenant_id, $institution_id)
     {
         $contact_id = $this->institute->addContact($institution_id, $this->request->all());
         if ($contact_id) {
             \Flash::success('Contact added successfully!');
-            return redirect()->route('tenant.institute.show', $institution_id);
+            return redirect()->route('tenant.institute.show', [$tenant_id, $institution_id]);
         }
     }
 
@@ -283,7 +289,7 @@ class InstituteController extends BaseController
      * @param  int $institution_id
      * @return Response
      */
-    function storeAddress($institution_id)
+    function storeAddress($tenant_id, $institution_id)
     {
         /*
         $this->rules['street'] = 'required|min:2|max:150';
@@ -295,7 +301,7 @@ class InstituteController extends BaseController
         $address_id = $this->institute->addAddress($institution_id, $this->request->all());
         if ($address_id) {
             \Flash::success('Address added successfully!');
-            return redirect()->route('tenant.institute.show', $institution_id);
+            return redirect()->route('tenant.institute.show', [$tenant_id, $institution_id]);
         }
     }
 

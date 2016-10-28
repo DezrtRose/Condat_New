@@ -53,7 +53,7 @@ class ApplicationController extends BaseController
      *
      * @return Response
      */
-    public function index($client_id)
+    public function index($tenant_id, $client_id)
     {
         $data['client'] = $this->client->getDetails($client_id);
         return view("Tenant::Client/Application/index", $data);
@@ -64,7 +64,7 @@ class ApplicationController extends BaseController
      *
      * @return JSON response
      */
-    function getApplicationsData($client_id)
+    function getApplicationsData($tenant_id, $client_id)
     {
         $clients = CourseApplication::leftJoin('institutes', 'course_application.institute_id', '=', 'institutes.institution_id')
             ->leftJoin('companies', 'institutes.company_id', '=', 'companies.company_id')
@@ -77,7 +77,9 @@ class ApplicationController extends BaseController
             ->select(['companies.name', 'courses.name as course_name', 'course_application.end_date', 'intakes.intake_date', 'course_application.student_id', 'course_application.course_application_id as application_id', 'course_application.tuition_fee', 'course_application.user_id as added_by', 'status.name as status']);
 
         $datatable = \Datatables::of($clients)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View Application" class="btn btn-action-box" href ="{{ route( \'tenant.application.show\', $application_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Application Documents" class="btn btn-action-box" href ="{{ route( \'tenant.application.document\', $application_id) }}"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Application" class="btn btn-action-box" href ="{{ route( \'tenant.application.edit\', $application_id) }}"><i class="fa fa-edit"></i></a>')
+            ->addColumn('action', function ($data) use ($tenant_id) {
+                return '<a data-toggle="tooltip" title="View Application" class="btn btn-action-box" href ="'. route('tenant.application.show', [$tenant_id, $data->application_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Application Documents" class="btn btn-action-box" href ="'. route( 'tenant.application.document', [$tenant_id, $data->application_id]) .'"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Application" class="btn btn-action-box" href ="'. route( 'tenant.application.edit', [$tenant_id, $data->application_id]) .'"><i class="fa fa-edit"></i></a>';
+            })
             ->editColumn('application_id', function ($data) {
                 return format_id($data->application_id, 'App');
             })
@@ -99,7 +101,7 @@ class ApplicationController extends BaseController
      *
      * @return Response
      */
-    public function create($client_id)
+    public function create($tenant_id, $client_id)
     {
         $data['institutes'] = $this->institute->getList();
         $data['courses'] = ['' => 'Select Course'];
@@ -115,7 +117,7 @@ class ApplicationController extends BaseController
      *
      * @return Response
      */
-    public function store($client_id)
+    public function store($tenant_id, $client_id)
     {
         /* Additional validations for creating user */
         /*$this->rules['email'] = 'required|email|min:5|max:55|unique:users';
@@ -129,7 +131,7 @@ class ApplicationController extends BaseController
             $app = $this->application->getDetails($created);
             $this->client->addLog($client_id, 6, ['{{NAME}}' => get_tenant_name(), '{{INSTITUTE}}' => $app->company_name, '{{COURSE}}' => $app->course_name, '{{INTAKE_DATE}}' => format_date($app->intake_date), '{{TUITION_FEE}}' => $app->tuition_fee, '{{VIEW_LINK}}' => route('tenant.application.show', $created)], $created);
         }
-        return redirect()->route('tenant.client.application', $client_id);
+        return redirect()->route('tenant.client.application', [$tenant_id, $client_id]);
     }
 
     /**
@@ -181,7 +183,7 @@ class ApplicationController extends BaseController
      * @param  int $client_id
      * @return Response
      */
-    public function show($application_id)
+    public function show($tenant_id, $application_id)
     {
         $data['stats']=null;
         $data['agents'] = $this->agent->getAll();
@@ -206,7 +208,7 @@ class ApplicationController extends BaseController
         return view("Tenant::Client/Application/show", $data);
     }
 
-    public function details($application_id)
+    public function details($tenant_id, $application_id)
     {
         $client_id = CourseApplication::find($application_id)->client_id;
         $app = new \stdClass();
@@ -223,7 +225,7 @@ class ApplicationController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($application_id)
+    public function edit($tenant_id, $application_id)
     {
         $data['institutes'] = $this->institute->getList();
         $data['courses'] = ['' => 'Select Course'];
@@ -240,7 +242,7 @@ class ApplicationController extends BaseController
      * @param  int $client_id
      * @return Response
      */
-    public function update($client_id)
+    public function update($tenant_id, $client_id)
     {
         $user_id = $this->request->get('user_id');
         /* Additional validation rules checking for uniqueness */
@@ -251,7 +253,7 @@ class ApplicationController extends BaseController
         $updated = $this->client->edit($this->request->all(), $client_id);
         if ($updated)
             Flash::success('Client has been updated successfully.');
-        return redirect()->route('tenant.client.index');
+        return redirect()->route('tenant.client.index', $tenant_id);
     }
 
     /**
@@ -266,27 +268,27 @@ class ApplicationController extends BaseController
     }
 
     // Directly From Application Dashboard
-    public function createSubAgent($application_id, Request $request)
+    public function createSubAgent($tenant_id, $application_id, Request $request)
     {
         $application = CourseApplication::find($application_id);
         $application->sub_agent_id = $request->agent_id;
         $application->save();
 
         Flash::success('Sub Agent has been added successfully.');
-        return redirect()->route('tenant.application.show', $application_id);
+        return redirect()->route('tenant.application.show', [$tenant_id, $application_id]);
     }
 
-    public function addSuperAgent($application_id, Request $request)
+    public function addSuperAgent($tenant_id, $application_id, Request $request)
     {
         $application = CourseApplication::find($application_id);
         $application->super_agent_id = $request->agent_id;
         $application->save();
 
         Flash::success('Super Agent has been added successfully.');
-        return redirect()->route('tenant.application.show', $application_id);
+        return redirect()->route('tenant.application.show', [$tenant_id, $application_id]);
     }
 
-    function notes($application_id)
+    function notes($tenant_id, $application_id)
     {
         $client_id = CourseApplication::find($application_id)->client_id;
         $app = new \stdClass();
@@ -297,12 +299,12 @@ class ApplicationController extends BaseController
         return view("Tenant::Application/notes", $data);
     }
 
-    function saveNote($application_id)
+    function saveNote($tenant_id, $application_id)
     {
         $created = $this->notes->add($this->request->all(), $application_id);
         if($created)
             Flash::success('Note has been added successfully.');
-        return redirect()->route('tenant.application.notes', $application_id);
+        return redirect()->route('tenant.application.notes', [$tenant_id, $application_id]);
     }
 
 
@@ -313,7 +315,7 @@ class ApplicationController extends BaseController
      * @param  int $client_id
      * @return Response
      */
-    function document($application_id)
+    function document($tenant_id, $application_id)
     {
         $client_id = CourseApplication::find($application_id)->client_id;
         $app = new \stdClass();
@@ -324,7 +326,7 @@ class ApplicationController extends BaseController
         return view("Tenant::Client/Application/document", $data);
     }
 
-    function uploadDocument($application_id)
+    function uploadDocument($tenant_id, $application_id)
     {
         $upload_rules = ['document' => 'required|mimes:jpeg,bmp,png,doc,docx,pdf,txt,xls,xlsx',
             'type' => 'required',
@@ -341,14 +343,14 @@ class ApplicationController extends BaseController
             $client_id = CourseApplication::find($application_id)->client_id;
             $this->client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.application.document.download', $document_id)]);
             \Flash::success('File uploaded successfully!');
-            return redirect()->route('tenant.application.document', $application_id);
+            return redirect()->route('tenant.application.document', [$tenant_id, $application_id]);
         }
 
         \Flash::danger('Uploaded file is not valid!');
         return redirect()->back();
     }
 
-    function downloadDocument($id)
+    function downloadDocument($tenant_id, $id)
     {
         $document = Document::find($id);
         if (empty($document))
@@ -357,7 +359,7 @@ class ApplicationController extends BaseController
         return tenant()->folder('document')->download($document->name);
     }
 
-    function deleteDocument($id)
+    function deleteDocument($tenant_id, $id)
     {
         $deleted = $this->document->deleteDocument($id);
         if ($deleted)

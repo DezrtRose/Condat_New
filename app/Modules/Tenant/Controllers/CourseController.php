@@ -37,7 +37,7 @@ class CourseController extends BaseController
      *
      * @return Response
      */
-    public function index($institution_id)
+    public function index($tenant_id, $institution_id)
     {
         $data['institute'] = $this->institute->getDetails($institution_id);
         $data['institution_id'] = $institution_id;
@@ -49,7 +49,7 @@ class CourseController extends BaseController
      *
      * @return Response
      */
-    public function create($institution_id)
+    public function create($tenant_id, $institution_id)
     {
         $courses = InstituteCourse::join('courses', 'institute_courses.course_id', '=', 'courses.course_id')
         ->where('institute_courses.institute_id', $institution_id)
@@ -71,7 +71,7 @@ class CourseController extends BaseController
      *
      * @return JSON Array
      */
-    public function getNarrowField($broad_id)
+    public function getNarrowField($tenant_id, $broad_id)
     {
         if ($this->request->ajax()) {
             $fields = NarrowField::where('broad_field_id', $broad_id)->lists('name', 'id');
@@ -90,7 +90,7 @@ class CourseController extends BaseController
      *
      * @return Response
      */
-    public function store($institution_id)
+    public function store($tenant_id, $institution_id)
     {
         if($this->request->ajax()) {
             $validator = \Validator::make($this->request->all(), $this->rules);
@@ -106,7 +106,7 @@ class CourseController extends BaseController
             $course_id = $this->course->add($this->request->all(), $institution_id);
             if ($course_id)
                 Flash::success('Course has been created successfully.');
-            return redirect()->route('tenant.course.index', $institution_id);
+            return redirect()->route('tenant.course.index', [$tenant_id, $institution_id]);
         }
     }
 
@@ -116,7 +116,7 @@ class CourseController extends BaseController
      * @param  int $course_id
      * @return Response
      */
-    public function show($course_id)
+    public function show($tenant_id, $course_id)
     {
         $data['course'] = $this->course->getDetails($course_id);
         //work from here $data['institute'] = $this->institute->getDetails($institution_id);
@@ -129,7 +129,7 @@ class CourseController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($course_id)
+    public function edit($tenant_id, $course_id)
     {
         /* Getting the course details*/
         $data['course'] = $course = $this->course->getDetails($course_id);
@@ -145,14 +145,14 @@ class CourseController extends BaseController
      * @param  int $institution_id
      * @return Response
      */
-    public function update($course_id)
+    public function update($tenant_id, $course_id)
     {
         $this->validate($this->request, $this->rules);
         // if validates
         $institution_id = $this->course->edit($this->request->all(), $course_id);
         if ($institution_id)
             Flash::success('Course has been updated successfully.');
-        return redirect()->route('tenant.course.index', $institution_id);
+        return redirect()->route('tenant.course.index', [$tenant_id, $institution_id]);
     }
 
     /**
@@ -171,7 +171,7 @@ class CourseController extends BaseController
      *
      * @return JSON Array
      */
-    public function getCourses($institute_id)
+    public function getCourses($tenant_id, $institute_id)
     {
         if ($this->request->ajax()) {
             $courses = $this->course->getCourses($institute_id);
@@ -185,7 +185,7 @@ class CourseController extends BaseController
         }
     }
 
-    public function getCourseFee($course_id)
+    public function getCourseFee($tenant_id, $course_id)
     {
         $fee = $this->course->getFee($course_id);
         return $this->success(['fee' => $fee]);

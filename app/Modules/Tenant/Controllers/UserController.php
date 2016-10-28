@@ -65,7 +65,7 @@ class UserController extends BaseController
      *
      * @return JSON response
      */
-    function getData(Request $request)
+    function getData($tenant_id, Request $request)
     {
         $users = User::join('persons', 'persons.person_id', '=', 'users.person_id')
             ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
@@ -73,7 +73,9 @@ class UserController extends BaseController
             ->select(['users.user_id', 'persons.first_name', 'persons.last_name', 'users.email', 'phones.number', 'users.status', 'users.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname')]);
 
         $datatable = \Datatables::of($users)
-            ->addColumn('action', '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="{{ route( \'tenant.user.show\', $user_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="{{ route( \'tenant.user.edit\', $user_id) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete User" class="delete-user btn btn-action-box" href="{{ route( \'tenant.user.destroy\', $user_id) }}"><i class="fa fa-trash"></i></a>')
+            ->addColumn('action', function ($data) use ($tenant_id) {
+                return '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="'. route('tenant.user.show', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="'. route('tenant.user.edit', [$tenant_id, $data->user_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete User" class="delete-user btn btn-action-box" href="'. route('tenant.user.destroy', [$tenant_id, $data->user_id]) .'"><i class="fa fa-trash"></i></a>';
+})
             ->editColumn('status', '@if($status == 0)
                                 <span class="label label-warning">Pending</span>
                             @elseif($status == 1)
@@ -113,7 +115,7 @@ class UserController extends BaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store($tenant_id, Request $request)
     {
         /* Additional validations for creating user */
         $this->rules['email'] = 'required|email|min:5|max:55|unique:users';
@@ -123,7 +125,7 @@ class UserController extends BaseController
         $created = $this->user->add($request->all());
         if ($created)
             Flash::success('User has been created successfully.');
-        return redirect()->route('tenant.user.index');
+        return redirect()->route('tenant.user.index', $tenant_id);
     }
 
     /**
@@ -143,7 +145,7 @@ class UserController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($user_id = null)
+    public function edit($tenant_id, $user_id = null)
     {
         // View Own Profile
         if ($user_id == null)
@@ -166,7 +168,7 @@ class UserController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($user_id = null)
+    public function update($tenant_id, $user_id = null)
     {
         // Update Own Profile
         if ($user_id == null)
@@ -180,7 +182,7 @@ class UserController extends BaseController
         $updated = $this->user->edit($this->request->all(), $user_id);
         if ($updated)
             Flash::success('User has been updated successfully.');
-        return redirect()->route('tenant.user.index');
+        return redirect()->route('tenant.user.index', $tenant_id);
     }
 
     /**
@@ -199,7 +201,7 @@ class UserController extends BaseController
 
     }
 
-    public function completeReminder($note_id)
+    public function completeReminder($tenant_id, $note_id)
     {
         $this->note->markComplete($note_id);
         return $this->success();

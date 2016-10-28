@@ -23,7 +23,7 @@ class AuthController extends BaseController {
 		$this->auth = $auth;
 	}
 
-	public function getLogin(Request $request)
+	public function getLogin($tenant_id, Request $request)
     {
         $url_query = $request->all();
 	    if(isset($url_query['auth_code']) && $url_query['auth_code'] != '') {

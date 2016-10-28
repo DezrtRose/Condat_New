@@ -47,7 +47,7 @@ class SubscriptionController extends BaseController
         return view('Tenant::Subscription/renew', compact('companyDetails'));
     }
 
-    public function get_subscription_amount(Request $request)
+    public function get_subscription_amount($tenant_id, Request $request)
     {
         $resp = false;
         $post = $request->all();
