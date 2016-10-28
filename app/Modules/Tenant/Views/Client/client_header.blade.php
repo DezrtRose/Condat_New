@@ -72,7 +72,7 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Save Image From URL</h4>
                 </div>
-                {!!Form::open(['route' => ['tenant.client.urlUpload', [$tenant_id, $client->client_id]], 'method'=> 'post', 'files' => 'true', 'class' => 'form-left'])!!}
+                {!!Form::open(['route' => ['tenant.client.urlUpload', $tenant_id, $client->client_id], 'method'=> 'post', 'files' => 'true', 'class' => 'form-left'])!!}
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">URL * </label>

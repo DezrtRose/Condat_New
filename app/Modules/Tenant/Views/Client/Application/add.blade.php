@@ -15,7 +15,7 @@
                     <small>Add</small>
                 </h3>
             </div>
-            {!!Form::open(array('route' => ['tenant.application.store', [$tenant_id, $client->client_id]], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::open(array('route' => ['tenant.application.store', $tenant_id, $client->client_id], 'class' => 'form-horizontal form-left'))!!}
             <div class="box-body">
                 @include('Tenant::Client/Application/form')
             </div>
