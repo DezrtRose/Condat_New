@@ -4,5 +4,6 @@ Route::group(array('module' => 'Frontend', 'middleware' => ['guest'], 'namespace
 
     Route::get('register/agency', ['as' => 'frontend.agency', 'uses' => 'FrontendController@register']);
     Route::post('register/agency', 'FrontendController@store');
+    Route::post('contact', 'FrontendController@contact');
 
 });	

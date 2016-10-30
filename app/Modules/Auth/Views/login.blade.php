@@ -64,7 +64,7 @@
             <a href="{{url('forgot-password')}}">
                 <small>I forgot my password</small>
             </a><br>
-            <a href="register" class="text-center">Register a new membership</a>
+            <a href="{{url('register/agency')}}" class="text-center">Register a new membership</a>
         </div>
         <div class="login-box-footer">
             <p class="text-center">

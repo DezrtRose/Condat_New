@@ -1,119 +1,120 @@
 <div class="col-md-6">
     <div class="">
-        Agency Details
-
-        <div class="">
-            <div class="form-group @if($errors->has('name')) {{'has-error'}} @endif">
-                {!!Form::label('name', 'Company Name *', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!!Form::text('name', null, array('class' => 'form-control', 'id'=>'name'))!!}
-                    @if($errors->has('name'))
-                        {!! $errors->first('name', '<label class="control-label"
-                                                           for="inputError">:message</label>') !!}
-                    @endif
-                </div>
-            </div>
-
-            {{--<div class="form-group">
-                {!!Form::label('company_database_name', 'Domain Name ', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    <span class="domain-suggestion"></span>
-                </div>
-            </div>--}}
-
-            <div class="form-group @if($errors->has('abn')) {{'has-error'}} @endif">
-                {!!Form::label('abn', 'ABN *', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!!Form::text('abn', null, array('class' => 'form-control', 'id'=>'abn'))!!}
-                    @if($errors->has('abn'))
-                        {!! $errors->first('abn', '<label class="control-label"
-                                                          for="inputError">:message</label>') !!}
-                    @endif
-                </div>
-            </div>
-
-            <div class="form-group @if($errors->has('email_id')) {{'has-error'}} @endif">
-                {!!Form::label('email_id', 'Email Address *', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!!Form::text('email_id', null, array('class' => 'form-control', 'id'=>'email_id'))!!}
-                    @if($errors->has('email_id'))
-                        {!! $errors->first('email_id', '<label class="control-label"
+        <fieldset>
+            <legend>Agency Details</legend>
+            <div class="">
+                <div class="form-group @if($errors->has('name')) {{'has-error'}} @endif">
+                    {!!Form::label('name', 'Company Name *', array('class' => 'col-sm-4 control-label')) !!}
+                    <div class="col-sm-8">
+                        {!!Form::text('name', null, array('class' => 'form-control', 'id'=>'name'))!!}
+                        @if($errors->has('name'))
+                            {!! $errors->first('name', '<label class="control-label"
                                                                for="inputError">:message</label>') !!}
-                    @endif
+                        @endif
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group @if($errors->has('phone_id')) {{'has-error'}} @endif">
-                {!!Form::label('phone_id', 'Phone *', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!!Form::text('phone_id', null, array('class' => 'form-control', 'id'=>'phone_id'))!!}
-                    @if($errors->has('phone_id'))
-                        {!! $errors->first('phone_id', '<label class="control-label"
-                                                            for="inputError">:message</label>') !!}
-                    @endif
-                </div>
-            </div>
+                {{--<div class="form-group">
+                    {!!Form::label('company_database_name', 'Domain Name ', array('class' => 'col-sm-4 control-label')) !!}
+                    <div class="col-sm-8">
+                        <span class="domain-suggestion"></span>
+                    </div>
+                </div>--}}
 
-            @if(Request::segment(1) != 'register' && Request::segment(2) != 'agency')
-            <div class="form-group @if($errors->has('acn')) {{'has-error'}} @endif">
-                {!!Form::label('acn', 'ACN', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!!Form::text('acn', null, array('class' => 'form-control', 'id'=>'acn'))!!}
-                    @if($errors->has('acn'))
-                        {!! $errors->first('acn', '<label class="control-label"
-                                                          for="inputError">:message</label>') !!}
-                    @endif
-                </div>
-            </div>
-
-            <div class="form-group @if($errors->has('website')) {{'has-error'}} @endif">
-                {!!Form::label('website', 'Website', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!!Form::text('website', null, array('class' => 'form-control', 'id'=>'website'))!!}
-                    @if($errors->has('website'))
-                        {!! $errors->first('website', '<label class="control-label"
+                <div class="form-group @if($errors->has('abn')) {{'has-error'}} @endif">
+                    {!!Form::label('abn', 'ABN *', array('class' => 'col-sm-4 control-label')) !!}
+                    <div class="col-sm-8">
+                        {!!Form::text('abn', null, array('class' => 'form-control', 'id'=>'abn'))!!}
+                        @if($errors->has('abn'))
+                            {!! $errors->first('abn', '<label class="control-label"
                                                               for="inputError">:message</label>') !!}
-                    @endif
+                        @endif
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group @if($errors->has('invoice_to_name')) {{'has-error'}} @endif">
-                {!!Form::label('invoice_to_name', 'Invoice To', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!!Form::text('invoice_to_name', null, array('class' => 'form-control',
-                    'id'=>'invoice_to_name'))!!}
-                    @if($errors->has('invoice_to_name'))
-                        {!! $errors->first('invoice_to_name', '<label class="control-label"
-                                                                      for="inputError">:message</label>') !!}
-                    @endif
+                <div class="form-group @if($errors->has('email_id')) {{'has-error'}} @endif">
+                    {!!Form::label('email_id', 'Email Address *', array('class' => 'col-sm-4 control-label')) !!}
+                    <div class="col-sm-8">
+                        {!!Form::text('email_id', null, array('class' => 'form-control', 'id'=>'email_id'))!!}
+                        @if($errors->has('email_id'))
+                            {!! $errors->first('email_id', '<label class="control-label"
+                                                                   for="inputError">:message</label>') !!}
+                        @endif
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
-                {!!Form::label('description', 'Description', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!!Form::textarea('description', null, array('class' => 'form-control', 'id'=>'description'))!!}
-                    @if($errors->has('description'))
-                        {!! $errors->first('description', '<label class="control-label"
-                                                                  for="inputError">:message</label>') !!}
-                    @endif
-                </div>
-            </div>
-            @endif
-
-            @if(Request::segment(1) == 'register' && Request::segment(2) == 'agency')
-                <div class="form-group @if($errors->has('g-recaptcha-response')) {{'has-error'}} @endif">
-                {!!Form::label('g-recaptcha-response', 'Recaptcha *', array('class' => 'col-sm-4 control-label')) !!}
-                <div class="col-sm-8">
-                    {!! Recaptcha::render() !!}
-                    @if($errors->has('g-recaptcha-response'))
-                        {!! $errors->first('g-recaptcha-response', '<label class="control-label"
+                <div class="form-group @if($errors->has('phone_id')) {{'has-error'}} @endif">
+                    {!!Form::label('phone_id', 'Phone *', array('class' => 'col-sm-4 control-label')) !!}
+                    <div class="col-sm-8">
+                        {!!Form::text('phone_id', null, array('class' => 'form-control', 'id'=>'phone_id'))!!}
+                        @if($errors->has('phone_id'))
+                            {!! $errors->first('phone_id', '<label class="control-label"
                                                                 for="inputError">:message</label>') !!}
-                    @endif
+                        @endif
+                    </div>
                 </div>
+
+                @if(Request::segment(1) != 'register' && Request::segment(2) != 'agency')
+                    <div class="form-group @if($errors->has('acn')) {{'has-error'}} @endif">
+                        {!!Form::label('acn', 'ACN', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            {!!Form::text('acn', null, array('class' => 'form-control', 'id'=>'acn'))!!}
+                            @if($errors->has('acn'))
+                                {!! $errors->first('acn', '<label class="control-label"
+                                                                  for="inputError">:message</label>') !!}
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group @if($errors->has('website')) {{'has-error'}} @endif">
+                        {!!Form::label('website', 'Website', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            {!!Form::text('website', null, array('class' => 'form-control', 'id'=>'website'))!!}
+                            @if($errors->has('website'))
+                                {!! $errors->first('website', '<label class="control-label"
+                                                                      for="inputError">:message</label>') !!}
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group @if($errors->has('invoice_to_name')) {{'has-error'}} @endif">
+                        {!!Form::label('invoice_to_name', 'Invoice To', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            {!!Form::text('invoice_to_name', null, array('class' => 'form-control',
+                            'id'=>'invoice_to_name'))!!}
+                            @if($errors->has('invoice_to_name'))
+                                {!! $errors->first('invoice_to_name', '<label class="control-label"
+                                                                              for="inputError">:message</label>') !!}
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
+                        {!!Form::label('description', 'Description', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            {!!Form::textarea('description', null, array('class' => 'form-control', 'id'=>'description'))!!}
+                            @if($errors->has('description'))
+                                {!! $errors->first('description', '<label class="control-label"
+                                                                          for="inputError">:message</label>') !!}
+                            @endif
+                        </div>
+                    </div>
+                @endif
+
+                @if(Request::segment(1) == 'register' && Request::segment(2) == 'agency')
+                    <div class="form-group @if($errors->has('g-recaptcha-response')) {{'has-error'}} @endif">
+                        {!!Form::label('g-recaptcha-response', 'Recaptcha *', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            {!! Recaptcha::render() !!}
+                            @if($errors->has('g-recaptcha-response'))
+                                {!! $errors->first('g-recaptcha-response', '<label class="control-label"
+                                                                        for="inputError">:message</label>') !!}
+                            @endif
+                        </div>
+                    </div>
+                @endif
             </div>
-            @endif
-        </div>
+        </fieldset>
     </div>
 </div>
 <div class="col-md-6">
@@ -196,8 +197,8 @@
     </div>
     @endif
     <div>
-        Subscription Details
-        <div>
+        <fieldset>
+            <legend>Subscription Details</legend>
             <div class="form-group">
                 {!!Form::label('subscription_type', 'Subscription Type (1 month trail)', array('class' => 'col-sm-4 control-label')) !!}
                 <div class="col-sm-8">
@@ -205,7 +206,7 @@
                     'form-control', 'disabled' => 'disabled'))!!}
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
     {{--<div>
         Subscription Details
