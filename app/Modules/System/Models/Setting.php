@@ -10,53 +10,34 @@ class Setting extends Model {
 
     protected $primaryKey = "name";
 
-    protected $connection = 'tenant';
-
-
     function get($name)
     {
         return $this->where('name', $name)->first();
     }
 
-    function scopeFix($query)
+    function scopeEmail($query)
     {
-        return $query->where('name', 'fix');
+        return $query->where('name', 'email');
     }
 
-    function scopeCompany($query)
+    function scopeTemplate($query)
     {
-        return $query->where('name', 'company');
+        return $query->where('name', 'template');
     }
 
-    function scopeSetting($query)
-    {
-        return $query->where('name', 'userSetting');
+    function get_template(){
+        $setting = $this->template()->first();
+        if(!empty($setting))
+            return (object)$setting->value;
+        else
+            return false;
+
     }
 
-    function scopeBank($query)
+    function getEmail()
     {
-        return $query->where('name', 'bank');
-    }
-
-    function getCompany()
-    {
-        $company = $this->company()->first(['value']);
-
-        return isset($company->value) ? $company->value : null;
-    }
-
-    function getSetting()
-    {
-        $setting = $this->setting()->first(['value']);
-
-        return isset($setting->value) ? $setting->value : null;
-    }
-
-    function getBankDetails()
-    {
-        $bank = $this->bank()->first(['value']);
-
-        return isset($bank->value) ? $bank->value : null;
+        $email = $this->email()->first(['value']);
+        return isset($email->value) ? $email->value : null;
     }
 
     function saveSetup($name = '', $value = '')

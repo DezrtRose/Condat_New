@@ -65,10 +65,10 @@ class General {
      * @return mixed
      */
     public function sendEmail($to, $to_name = '', $template = '', $param = array(),$attachment = array())
-    { 
+    {
         $template = $this->getEmailTemplate($template, $param);
 
-        if(isset($attachment) && !is_null($attachment) && !empty($attachment)){ 
+        if(isset($attachment) && !is_null($attachment) && !empty($attachment)){
                 $data = ['to_email'   => $to,
                          'to_name'    => ($to_name == '') ? $to : $to_name,
                          'subject'    => (isset($template->subject))?$template->subject:'Condat Solutions Email',

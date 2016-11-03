@@ -169,7 +169,7 @@ class AuthController extends BaseController {
             'person_id' => $person->person_id
         ]);
 
-        $login_url = url('tenant/login?tenant=' . $profile_data['tenant']);
+        $login_url = url($profile_data['tenant'].'/login');
         $agency_message = <<<EOD
 <p>Your profile is complete. <a href="{$login_url}">Click Here</a> to login to your account.</p>
 EOD;

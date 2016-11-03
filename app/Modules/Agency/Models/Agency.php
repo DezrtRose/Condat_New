@@ -83,7 +83,7 @@ class Agency extends Model
             $tenant->newTenant($request);
 
             // sending email to agency
-            $complete_profile_url = url('tenant/login?tenant=' . $agency->agency_id . '&auth_code=' . $unique_auth_code);
+            $complete_profile_url = url($agency->agency_id.'/login?&auth_code=' . $unique_auth_code);
             $agency_message = <<<EOD
 <strong>Respected {$request['name']}, </srtong>
 <p>Your agency account has been created successfully on Condat Solutions. Please <a href="$complete_profile_url">click here</a> or follow the link below to complete the registration process.</p>

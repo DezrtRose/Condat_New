@@ -34,6 +34,7 @@
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
+<script src="{{ asset('assets/js/tenant.js') }}"></script>
 
 {{-- Load additional JS --}}
 <?php Condat::loadJS();?>

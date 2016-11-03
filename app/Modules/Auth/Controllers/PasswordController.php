@@ -56,7 +56,7 @@ class PasswordController extends BaseController {
 			$this->sendResetEmail($user);
 			return redirect('login')->with('message_success', 'Reset Email sent to your email successfully.');
 		} else
-			return redirect('forgot-password')->with('message', 'These credentials do not match our records.');
+			return redirect('forgot-password')->with('message', 'Record with given email address not found.');
 
 	}
 

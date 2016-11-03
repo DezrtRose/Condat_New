@@ -33,7 +33,7 @@ class AuthController extends BaseController {
 		if ($this->auth->attempt($credentials, $request->has('remember'))) {
 			return $systemUser->redirectIfValid($this->auth->user());
 		}
-		return redirect('login')->with('message', 'These credentials do not match our records.')->withInput($request->only('email', 'remember'));
+		return redirect()->back()->with('message', 'These credentials do not match our records.')->withInput($request->only('email', 'remember'));
 	}
 
 	public function logout()

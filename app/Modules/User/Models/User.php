@@ -48,13 +48,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         if ($user->status == 0) {
             \Auth::logout();
-            return redirect()->route('system.login')->withInput()->with('message', 'Your account has not been activated.');
+            return redirect()->to('login')->withInput()->with('message', 'Your account has not been activated.');
         } elseif ($user->status == 2) {
             \Auth::logout();
-            return redirect()->route('system.login')->withInput()->with('message', 'Your account has been suspended.');
+            return redirect()->to('login')->withInput()->with('message', 'Your account has been suspended.');
         } elseif ($user->status == 3) {
             \Auth::logout();
-            return redirect()->route('system.login')->withInput()->with('message', 'Your account has been permanently blocked.');
+            return redirect()->to('login')->withInput()->with('message', 'Your account has been permanently blocked.');
         }
         return redirect('dashboard');
     }

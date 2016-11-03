@@ -431,3 +431,6 @@ ALTER TABLE `notes` ADD `status` BOOLEAN NOT NULL DEFAULT FALSE COMMENT '0: inco
 ALTER TABLE `notes` ADD `completed_by` INT NULL ;
 
 ALTER TABLE `invoices` ADD `deleted_at` DATETIME NULL DEFAULT NULL ;
+
+/* 3 November Live Changes */
+ALTER TABLE `settings` ADD PRIMARY KEY(`id`);

@@ -22,10 +22,10 @@
                     <p>{{Session::get('message_success')}}</p>
                 </div>
             @endif
-            <form action="{{url('tenant/complete')}}" method="post">
+            <form action="{{url($tenant_id.'/complete')}}" method="post">
 
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                <input type="hidden" name="tenant" value="{{$_GET['tenant']}}">
+                <input type="hidden" name="tenant" value="{{$tenant_id}}">
 
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control" name="email" placeholder="Email"
