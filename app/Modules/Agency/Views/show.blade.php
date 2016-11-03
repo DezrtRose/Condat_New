@@ -8,7 +8,6 @@
 @stop
 @section('content')
     <div class="col-md-4">
-
         <!-- Profile Image -->
         <div class="box box-primary">
             <div class="box-body box-profile">
@@ -29,82 +28,84 @@
                 <p class="text-muted">{{$agency->description}}</p>
                 <hr>
 
-                <a href="{{route('agency.edit', $agency->agency_id)}}" class="btn btn-primary btn-block"><b>Update</b></a>
+                <a href="{{route('agency.edit', $agency->agency_id)}}"
+                   class="btn btn-primary btn-block"><b>Update</b></a>
             </div>
             <!-- /.box-body -->
         </div>
         <!-- /.box -->
     </div>
-    <div class="col-md-7">
-        <div class="row">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Company Details</h3>
-                </div>
-                <div class="box-body">
-                    <table class="table table-hover">
-                        <tbody>
-                        <tr>
-                            <th style="width: 34%;">Company ID</th>
-                            <td>{{format_id($agency->company_id, 'C')}}</td>
-                        </tr>
-                        <tr>
-                            <th>Company Name</th>
-                            <td>{{$agency->name}}</td>
-                        </tr>
-                        <tr>
-                            <th>Email ID</th>
-                            <td>{{$agency->email_id}}</td>
-                        </tr>
-                        <tr>
-                            <th>Phone</th>
-                            <td>{{$agency->phone_id ? $agency->phone_id : 'Undefined'}}</td>
-                        </tr>
-                        <tr>
-                            <th>ABN</th>
-                            <td>{{$agency->abn or 'Undefined'}}</td>
-                        </tr>
-                        <tr>
-                            <th>ACN</th>
-                            <td>{{$agency->acn or 'Undefined'}}</td>
-                        </tr>
-                        <tr>
-                            <th>Website</th>
-                            <td><a href="http://{{$agency->website  or 'Undefined'}}">{{$agency->website  or 'Undefined'}}</a></td>
-                        </tr>
-                        <tr>
-                            <th>Invoice To</th>
-                            <td>{{$agency->invoice_to_name}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="col-md-8">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Company Details</h3>
             </div>
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-map-marker"></i> Address Details</h3>
-                </div>
-                <div class="box-body">
-                    <dl class="dl-horizontal">
-                        <dt>Line 1</dt>
-                        <dd>{{ $agency->line1 ? $agency->line1 : 'Undefined' }}</dd>
-                        <dt>Line 2</dt>
-                        <dd>{{ $agency->line2 ? $agency->line2 : 'Undefined' }}</dd>
-                        {{--<dt>Street</dt>
-                        <dd>{{ $agency->street ? $agency->street : 'Undefined' }}</dd>--}}
-                        <dt>Suburb</dt>
-                        <dd>{{ $agency->suburb ? $agency->suburb : 'Undefined' }}</dd>
-                        <dt>Postcode</dt>
-                        <dd>{{ $agency->postcode ? $agency->postcode : 'Undefined' }}</dd>
-                        <dt>State</dt>
-                        <dd>{{ $agency->state ? $agency->state : 'Undefined' }}</dd>
-                        <dt>Country</dt>
-                        <dd>{{ $agency->country_id ? config('constants.countries')[$agency->country_id] : 'Undefined' }}</dd>
-                        {{--<dt>Type</dt>
-                        <dd>{{ $agency->type }}</dd>--}}
-                    </dl>
-                </div>
+            <div class="box-body">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <th style="width: 34%;">Company ID</th>
+                        <td>{{format_id($agency->company_id, 'C')}}</td>
+                    </tr>
+                    <tr>
+                        <th>Company Name</th>
+                        <td>{{$agency->name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Email ID</th>
+                        <td>{{$agency->email_id}}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone</th>
+                        <td>{{$agency->phone_id ? $agency->phone_id : 'N/A'}}</td>
+                    </tr>
+                    <tr>
+                        <th>ABN</th>
+                        <td>{{$agency->abn or 'N/A'}}</td>
+                    </tr>
+                    <tr>
+                        <th>ACN</th>
+                        <td>{{$agency->acn or 'N/A'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Website</th>
+                        <td><a href="http://{{$agency->website  or 'Undefined'}}">{{$agency->website  or 'N/A'}}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Invoice To</th>
+                        <td>{{$agency->invoice_to_name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
     </div>
-    
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-map-marker"></i> Address Details</h3>
+            </div>
+            <div class="box-body">
+                <dl class="dl-horizontal">
+                    <dt>Line 1</dt>
+                    <dd>{{ $agency->line1 ? $agency->line1 : 'N/A' }}</dd>
+                    <dt>Line 2</dt>
+                    <dd>{{ $agency->line2 ? $agency->line2 : 'N/A' }}</dd>
+                    {{--<dt>Street</dt>
+                    <dd>{{ $agency->street ? $agency->street : 'N/A' }}</dd>--}}
+                    <dt>Suburb</dt>
+                    <dd>{{ $agency->suburb ? $agency->suburb : 'N/A' }}</dd>
+                    <dt>Postcode</dt>
+                    <dd>{{ $agency->postcode ? $agency->postcode : 'N/A' }}</dd>
+                    <dt>State</dt>
+                    <dd>{{ $agency->state ? $agency->state : 'N/A' }}</dd>
+                    <dt>Country</dt>
+                    <dd>{{ $agency->country_id ? config('constants.countries')[$agency->country_id] : 'N/A' }}</dd>
+                    {{--<dt>Type</dt>
+                    <dd>{{ $agency->type }}</dd>--}}
+                </dl>
+            </div>
+        </div>
+    </div>
 @stop

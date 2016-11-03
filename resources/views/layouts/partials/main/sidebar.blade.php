@@ -26,9 +26,9 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{url('payment')}}"><i class="fa fa-circle-o"></i> List Payment</a></li>
-                    <li><a href="{{url('payment/create')}}"><i class="fa fa-circle-o"></i> Add Payment</a></li>
+                    {{--<li><a href="{{url('payment/create')}}"><i class="fa fa-circle-o"></i> Add Payment</a></li>
                     <li><a href="{{url('payment/search')}}"><i class="fa fa-circle-o"></i> Advanced Search</a></li>
-                    <li><a href="{{url('payment/recent')}}"><i class="fa fa-circle-o"></i> Recent Payment</a></li>
+                    <li><a href="{{url('payment/recent')}}"><i class="fa fa-circle-o"></i> Recent Payment</a></li>--}}
                 </ul>
             </li>
             <li class="treeview">
@@ -53,9 +53,9 @@
                     <span>Settings</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{url('settings/email')}}"><i class="fa fa-circle-o"></i> Email Settings</a></li>
+                    {{--<li><a href="{{url('settings/email')}}"><i class="fa fa-circle-o"></i> Email Settings</a></li>
                     <li><a href="{{url('settings/templates')}}"><i class="fa fa-circle-o"></i> Email Templates</a></li>
-                    <li><a href="{{url('settings')}}"><i class="fa fa-circle-o"></i> Company Profile</a></li>
+                    <li><a href="{{url('settings')}}"><i class="fa fa-circle-o"></i> Company Profile</a></li>--}}
                     <li><a href="{{url('settings/subscription')}}"><i class="fa fa-circle-o"></i> Subscription Fee</a></li>
                 </ul>
             </li>

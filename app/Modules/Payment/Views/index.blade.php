@@ -3,7 +3,7 @@
 @section('heading', 'All Payments')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('agency')}}" title="All Agencies"><i class="fa fa-dashboard"></i> Agencies</a></li>
+    <li><a href="{{url('payment')}}" title="All Payments"><i class="fa fa-dashboard"></i> Payments</a></li>
 @stop
 @section('content')
     <div class="col-xs-12">
@@ -11,7 +11,6 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">Manage Payments</h3>
-                <a href="{{route('agency.create')}}" class="btn btn-primary btn-flat pull-right">Add New Agency</a>
             </div>
             <div class="box-body">
                 <table id="agencies" class="table table-bordered table-striped dataTable">
