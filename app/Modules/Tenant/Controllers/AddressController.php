@@ -44,8 +44,8 @@ class AddressController extends BaseController
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.address.edit', $data->address_id) . '">Edit</a></li>
-                        <li><a href="'.route( 'tenant.address.destroy', [$tenant_id, $data->address_id]) .'">Delete</a></li>
+                        <li><a data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.address.edit', [$tenant_id, $data->address_id]) . '">Edit</a></li>
+                        <li><a href="'.route('tenant.address.destroy', [$tenant_id, $data->address_id]) .'">Delete</a></li>
                     </ul>
                 </div>
                 </div>';

@@ -229,7 +229,15 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('clients/{client_id}/inactive', 'ClientController@removeActive');
 
     /* Routes for Institute module */
-    Route::resource('institute', 'InstituteController');
+    //Route::resource('institute', 'InstituteController');
+    Route::get('institute', ['as' => 'tenant.institute.index', 'uses' => 'InstituteController@index']);
+    Route::get('institute/create', ['as' => 'tenant.institute.create', 'uses' => 'InstituteController@create']);
+    Route::post('institute', ['as' => 'tenant.institute.store', 'uses' => 'InstituteController@store']);
+    Route::get('institute/{institute_id}', ['as' => 'tenant.institute.show', 'uses' => 'InstituteController@show']);
+    Route::get('institute/{institute_id}/edit', ['as' => 'tenant.institute.edit', 'uses' => 'InstituteController@edit']);
+    Route::put('institute/{institute_id}', ['as' => 'tenant.institute.update', 'uses' => 'InstituteController@update']);
+    Route::delete('institute/{institute_id}', ['as' => 'tenant.institute.destroy', 'uses' => 'InstituteController@destroy']);
+
     Route::get('institutes/data', 'InstituteController@getData');
     Route::get('institutes/{institute_id}/document', ['as' => 'tenant.institute.document', 'uses' => 'InstituteController@document']);
     Route::post('institutes/{institute_id}/document', 'InstituteController@uploadDocument');
@@ -252,7 +260,15 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     /* Routes for Super Agents */
     Route::post('superagents/{institute_id}/store', 'AgentController@storeSuperAgent');
     Route::get('superagents/{institute_id}/remove/{agent_id}', ['as' => 'tenant.superagent.remove', 'uses' => 'AgentController@removeSuperAgent']);
-    Route::resource('agents', 'AgentController');
+
+    Route::get('agents', ['as' => 'tenant.agents.index', 'uses' => 'AgentController@index']);
+    Route::get('agents/create', ['as' => 'tenant.agents.create', 'uses' => 'AgentController@create']);
+    Route::post('agents', ['as' => 'tenant.agents.store', 'uses' => 'AgentController@store']);
+    Route::get('agents/{agent_id}', ['as' => 'tenant.agents.show', 'uses' => 'AgentController@show']);
+    Route::get('agents/{agent_id}/edit', ['as' => 'tenant.agents.edit', 'uses' => 'AgentController@edit']);
+    Route::put('agents/{agent_id}', ['as' => 'tenant.agents.update', 'uses' => 'AgentController@update']);
+    Route::delete('agents/{agent_id}', ['as' => 'tenant.agents.destroy', 'uses' => 'AgentController@destroy']);
+
     Route::get('agent/data', 'AgentController@getData');
 
     /* Routes for Course module */
@@ -278,7 +294,15 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::delete('intakes', ['as' => 'tenant.intake.destroy', 'uses' => 'IntakeController@destroy']);
 
     /* Routes for User Module */
-    Route::resource('user', 'UserController');
+
+    Route::get('user', ['as' => 'tenant.user.index', 'uses' => 'UserController@index']);
+    Route::get('user/create', ['as' => 'tenant.user.create', 'uses' => 'UserController@create']);
+    Route::post('user', ['as' => 'tenant.user.store', 'uses' => 'UserController@store']);
+    Route::get('user/{user_id}', ['as' => 'tenant.user.show', 'uses' => 'UserController@show']);
+    Route::get('user/{user_id}/edit', ['as' => 'tenant.user.edit', 'uses' => 'UserController@edit']);
+    Route::put('user/{user_id}', ['as' => 'tenant.user.update', 'uses' => 'UserController@update']);
+    Route::delete('user/{user_id}', ['as' => 'tenant.user.destroy', 'uses' => 'UserController@destroy']);
+
     Route::get('users/data', 'UserController@getData');
     Route::get('profile', 'UserController@edit');
     //Route::post('profile', 'UserController@update');
