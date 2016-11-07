@@ -31,7 +31,7 @@
                                 @include('Agency::form')
                                 <button type="submit" class="btn btn-block btn-cta-primary">Sign up</button>
                                 <p class="note">By signing up, you agree to our terms of services and privacy policy.</p>
-                                <p class="lead">Already have an account? <a class="login-link" id="login-link" href="login.html">Log in</a></p>
+                                {{--<p class="lead">Already have an account? <a class="login-link" id="login-link" href="login.html">Log in</a></p>--}}
                                 {!!Form::close()!!}
                             </div>
                         </div><!--//form-box-inner-->
