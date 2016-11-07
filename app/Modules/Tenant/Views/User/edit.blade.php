@@ -15,7 +15,7 @@
             {!!Form::model($user, array('route' => array('tenant.users.update', $tenant_id, $user->user_id), 'class' => 'form-horizontal', 'method' => 'post'))!!}
             @include('Tenant::User/form')
             <div class="box-footer">
-                <input type="submit" class="btn btn-primary pull-right" value="Update"/>
+                <input type="submit" class="btn btn-primary pull-right" value="Update" />
             </div>
             {!!Form::close()!!}
         </div>

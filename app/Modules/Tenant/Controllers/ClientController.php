@@ -306,7 +306,7 @@ class ClientController extends BaseController
     }
 
 
-    function getNoteFormat($tenant_id, $note_id)
+    function getNoteFormat($note_id)
     {
         $note = Notes::find($note_id);
         $format = $note->description. "<br/>";
