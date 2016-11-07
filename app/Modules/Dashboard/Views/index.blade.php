@@ -94,14 +94,15 @@
                 "serverSide": true,
                 "ajax": appUrl + "/dashboard/newAgencyData",
                 "columns": [
-                    {data: 'agency_id', name: 'agency_id'},
-                    {data: 'name', name: 'name'},
+                    {data: 'agency_id', name: 'agencies.agency_id'},
+                    {data: 'name', name: 'companies.name'},
                     {data: 'phone_id', name: 'phone_id'},
                     {data: 'subscription_id', name: 'subscription_id'},
-                    {data: 'subscription_name', name: 'subscription_name'},
+                    {data: 'subscription_name', name: 'subscription_statuses.name'},
                     {data: 'end_date', name: 'end_date'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                "order": [[0, 'desc']]
             });
 
             eTable = $('#expiring-agencies').DataTable({
@@ -109,14 +110,15 @@
                 "serverSide": true,
                 "ajax": appUrl + "/dashboard/expiringAgencyData",
                 "columns": [
-                    {data: 'agency_id', name: 'agency_id'},
-                    {data: 'name', name: 'name'},
+                    {data: 'agency_id', name: 'agencies.agency_id'},
+                    {data: 'name', name: 'companies.name'},
                     {data: 'phone_id', name: 'phone_id'},
                     {data: 'subscription_id', name: 'subscription_id'},
-                    {data: 'subscription_name', name: 'subscription_name'},
+                    {data: 'subscription_name', name: 'subscription_statuses.name'},
                     {data: 'end_date', name: 'end_date'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                "order": [[0, 'desc']]
             });
 
             exTable = $('#expired-agencies').DataTable({
@@ -124,14 +126,15 @@
                 "serverSide": true,
                 "ajax": appUrl + "/dashboard/expiredAgencyData",
                 "columns": [
-                    {data: 'agency_id', name: 'agency_id'},
-                    {data: 'name', name: 'name'},
+                    {data: 'agency_id', name: 'agencies.agency_id'},
+                    {data: 'name', name: 'companies.name'},
                     {data: 'phone_id', name: 'phone_id'},
                     {data: 'subscription_id', name: 'subscription_id'},
-                    {data: 'subscription_name', name: 'subscription_name'},
+                    {data: 'subscription_name', name: 'subscription_statuses.name'},
                     {data: 'end_date', name: 'end_date'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                "order": [[0, 'desc']]
             });
         });
     </script>
