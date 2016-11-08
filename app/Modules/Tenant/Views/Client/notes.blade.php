@@ -40,7 +40,7 @@
                                 <div class='input-group date'>
                                     <input type="text" name="reminder_date" class="form-control datepicker"
                                            id="reminder_date" placeholder="yyyy-mm-dd">
-                                <span class="input-group-addon">
+                                    <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                                 </div>
@@ -58,7 +58,7 @@
         <!-- /.box -->
     </div>
 
-    <div class="col-md-8 col-xs-12">
+    <div class="col-md-9 col-xs-12">
         <div class="box box-primary">
             <div class="box-body table-responsive">
                 @if(count($notes) > 0)
@@ -71,7 +71,7 @@
                             <th>Notes</th>
                             <th>Remind me</th>
                             <th>Reminder date</th>
-                            <th>Processing</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -83,9 +83,13 @@
                                 <td>{{ ($note->remind == 1) ? 'yes' : 'no' }}</td>
                                 <td>{{($note->remind == 1) ? format_date($note->reminder_date) : ''}}</td>
                                 <td>
-                                    <a href="{{route('tenant.client.notes.delete', [$tenant_id, $note->notes_id])}}"
+                                    @if($note->status == '0')
+                                        <a class="btn btn-action-box complete-note" href="#" id="{{$note->notes_id}}"><i
+                                                    class="fa fa-check"></i></a>
+                                    @endif
+                                    <a class="btn btn-action-box" href="{{route('tenant.client.notes.delete', [$tenant_id, $note->notes_id])}}"
                                        onClick="return confirm('Are you sure want to delete this record')"><i
-                                                class="fa fa-trash"></i> Delete</a>
+                                                class="fa fa-trash"></i></a>
                                 </td>
 
                             </tr>

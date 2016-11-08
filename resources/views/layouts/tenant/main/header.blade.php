@@ -42,7 +42,7 @@
                                             <a href="{{route('tenant.client.show', [$tenant_id, $reminder->client_id])}}">
                                                 <h3>
                                                     <input type="checkbox" class="icheck com-reminder" id="{{ $reminder->notes_id }}" />
-                                                    {{$reminder->first_name . ' ' . $reminder->last_name}} - {{ $reminder->description }}
+                                                    {{$reminder->first_name . ' ' . $reminder->last_name}} - {{ trim(substr($reminder->description, 0, 20)) }}@if(strlen($reminder->description) > 20) {{'...'}}@endif
                                                     <small class="pull-right">{{ format_date($reminder->reminder_date) }}</small>
                                                 </h3>
                                             </a>
@@ -52,8 +52,8 @@
                                     <p class="text-muted well">
                                         No upcoming reminders.
                                     </p>
-                                    @endif
-                                            <!-- end task item -->
+                            @endif
+                            <!-- end task item -->
                             </ul>
                         </li>
                         {{--<li class="footer">
