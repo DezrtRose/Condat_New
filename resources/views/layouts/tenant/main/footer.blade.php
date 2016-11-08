@@ -47,7 +47,7 @@
                     $('#renew-subscription').hide();
                 }
             }
-        })
+        });
     };
     fn();
 </script>

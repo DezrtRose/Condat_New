@@ -296,7 +296,7 @@ class StudentController extends BaseController
         $data['bank'] = $this->setting->getBankDetails();
         $data['invoice'] = $invoice = $this->invoice->getDetails($invoice_id); //dd($data['invoice']->toArray());
         //$data['client_name'] = $this->application->getClientName($invoice->course_application_id);
-        $data['pay_details'] = $this->invoice->getPayDetails($invoice_id);
+        $data['pay_details'] = $this->invoice->getPayDetails($invoice->invoice_id);
         return view("Tenant::Student/Invoice/show", $data);
     }
 

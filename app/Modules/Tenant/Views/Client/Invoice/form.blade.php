@@ -43,7 +43,7 @@
         </div>
 
         <div class="form-group @if($errors->has('discount')) {{'has-error'}} @endif">
-            {!!Form::label('discount', 'Discount *', array('class' => 'col-sm-4 control-label')) !!}
+            {!!Form::label('discount', 'Discount', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
@@ -71,7 +71,7 @@
         </div>
 
         <div class="form-group @if($errors->has('total_gst')) {{'has-error'}} @endif">
-            {!!Form::label('total_gst', 'GST *', array('class' => 'col-sm-4 control-label')) !!}
+            {!!Form::label('total_gst', 'GST', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="form-group @if($errors->has('final_total')) {{'has-error'}} @endif">
-            {!!Form::label('final_total', 'Final Total *', array('class' => 'col-sm-4 control-label')) !!}
+            {!!Form::label('final_total', 'Final Total', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>

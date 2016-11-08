@@ -157,9 +157,9 @@ class AccountController extends BaseController
                   </ul>
                 </div>';
             })
-            ->addColumn('invoice_id', function ($data) {
+            ->addColumn('invoice_id', function ($data) use ($tenant_id) {
                 if (empty($data->invoice_id) || $data->invoice_id == 0)
-                    return 'Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/account/payment/' . $data->client_payment_id . '/' . $data->client_id . '/assign') . '"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>';
+                    return 'Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/account/payment/' . $data->client_payment_id . '/' . $data->client_id . '/assign') . '"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>';
                 else
                     return format_id($data->invoice_id, 'I');
             })
@@ -209,8 +209,8 @@ class AccountController extends BaseController
     client_payments 
     JOIN payment_invoice_breakdowns 
       ON payment_invoice_breakdowns.payment_id = client_payments.client_payment_id 
-  WHERE payment_invoice_breakdowns.invoice_id = invoices.invoice_id) AS outstanding_amount'))
-            /*->orderBy('created_at', 'desc')*/;
+  WHERE payment_invoice_breakdowns.invoice_id = invoices.invoice_id) AS outstanding_amount'))/*->orderBy('created_at', 'desc')*/
+        ;
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
@@ -238,9 +238,9 @@ class AccountController extends BaseController
                 else
                     return 0;
             })*/
-            ->editColumn('outstanding_amount', function($data) {
+            ->editColumn('outstanding_amount', function ($data) use ($tenant_id) {
                 if ($data->outstanding_amount != 0)
-                    return format_price($data->outstanding_amount) . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                    return format_price($data->outstanding_amount) . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
                     return format_price(0);
             })
@@ -271,7 +271,7 @@ class AccountController extends BaseController
             ->where('course_application.client_id', $client_id)
             ->where('invoices.deleted_at', null)
             ->where('invoice_date', '>=', Carbon\Carbon::now())
-            ->select(['invoices.*', 'student_invoices.student_invoice_id', ])
+            ->select(['invoices.*', 'student_invoices.student_invoice_id',])
             ->orderBy('invoices.created_at', 'desc');
 
         $datatable = \Datatables::of($invoices)
@@ -294,10 +294,10 @@ class AccountController extends BaseController
                 $outstanding = $this->invoice->getOutstandingAmount($data->invoice_id);
                 return ($outstanding != 0) ? 'Outstanding' : 'Paid';
             })
-            ->addColumn('outstanding_amount', function ($data) {
+            ->addColumn('outstanding_amount', function ($data) use ($tenant_id) {
                 $outstanding = $this->invoice->getOutstandingAmount($data->invoice_id);
                 if ($outstanding != 0)
-                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url('tenant/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
                     return 0;
             })
@@ -308,35 +308,6 @@ class AccountController extends BaseController
                 return format_id($data->invoice_id, 'I');
             });
         return $datatable->make(true);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('Tenant::Client/add');
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        /* Additional validations for creating user */
-        $this->rules['email'] = 'required|email|min:5|max:55|unique:users';
-
-        $this->validate($this->request, $this->rules);
-        // if validates
-        $created = $this->client->add($this->request->all());
-        if ($created)
-            Flash::success('Client has been created successfully.');
-        return redirect()->route('tenant.client.index');
     }
 
     /**
@@ -355,43 +326,6 @@ class AccountController extends BaseController
     {
         $data['client'] = $this->client->getDetails($client_id);
         return view("Tenant::Client/personal_details", $data);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($tenant_id, $client_id)
-    {
-        /* Getting the client details*/
-        $data['client'] = $this->client->getDetails($client_id);
-        if ($data['client'] != null) {
-            $data['client']->dob = format_date($data['client']->dob);
-            return view('Tenant::Client/edit', $data);
-        } else
-            return show_404();
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $client_id
-     * @return Response
-     */
-    public function update($tenant_id, $client_id)
-    {
-        $user_id = $this->request->get('user_id');
-        /* Additional validation rules checking for uniqueness */
-        $this->rules['email'] = 'required|email|min:5|max:55|unique:users,email,' . $user_id . ',user_id';
-
-        $this->validate($this->request, $this->rules);
-        // if validates
-        $updated = $this->client->edit($this->request->all(), $client_id);
-        if ($updated)
-            Flash::success('Client has been updated successfully.');
-        return redirect()->route('tenant.client.index', $tenant_id);
     }
 
     /**

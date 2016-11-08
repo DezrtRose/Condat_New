@@ -1,5 +1,5 @@
 $(function () {
-    $('.com-reminder').on('ifClicked', function (event) {
+    $('.com-reminder').on('ifChecked', function (event) {
 
         if (!confirm('Are you sure you want to mark the reminder as complete?')) {
             setTimeout(function () {
