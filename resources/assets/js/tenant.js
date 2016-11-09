@@ -27,7 +27,7 @@ $(function () {
         var id = $(this).attr('id');
         var parentLi = $(this).closest('li');
         $.ajax({
-            url: appUrl + '/tenant/reminder/' + id,
+            url: appUrl + '/reminder/' + id,
             type: 'get',
             success: function (response) {
                 if (response.status == 1) {

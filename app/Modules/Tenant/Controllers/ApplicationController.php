@@ -129,7 +129,7 @@ class ApplicationController extends BaseController
             Flash::success('Application has been created successfully.');
 
             $app = $this->application->getDetails($created);
-            $this->client->addLog($client_id, 6, ['{{NAME}}' => get_tenant_name(), '{{INSTITUTE}}' => $app->company_name, '{{COURSE}}' => $app->course_name, '{{INTAKE_DATE}}' => format_date($app->intake_date), '{{TUITION_FEE}}' => $app->tuition_fee, '{{VIEW_LINK}}' => route('tenant.application.show', $created)], $created);
+            $this->client->addLog($client_id, 6, ['{{NAME}}' => get_tenant_name(), '{{INSTITUTE}}' => $app->company_name, '{{COURSE}}' => $app->course_name, '{{INTAKE_DATE}}' => format_date($app->intake_date), '{{TUITION_FEE}}' => $app->tuition_fee, '{{VIEW_LINK}}' => route('tenant.application.show', [$tenant_id, $created])], $created);
         }
         return redirect()->route('tenant.client.application', [$tenant_id, $client_id]);
     }
