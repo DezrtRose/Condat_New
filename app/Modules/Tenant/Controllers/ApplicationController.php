@@ -197,7 +197,7 @@ class ApplicationController extends BaseController
         $remaining_commission = $data['total_commission_amount'] - $data['commission_claimed'];
         $data['remaining_commission'] = ($remaining_commission < 0)? 0 : $remaining_commission;
 
-        $data['status'] = $this->status->getStatusDetails($application_id);
+        $data['status'] = $this->status->getStatusDetails($tenant_id, $application_id);
 
         $student_stats = $this->student_invoice->getStats($application_id);
         $data['student_outstanding'] = $student_stats['due_amount'];
@@ -341,7 +341,7 @@ class ApplicationController extends BaseController
             $document_id = $this->document->uploadDocument($application_id, $file_info, $this->request->all());
             $document = Document::find($document_id);
             $client_id = CourseApplication::find($application_id)->client_id;
-            $this->client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.application.document.download', $document_id)]);
+            $this->client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.application.document.download', [$tenant_id, $document_id])]);
             \Flash::success('File uploaded successfully!');
             return redirect()->route('tenant.application.document', [$tenant_id, $application_id]);
         }

@@ -14,7 +14,7 @@
                 <h3 class="box-title">Edit Payment</h3>
             </div>
             @include('flash::message')
-            {!!Form::model($payment, array('route' => array('tenant.application.updatePayment', [$tenant_id, $payment->college_payment_id]), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
+            {!!Form::model($payment, array('route' => array('tenant.application.updatePayment', $tenant_id, $payment->college_payment_id), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
             @include('Tenant::College/Payment/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Update"/>

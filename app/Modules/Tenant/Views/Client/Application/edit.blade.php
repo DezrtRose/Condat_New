@@ -18,7 +18,7 @@
                         <small>Edit</small>
                     </h3>
                 </div>
-                {!!Form::model($application, array('route' => ['tenant.application.store', [$tenant_id, $application->course_application_id]], 'class' => 'form-horizontal form-left'))!!}
+                {!!Form::model($application, array('route' => ['tenant.application.store', $tenant_id, $application->course_application_id], 'class' => 'form-horizontal form-left'))!!}
                 <div class="box-body">
                     @include('Tenant::Client/Application/form')
                 </div>

@@ -12,7 +12,7 @@
                 <h3 class="box-title">Agent Details</h3>
             </div>
             @include('flash::message')
-            {!!Form::model($agent, array('route' => array('tenant.agents.update', [$tenant_id, $agent->agent_id]), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
+            {!!Form::model($agent, array('route' => array('tenant.agents.update', $tenant_id, $agent->agent_id), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
             @include('Tenant::Agent/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Update"/>

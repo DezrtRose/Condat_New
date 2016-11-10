@@ -148,7 +148,7 @@ class ApplicationStatus extends Model
         }
     }
 
-    function apply_offer(array $request, $course_application_id)
+    function apply_offer($tenant_id, array $request, $course_application_id)
     {
         DB::beginTransaction();
 
@@ -160,7 +160,7 @@ class ApplicationStatus extends Model
 
             $this->change_status($course_application_id, 2);
 
-            $this->add_timeline($course_application_id, 2);
+            $this->add_timeline($tenant_id, $course_application_id, 2);
 
             DB::commit();
             return true;
@@ -188,14 +188,14 @@ class ApplicationStatus extends Model
         ]);
     }
 
-    function add_timeline($application_id, $status_id)
+    function add_timeline($tenant_id, $application_id, $status_id)
     {
         $client = new Client();
         $client_id = CourseApplication::find($application_id)->client_id;
         $status1 = Status::find($status_id - 1)->decription;
         $status2 = Status::find($status_id)->decription;
 
-        $client->addLog($client_id, 7, ['{{NAME}}' => get_tenant_name(), '{{STATUS1}}' => $status1, '{{STATUS2}}' => $status2, '{{VIEW_LINK}}' => route('tenant.application.show', $application_id)], $application_id);
+        $client->addLog($client_id, 7, ['{{NAME}}' => get_tenant_name(), '{{STATUS1}}' => $status1, '{{STATUS2}}' => $status2, '{{VIEW_LINK}}' => route('tenant.application.show', [$tenant_id, $application_id])], $application_id);
     }
 
     function offer_received(array $request, $course_application_id)
@@ -305,7 +305,7 @@ class ApplicationStatus extends Model
         }
     }
 
-    function getStatusDetails($application_id)
+    function getStatusDetails($tenant_id, $application_id)
     {
         $status = ApplicationStatus::join('status', 'application_status.status_id', '=', 'status.status_id')
             ->where('application_status.course_application_id', $application_id)
@@ -313,34 +313,34 @@ class ApplicationStatus extends Model
             ->select('application_status.*', 'status.name')
             ->first();
 
-        $status->action_link = $this->getActionLink($status->status_id, $application_id);
+        $status->action_link = $this->getActionLink($tenant_id, $status->status_id, $application_id);
 
         return $status;
     }
 
-    function getActionLink($status_id, $application_id)
+    function getActionLink($tenant_id, $status_id, $application_id)
     {
         switch ($status_id) {
             case 1:
-                $link = route('applications.apply.offer', $application_id);
+                $link = route('applications.apply.offer', [$tenant_id, $application_id]);
                 break;
             case 2:
-                $link = route('applications.offer.received', $application_id);
+                $link = route('applications.offer.received', [$tenant_id, $application_id]);
                 break;
             case 3:
-                $link = route('applications.apply.coe', $application_id);
+                $link = route('applications.apply.coe', [$tenant_id, $application_id]);
                 break;
             case 4:
-                $link = route('applications.action.coe.issued', $application_id);
+                $link = route('applications.action.coe.issued', [$tenant_id, $application_id]);
                 break;
             case 5:
-                $link = route('applications.apply.offer', $application_id);
+                $link = route('applications.apply.offer', [$tenant_id, $application_id]);
                 break;
             case 6:
-                $link = route('applications.apply.offer', $application_id);
+                $link = route('applications.apply.offer', [$tenant_id, $application_id]);
                 break;
             case 7:
-                $link = route('applications.apply.offer', $application_id);
+                $link = route('applications.apply.offer', [$tenant_id, $application_id]);
                 break;
             default: // For Cancelled Application
                 $link = '';

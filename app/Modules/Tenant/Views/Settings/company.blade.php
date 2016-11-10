@@ -11,7 +11,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Company Profile</h3>
             </div>
-            {!!Form::model($company, array('route' => ['tenant.company.store', [$tenant_id, $company->agent_id]], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::model($company, array('route' => ['tenant.company.store', $tenant_id, $company->agent_id], 'class' => 'form-horizontal form-left'))!!}
             <div class="box-body">
                 <div class="col-md-6">
                     <div class="">

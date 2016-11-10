@@ -68,7 +68,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Total Invoice Amount</span>
-                        <span class="info-box-number">${{ $stats['invoice_amount'] }}</span>
+                        <span class="info-box-number">{{ format_price($stats['invoice_amount']) }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -81,7 +81,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Total Paid Amount</span>
-                        <span class="info-box-number">${{ $stats['total_paid'] }}</span>
+                        <span class="info-box-number">{{ format_price($stats['total_paid']) }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -98,7 +98,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Due Amount</span>
-                        <span class="info-box-number">${{ $stats['due_amount'] }}</span>
+                        <span class="info-box-number">{{ format_price($stats['due_amount']) }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>

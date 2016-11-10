@@ -20,7 +20,7 @@
                 {!! Form::model($application,[
                     'class'=>'form-horizontal',
                     'method'=>'POST',
-                    'route'=>['applications.update.applied.coe', [$tenant_id, $application->application_id]]
+                    'route'=>['applications.update.applied.coe', $tenant_id, $application->application_id]
                     ])!!}
 
                 <div class="form-group">

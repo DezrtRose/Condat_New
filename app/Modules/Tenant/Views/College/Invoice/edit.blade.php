@@ -13,7 +13,7 @@
                 <h3 class="box-title">Update Invoice</h3>
             </div>
             @include('flash::message')
-            {!!Form::model($invoice, array('route' => array('tenant.college.editInvoice', [$tenant_id, $invoice->college_invoice_id]), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
+            {!!Form::model($invoice, array('route' => array('tenant.college.editInvoice', $tenant_id, $invoice->college_invoice_id), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
             @include('Tenant::College/Invoice/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Update"/>

@@ -87,8 +87,9 @@ class CollegeController extends BaseController
             Flash::success('Payment has added successfully.');
             $payment = $this->payment->getDetails($created);
             $client_id = CourseApplication::find($application_id)->client_id;
-            $this->client->addLog($client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => url("tenant/college/payment/receipt/" . $payment->college_payment_id)], $application_id);
+            $this->client->addLog($client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => url($tenant_id. "/college/payment/receipt/" . $payment->college_payment_id)], $application_id);
         }
+        //return redirect()->back();
         return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
     }
 
@@ -124,7 +125,7 @@ class CollegeController extends BaseController
             Flash::success('Invoice has created successfully.');
             $invoice = CollegeInvoice::find($created);
             $client_id = $this->invoice->getClientId($created);
-            $this->client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => 'College Invoice', '{{DATE}}' => format_date($invoice->invoice_date), '{{AMOUNT}}' => $invoice->total_commission, '{{VIEW_LINK}}' => route('tenant.college.invoice', $invoice->college_invoice_id)], $application_id);
+            $this->client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => 'College Invoice', '{{DATE}}' => format_date($invoice->invoice_date), '{{AMOUNT}}' => $invoice->total_commission, '{{VIEW_LINK}}' => route('tenant.college.invoice', [$tenant_id, $invoice->college_invoice_id])], $application_id);
         }
         return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
     }

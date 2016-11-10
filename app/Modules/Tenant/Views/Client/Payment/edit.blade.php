@@ -13,7 +13,7 @@
                 <h3 class="box-title">Update Payment</h3>
             </div>
             @include('flash::message')
-            {!!Form::model($payment, array('route' => ['client.payment.update', [$tenant_id, $payment->client_payment_id]], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::model($payment, array('route' => ['client.payment.update', $tenant_id, $payment->client_payment_id], 'class' => 'form-horizontal form-left'))!!}
             @include('Tenant::Client/Payment/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Update"/>

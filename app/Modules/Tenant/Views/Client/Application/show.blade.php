@@ -25,7 +25,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <span class="panel-title">Course Information</span>
-                                <a href="#" class="btn btn-primary btn-flat btn-xs pull-right"><i class="fa fa-pencil"></i> Edit</a>
+                                <a href="{{ route( 'tenant.application.edit', [$tenant_id, $application->application_id]) }}" class="btn btn-primary btn-flat btn-xs pull-right"><i class="fa fa-pencil"></i> Edit Application</a>
                             </div>
                             <div class="panel-body">
                                 <dl class="dl-horizontal">
@@ -52,15 +52,15 @@
                                 <table class="table table-striped table-bordered">
                                     <tr>
                                         <td>Total Fee</td>
-                                        <td>${{ $application->tuition_fee }}</td>
+                                        <td>{{ format_price($application->tuition_fee) }}</td>
                                     </tr>
                                     <tr>
                                         <td>Total Paid</td>
-                                        <td>${{ $paid_to_college }}</td>
+                                        <td>{{ format_price($paid_to_college)}}</td>
                                     </tr>
                                     <tr>
                                         <td>Total Remaining</td>
-                                        <td>${{ $remaining }}</td>
+                                        <td>{{ format_price($remaining)}}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -74,28 +74,28 @@
                                 <table class="table table-striped table-bordered">
                                     <tr>
                                         <td>Total Invoice</td>
-                                        <td>${{ $college_stats['invoice_amount'] }}</td>
+                                        <td>{{ format_price($college_stats['invoice_amount']) }}</td>
                                     </tr>
                                     <tr>
                                         <td>Total Paid Invoice</td>
-                                        <td>${{ $college_stats['total_paid'] }}</td>
+                                        <td>{{ format_price($college_stats['total_paid']) }}</td>
                                     </tr>
                                     <tr>
                                         <td>Outstanding Amount</td>
-                                        <td>${{ $college_stats['due_amount'] }}</td>
+                                        <td>{{ format_price($college_stats['due_amount']) }}</td>
                                     </tr>
 
                                     {{--<tr>
                                         <td>Commission Payable Amount</td>
-                                        <td>${{ $total_commission_amount }}</td>
+                                        <td>${{ format_price()$total_commission_amount }}</td>
                                     </tr>
                                     <tr>
                                         <td>Total Commission Claimed</td>
-                                        <td>${{ $commission_claimed }}</td>
+                                        <td>${{ format_price()$commission_claimed }}</td>
                                     </tr>
                                     <tr>
                                         <td>Remaining Commission</td>
-                                        <td>${{ $remaining_commission }}</td>
+                                        <td>${{ format_price()$remaining_commission }}</td>
                                     </tr>--}}
                                 </table>
                             </div>
@@ -161,7 +161,7 @@
                                 <h3 class="panel-title">Student owing Agency</h3>
                             </div>
                             <div class="panel-body">
-                                <h3>${{ $student_outstanding }}</h3>
+                                <h3>{{ format_price($student_outstanding) }}</h3>
                             </div>
                         </div>
 
@@ -170,7 +170,7 @@
                                 <h3 class="panel-title">Pending Active Commission</h3>
                             </div>
                             <div class="panel-body">
-                                <h3>${{ $college_outstanding }}</h3>
+                                <h3>{{ format_price($college_outstanding) }}</h3>
                             </div>
                         </div>
 
@@ -179,7 +179,7 @@
                                 <h3 class="panel-title">Uninvoice Amount</h3>
                             </div>
                             <div class="panel-body">
-                                <h3>${{ $uninvoiced_amount }}</h3>
+                                <h3>{{ format_price($uninvoiced_amount) }}</h3>
                             </div>
                         </div>
                     </div>

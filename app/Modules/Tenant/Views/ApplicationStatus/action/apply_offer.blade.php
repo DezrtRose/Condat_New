@@ -18,7 +18,7 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-7 col-md-offset-1">
-                        {!! Form::model($application, ['class'=>'form-horizontal', 'method'=>'POST', 'route'=>['applications.apply.update', [$tenant_id, $application->application_id]]])!!}
+                        {!! Form::model($application, ['class'=>'form-horizontal', 'method'=>'POST', 'route'=>['applications.apply.update', $tenant_id, $application->application_id]])!!}
 
                         <div class="form-group">
                             {{ Form::label('institute_name', 'Institute Name', ['class'=>'col-md-3 form-label text-right'])}}

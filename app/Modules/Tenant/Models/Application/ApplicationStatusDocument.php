@@ -67,7 +67,8 @@ class ApplicationStatusDocument extends Model
             $status_desc = Status::find($status_id)->description;
 
             $document = Document::create([
-                'type' => $status_desc,
+                //'type' => $status_desc,
+                'type' => (isset($request['type'])? $request['type'] : $status_desc),
                 'user_id' => current_tenant_id(),
                 'name' => $file['fileName'],
                 'shelf_location' => $file['pathName'],

@@ -53,9 +53,10 @@ class ApplicationStatusController extends BaseController
     //updates for apply_offer
     public function update($tenant_id, $course_application_id)
     {
-        $this->application_status->apply_offer($this->request->all(), $course_application_id);
+        $this->application_status->apply_offer($tenant_id, $this->request->all(), $course_application_id);
         Flash::success('Offer Applied Successfully.');
-        return redirect()->route('applications.offer_letter_processing.index', $tenant_id);
+        return redirect()->route('tenant.application.show', [$tenant_id, $course_application_id]);
+        //return redirect()->route('applications.offer_letter_processing.index', $tenant_id);
     }
 
 
