@@ -70,12 +70,12 @@ class UserController extends BaseController
         $users = User::join('persons', 'persons.person_id', '=', 'users.person_id')
             ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
-            ->select(['users.user_id', 'persons.first_name', 'persons.last_name', 'users.email', 'phones.number', 'users.status', 'users.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname')]);
+            ->select(['users.user_id', 'persons.first_name', 'persons.last_name', 'users.email', 'phones.number', 'users.role', 'users.status', 'users.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname')]);
 
         $datatable = \Datatables::of($users)
             ->addColumn('action', function ($data) use ($tenant_id) {
-                return '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="'. route('tenant.user.show', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="'. route('tenant.user.edit', [$tenant_id, $data->user_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete User" class="delete-user btn btn-action-box" href="'. route('tenant.user.destroy', [$tenant_id, $data->user_id]) .'"><i class="fa fa-trash"></i></a>';
-})
+                return '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="'. route('tenant.user.show', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="'. route('tenant.user.edit', [$tenant_id, $data->user_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Change Status" class="btn btn-action-box" href="'. route('tenant.user.changeStatus', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a>';
+            })
             ->editColumn('status', '@if($status == 0)
                                 <span class="label label-warning">Pending</span>
                             @elseif($status == 1)
@@ -90,6 +90,9 @@ class UserController extends BaseController
             })
             ->editColumn('created_at', function ($data) {
                 return format_datetime($data->created_at);
+            })
+            ->editColumn('role', function ($data) {
+                return $data->role == 1 ? 'Staff' : 'Accountant';
             });
         // Global search function
         if ($keyword = $request->get('search')['value']) {
@@ -205,6 +208,20 @@ class UserController extends BaseController
     {
         $this->note->markComplete($note_id);
         return $this->success();
+    }
+
+    public function change_status($tenant_id, $user_id)
+    {
+        $user = new User();
+        $data = $user->find($user_id);
+        if($data->status == 1)
+            $data->status = 2;
+        else
+            $data->status = 1;
+        $data->save();
+        Flash::success('User statu has been updated successfully.');
+
+        return redirect()->route('tenant.user.index', $tenant_id);
     }
 
 }

@@ -20,6 +20,7 @@
                         <th>Full Name</th>
                         <th>Phone No</th>
                         <th>Email</th>
+                        <th>Role</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -30,21 +31,22 @@
     </div>
 
     <script type="text/javascript">
-            $(document).ready(function () {
-                oTable = $('#users').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": appUrl + "/users/data",
-                    "columns": [
-                        {data: 'user_id', name: 'user_id'},
-                        {data: 'fullname', name: 'fullname'},
-                        {data: 'number', name: 'number'},
-                        {data: 'email', name: 'email'},
-                        {data: 'status', name: 'status'},
-                        {data: 'action', name: 'action', orderable: false, searchable: false}
-                    ],
-                    order: [ [0, 'desc'] ]
-                });
+        $(document).ready(function () {
+            oTable = $('#users').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": appUrl + "/users/data",
+                "columns": [
+                    {data: 'user_id', name: 'user_id'},
+                    {data: 'fullname', name: 'fullname'},
+                    {data: 'number', name: 'number'},
+                    {data: 'email', name: 'email'},
+                    {data: 'role', name: 'role'},
+                    {data: 'status', name: 'status'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+                order: [ [0, 'desc'] ]
             });
-        </script>
+        });
+    </script>
 @stop
