@@ -300,6 +300,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::post('user', ['as' => 'tenant.user.store', 'uses' => 'UserController@store']);
     Route::get('user/{user_id}', ['as' => 'tenant.user.show', 'uses' => 'UserController@show']);
     Route::get('user/{user_id}/edit', ['as' => 'tenant.user.edit', 'uses' => 'UserController@edit']);
+    Route::get('user/{user_id}/status', ['as' => 'tenant.user.changeStatus', 'uses' => 'UserController@change_status']);
     Route::put('user/{user_id}', ['as' => 'tenant.user.update', 'uses' => 'UserController@update']);
     Route::delete('user/{user_id}', ['as' => 'tenant.user.destroy', 'uses' => 'UserController@destroy']);
 
