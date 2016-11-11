@@ -74,7 +74,8 @@ class UserController extends BaseController
 
         $datatable = \Datatables::of($users)
             ->addColumn('action', function ($data) use ($tenant_id) {
-                return '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="'. route('tenant.user.show', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="'. route('tenant.user.edit', [$tenant_id, $data->user_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Change Status" class="btn btn-action-box" href="'. route('tenant.user.changeStatus', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a>';
+                $icon = $data->status == 1 ? 'fa-minus-circle' : 'fa-check-circle';
+                return '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="'. route('tenant.user.show', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="'. route('tenant.user.edit', [$tenant_id, $data->user_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Change Status" class="btn btn-action-box" href="'. route('tenant.user.changeStatus', [$tenant_id, $data->user_id]) .'"><i class="fa '.$icon.'"></i></a>';
             })
             ->editColumn('status', '@if($status == 0)
                                 <span class="label label-warning">Pending</span>

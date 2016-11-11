@@ -39,13 +39,14 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
+                preg_match('!\d+!', $_COOKIE['database_name'], $tenant_id);
                 unset($_COOKIE['database_name']);
                 unset($_COOKIE['paypal_payment_data']);
                 setcookie('database_name', null, -1, '/');
                 setcookie('paypal_payment_data', null, -1, '/');
                 $this->auth->logout();
                 Session::flush();
-                return redirect()->guest('login');
+                return redirect()->guest($tenant_id[0] . '/login');
             }
         }
 
