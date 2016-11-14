@@ -1,6 +1,9 @@
 <?php namespace App\Modules\Tenant\Controllers;
 
 use App\Http\Requests;
+use App\Modules\Agency\Models\Agency;
+use App\Modules\Tenant\Models\Company\Company;
+use App\Modules\Agency\Models\Company as MasterCompany;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
 use App\Modules\Tenant\Models\Notes;
 use App\Modules\Tenant\Models\Timeline\Timeline;
@@ -10,6 +13,7 @@ use DB;
 use Illuminate\Http\Request;
 use Flash;
 use App\Modules\Tenant\Models\Application\ApplicationStatus;
+use Mail;
 
 class UserController extends BaseController
 {
@@ -75,7 +79,11 @@ class UserController extends BaseController
         $datatable = \Datatables::of($users)
             ->addColumn('action', function ($data) use ($tenant_id) {
                 $icon = $data->status == 1 ? 'fa-minus-circle' : 'fa-check-circle';
-                return '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="'. route('tenant.user.show', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="'. route('tenant.user.edit', [$tenant_id, $data->user_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Change Status" class="btn btn-action-box" href="'. route('tenant.user.changeStatus', [$tenant_id, $data->user_id]) .'"><i class="fa '.$icon.'"></i></a>';
+                $change_status_btn = "";
+                if($data->role != 3) {
+                    $change_status_btn = ' <a data-toggle="tooltip" title="Change Status" class="btn btn-action-box" href="'. route('tenant.user.changeStatus', [$tenant_id, $data->user_id]) .'"><i class="fa '.$icon.'"></i></a>';
+                }
+                return '<a data-toggle="tooltip" title="View User" class="btn btn-action-box" href ="'. route('tenant.user.show', [$tenant_id, $data->user_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit User" class="btn btn-action-box" href ="'. route('tenant.user.edit', [$tenant_id, $data->user_id]) .'"><i class="fa fa-edit"></i></a>' . $change_status_btn;
             })
             ->editColumn('status', '@if($status == 0)
                                 <span class="label label-warning">Pending</span>
@@ -127,8 +135,36 @@ class UserController extends BaseController
         $this->validate($request, $this->rules);
         // if validates
         $created = $this->user->add($request->all());
-        if ($created)
+        if ($created) {
             Flash::success('User has been created successfully.');
+
+            // sending mail to user
+            $agency = MasterCompany::where(['agencies_agent_id' => $tenant_id])->first();
+            $complete_profile_url = url($tenant_id . '/login?&auth_code=' . md5($created));
+            $client_message = <<<EOD
+<strong>Dear {$request['first_name']}, </srtong>
+<p>Your account has been created in Condat Solutions. Please <a href="$complete_profile_url">click here</a> or follow the link below to complete your account.</p>
+<a href="$complete_profile_url">$complete_profile_url</a>
+EOD;
+
+            $param = ['content' => $client_message,
+                'subject' => 'Account Created Successfully',
+                'heading' => $agency->name,
+                'subheading' => 'All your business in one space',
+            ];
+            $data = ['to_email' => $request['email'],
+                'to_name' => $request['first_name'],
+                'subject' => 'Account Created Successfully',
+                'from_email' => 'noreply@condat.com.au', //change this later
+                'from_name' => $agency->name, //change this later
+            ];
+
+            Mail::send('template.master', $param, function ($message) use ($data) {
+                $message->to($data['to_email'], $data['to_name'])
+                    ->subject($data['subject'])
+                    ->from($data['from_email'], $data['from_name']);
+            });
+        }
         return redirect()->route('tenant.user.index', $tenant_id);
     }
 
