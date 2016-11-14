@@ -2,17 +2,26 @@
 @section('title', 'Institute View')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url($tenant_id.'/institute')}}" title="All Institutes"><i class="fa fa-building"></i> Institutes</a></li>
+    <li><a href="{{url($tenant_id.'/institute')}}" title="All Institutes"><i class="fa fa-building"></i> Institutes</a>
+    </li>
     <li>View</li>
 @stop
 @section('content')
     @include('Tenant::Institute/navbar')
+    <div class="col-xs-12">
+        @include('flash::message')
+    </div>
 
     <div class="col-md-3 col-xs-12">
+
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">General Information</h3>
-                <div class="box-tools pull-right"><a data-toggle="tooltip" title="Edit Institute" class="btn btn-action-box" href ="{{ route( 'tenant.institute.edit', [$tenant_id, $institute->institution_id]) }}"><i class="fa fa-edit"></i></a> </div>
+
+                <div class="box-tools pull-right"><a data-toggle="tooltip" title="Edit Institute"
+                                                     class="btn btn-action-box"
+                                                     href="{{ route( 'tenant.institute.edit', [$tenant_id, $institute->institution_id]) }}"><i
+                                class="fa fa-edit"></i></a></div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -45,9 +54,9 @@
 
                 <p class="text-muted">{{format_datetime($institute->created_at)}}</p>
 
-                <strong><i class="fa fa-envelope-o margin-r-5"></i> Email</strong>
+                {{--<strong><i class="fa fa-envelope-o margin-r-5"></i> Email</strong>
 
-                <p class="text-muted">{{$institute->email}}</p>
+                <p class="text-muted">{{$institute->email}}</p>--}}
 
                 <strong><i class="fa fa-user margin-r-5"></i> Added By</strong>
 
@@ -63,27 +72,30 @@
             </div>
             <div class="box-body">
                 @if(count($super_agents) > 0)
-                <table class="table table-hover">
-                    <tbody>
-                    @foreach($super_agents as $key => $super_agent)
-                        <tr>
-                            <td>{{$super_agent->name}}</td>
-                            <td>{{$super_agent->commission_percent}}%</td>
-                            <td><a data-toggle="tooltip" title="Remove Super Agent" class="btn btn-action-box" href ="{{ route('tenant.superagent.remove', ['tenant_id' => $tenant_id, 'institute_id' => $institute->institution_id, 'agent_id' => $super_agent->agent_id]) }}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></a></td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                    <table class="table table-hover">
+                        <tbody>
+                        @foreach($super_agents as $key => $super_agent)
+                            <tr>
+                                <td>{{$super_agent->name}}</td>
+                                <td>{{$super_agent->commission_percent}}%</td>
+                                <td><a data-toggle="tooltip" title="Remove Super Agent" class="btn btn-action-box"
+                                       href="{{ route('tenant.superagent.remove', ['tenant_id' => $tenant_id, 'institute_id' => $institute->institution_id, 'agent_id' => $super_agent->agent_id]) }}"
+                                       onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></a></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 @else
                     <p class="text-muted well well-sm no-shadow">
                         No super agents found.
                     </p>
                 @endif
             </div>
-            <div class ="box-footer">
+            <div class="box-footer">
                 @if(count($agents) > 0)
-                <button class="btn btn-success pull-right" data-toggle="modal" data-target="#agentModal"><i class="glyphicon glyphicon-plus-sign"></i> Super Agent
-                </button>
+                    <button class="btn btn-success pull-right" data-toggle="modal" data-target="#agentModal"><i
+                                class="glyphicon glyphicon-plus-sign"></i> Super Agent
+                    </button>
                 @endif
             </div>
 

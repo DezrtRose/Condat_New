@@ -439,3 +439,6 @@ ALTER TABLE `settings` ADD PRIMARY KEY(`id`);
 ALTER TABLE `institute_phones` CHANGE `institute_phone_id` `institute_phone_id` INT(11) NOT NULL AUTO_INCREMENT;
 
 /* Done */
+
+/* 13th November Live Chnages*/
+ALTER TABLE `intakes` ADD `deleted_at` DATETIME NULL DEFAULT NULL ;

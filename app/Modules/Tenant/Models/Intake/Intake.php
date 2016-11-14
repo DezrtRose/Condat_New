@@ -2,9 +2,11 @@
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Intake extends Model
 {
+    use SoftDeletes;
 
     /**
      * The database table used by the model.
@@ -26,6 +28,13 @@ class Intake extends Model
      * @var array
      */
     protected $fillable = ['orientation_date', 'intake_date', 'term_id', 'description'];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /*
      * Add institute info
@@ -79,4 +88,30 @@ class Intake extends Model
         return $intake;
     }
 
+    /*
+     * Add institute info
+     * Output intake id
+     */
+    function edit(array $request, $intake_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $intake = Intake::find($intake_id);
+            $intake->intake_date = insert_dateformat($request['intake_date']);
+            $intake->description = $request['description'];
+            $intake->save();
+
+            $institute = InstituteIntake::where('intake_id', $intake_id)->first();
+            $institute_id = $institute->institute_id;
+
+            DB::commit();
+            return $institute_id;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            // something went wrong
+        }
+    }
 }

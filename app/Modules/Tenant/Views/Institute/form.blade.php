@@ -125,10 +125,14 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group @if($errors->has('email')) {{'has-error'}} @endif">
                         {!!Form::label('email', 'Email Address *', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
                             {!!Form::email('email', null, array('class' => 'form-control', 'id'=>'email'))!!}
+                            @if($errors->has('email'))
+                                {!! $errors->first('email', '<label class="control-label"
+                                                                       for="inputError">:message</label>') !!}
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,11 @@
 
         <div class="col-sm-8">
             <div class="input-group date" id="intake_date">
-                {!!Form::text('intake_date', null, array('class' => 'form-control'))!!}
+                @if(isset($intake->intake_date))
+                    {!!Form::text('intake_date', format_date($intake->intake_date), array('class' => 'form-control date-picker', 'id'=>'intake_date'))!!}
+                @else
+                    {!!Form::text('intake_date', null, array('class' => 'form-control date-picker', 'id'=>'intake_date'))!!}
+                @endif
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
@@ -15,13 +19,14 @@
         <label for="description" class="col-sm-3 control-label">Description: </label>
 
         <div class="col-sm-8">
-            <textarea name="description" class="form-control" id="description"></textarea>
+            {!!Form::textarea('description', null, array('class' => 'form-control'))!!}
         </div>
     </div>
 </div>
-{!! Condat::registerModal() !!}
 <script type="text/javascript">
     $("#intake_date").datepicker({
-        autoclose: true
+        autoclose: true,
+        format: 'dd/mm/yyyy'
     });
 </script>
+{!! Condat::registerModal() !!}

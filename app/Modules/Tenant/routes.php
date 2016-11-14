@@ -249,13 +249,13 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('institutes/{institute_id}/contacts', 'ContactController@getData');
     Route::get('contact/{id}', ['as' => 'tenant.contact.edit', 'uses' => 'ContactController@edit']);
     Route::post('contact/{id}', ['as' => 'tenant.contact.update', 'uses' => 'ContactController@update']);
-    Route::delete('contact/{id}', ['as' => 'tenant.contact.destroy', 'uses' => 'ContactController@destroy']);
+    Route::get('contact/{id}/delete', ['as' => 'tenant.contact.destroy', 'uses' => 'ContactController@destroy']);
 
     /* Routes for Institute Address */
     Route::get('institutes/{institute_id}/addresses', 'AddressController@getData');
     Route::get('address/{id}', ['as' => 'tenant.address.edit', 'uses' => 'AddressController@edit']);
     Route::post('address/{id}', ['as' => 'tenant.address.update', 'uses' => 'AddressController@update']);
-    Route::delete('address/{id}', ['as' => 'tenant.address.destroy', 'uses' => 'AddressController@destroy']);
+    Route::get('address/{id}/delete', ['as' => 'tenant.address.destroy', 'uses' => 'AddressController@destroy']);
 
     /* Routes for Super Agents */
     Route::post('superagents/{institute_id}/store', 'AgentController@storeSuperAgent');
@@ -291,7 +291,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::post('intakes/{id}/store', ['as' => 'tenant.intake.store', 'uses' => 'IntakeController@store']);
     Route::get('intakes/{id}/edit', ['as' => 'tenant.intake.edit', 'uses' => 'IntakeController@edit']);
     Route::put('intakes/{id}/update', ['as' => 'tenant.intake.update', 'uses' => 'IntakeController@update']);
-    Route::delete('intakes', ['as' => 'tenant.intake.destroy', 'uses' => 'IntakeController@destroy']);
+    Route::get('intakes/{institute_id}/{intake_id}', ['as' => 'tenant.intake.destroy', 'uses' => 'IntakeController@destroy']);
 
     /* Routes for User Module */
 

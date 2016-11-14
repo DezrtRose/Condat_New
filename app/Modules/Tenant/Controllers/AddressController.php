@@ -45,7 +45,7 @@ class AddressController extends BaseController
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.address.edit', [$tenant_id, $data->address_id]) . '">Edit</a></li>
-                        <li><a href="'.route('tenant.address.destroy', [$tenant_id, $data->address_id]) .'">Delete</a></li>
+                        <li><a href="'.route('tenant.address.destroy', [$tenant_id, $data->address_id]) .'" onclick="return confirm(\'Are You Sure? \')">Delete</a></li>
                     </ul>
                 </div>
                 </div>';
@@ -70,6 +70,13 @@ class AddressController extends BaseController
     {
         $data['address'] = $this->institute->editAddress($address_id, $this->request->all());
         \Flash::success('Address Updated Successfully!');
+        return redirect()->back();
+    }
+
+    function destroy($tenant_id, $address_id)
+    {
+        $data['address'] = $this->institute->deleteAddress($address_id);
+        \Flash::success('Address Deleted Successfully!');
         return redirect()->back();
     }
 }

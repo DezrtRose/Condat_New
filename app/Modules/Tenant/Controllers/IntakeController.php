@@ -128,16 +128,16 @@ class IntakeController extends BaseController
      * @param  int $institution_id
      * @return Response
      */
-    public function update($tenant_id, $institution_id)
+    public function update($tenant_id, $intake_id)
     {
         $user_id = $this->request->get('user_id');
 
         $this->validate($this->request, $this->rules);
         // if validates
-        $updated = $this->course->edit($this->request->all(), $institution_id);
-        if ($updated)
+        $institute_id = $this->intake->edit($this->request->all(), $intake_id);
+        if ($institute_id)
             Flash::success('Intake has been updated successfully.');
-        return redirect()->route('tenant.course.index', $tenant_id);
+        return redirect()->route('tenant.intake.index', [$tenant_id, $institute_id]);
     }
 
     /**
@@ -146,8 +146,11 @@ class IntakeController extends BaseController
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($tenant_id, $institute_id, $intake_id)
     {
-        //
+        Intake::find($intake_id)->delete();
+        Flash::success('Intake has been deleted successfully.');
+
+        return redirect()->route('tenant.intake.index', [$tenant_id, $institute_id]);
     }
 }

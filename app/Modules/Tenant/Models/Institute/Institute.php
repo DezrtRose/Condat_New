@@ -347,4 +347,57 @@ class Institute extends Model
             return false;
         }
     }
+
+    function deleteAddress($address_id)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $address = Address::find($address_id);
+            $int_add = InstituteAddress::where('address_id', $address_id)->first();
+            $int_ph = InstitutePhone::where('address_id', $address_id)->first();
+            $phone = Phone::find($int_ph->phone_id);
+
+            $int_add->delete();
+            $address->delete();
+            $int_ph->delete();
+            $phone->delete();
+
+            DB::commit();
+            return true;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            return false;
+        }
+    }
+
+    function deleteContact($contact_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $contact = CompanyContact::find($contact_id);
+            $person = Person::find($contact->person_id);
+            $person_email = PersonEmail::where('person_id', $contact->person_id)->first();
+            $email = Email::find($person_email->email_id);
+            $person_phone = PersonPhone::where('person_id', $person->person_id)->first();
+            $phone = Phone::find($person_phone->phone_id);
+
+            $phone->delete();
+            $person_phone->delete();
+            $email->delete();
+            $person_email->delete();
+            $person->delete();
+            $contact->delete();
+
+            DB::commit();
+            return true;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            return false;
+        }
+    }
 }

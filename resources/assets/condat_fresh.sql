@@ -1132,6 +1132,8 @@ CREATE TABLE IF NOT EXISTS `intakes` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+ALTER TABLE `intakes` ADD `deleted_at` DATETIME NULL DEFAULT NULL ;
+
 -- --------------------------------------------------------
 
 --

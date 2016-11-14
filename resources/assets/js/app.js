@@ -769,7 +769,7 @@ $(function () {
             });
         }
 
-        $(".date-picker").datepicker({'format': 'yyyy-mm-dd'});
+        $(".date-picker").datepicker({'format': 'dd/mm/yyyy'});
         //$('#datetimepicker1').datetimepicker();
 
     });

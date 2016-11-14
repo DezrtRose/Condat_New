@@ -66,4 +66,9 @@ $(document).ajaxComplete(function () {
         increaseArea: '20%' // optional
     });
     $('[data-tooltip="tooltip"]').tooltip();
+    $(".date-picker").datepicker({'format': 'dd/mm/yyyy'});
+});
+
+$('body').on('focus',".date-picker", function(){
+    $(this).datepicker();
 });

@@ -107,12 +107,13 @@ class InstituteController extends BaseController
         $intakes = Institute::join('institute_intakes', 'institute_intakes.institute_id', '=', 'institutes.institution_id')
             ->join('intakes', 'intakes.intake_id', '=', 'institute_intakes.intake_id')
             ->where('institute_intakes.institute_id', $institute_id)
+            ->whereNull('intakes.deleted_at')
             ->select(['intakes.*'])
             ->orderBy('intake_id', 'desc');
 
         $datatable = \Datatables::of($intakes)
-            ->addColumn('action', function ($data) use ($tenant_id) {
-                return '<a data-toggle="tooltip" title="View Intake" class="btn btn-action-box" href ="'. route( 'tenant.intake.show', [$tenant_id, $data->intake_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="modal" title="Edit Intake" class="btn btn-action-box" data-tooltip="tooltip" data-target="#condat-modal" data-url="'.route( 'tenant.intake.edit', [$tenant_id, $data->intake_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Intake" class="delete-user btn btn-action-box" href="'. route( 'tenant.intake.destroy', [$tenant_id, $data->intake_id]) .'"><i class="fa fa-trash"></i></a>';
+            ->addColumn('action', function ($data) use ($tenant_id, $institute_id) {
+                return '<a data-toggle="tooltip" title="View Intake" class="btn btn-action-box" href ="'. route( 'tenant.intake.show', [$tenant_id, $data->intake_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="modal" title="Edit Intake" class="btn btn-action-box" data-tooltip="tooltip" data-target="#condat-modal" data-url="'.route( 'tenant.intake.edit', [$tenant_id, $data->intake_id]) .'"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Intake" class="delete-user btn btn-action-box" href="'. route('tenant.intake.destroy', [$tenant_id, $institute_id, $data->intake_id]) .'" onclick="return confirm(\'Are you sure?\')"><i class="fa fa-trash"></i></a>';
             })
             ->editColumn('intake_id', function ($data) {
                 return format_id($data->intake_id, 'Int');
@@ -141,10 +142,14 @@ class InstituteController extends BaseController
     public function store($tenant_id)
     {
         /* Additional validations for creating institution */
-        //$this->rules['name'] = 'required|min:2|max:255|unique:companies';
+        $this->rules['email'] = 'required|min:2|max:255|unique:institute_addresses';
+
+        $messages = [
+            'email.unique' => 'Institute with the same email address already exists.',
+        ];
 
         if($this->request->ajax()) {
-            $validator = \Validator::make($this->request->all(), $this->rules);
+            $validator = \Validator::make($this->request->all(), $this->rules, $messages);
             if ($validator->fails())
                 return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
             // if validates
@@ -202,7 +207,11 @@ class InstituteController extends BaseController
     public function update($tenant_id, $institution_id)
     {
         /* Additional validation rules checking for uniqueness */
-        //$this->rules['email'] = 'required|email|min:5|max:55|unique:users,email,' . $user_id . ',user_id';
+        /*$this->rules['email'] = 'required|min:2|max:255|unique:institute_addresses,email,' . $institution_id . ',institution_id';
+
+        $messages = [
+            'email.unique' => 'Institute with the same email address already exists.',
+        ];*/
 
         $this->validate($this->request, $this->rules);
         // if validates
@@ -304,7 +313,5 @@ class InstituteController extends BaseController
             return redirect()->route('tenant.institute.show', [$tenant_id, $institution_id]);
         }
     }
-
-
 
 }

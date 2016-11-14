@@ -29,10 +29,11 @@ class ContactController extends BaseController
     {
         $institutes = Institute::join('company_contacts', 'institutes.company_id', '=', 'company_contacts.company_id')
             ->leftJoin('persons', 'persons.person_id', '=', 'company_contacts.person_id')
-            ->leftJoin('users', 'users.person_id', '=', 'persons.person_id')
             ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
-            ->select(['company_contacts.company_contact_id', 'company_contacts.position', 'phones.number', 'users.email', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS name')])
+            ->leftJoin('person_emails', 'person_emails.person_id', '=', 'persons.person_id')
+            ->leftJoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
+            ->select(['company_contacts.company_contact_id', 'company_contacts.position', 'phones.number', 'emails.email', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS name')])
             ->where('institutes.institution_id', $institute_id);
 
         $datatable = \Datatables::of($institutes)
@@ -45,7 +46,7 @@ class ContactController extends BaseController
                   </button>
                   <ul class="dropdown-menu" role="menu">
                   <li><a data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.contact.edit', [$tenant_id, $data->company_contact_id]) . '">Edit</a></li>
-                    <li><a href="'.route( 'tenant.contact.destroy', [$tenant_id, $data->company_contact_id]) .'">Delete</a></li>
+                    <li><a href="'.route( 'tenant.contact.destroy', [$tenant_id, $data->company_contact_id]) .'" onclick="return confirm(\'Are You Sure? \')">Delete</a></li>
                   </ul>
                 </div>';
             });
@@ -69,6 +70,13 @@ class ContactController extends BaseController
     {
         $data['contact'] = $this->institute->editContact($contact_id, $this->request->all());
         \Flash::success('Contact Updated Successfully!');
+        return redirect()->back();
+    }
+
+    function destroy($tenant_id, $contact_id)
+    {
+        $this->institute->deleteContact($contact_id);
+        \Flash::success('Address Deleted Successfully!');
         return redirect()->back();
     }
 }
