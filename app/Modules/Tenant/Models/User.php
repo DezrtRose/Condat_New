@@ -130,8 +130,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $user = User::create([
                 'role' => $request['role'], // 0 : client, 1 : admin, 2 : super-admin
                 'status' => 0, // Pending
-                'person_id' => $person->person_id, // pending
+                'person_id' => $person->person_id,
+                'email' => $request['email']
             ]);
+            $user->auth_code = md5($user->user_id);
+            $user->save();
 
             $email = Email::create([
                 'email' => $request['email']
@@ -376,8 +379,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->leftJoin('addresses', 'addresses.address_id', '=', 'person_addresses.address_id')
             ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
-            ->leftJoin('person_emails', 'person_emails.person_id', '=', 'persons.person_id')
-            ->leftJoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->where('users.user_id', $user_id)//and user for email?
             ->first();
         return $user;

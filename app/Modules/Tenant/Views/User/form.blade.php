@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        @if($current_user->role == 1)
+        @if(!isset($user) || (isset($user->role) && $user->role != 3))
             <div class="form-group">
                 {!!Form::label('role', 'User Role', array('class' => 'col-sm-4 control-label')) !!}
                 <div class="col-sm-8">
@@ -75,7 +75,11 @@
         <div class="form-group @if($errors->has('email')) {{'has-error'}} @endif">
             {!!Form::label('email', 'Email Address *', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
-                {!!Form::text('email', null, array('class' => 'form-control', 'id'=>'email'))!!}
+                @if(Request::segment(4) == 'edit')
+                    {!!Form::text('email', null, array('class' => 'form-control', 'id'=>'email', 'readonly'))!!}
+                @else
+                    {!!Form::text('email', null, array('class' => 'form-control', 'id'=>'email'))!!}
+                @endif
                 @if($errors->has('email'))
                     {!! $errors->first('email', '<label class="control-label"
                                                         for="inputError">:message</label>') !!}
@@ -100,8 +104,8 @@
         </div>
     </div>
     <div class="col-md-6">
-        {{--Adresses--}}
-        <!-- /.box-header -->
+    {{--Adresses--}}
+    <!-- /.box-header -->
         <div class="form-group @if($errors->has('street')) {{'has-error'}} @endif">
             {!!Form::label('street', 'Street', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
