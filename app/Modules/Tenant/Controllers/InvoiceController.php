@@ -191,8 +191,13 @@ class InvoiceController extends BaseController
 
     function studentPayments($invoice_id)
     {
-        $payments = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
+        /*$payments = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
             ->join('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+            ->where('payment_invoice_breakdowns.invoice_id', $invoice_id)
+            ->select(['student_application_payments.student_payments_id', 'client_payments.*', 'client_payments.client_payment_id as payment_id'])
+            ->get();*/
+        $payments = PaymentInvoiceBreakdown::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+            ->leftJoin('student_application_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
             ->where('payment_invoice_breakdowns.invoice_id', $invoice_id)
             ->select(['student_application_payments.student_payments_id', 'client_payments.*', 'client_payments.client_payment_id as payment_id'])
             ->get();

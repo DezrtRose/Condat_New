@@ -65,15 +65,17 @@ class StudentApplicationPayment extends Model
         DB::beginTransaction();
 
         try {
-            $payment = $this->createPayment($request);
+            $stud_invoice = StudentInvoice::where('invoice_id', $invoice_id)->select('application_id', 'client_id')->first();
+            $application_id = $stud_invoice->application_id;
+            $client_id = $stud_invoice->client_id;
+
+            $payment = $this->createPayment($request, $client_id);
 
             /* assign payment to invoice */
             PaymentInvoiceBreakdown::create([
                 'invoice_id' => $invoice_id,
                 'payment_id' => $payment->client_payment_id
             ]);
-
-            $application_id = StudentInvoice::where('invoice_id', $invoice_id)->first()->application_id;
 
             $student_payment = StudentApplicationPayment::create([
                 'course_application_id' => $application_id,

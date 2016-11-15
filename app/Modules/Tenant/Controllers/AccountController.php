@@ -138,9 +138,9 @@ class AccountController extends BaseController
      */
     function getPaymentsData($tenant_id, $client_id)
     {
-        $payments = ClientPayment::where('client_id', $client_id)
-            ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+        $payments = ClientPayment::leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
             ->whereIn('payment_type', config('constants.payment_by'))
+            ->where('client_payments.client_id', $client_id)
             ->select(['client_payments.*', 'payment_invoice_breakdowns.invoice_id']);
 
         $datatable = \Datatables::of($payments)

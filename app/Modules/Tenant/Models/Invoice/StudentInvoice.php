@@ -217,10 +217,14 @@ class StudentInvoice extends Model
 
     function getPaidAmount($invoice_id)
     {
-        $paid = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
-            ->join('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+        $paid = PaymentInvoiceBreakdown::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+            ->leftJoin('student_application_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
             ->where('invoice_id', $invoice_id)
             ->sum('client_payments.amount');
+        /*StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
+            ->join('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+            ->where('invoice_id', $invoice_id)
+            ->sum('client_payments.amount');*/
         return $paid;
     }
 

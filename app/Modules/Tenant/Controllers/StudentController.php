@@ -146,7 +146,7 @@ class StudentController extends BaseController
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . url($tenant_id. "/students/payment/receipt/" . $data->student_payments_id) . '">Print Receipt</a></li>
                     <li><a href="' . route("application.students.editPayment", [$tenant_id, $data->student_payments_id]) . '">Edit</a></li>
-                    <li><a href="' . route("application.students.deletePayment", [$tenant_id, $data->student_payments_id]) . '">Delete</a></li>
+                    <li><a href="' . route("application.students.deletePayment", [$tenant_id, $data->student_payments_id]) . '" onclick="return (\'Are you sure?\')">Delete</a></li>
                   </ul>
                 </div>';
             })
