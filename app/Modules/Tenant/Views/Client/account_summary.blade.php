@@ -84,6 +84,7 @@
             </div>
         </div>
     </div>
+    @include('Tenant::Client/Invoice/deletebox')
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -157,6 +158,26 @@
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 order: [[0, 'desc']]
+            });
+
+            $(document).on("click", ".delete-invoice", function () {
+                var invoiceId = $(this).attr('id');
+                $(".modal-footer .btn-action").attr('id', invoiceId);
+                // As pointed out in comments,
+                // it is superfluous to have to manually call the modal.
+                // $('#addBookDialog').modal('show');
+            });
+
+            $('.delete-invoice').click(function(e){
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    async: true,
+                    data: { logDownload: true, file: $(this).attr("name") }
+                });
+                return false;
             });
         });
     </script>

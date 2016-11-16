@@ -223,7 +223,7 @@ class AccountController extends BaseController
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
                     <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '">View Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
+                    <li><a type="button" data-toggle="modal" data-target="#deleteInvoice" id="'.$data->student_invoice_id.'" class="delete-invoice">Delete</a></li>
                   </ul>
                 </div>';
             })
