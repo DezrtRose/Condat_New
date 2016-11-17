@@ -64,11 +64,13 @@
             <a href="{{url('forgot-password')}}">
                 <small>I forgot my password</small>
             </a><br>
-            <a href="{{url('register/agency')}}" class="text-center">Register a new membership</a>
+            @if(Request::segment(1) == 'login')
+                <a href="{{url('register/agency')}}" class="text-center">Register a new membership</a>
+            @endif
         </div>
         <div class="login-box-footer">
             <p class="text-center">
-                <small>&copy; copyright 2015 | Webunisoft</small>
+                <small>&copy; copyright {{date('Y')}} | Condat</small>
             </p>
         </div>
     </div>

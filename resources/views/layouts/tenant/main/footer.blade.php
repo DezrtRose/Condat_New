@@ -1,5 +1,5 @@
 <footer class="main-footer">
-    <strong>Copyright © <a href="{{ url('/') }}">Webunisoft</a>.</strong> All rights
+    <strong>Copyright © <a href="{{ url('/') }}">Condat</a>.</strong> All rights
     reserved.
 </footer>
 
