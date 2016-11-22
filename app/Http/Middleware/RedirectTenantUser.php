@@ -2,6 +2,7 @@
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 
 class RedirectTenantUser {
 
@@ -13,6 +14,7 @@ class RedirectTenantUser {
      * @var Guard
      */
     protected $auth;
+    protected $request;
 
     /**
      * Create a new filter instance.
@@ -20,10 +22,10 @@ class RedirectTenantUser {
      * @param  Guard  $auth
      * @return void
      */
-    public function __construct(Guard $auth)
+    public function __construct(Request $request, Guard $auth)
     {
         $this->auth = $auth;
-
+        $this->request = $request;
     }
 
 
@@ -47,7 +49,9 @@ class RedirectTenantUser {
             }
             else
             {
-                return tenant()->route('tenant.login');
+                $tenant_id = $this->request->segment(1);
+                return redirect()->route('tenant.login', $tenant_id);
+                //return tenant()->route('tenant.login', [$tenant_id]);
             }
         }
 

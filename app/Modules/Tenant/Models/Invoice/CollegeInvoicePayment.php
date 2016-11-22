@@ -42,7 +42,7 @@ class CollegeInvoicePayment extends Model
                 'amount' => $request['amount'],
                 'date_paid' => insert_dateformat($request['date_paid']),
                 'payment_method' => $request['payment_method'],
-                'payment_type' => 'College to Agent',
+                'payment_type' => $request['payment_type'],
                 'description' => $request['description']
             ]);
 

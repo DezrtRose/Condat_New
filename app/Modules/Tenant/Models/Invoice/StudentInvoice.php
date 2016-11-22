@@ -118,7 +118,7 @@ class StudentInvoice extends Model
         //->lists('invoice_details', 'invoices.invoice_id');
         $invoice_list = array();
         foreach ($invoices as $key => $invoice) {
-            $formatted_id = format_id($invoice->invoice_id, 'SI');
+            $formatted_id = format_id($invoice->invoice_id, 'I');
             $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->amount;
         }
         return $invoice_list;

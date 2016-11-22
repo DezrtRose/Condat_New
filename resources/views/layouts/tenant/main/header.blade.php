@@ -31,7 +31,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">You have <span class="reminder-count">{{ count($reminders) }}</span>
-                            reminders.
+                            reminder(s).
                         </li>
                         <li>
                             <!-- inner menu: contains the actual data -->

@@ -800,29 +800,6 @@ $(function () {
 
     });
 
-    $('.com-reminder').on('ifClicked', function (event) {
-
-        if (!confirm('Are you sure you want to mark the reminder as complete?')) {
-            setTimeout(function () {
-                $(".com-reminder").iCheck('uncheck');
-            }, 0.5);
-            return false;
-        }
-        var id = $(this).attr('id');
-        var parentLi = $(this).closest('li');
-        $.ajax({
-            url: appUrl + '/tenant/reminder/' + id,
-            type: 'get',
-            success: function (response) {
-                if (response.status == 1) {
-                    parentLi.slideUp('slow');
-                    var count = parseInt($('.reminder-count').first().text());
-                    $('.reminder-count').html(count - 1);
-                }
-            }
-        });
-    });
-
     'use strict';
 
     $('.slimscroll').slimscroll({

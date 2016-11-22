@@ -1,24 +1,8 @@
 $(function () {
-    $('.complete-note').on('click', function(e) {
-        e.preventDefault();
-        if (!confirm('Are you sure you want to mark the reminder as complete?')) {
-            return false;
-        }
-        var id = $(this).attr('id');
-        $.ajax({
-            url: appUrl + '/reminder/' + id,
-            type: 'get',
-            success: function (response) {
-                if (response.status == 1) {
-                    location.reload();
-                }
-            }
-        });
-    });
 
     $('.com-reminder').on('ifChecked', function (event) {
-
-        if (!confirm('Are you sure you want to mark the reminder as complete?')) {
+        var confirmed = confirm('Are you sure you want to mark the reminder as complete?');
+        if (!confirmed) {
             setTimeout(function () {
                 $(".com-reminder").iCheck('uncheck');
             }, 0.5);

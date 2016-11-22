@@ -38,7 +38,7 @@
                                     <dt>To : </dt>
                                     <dd>{{ format_date($application->end_date) }}</dd>
                                     <dt>Student ID : </dt>
-                                    <dd>{{ format_id($application->student_id, 'Std') }}</dd>
+                                    <dd>{{ $application->student_id }}</dd>
                                 </dl>
                             </div>
                         </div>

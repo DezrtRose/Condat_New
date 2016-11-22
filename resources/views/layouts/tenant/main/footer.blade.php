@@ -35,22 +35,6 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
 <script src="{{ asset('assets/js/tenant.js') }}"></script>
-<script>
-    var fn = function () {
-        $.ajax({
-            url: appUrl + '/subscription/check',
-            type: 'get',
-            success: function (resp) {
-                if (resp == 0 || resp == 2) {
-                    $('#renew-subscription').show();
-                } else if (resp == 1) {
-                    $('#renew-subscription').hide();
-                }
-            }
-        });
-    };
-    fn();
-</script>
 {{-- Load additional JS --}}
 <?php Condat::loadJS();?>
 
