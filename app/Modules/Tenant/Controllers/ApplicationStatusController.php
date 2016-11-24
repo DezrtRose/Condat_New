@@ -7,6 +7,7 @@ use App\Modules\Tenant\Models\Application\ApplicationStatusDocument;
 use App\Modules\Tenant\Models\Application\Status;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Institute\Institute;
+use App\Modules\Tenant\Models\Institute\InstituteDocument;
 use App\Modules\Tenant\Models\Intake\Intake;
 use App\Modules\Tenant\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ use Flash;
 
 class ApplicationStatusController extends BaseController
 {
-    function __construct(CourseApplication $application, Request $request, Notes $note, ApplicationStatus $application_status, ApplicationStatusDocument $document, Intake $intake, Client $client, Institute $institute, User $user, Agent $agent)
+    function __construct(CourseApplication $application, Request $request, Notes $note, ApplicationStatus $application_status, ApplicationStatusDocument $document, Intake $intake, Client $client, Institute $institute, User $user, Agent $agent, InstituteDocument $instituteDocument)
     {
         $this->application = $application;
         $this->application_status = $application_status;
@@ -30,6 +31,7 @@ class ApplicationStatusController extends BaseController
         $this->institute = $institute;
         $this->user = $user;
         $this->agent = $agent;
+        $this->instituteDocument = $instituteDocument;
         parent::__construct();
     }
 
@@ -43,6 +45,7 @@ class ApplicationStatusController extends BaseController
     public function apply_offer($tenant_id, $course_application_id)
     {
         $data['application'] = $this->application->getDetails($course_application_id);
+        $data['documents'] = $this->instituteDocument->getInstituteDocuments($data['application']->institute_id);
         $data['client_name'] = $this->application->getClientName($course_application_id);
         $data['intakes'] = $this->intake->getIntakes($data['application']->institute_id);
 

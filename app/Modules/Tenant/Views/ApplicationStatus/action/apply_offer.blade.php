@@ -3,7 +3,8 @@
 @section('heading', '<h1>' . $client_name . '- <small>Apply Offer</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a>
+    </li>
     <li>Notes</li>
 @stop
 
@@ -47,7 +48,8 @@
 
                             <div class="col-sm-9">
                                 {!!Form::select('intake_id', $intakes, null, array('class' => 'form-control intake', 'id' => 'intake'))!!}
-                                <a class="btn btn-success btn-xs marginTop" data-toggle="modal" data-target="#condat-modal"
+                                <a class="btn btn-success btn-xs marginTop" data-toggle="modal"
+                                   data-target="#condat-modal"
                                    data-url="{{ url($tenant_id.'/application/intake/add')}}"><i
                                             class="glyphicon glyphicon-plus-sign"></i> Add Intake</a>
                             </div>
@@ -63,62 +65,73 @@
                     <div class="col-md-4">
                         <h3>Institutes Documents</h3>
                         <br>
-
-                        <p><a href="">Undergraduate Application Form</a></p>
-
-                        <p><a href="">Postgraduate Application Form</a></p>
+                        @if(count($documents) != 0)
+                            @foreach($documents as $key => $inst_document)
+                                <p><span class="text-xl">{{ $inst_document->document->type }}   </span>
+                                    <a href="{{$inst_document->document->shelf_location}}" title="view"><i
+                                                class="processing btn btn-primary btn-sm fa fa-eye"
+                                                data-toggle="tooltip" data-placement="top" title="View Document"></i></a>
+                                    <a href="{{route('tenant.client.document.download', [$tenant_id, $inst_document->document_id])}}" title="view"><i
+                                                class="processing btn btn-primary btn-sm fa fa-download"
+                                                data-toggle="tooltip" data-placement="top" title="Download Document"></i></a>
+                            @endforeach
+                        @else
+                            <p class="text-muted well">
+                                No documents uploaded yet.
+                            </p>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-{!! Condat::registerModal() !!}
+    {!! Condat::registerModal() !!}
 
-<script type="text/javascript">
-    $(document).on("submit", "#add-intake", function (event) {
-        var formData = $(this).serialize();
-        var institute_id = '<?php echo $application->institute_id ?>';
-        var url = appUrl + '/intakes/' + institute_id + '/store';
+    <script type="text/javascript">
+        $(document).on("submit", "#add-intake", function (event) {
+            var formData = $(this).serialize();
+            var institute_id = '<?php echo $application->institute_id ?>';
+            var url = appUrl + '/intakes/' + institute_id + '/store';
 
-        // process the form
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            dataType: 'json',
-            encode: true
-        })
-                .done(function (result) {
-                    if (result.status == 1) {
-                        var select = $('#intake');
-                        select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.name));
-                        select.val(result.data.intake_id);
+            // process the form
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                dataType: 'json',
+                encode: true
+            })
+                    .done(function (result) {
+                        if (result.status == 1) {
+                            var select = $('#intake');
+                            select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.name));
+                            select.val(result.data.intake_id);
 
-                        if ($(".intake option[value='']").length != 0)
-                            $(".intake option[value='']").remove();
+                            if ($(".intake option[value='']").length != 0)
+                                $(".intake option[value='']").remove();
 
-                        $('#condat-modal').modal('hide');
-                        $('.container .box-primary').before(notify('success', 'Intake Added Successfully!'));
-                    }
-                    else {
-                        $.each(result.data.errors, function (i, v) {
-                            //$('#add-institute').find('input[name=' + i + ']').after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
-                            /* Applicable for other elements like calender, phone */
-                            $('#add-intake').find('#' + i).after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
-                        });
-                    }
-                    setTimeout(function () {
-                        $('.callout').remove()
-                    }, 2500);
-                });
-        event.preventDefault();
-    });
+                            $('#condat-modal').modal('hide');
+                            $('.container .box-primary').before(notify('success', 'Intake Added Successfully!'));
+                        }
+                        else {
+                            $.each(result.data.errors, function (i, v) {
+                                //$('#add-institute').find('input[name=' + i + ']').after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
+                                /* Applicable for other elements like calender, phone */
+                                $('#add-intake').find('#' + i).after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
+                            });
+                        }
+                        setTimeout(function () {
+                            $('.callout').remove()
+                        }, 2500);
+                    });
+            event.preventDefault();
+        });
 
-    function notify(type, text) {
-        return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
-    }
-</script>
+        function notify(type, text) {
+            return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
+        }
+    </script>
 
 @stop
         

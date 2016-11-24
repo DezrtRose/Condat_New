@@ -536,3 +536,7 @@ nav.nav-bar ul {
 .client-header-body ul {
     left: -70px;
 }
+
+.text-xl {
+    font-size: 22px;
+}

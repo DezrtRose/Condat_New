@@ -98,16 +98,10 @@
                                 </tbody>
                             </table>
                         </div>
-                    @endif
-
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    @else
+                        <p class="text-muted well">
+                            No documents uploaded yet.
+                        </p>
                     @endif
                 </div>
             </div>

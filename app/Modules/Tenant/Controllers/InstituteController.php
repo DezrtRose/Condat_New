@@ -261,7 +261,7 @@ class InstituteController extends BaseController
         if ($file_info = tenant()->folder($folder, true)->upload($file)) {
             $this->document->uploadDocument($institution_id, $file_info, $this->request->all());
             \Flash::success('File uploaded successfully!');
-            return redirect()->route('tenant.institute.document', $institution_id);
+            return redirect()->route('tenant.institute.document', [$tenant_id, $institution_id]);
         }
 
         \Flash::danger('Uploaded file is not valid!');
