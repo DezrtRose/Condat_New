@@ -157,16 +157,18 @@ class Course extends Model
             ->orderBy('course_id', 'desc');
 
         if($search_params) {
-            if($search_params['institute']) {
-                $courses = $courses->where('institutes.short_name', 'LIKE',  '%'.$search_params['institute'].'%');
+            if(!empty($search_params['institute'])) {
+                foreach($search_params['institute'] as $institute_id)
+                    $courses = $courses->orWhere('institute_courses.institute_id', $institute_id);
             }
 
             if($search_params['course_name']) {
                 $courses = $courses->where('courses.name', 'LIKE',  '%'.$search_params['course_name'].'%');
             }
 
-            if($search_params['level']) {
-                $courses = $courses->where('course_levels.name', 'LIKE', '%'.$search_params['level'].'%');
+            if(!empty($search_params['level'])) {
+                foreach($search_params['level'] as $level)
+                    $courses = $courses->orWhere('courses.level_id', $level);
             }
 
             if($search_params['from'] != '' && $search_params['to'] != '')

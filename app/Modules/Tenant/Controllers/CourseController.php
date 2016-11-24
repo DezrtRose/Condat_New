@@ -194,6 +194,8 @@ class CourseController extends BaseController
     public function search($tenant_id)
     {
         $data['search_attributes'] = array();
+        $data['institutes'] = $this->institute->get()->lists('short_name', 'institution_id');
+        $data['levels'] = CourseLevel::lists('name', 'level_id');
         $data['courses'] = $this->course->getFilterResults();
         if ($this->request->isMethod('post')) {
             $data['courses'] = $this->course->getFilterResults($this->request->all());
