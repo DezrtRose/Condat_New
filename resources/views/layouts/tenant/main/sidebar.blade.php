@@ -28,8 +28,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{url($tenant_id.'/applications/enquiry')}}"><i class="fa fa-circle-o"></i> Enrollment List</a></li>
-                    <li><a href="{{url('payment/create')}}"><i class="fa fa-circle-o"></i> Filter Enrollment</a></li>
-                    <li><a href="{{url('payment/search')}}"><i class="fa fa-circle-o"></i> Enrollment Statistics</a></li>
+                    <li><a href="{{route('applications.search.index', $tenant_id)}}"><i class="fa fa-circle-o"></i> Filter Enrollment</a></li>
                 </ul>
             </li>
             <li class="treeview">

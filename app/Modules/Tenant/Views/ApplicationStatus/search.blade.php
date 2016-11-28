@@ -1,6 +1,6 @@
 @extends('layouts.tenant')
 @section('title', 'Application Advanced Search')
-@section('heading', '<h1>Application - <small>Advanced Search</small></h1>')
+@section('heading', '<h1>Application - <small>Filter Enrollment</small></h1>')
 @section('breadcrumb')
     @parent
     <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a></li>
@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="col-md-12">
-        @include('Tenant::ApplicationStatus/partial/navbar')
+        {{--@include('Tenant::ApplicationStatus/partial/navbar')--}}
         @include('flash::message')
     </div>
 
