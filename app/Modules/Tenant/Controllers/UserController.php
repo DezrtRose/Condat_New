@@ -238,7 +238,14 @@ EOD;
 
     public function profile()
     {
+        $user_id = current_user_id();
+        $data['user'] = $this->user->getDetails($user_id);
+        $data['user_levels'] = UserLevel::where('name', '!=', 'Admin')->lists('name', 'user_level_id');
 
+        if ($data['user'] != null)
+            return view('Tenant::User/edit', $data);
+        else
+            return show_404();
     }
 
     public function completeReminder($tenant_id, $note_id)

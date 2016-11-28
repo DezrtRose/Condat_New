@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
+use App\Models\Tenant\Setting;
 
 class BaseController extends Controller{
 
@@ -25,6 +26,8 @@ class BaseController extends Controller{
 		View::share('reminders', $this->getReminders());
 		// share list of countries in all views
 		View::share('countries', $this->get_country_list());
+		// share company details in all views
+		View::share('company', $this->getCompanyDetails());
 		// get tenant_id
 		View::share('tenant_id', \Illuminate\Support\Facades\Request::segment(1));
 	}
@@ -107,6 +110,13 @@ class BaseController extends Controller{
 
 		return $reminders;
 
+	}
+
+	function getCompanyDetails()
+	{
+		$setting = new Setting();
+		$company = $setting->getCompany();
+		return $company;
 	}
 
 }

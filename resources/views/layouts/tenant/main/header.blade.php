@@ -73,6 +73,9 @@
                             <p>
                                 {{ $current_user->full_name }}
                                 <small>Member since {{shorten_date($current_user->created_at)}}</small>
+                                <small>User ID {{format_id($current_user->user_id, 'U')}}</small>
+                                <small>{{($current_user->role == 3)? 'Admin' : 'Staff'}}</small> {{--fix this later--}}
+                                <small>{{ $company['company_name'] }}</small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
