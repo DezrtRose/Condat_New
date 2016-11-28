@@ -111,7 +111,7 @@
                 <ul class="treeview-menu">
                     <li><a href="{{url($tenant_id.'/settings/company')}}"><i class="fa fa-circle-o"></i> Company Profile</a></li>
                     {{--<li><a href="{{url('settings/subscription')}}"><i class="fa fa-circle-o"></i> Agent Setup</a></li>--}}
-                    <li><a href="{{url('settings/subscription')}}"><i class="fa fa-circle-o"></i> Email Setup</a></li>
+                    <li><a href="{{url($tenant_id.'/settings/send_email')}}"><i class="fa fa-circle-o"></i> Send Email</a></li>
                     <li><a href="{{url($tenant_id.'/settings/bank')}}"><i class="fa fa-circle-o"></i> Bank Details</a></li>
                     <li id="renew-subscription"><a href="{{url($tenant_id.'/subscription/renew')}}"><i class="fa fa-circle-o"></i> Renew Subscription</a></li>
                 </ul>
