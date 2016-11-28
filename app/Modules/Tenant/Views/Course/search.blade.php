@@ -21,7 +21,7 @@
             <div class="box-body">
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('institute', 'Institute', array('class' => 'control-label')) !!}
-                    {!!Form::text('institute', null, array('class' => 'form-control', 'id'=>'institute', 'placeholder' => "Institute Name"))!!}
+                    {!!Form::select('institute[]', $institutes, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('course_name', 'Course', array('class' => 'control-label')) !!}
@@ -29,16 +29,16 @@
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('level', 'Level', array('class' => 'control-label')) !!}
-                    {!!Form::text('level', null, array('class' => 'form-control', 'id'=>'level', 'placeholder' => "Level"))!!}
+                    {!!Form::select('level[]', $levels, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
                 </div>
-                <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('amount', 'Amount', array('class' => 'control-label')) !!}
+                <div class="form-group col-md-6 col-xs-12">
+                    {!!Form::label('amount', 'Tuition Fee', array('class' => 'control-label')) !!}
                     <div class="row">
-                        <div class="col-xs-6"> {!!Form::number('from', null, array('class' => 'form-control', 'placeholder' => 'From', 'id'=>'from'))!!}</div>
-                        <div class="col-xs-6"> {!!Form::number('to', null, array('class' => 'form-control', 'placeholder' => 'To', 'id'=>'to'))!!}</div>
+                        <div class="col-xs-6"> {!!Form::number('from', null, array('class' => 'form-control', 'placeholder' => 'Tuition Fee From', 'id'=>'from'))!!}</div>
+                        <div class="col-xs-6"> {!!Form::number('to', null, array('class' => 'form-control', 'placeholder' => 'Tuition Fee To', 'id'=>'to'))!!}</div>
                     </div>
                 </div>
-                <div class="form-group col-md-4 col-xs-12">
+                <div class="form-group col-md-6 col-xs-12">
                     {!!Form::label('commission', 'Commission', array('class' => 'control-label')) !!}
                     <div class="row">
                         <div class="col-xs-6"> {!!Form::number('commission_from', null, array('class' => 'form-control', 'placeholder' => 'Commission From', 'id'=>'commission_from'))!!}</div>
