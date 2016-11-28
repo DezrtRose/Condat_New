@@ -1,9 +1,11 @@
 <?php namespace App\Modules\Tenant\Controllers;
 
 use App\Http\Requests;
+use App\Modules\Tenant\Models\Email;
 use App\Modules\Tenant\Models\Setting;
 use App\Modules\Tenant\Models\Agent;
 use Flash;
+use Mail;
 
 use Illuminate\Http\Request;
 
@@ -131,5 +133,44 @@ class SettingController extends BaseController {
 	{
 		//
 	}
+
+	public function send_email($tenant_id)
+    {
+        $emails = Email::get();
+        $email_ids = [];
+        foreach($emails as $email) {
+            $email_ids += [
+                $email->email => $email->email,
+            ];
+        }
+        return view('Tenant::Settings/send_email', compact('email_ids'));
+    }
+
+	public function send_email_post($tenant_id)
+    {
+        $post = $this->request->all();
+        foreach($post['email_ids'] as $email_id) {
+            $param = [
+                'content'    => $post['body'],
+                'subject'    => $post['subject'],
+                'heading'    => 'Condat Solutions',
+                'subheading' => 'All your business in one space',
+            ];
+            $data = [
+                'to_email'   => $email_id,
+                'to_name'    => '',
+                'subject'    => $post['subject'],
+                'from_email' => env('FROM_EMAIL', 'info@condat.com.au'), //change this later
+                'from_name'  => 'Condat Solutions', //change this later
+            ];
+            Mail::send('template.master', $param, function ($message) use ($data) {
+                $message->to($data['to_email'], $data['to_name'])
+                    ->subject($data['subject'])
+                    ->from($data['from_email'], $data['from_name']);
+            });
+        }
+        Flash::success('Email has been sent.');
+        return redirect()->route('tenant.bulkemail.view', $tenant_id);
+    }
 
 }

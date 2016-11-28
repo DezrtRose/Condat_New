@@ -61,7 +61,7 @@
                 <table id="courses" class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr>
-                        <th>Cricos ID</th>
+                        <th>Course ID</th>
                         <th>Course Name</th>
                         <th>Level</th>
                         <th>Tuition Fee</th>
