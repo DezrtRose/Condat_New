@@ -70,14 +70,14 @@ class StudentController extends BaseController
         if ($created) {
             Flash::success('Payment has been added successfully.');
             $payment = $this->payment->getDetails($created);
-            $this->client->addLog($payment->client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => url("tenant/students/payment/receipt/" . $payment->student_payments_id)], $payment->course_application_id);
+            $this->client->addLog($payment->client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => url("tenant/students/payment/receipt/" . $payment->client_payment_id)], $payment->course_application_id);
         }
         return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
     }
 
     public function editPayment($tenant_id, $payment_id)
     {
-        $data['payment'] = $this->payment->getDetails($payment_id);
+        $data['payment'] = $this->payment->getStudentPaymentDetails($payment_id);
         return view("Tenant::Student/Payment/edit", $data);
     }
 
@@ -138,13 +138,11 @@ class StudentController extends BaseController
         $datatable = \Datatables::of($payments)
             ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
-                  <button class="btn btn-primary" type="button">Action</button>
-                  <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Action <span class="caret"></span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . url($tenant_id. "/students/payment/receipt/" . $data->student_payments_id) . '">Print Receipt</a></li>
+                    <li><a href="' . url($tenant_id . "/students/payment/receipt/" . $data->client_payment_id) . '" target="_blank">Print Receipt</a></li>
                     <li><a href="' . route("application.students.editPayment", [$tenant_id, $data->student_payments_id]) . '">Edit</a></li>
                     <li><a href="' . route("application.students.deletePayment", [$tenant_id, $data->student_payments_id]) . '" onclick="return (\'Are you sure?\')">Delete</a></li>
                   </ul>
@@ -152,7 +150,7 @@ class StudentController extends BaseController
             })
             ->addColumn('invoice_id', function ($data) use ($tenant_id) {
                 if (empty($data->invoice_id) || $data->invoice_id == 0)
-                    return 'Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id.'/student/payment/' . $data->client_payment_id . '/' . $data->course_application_id . '/assign') . '"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>';
+                    return 'Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/student/payment/' . $data->client_payment_id . '/' . $data->course_application_id . '/assign') . '"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>';
                 else
                     return format_id($data->invoice_id, 'I');
             })
@@ -160,7 +158,7 @@ class StudentController extends BaseController
                 return format_date($data->date_paid);
             })
             ->editColumn('student_payments_id', function ($data) {
-                return format_id($data->student_payments_id, 'CP');
+                return format_id($data->client_payment_id, 'CP');
             });
         return $datatable->make(true);
     }
@@ -185,14 +183,12 @@ class StudentController extends BaseController
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
-                  <button class="btn btn-primary" type="button">Action</button>
-                  <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Action <span class="caret"></span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
-                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '">View Invoice</a></li>
+                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">View Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
                     <li><a href="' . route("tenant.student.deleteInvoice", [$tenant_id, $data->invoice_id]) . '" onclick="return confirm(\'Are you sure you want to delete the record?\')">Delete</a></li>
                   </ul>
@@ -205,7 +201,7 @@ class StudentController extends BaseController
             ->addColumn('outstanding_amount', function ($data) use ($tenant_id) {
                 $outstanding = $this->invoice->getOutstandingAmount($data->invoice_id);
                 if ($outstanding != 0)
-                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id.'/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
                     return 0;
             })
@@ -238,10 +234,8 @@ class StudentController extends BaseController
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
-                  <button class="btn btn-primary" type="button">Action</button>
-                  <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Action <span class="caret"></span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->student_invoice_id, 2]) . '">View payments</a></li>
@@ -258,7 +252,7 @@ class StudentController extends BaseController
             ->addColumn('outstanding_amount', function ($data) use ($tenant_id) {
                 $outstanding = $this->invoice->getOutstandingAmount($data->invoice_id);
                 if ($outstanding != 0)
-                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id.'/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
                     return 0;
             })

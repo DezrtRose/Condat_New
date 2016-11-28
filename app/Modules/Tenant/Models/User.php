@@ -136,7 +136,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $user->auth_code = md5($user->user_id);
             $user->save();
 
-            $email = Email::create([
+            /*$email = Email::create([
                 'email' => $request['email']
             ]);
 
@@ -144,7 +144,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'person_id' => $person->person_id,
                 'email_id' => $email->email_id,
                 'is_primary' => 1
-            ]);
+            ]);*/
 
 
             // Add address
@@ -255,12 +255,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         try {
             $user = User::find($user_id);
             $user->role = $request['role'];
+            $user->email = $request['email'];
             $user->save();
 
-            $person_email = PersonEmail::firstOrCreate(['person_id' => $user->person_id]);
+            //$person_email = PersonEmail::firstOrCreate(['person_id' => $user->person_id]);
 
             //for when not saved, remove this when no old records
-            if ($person_email->email_id != 0) {
+            /*if ($person_email->email_id != 0) {
                 $email = Email::find($person_email->email_id);
                 $email->email = $request['email'];
                 $email->save();
@@ -271,7 +272,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 ]);
                 $person_email->email_id = $email->email_id;
                 $person_email->save();
-            }
+            }*/
 
             $person = Person::find($user->person_id);
             $person->first_name = $request['first_name'];

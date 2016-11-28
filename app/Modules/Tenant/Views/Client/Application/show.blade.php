@@ -122,7 +122,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="well well-sm">
-                                    @if($application->super_agent_id != null)
+                                    @if($application->super_agent_id != null && $application->super_agent_id != 0)
                                         {{ get_agent_name($application->super_agent_id) }}
                                         <a href="{{ route('tenant.agents.show', [$tenant_id, $application->super_agent_id]) }}" class="pull-right" target="_blank">view</a>
                                     @else
@@ -142,7 +142,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="well well-sm">
-                                    @if($application->sub_agent_id != null)
+                                    @if($application->sub_agent_id != null && $application->sub_agent_id != 0)
                                         {{ get_agent_name($application->sub_agent_id) }}
                                         <a href="{{ route('tenant.agents.show', [$tenant_id, $application->sub_agent_id]) }}" class="pull-right" target="_blank">view</a>
                                     @else

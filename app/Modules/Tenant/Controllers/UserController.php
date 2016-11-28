@@ -263,7 +263,7 @@ EOD;
         else
             $data->status = 1;
         $data->save();
-        Flash::success('User statu has been updated successfully.');
+        Flash::success('User status has been updated successfully.');
 
         return redirect()->route('tenant.user.index', $tenant_id);
     }
