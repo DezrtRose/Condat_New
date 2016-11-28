@@ -158,8 +158,7 @@ class Course extends Model
 
         if($search_params) {
             if(!empty($search_params['institute'])) {
-                foreach($search_params['institute'] as $institute_id)
-                    $courses = $courses->orWhere('institute_courses.institute_id', $institute_id);
+                $courses->whereIn('institute_courses.institute_id', $search_params['institute']);
             }
 
             if($search_params['course_name']) {
@@ -167,8 +166,7 @@ class Course extends Model
             }
 
             if(!empty($search_params['level'])) {
-                foreach($search_params['level'] as $level)
-                    $courses = $courses->orWhere('courses.level_id', $level);
+                $courses->whereIn('courses.level_id', $search_params['level']);
             }
 
             if($search_params['from'] != '' && $search_params['to'] != '')

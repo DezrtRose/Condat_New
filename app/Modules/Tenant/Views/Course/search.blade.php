@@ -79,7 +79,10 @@
                             <td>{{$course->level}}</td>
                             <td>{{$course->total_tuition_fee}}</td>
                             <td>{{$course->commission_percent}}</td>
-                            <td>{{'Action'}}</td>
+                            <td>
+                                <a data-toggle="tooltip" title="View Course" class="btn btn-action-box" href ="{{route( 'tenant.course.show', [$tenant_id, $course->course_id])}}"><i class="fa fa-eye"></i></a>
+                                <a data-toggle="tooltip" title="Edit Course" class="btn btn-action-box" href ="{{route( 'tenant.course.edit', [$tenant_id, $course->course_id])}}"><i class="fa fa-edit"></i></a>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

@@ -11,7 +11,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Company Profile</h3>
             </div>
-            {!!Form::model($company, array('route' => ['tenant.company.store', $tenant_id, $company->agent_id], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::model($company_data, array('route' => ['tenant.company.store', $tenant_id], 'class' => 'form-horizontal form-left'))!!}
             <div class="box-body">
                 <div class="col-md-6">
                     <div class="">
@@ -48,7 +48,7 @@
                             <div class="form-group @if($errors->has('email')) {{'has-error'}} @endif">
                                 {!!Form::label('email', 'Email *', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
-                                    {!!Form::text('email', null, array('class' => 'form-control', 'id'=>'email'))!!}
+                                    {!!Form::text('email', null, array('class' => 'form-control', 'id'=>'email', 'readonly' => 'readonly'))!!}
                                     @if($errors->has('email'))
                                         {!! $errors->first('email', '<label class="control-label"
                                                                             for="inputError">:message</label>')
@@ -135,7 +135,7 @@
                             <div class="form-group @if($errors->has('country_id')) {{'has-error'}} @endif">
                                 {!!Form::label('country_id', 'Country', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
-                                    {!!Form::select('country_id', $countries, $company->country_id, array('class' =>
+                                    {!!Form::select('country_id', $countries, $company_data->country_id, array('class' =>
                                     'form-control'))!!}
                                     @if($errors->has('country_id'))
                                         {!! $errors->first('country_id', '<label class="control-label"
