@@ -40,16 +40,19 @@
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-success">Action</button>
-                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="{{ route('tenant.client.edit', [$tenant_id, $client->client_id]) }}"><i class="fa fa-edit"></i> Edit</a><br/>
+                                        <a href="{{ route('tenant.client.edit', [$tenant_id, $client->client_id]) }}"><i
+                                                    class="fa fa-edit"></i> Edit</a><br/>
                                     </li>
                                     <li>
-                                        <a href="{{ route('tenant.client.compose', [$tenant_id, $client->client_id]) }}"><i class="fa fa-envelope"></i> Email</a>
+                                        <a href="{{ route('tenant.client.compose', [$tenant_id, $client->client_id]) }}"><i
+                                                    class="fa fa-envelope"></i> Email</a>
                                     </li>
                                 </ul>
                             </div>
@@ -81,6 +84,16 @@
                     <div class="form-group">
                         <label for="">Title * </label>
                         <input type="text" class="form-control" name="title"/>
+                    </div>
+
+                    <div class="well">
+                        <h4><strong>Steps to Upload Image</strong></h4>
+                        <ul class="">
+                            <li>Find the Image you would like to Upload</li>
+                            <li>Right click on Image and choose open Image in New Tab</li>
+                            <li>Copy the Link and put into the URL field</li>
+                            <li>Type Image description and submit to Upload Image</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="modal-footer">

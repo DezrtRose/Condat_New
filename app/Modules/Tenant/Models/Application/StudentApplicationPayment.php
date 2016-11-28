@@ -110,6 +110,16 @@ class StudentApplicationPayment extends Model
     {
         $payment = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
             ->select('client_payments.*', 'student_application_payments.student_payments_id', 'student_application_payments.course_application_id')
+            //->find($payment_id);
+            ->where('client_payments.client_payment_id', $payment_id)
+        ->first();
+        return $payment;
+    }
+
+    function getStudentPaymentDetails($payment_id)
+    {
+        $payment = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
+            ->select('client_payments.*', 'student_application_payments.student_payments_id', 'student_application_payments.course_application_id')
             ->find($payment_id);
         return $payment;
     }

@@ -13,7 +13,7 @@
         <div class="col-xs-6">
             <h1>
 
-                <img src="sample invoice_files/logo.png" height="50px">
+                {{--<img src="sample invoice_files/logo.png" height="50px">--}}
 
             </h1>
         </div>
@@ -25,16 +25,16 @@
         <div class="col-xs-5">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>{{ $agency->name }}</h4>
+                    <h4>{{ $company['company_name'] }}</h4>
                 </div>
                 <div class="panel-body">
-                    <p>{{ $agency->abn }}
+                    <p>{{ $company['abn'] or '' }}
 
                     <h3>
-                        <small>{{ $agency->street }}</small>
+                        <small>{{ $company['street'] }}</small>
                     </h3>
                     <h3>
-                        <small>{{ $agency->suburb }} {{ $agency->state }} {{ $agency->postcode }}</small>
+                        <small>{{ $company['suburb'] }} {{ $company['state'] }} {{ $company['postcode'] }}</small>
                     </h3>
                     </p>
                 </div>
@@ -47,10 +47,10 @@
                 </div>
                 <div class="panel-body">
                     <p>
-                        Thom Zheng
+                    {{ get_client_name($payment->client_id) }}
 
                     <h3>
-                        <small>Receipt No #{{ format_id($payment->student_payments_id, 'SI') }}</small>
+                        <small>Receipt No #{{ format_id($payment->client_payment_id, 'CI') }}</small>
                     </h3>
                     <h3>
                         <small>Payment Date {{ format_date($payment->date_paid) }}</small>
@@ -124,11 +124,11 @@
                         <h4>Contact Details</h4>
                     </div>
                     <div class="panel-body">
-                        <p><strong>Ph</strong> : {{ $agency->number }} </p>
+                        <p><strong>Ph</strong> : {{ $company['phone_number'] }} </p>
 
-                        <p><strong>Email</strong> : {{ $agency->email }} </p>
+                        <p><strong>Email</strong> : {{ $company['email'] }} </p>
 
-                        <p><strong>Website</strong> : {{ $agency->website }}</p>
+                        <p><strong>Website</strong> : {{ $company['website'] }}</p>
 
                     </div>
                 </div>

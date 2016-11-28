@@ -26,13 +26,13 @@
               <h4>{{ $company['company_name'] }}</h4>
             </div>
             <div class="panel-body">
-              <p>{{ $agency->abn }}
+              <p>{{ $company['abn'] }}
 
               <h3>
-                <small>{{ $agency->street }}</small>
+                <small>{{ $company['street'] }}</small>
               </h3>
               <h3>
-                <small>{{ $agency->suburb }} {{ $agency->state }} {{ $agency->postcode }}</small>
+                <small>{{ $company['suburb'] }} {{ $company['state'] }} {{ $company['postcode'] }}</small>
               </h3>
               </p>
             </div>
@@ -122,11 +122,11 @@
                 <h4>Contact Details</h4>
               </div>
               <div class="panel-body">
-                <p><strong>Ph</strong> : {{ $agency->number }} </p>
+                <p><strong>Ph</strong> : {{ $company['phone_number'] }} </p>
 
-                <p><strong>Email</strong> : {{ $agency->email }} </p>
+                <p><strong>Email</strong> : {{ $company['email'] }} </p>
 
-                <p><strong>Website</strong> : {{ $agency->website }}</p>
+                <p><strong>Website</strong> : {{ $company['website'] }}</p>
 
               </div>
             </div>

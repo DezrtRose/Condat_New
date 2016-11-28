@@ -152,6 +152,7 @@ class AccountController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
+                    <li><a href="' . url($tenant_id. "/students/payment/receipt/" . $data->client_payment_id) . '" target="_blank">View Receipt</a></li>
                     <li><a href="' . route("client.payment.edit", [$tenant_id, $data->client_payment_id]) . '">Edit</a></li>
                     <li><a href="' . route("client.payment.delete", [$tenant_id, $data->client_payment_id]) . '" onclick="return confirm(\'Are you sure?\')">Delete</a></li>
                   </ul>
@@ -221,7 +222,7 @@ class AccountController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
-                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '">View Invoice</a></li>
+                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">View Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
                     <li><a type="button" data-toggle="modal" data-target="#deleteInvoice" id="'.$data->student_invoice_id.'" class="delete-invoice">Delete</a></li>
                   </ul>
@@ -284,7 +285,7 @@ class AccountController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
-                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '">View Invoice</a></li>
+                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">View Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>

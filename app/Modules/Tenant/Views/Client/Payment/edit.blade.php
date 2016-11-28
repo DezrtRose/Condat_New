@@ -6,7 +6,6 @@
     <li>Update</li>
 @stop
 @section('content')
-
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-header with-border">
