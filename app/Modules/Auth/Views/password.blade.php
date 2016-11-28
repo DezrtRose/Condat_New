@@ -45,7 +45,7 @@
         </div>
         <div class="login-box-footer">
             <p class="text-center">
-                <small>&copy; copyright 2015 | Webunisoft</small>
+                <small>&copy; copyright 2015 | Condat</small>
             </p>
         </div>
     </div>

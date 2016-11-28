@@ -23,7 +23,7 @@
         <div class="col-xs-5">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h4>{{ $agency->name }}</h4>
+              <h4>{{ $company['company_name'] }}</h4>
             </div>
             <div class="panel-body">
               <p>{{ $agency->abn }}
@@ -46,7 +46,7 @@
             <div class="panel-body">
               <p>
                 {{ $invoice->client_name }}
-                <h3><small>Invoice #{{ format_id($invoice->invoice_id, 'SI') }}</small></h3>
+                <h3><small>Invoice #{{ format_id($invoice->invoice_id, 'I') }}</small></h3>
                 <h3><small>Date {{ format_date($invoice->invoice_date) }}</small></h3>
               </p>
             </div>

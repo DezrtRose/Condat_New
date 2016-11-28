@@ -33,11 +33,11 @@
                     <i class="fa {{$timeline->image}}"></i>
 
                     <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> {{get_datetime_diff($timeline->created_at)}}
-                                            @if(!isset($client))<br/><i class="fa fa-user"></i> {{ get_client_name($timeline->client_id) }} @endif
+                        <span class="time" style="{{ (!isset($client))? '': '' }}"><i class="fa fa-clock-o"></i> {{get_datetime_diff($timeline->created_at)}}
+                            @if(!isset($client))| <i class="fa fa-user"></i> {{ get_client_name($timeline->client_id) }} @endif
                                         </span>
-
                         {!! $timeline->message !!}
+
                     </div>
                 </li>
             @endforeach
