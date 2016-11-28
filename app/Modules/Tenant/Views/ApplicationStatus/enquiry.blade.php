@@ -47,10 +47,10 @@
                                    title="Apply Offer"><i class=" btn btn-primary btn-sm glyphicon glyphicon-education"
                                                           data-toggle="tooltip" data-placement="top"
                                                           title="Apply Offer"></i></a>
-                                <a href="#" title="view"><i
+                                <a href="{{route('tenant.client.show', [$tenant_id, $application->client_id])}}" title="view"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View"></i></a>
-                                <a href="#" title="edit"><i
+                                <a href="{{route('tenant.client.edit', [$tenant_id, $application->client_id])}}" title="edit"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-edit"
                                             data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
                                 <a href="{{ route('applications.cancel.application',[$tenant_id, $application->course_application_id])}}"
