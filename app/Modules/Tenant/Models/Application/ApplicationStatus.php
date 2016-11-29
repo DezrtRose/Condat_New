@@ -53,7 +53,7 @@ class ApplicationStatus extends Model
             ->leftJoin('companies', 'institutes.company_id', '=', 'companies.company_id')
             ->leftjoin('intakes', 'intakes.intake_id', '=', 'course_application.intake_id')
             ->join('application_status', 'application_status.course_application_id', '=', 'course_application.course_application_id')
-            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'companies.name as company', 'companies.invoice_to_name as invoice_to', 'courses.name', 'intakes.intake_date', 'course_application.course_application_id', 'phones.number', 'emails.email'])
+            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'companies.name as company', 'companies.invoice_to_name as invoice_to', 'courses.name', 'intakes.intake_date', 'course_application.course_application_id', 'phones.number', 'emails.email', 'clients.client_id'])
             ->where('application_status.active', 1)
             ->where('application_status.status_id', $status)
             ->orderBy('course_application.course_application_id', 'desc')

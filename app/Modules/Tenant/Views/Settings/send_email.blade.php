@@ -46,7 +46,6 @@
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
-                        <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
                     </div>
                     <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>

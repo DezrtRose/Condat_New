@@ -14,6 +14,7 @@ use App\Modules\Tenant\Models\Client\ApplicationNotes;
 use App\Modules\Tenant\Models\Photo;
 use App\Modules\Tenant\Models\Timeline\ClientTimeline;
 use Flash;
+use Illuminate\Support\Facades\Validator;
 use Mail;
 use DB;
 
@@ -408,6 +409,11 @@ class ClientController extends BaseController
     {
         $url = $this->request->get('url');
         $title = $this->request->get('title');
+
+        $rules['url'] = 'required|url';
+        $rules['title'] = 'required';
+
+        $this->validate($this->request, $rules);
 
         if(is_array(getimagesize($url))) {
             //$extension =

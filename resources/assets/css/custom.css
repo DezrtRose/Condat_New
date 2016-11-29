@@ -449,7 +449,9 @@ nav.nav-bar ul {
 #tile5,
 #tile6,
 #tile7,
-#tile8 {
+#tile8,
+#tile9,
+#tile10 {
     background:#4A9BCA;
     border-right: 1px solid;
 }
@@ -469,11 +471,26 @@ nav.nav-bar ul {
 #tile4:hover,
 #tile3:hover,
 #tile2:hover,
+#tile6:hover,
+#tile7:hover,
+#tile8:hover,
+#tile9:hover,
+#tile10:hover,
 li.active #tile2,
 li.active #tile3,
 li.active #tile4,
+li.active #tile6,
+li.active #tile7,
+li.active #tile8,
+li.active #tile9,
+li.active #tile10,
 li.active #tile5 {
     background-color: #A4900B;
+}
+.application-list li a {
+    padding-left: 25px;
+    padding-right: 25px;
+    height: 90px;
 }
 
 @media screen and (max-width: 480px) {
