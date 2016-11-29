@@ -7,6 +7,7 @@ use App\Modules\Tenant\Models\Client\ClientDocument;
 use App\Modules\Tenant\Models\Client\ClientEmail;
 use App\Modules\Tenant\Models\Country;
 use App\Modules\Tenant\Models\Document;
+use App\Modules\Tenant\Models\Invoice\StudentInvoice;
 use App\Modules\Tenant\Models\Notes;
 use App\Modules\Tenant\Models\Client\ClientNotes;
 use App\Modules\Tenant\Models\Client\ApplicationNotes;
@@ -29,7 +30,7 @@ class ClientController extends BaseController
         'number' => 'required'
     ];
 
-    function __construct(Client $client, Request $request, ClientDocument $document, notes $notes, ClientNotes $client_notes, ApplicationNotes $application_notes, ClientTimeline $timeline, ClientEmail $email)
+    function __construct(Client $client, Request $request, ClientDocument $document, notes $notes, ClientNotes $client_notes, ApplicationNotes $application_notes, ClientTimeline $timeline, ClientEmail $email, StudentInvoice $invoice)
     {
         $this->client = $client;
         $this->request = $request;
@@ -39,6 +40,7 @@ class ClientController extends BaseController
         $this->application_notes = $application_notes;
         $this->timeline = $timeline;
         $this->email = $email;
+        $this->invoice = $invoice;
         parent::__construct();
     }
 
@@ -153,6 +155,7 @@ class ClientController extends BaseController
         $data['client'] = $this->client->getDetails($client_id);
         $data['remainders'] = $this->client_notes->getAll($client_id, true);
         $data['timelines'] = $this->timeline->getDetails($client_id);
+        $data['due_payment'] = $this->client->duePayment($client_id);
 
         $data['timeline_list'] = $this->timeline->getTimeline($client_id);
         return view("Tenant::Client/show", $data);
@@ -427,6 +430,12 @@ class ClientController extends BaseController
             \Flash::error('Unable to upload. Please try another image');
         }
         return redirect()->back();
+    }
+
+    function duePayments($tenant_id)
+    {
+        $data['due_payments'] = $this->invoice->getOutstandingPayments();
+        return view("Tenant::Client/due", $data);
     }
 
 }

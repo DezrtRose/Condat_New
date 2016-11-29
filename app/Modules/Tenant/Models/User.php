@@ -56,26 +56,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $dates = ['deleted_at'];
 
-    protected $role = [1 => 'Admin', 2 => 'Staff', 3 => 'Accountant'];
-
     public function profile()
     {
         return $this->belongsTo('App\Modules\Tenant\Models\Person\Person', 'person_id');
     }
 
-    function redirectIfValid($tenant_id)
+    function redirectIfValid($user, $tenant_id)
     {
         /*if ($user->status == 0) {
             \Auth::logout();
             return redirect()->route('system.login')->withInput()->with('message', 'Your account has not been activated.');
-        } elseif ($user->status == 2) {
+        } else*/
+        if ($user->status == 2) {
             \Auth::logout();
-            return redirect()->route('system.login')->withInput()->with('message', 'Your account has been suspended.');
+            return redirect()->route('tenant.login', $tenant_id)->withInput()->with('message', 'Your account has been suspended.');
         } elseif ($user->status == 3) {
             \Auth::logout();
-            return redirect()->route('system.login')->withInput()->with('message', 'Your account has been permanently blocked.');
-        }*/
-        return redirect()->route('users.dashboard', $tenant_id);
+            return redirect()->route('tenant.login', $tenant_id)->withInput()->with('message', 'Your account has been permanently blocked.');
+        }
+        if($user->role == 2) //Accountant
+            return redirect()->route('client.invoice.pending', $tenant_id);
+        else
+            return redirect()->route('users.dashboard', $tenant_id);
     }
 
     function saveUser($email = '', $details = array())
@@ -128,7 +130,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ]);
 
             $user = User::create([
-                'role' => $request['role'], // 0 : client, 1 : admin, 2 : super-admin
+                'role' => $request['role'], // 1 : staff, 2 : accountant, 3 : admin
                 'status' => 0, // Pending
                 'person_id' => $person->person_id,
                 'email' => $request['email']
@@ -254,7 +256,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         try {
             $user = User::find($user_id);
-            $user->role = $request['role'];
+            isset($request['role'])? $user->role = $request['role'] : '';
             $user->email = $request['email'];
             $user->save();
 

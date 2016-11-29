@@ -51,8 +51,7 @@ class AuthController extends BaseController {
 
         $credentials = $request->only('email', 'password');
         if (auth()->guard('tenants')->attempt($credentials, $request->has('remember'))) {
-            //return $tenantUser->redirectIfValid($this->auth->user());
-            return redirect()->route('users.dashboard', $tenant_id);
+            return $tenantUser->redirectIfValid(auth()->guard('tenants')->user(), $tenant_id);
         }
         return redirect()->route('tenant.login', $tenant_id)->with('message', 'These credentials do not match our records.')->withInput($request->only('email', 'remember'));
     }

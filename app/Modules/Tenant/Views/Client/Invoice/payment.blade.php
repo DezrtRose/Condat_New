@@ -20,3 +20,45 @@
     </button>
 </div>
 {!!Form::close()!!}
+
+<script type="text/javascript">
+    $(document).on('click', '#add-payment', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+
+        var parentTr = $this.parent().parent().parent();
+        var id = $this.attr('data-id');
+        var doing = false;
+
+        if (id != '' && doing == false) {
+            doing = true;
+            parentTr.hide('slow');
+
+            $.ajax({
+                url: appUrl + 'customer/' + id + '/delete',
+                type: 'GET',
+                dataType: 'json'
+            })
+                    .done(function (response) {
+                        if (response.status == '0') {
+                            $.each(response.errors, function (i, v) {
+                                $this.closest('form').find('input[name=' + i + ']').after('<label class="error ">' + v + '</label>');
+                            });
+                        }
+
+                        if (response.status == '1') {
+                            window.location.href = appUrl + 'customer';
+                        } //success
+                        response.success
+                    })
+                    .fail(function () {
+                        alert('something went wrong');
+                        parentTr.show();
+                    })
+                    .always(function () {
+                        doing = false;
+                    });
+        }
+
+    });
+</script>

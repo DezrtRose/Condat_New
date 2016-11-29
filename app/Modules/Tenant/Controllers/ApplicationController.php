@@ -78,7 +78,7 @@ class ApplicationController extends BaseController
 
         $datatable = \Datatables::of($clients)
             ->addColumn('action', function ($data) use ($tenant_id) {
-                return '<a data-toggle="tooltip" title="View Application" class="btn btn-action-box" href ="'. route('tenant.application.show', [$tenant_id, $data->application_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Application Documents" class="btn btn-action-box" href ="'. route( 'tenant.application.document', [$tenant_id, $data->application_id]) .'"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Application" class="btn btn-action-box" href ="'. route( 'tenant.application.edit', [$tenant_id, $data->application_id]) .'"><i class="fa fa-edit"></i></a>';
+                return '<a data-toggle="tooltip" title="View Application" class="btn btn-action-box" href ="'. route('tenant.application.show', [$tenant_id, $data->application_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Application Documents" class="btn btn-action-box" href ="'. route( 'tenant.application.document', [$tenant_id, $data->application_id]) .'"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Application" class="btn btn-action-box" href ="'. route('tenant.application.edit', [$tenant_id, $data->application_id]) .'"><i class="fa fa-edit"></i></a>';
             })
             ->editColumn('application_id', function ($data) {
                 return format_id($data->application_id, 'App');
@@ -242,18 +242,13 @@ class ApplicationController extends BaseController
      * @param  int $client_id
      * @return Response
      */
-    public function update($tenant_id, $client_id)
+    public function update($tenant_id, $application_id)
     {
-        $user_id = $this->request->get('user_id');
-        /* Additional validation rules checking for uniqueness */
-        $this->rules['email'] = 'required|email|min:5|max:55|unique:users,email,' . $user_id . ',user_id';
-
-        $this->validate($this->request, $this->rules);
-        // if validates
-        $updated = $this->client->edit($this->request->all(), $client_id);
-        if ($updated)
-            Flash::success('Client has been updated successfully.');
-        return redirect()->route('tenant.client.index', $tenant_id);
+        $created = $this->application->edit($this->request->all(), $application_id);
+        if ($created) {
+            Flash::success('Application has been updated successfully.');
+        }
+        return redirect()->route('tenant.client.application', [$tenant_id, $application_id]);
     }
 
     /**

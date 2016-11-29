@@ -38,7 +38,7 @@
 
                         <strong><i class="fa fa-file-text-o margin-r-5"></i> Due Amount</strong>
 
-                        <p class="text-muted">200</p>
+                        <p class="text-muted">{{ format_price($due_payment) }}</p>
 
                         <strong><i class="fa fa-file-text-o margin-r-5"></i> Referred By</strong>
 

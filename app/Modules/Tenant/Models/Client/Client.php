@@ -1,5 +1,6 @@
 <?php namespace App\Modules\Tenant\Models\Client;
 
+use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Email;
 use App\Modules\Tenant\Models\Person\PersonEmail;
 use App\Modules\Tenant\Models\Person\PersonPhone;
@@ -221,6 +222,27 @@ class Client extends Model
             ->where('clients.client_id', $client_id)
             ->first(); //dd($client->toArray());
         return $client;
+    }
+
+    function duePayment($client_id)
+    {
+        $paid_amount = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
+            ->join('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+            ->where('client_id', $client_id)
+            ->sum('client_payments.amount');
+        $invoice_amount = $this->getInvoiceAmount($client_id);
+        $outstanding = $invoice_amount - $paid_amount;
+        return $outstanding;
+    }
+
+    function getInvoiceAmount($client_id)
+    {
+        $invoice_amount = Client::join('student_invoices', 'student_invoices.client_id', '=', 'clients.client_id')
+            ->join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
+            ->leftjoin('persons', 'persons.person_id', '=', 'clients.person_id')
+            ->where('clients.client_id', $client_id)
+            ->sum('final_total');
+        return $invoice_amount;
     }
 
     /*

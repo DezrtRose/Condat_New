@@ -3,6 +3,7 @@
 
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
+            @if($current_user->role != 2) {{-- Accountant --}}
             <li class="treeview">
                 <a href="{{url($tenant_id.'/users/dashboard')}}">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -17,8 +18,8 @@
                 <ul class="treeview-menu">
                     <li><a href="{{url($tenant_id.'/clients')}}"><i class="fa fa-circle-o"></i> View All</a></li>
                     <li><a href="{{url($tenant_id.'/clients/create')}}"><i class="fa fa-circle-o"></i> Add</a></li>
-                    <li><a href="{{url($tenant_id.'/clients')}}"><i class="fa fa-circle-o"></i> Advanced Search</a></li>
-                    <li><a href="{{url($tenant_id.'/clients/create')}}"><i class="fa fa-circle-o"></i> Due Payments</a></li>
+                    {{--<li><a href="{{url($tenant_id.'/clients')}}"><i class="fa fa-circle-o"></i> Advanced Search</a></li>--}}
+                    <li><a href="{{url($tenant_id.'/client/due')}}"><i class="fa fa-circle-o"></i> Due Payments</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -32,6 +33,7 @@
                     <li><a href="{{url('payment/search')}}"><i class="fa fa-circle-o"></i> Enrollment Statistics</a></li>
                 </ul>
             </li>
+            @endif
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-money"></i>
@@ -44,6 +46,7 @@
                     <li><a href="{{url($tenant_id.'/college_invoice_report/group_invoice')}}"><i class="fa fa-circle-o"></i> Group Invoice</a></li>
                 </ul>
             </li>
+            @if($current_user->role != 2) {{-- Accountant --}}
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-building"></i>
@@ -117,6 +120,7 @@
                 </ul>
             </li>
             @endif
+        @endif
             {{--<li id="renew-subscription">
                 <a href="{{url($tenant_id.'/subscription/renew')}}"><i class="fa fa-warning"></i><span>Add/Renew Subscription</span></a>
             </li>--}}

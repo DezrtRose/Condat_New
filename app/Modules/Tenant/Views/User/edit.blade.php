@@ -10,6 +10,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Update User</h3>
+                <a href="{{ route('tenant.users.password', $tenant_id) }}" class="btn btn-primary btn-flat pull-right">Update Password</a>
             </div> 
             @include('flash::message')
             {!!Form::model($user, array('route' => array('tenant.users.update', $tenant_id, $user->user_id), 'class' => 'form-horizontal', 'method' => 'post'))!!}

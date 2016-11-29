@@ -292,9 +292,13 @@ class StudentInvoice extends Model
             $outstanding = $invoice->total_amount - $paid_amount;
             if($outstanding > 0)
             {
+                $client = new Client();
+                $details = $client->getDetails($invoice->client_id);
                 $outstanding_payments[$invoice->client_id]['client_name'] = $invoice->fullname;
                 $outstanding_payments[$invoice->client_id]['outstanding_amount'] = $outstanding;
                 $outstanding_payments[$invoice->client_id]['paid_amount'] = $paid_amount;
+                $outstanding_payments[$invoice->client_id]['number'] = $details->number;
+                $outstanding_payments[$invoice->client_id]['email'] = $details->email;
             }
         }
         return $outstanding_payments;

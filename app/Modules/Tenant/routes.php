@@ -63,6 +63,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('clients/{id}/edit', ['as' => 'tenant.client.edit', 'uses' => 'ClientController@edit']);
     Route::put('clients/{id}', ['as' => 'tenant.client.update', 'uses' => 'ClientController@update']);
     Route::delete('clients/{id}', ['as' => 'tenant.client.destroy', 'uses' => 'ClientController@destroy']);
+    Route::get('client/due', ['as' => 'tenant.client.due', 'uses' => 'ClientController@duePayments']);
 
     Route::post('clients/{id}/upload', ['as' => 'tenant.client.upload', 'uses' => 'ClientController@upload']);
     Route::post('clients/{id}/urlUpload', ['as' => 'tenant.client.urlUpload', 'uses' => 'ClientController@urlUpload']);
@@ -315,6 +316,8 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('profile', 'UserController@edit');
     //Route::post('profile', 'UserController@update');
     Route::post('users/{user_id}/update', ['as' => 'tenant.users.update', 'uses' => 'UserController@update']);
+    Route::get('profile/password', ['as' => 'tenant.users.password', 'uses' => 'UserController@resetPassword']);
+    Route::post('profile/password', ['as' => 'tenant.users.password', 'uses' => 'UserController@postResetPassword']);
     Route::get('users/dashboard', ['as' => 'users.dashboard', 'uses' => 'UserController@dashboard']);
 
     /* Set reminder as completed */

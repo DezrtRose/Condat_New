@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        @if(!isset($user) || (isset($user->role) && $user->role != 3))
+        @if(!isset($user) || (isset($user->role) && $user->role != 3 && $user->user_id != current_tenant_id()))
         <div class="form-group">
             {!!Form::label('role', 'User Role', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
