@@ -12,7 +12,7 @@
                 <h3 class="box-title">Reset Password</h3>
             </div>
             @include('flash::message')
-            {!!Form::open(array('route' => array('tenant.users.password', $tenant_id), 'class' => 'form-horizontal', 'method' => 'post'))!!}
+            {!!Form::open(array('class' => 'form-horizontal', 'method' => 'post'))!!}
 
             <div class="box-body">
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">

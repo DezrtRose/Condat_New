@@ -150,17 +150,17 @@ class InvoiceController extends BaseController
         }
 
         $datatable = \Datatables::of($payments)
-            ->addColumn('action', function ($data) use ($tenant_id) {
+            /*->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
                   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Action <span class="caret"></span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="' . route("application.students.editPayment", [$tenant_id, $data->student_payments_id]) . '">Edit</a></li>
-                    <li><a href="' . route("application.students.deletePayment", [$tenant_id, $data->student_payments_id]) . '">Delete</a></li>
+                    <li><a href="' . route("client.payment.edit", [$tenant_id, $data->client_payment_id]) . '">Edit</a></li>
+                    <li><a href="' . route("client.payment.delete", [$tenant_id, $data->client_payment_id]) . '">Delete</a></li>
                   </ul>
                 </div>';
-            })
+            })*/
             ->editColumn('date_paid', function ($data) {
                 return format_date($data->date_paid);
             })

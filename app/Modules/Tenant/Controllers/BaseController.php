@@ -119,4 +119,15 @@ class BaseController extends Controller{
 		return $company;
 	}
 
+	public function checkAuthority()
+    {
+        $current_user = $this->current_user()->toArray();
+        if($current_user['level'] >= '12')
+            return true;
+        elseif($current_user['level'] >= '9' && $current_user['level'] < '12')
+            return false;
+        elseif($current_user['level'] >= '3' && $current_user['level'] < '9')
+            return false;
+    }
+
 }

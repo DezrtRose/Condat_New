@@ -316,8 +316,8 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('profile', 'UserController@edit');
     //Route::post('profile', 'UserController@update');
     Route::post('users/{user_id}/update', ['as' => 'tenant.users.update', 'uses' => 'UserController@update']);
-    Route::get('profile/password', ['as' => 'tenant.users.password', 'uses' => 'UserController@resetPassword']);
-    Route::post('profile/password', ['as' => 'tenant.users.password', 'uses' => 'UserController@postResetPassword']);
+    Route::get('profile/password/{user_id}', ['as' => 'tenant.users.password', 'uses' => 'UserController@resetPassword']);
+    Route::post('profile/password/{user_id}', ['as' => 'tenant.users.password', 'uses' => 'UserController@postResetPassword']);
     Route::get('users/dashboard', ['as' => 'users.dashboard', 'uses' => 'UserController@dashboard']);
 
     /* Set reminder as completed */
