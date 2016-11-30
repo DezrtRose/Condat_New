@@ -27,7 +27,7 @@
 					<div class="box-body">
 						{!! Form::open([
 									'class'=>'form-horizontal',
-									'route'=>['applications.cancel', $tenant_id, $applications->course_application_id]
+									'route'=>['application.cancel', $tenant_id, $applications->course_application_id]
 						])!!}	
 						
 							<div class="form-group">
