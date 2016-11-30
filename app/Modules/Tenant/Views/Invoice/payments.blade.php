@@ -75,7 +75,7 @@
                         <th>Paid By</th>
                         <th>Payment Type</th>
                         <th>Description</th>
-                        <th></th>
+                        {{--<th></th>--}}
                     </tr>
                     </thead>
                 </table>
@@ -104,7 +104,7 @@
                     {data: 'payment_method', name: 'payment_method'},
                     {data: 'payment_type', name: 'payment_type'},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                    /*{data: 'action', name: 'action', orderable: false, searchable: false}*/
                 ],
                 order: [[0, 'desc']]
             });

@@ -118,6 +118,9 @@ class UserController extends BaseController
      */
     public function create()
     {
+        if(!$this->checkAuthority()) {
+            abort(403, 'Unauthorized action.');
+        }
         $data['user_levels'] = UserLevel::where('name', '!=', 'Admin')->lists('name', 'user_level_id');
         return view('Tenant::User/add', $data);
     }
@@ -191,6 +194,10 @@ EOD;
         if ($user_id == null)
             $user_id = current_user_id();
 
+        if(!$this->checkAuthority() && $user_id != $this->request->segment(3)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         /* Getting the user details*/
         //$data['user'] = User::join('persons', 'persons.person_id', '=', 'users.person_id')->where('users.user_id', $user_id)->first();
         $data['user'] = $this->user->getDetails($user_id);
@@ -230,13 +237,12 @@ EOD;
         return view('Tenant::User/password');
     }
 
-    public function postResetPassword($tenant_id)
+    public function postResetPassword($tenant_id, $user_id)
     {
         $rules = array('password' => 'required|min:6', 'password_confirmation' => 'required|same:password|min:6');
 
         $this->validate($this->request, $rules);
         $newpassword = \Hash::make(\Input::get('password'));
-        $user_id = current_tenant_id();
         User::find($user_id)->update(['password' => $newpassword]);
         Flash::success('Password has been updated successfully.');
         return redirect()->route('tenant.user.index', $tenant_id);

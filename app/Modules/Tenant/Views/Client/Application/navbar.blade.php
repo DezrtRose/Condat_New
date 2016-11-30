@@ -29,29 +29,31 @@
             </div>
 
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="{{($current == 'show')? 'active' : ''}}"><a
-                                href="{{route('tenant.application.show', [$tenant_id, $application->application_id])}}">Dashboard</a>
-                    </li>
-                    <li class="{{($current == 'details')? 'active' : ''}}"><a
-                                href="{{route('tenant.application.details', [$tenant_id, $application->application_id])}}">Application
-                            Details</a></li>
-                    <li class="{{($current == 'college')? 'active' : ''}}"><a
-                                href="{{route('tenant.application.college', [$tenant_id, $application->application_id])}}">College
-                            Accounts</a></li>
-                    <li class="{{($current == 'students')? 'active' : ''}}"><a
-                                href="{{route('tenant.application.students', [$tenant_id, $application->application_id])}}">Students
-                            Accounts</a></li>
-                    <li class="{{($current == 'subagents')? 'active' : ''}}"><a
-                                href="{{route('tenant.application.subagents', [$tenant_id, $application->application_id])}}">Sub Agent
-                            Accounts</a></li>
-                    <li class="{{($current == 'document')? 'active' : ''}}"><a
-                                href="{{route("tenant.application.document", [$tenant_id, $application->application_id])}}">
-                            Documents</a></li>
-                    <li class="{{($current == 'notes')? 'active' : ''}}"><a
-                                href="{{route('tenant.application.notes', [$tenant_id, $application->application_id])}}">Notes</a>
-                    </li>
-                </ul>
+                @if($application->application_id)
+                    <ul class="nav navbar-nav">
+                        <li class="{{($current == 'show')? 'active' : ''}}"><a
+                                    href="{{route('tenant.application.show', [$tenant_id, $application->application_id])}}">Dashboard</a>
+                        </li>
+                        <li class="{{($current == 'details')? 'active' : ''}}"><a
+                                    href="{{route('tenant.application.details', [$tenant_id, $application->application_id])}}">Application
+                                Details</a></li>
+                        <li class="{{($current == 'college')? 'active' : ''}}"><a
+                                    href="{{route('tenant.application.details', [$tenant_id, $application->application_id])}}{{route('tenant.application.college', [$tenant_id, $application->application_id])}}">College
+                                Accounts</a></li>
+                        <li class="{{($current == 'students')? 'active' : ''}}"><a
+                                    href="{{route('tenant.application.details', [$tenant_id, $application->application_id])}}">Students
+                                Accounts</a></li>
+                        <li class="{{($current == 'subagents')? 'active' : ''}}"><a
+                                    href="{{route('tenant.application.subagents', [$tenant_id, $application->application_id])}}">Sub Agent
+                                Accounts</a></li>
+                        <li class="{{($current == 'document')? 'active' : ''}}"><a
+                                    href="{{route("tenant.application.document", [$tenant_id, $application->application_id])}}">
+                                Documents</a></li>
+                        <li class="{{($current == 'notes')? 'active' : ''}}"><a
+                                    href="{{route('tenant.application.notes', [$tenant_id, $application->application_id])}}">Notes</a>
+                        </li>
+                    </ul>
+                @endif
             </div>
             <!--/.nav-collapse -->
 
