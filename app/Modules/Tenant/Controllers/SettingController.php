@@ -24,6 +24,10 @@ class SettingController extends BaseController {
 	 */
 	public function company()
 	{
+        $user_id = current_tenant_id();
+        if(!$this->checkAuthority() && $user_id != $this->request->segment(3)) {
+            abort(403, 'Unauthorized action.');
+        }
 		$data['company_data'] = (object) $this->setting->getCompany();
 		return view('Tenant::Settings/company', $data);
 	}
@@ -33,6 +37,10 @@ class SettingController extends BaseController {
 	 */
 	public function bank()
 	{
+        $user_id = current_tenant_id();
+        if(!$this->checkAuthority() && $user_id != $this->request->segment(3)) {
+            abort(403, 'Unauthorized action.');
+        }
 		$data['bank'] = $this->setting->getBankDetails();
 		return view('Tenant::Settings/bank', $data);
 	}
@@ -136,6 +144,10 @@ class SettingController extends BaseController {
 
 	public function send_email($tenant_id)
     {
+        $user_id = current_user_id();
+        if(!$this->checkAuthority() && $user_id != $this->request->segment(3)) {
+            abort(403, 'Unauthorized action.');
+        }
         $emails = Email::get();
         $email_ids = [];
         foreach($emails as $email) {
