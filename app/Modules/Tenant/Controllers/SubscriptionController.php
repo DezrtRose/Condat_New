@@ -42,6 +42,10 @@ class SubscriptionController extends BaseController
 
     public function renew()
     {
+        $user_id = current_tenant_id();
+        if(!$this->checkAuthority() && $user_id != $this->request->segment(3)) {
+            abort(403, 'Unauthorized action.');
+        }
         $agency_id = current_tenant_id();
         $companyDetails = Company::where('agencies_agent_id', $agency_id)->first();
         return view('Tenant::Subscription/renew', compact('companyDetails'));
