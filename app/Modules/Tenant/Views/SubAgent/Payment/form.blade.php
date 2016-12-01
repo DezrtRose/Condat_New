@@ -4,14 +4,14 @@
         <div class="form-group @if($errors->has('date_paid')) {{'has-error'}} @endif">
             {!!Form::label('date_paid', 'Payment Date *', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
-                <div class="input-group date">
+                <div class="input-group date" id="date_paid">
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
                     @if(!isset($payment) || $payment->date_paid == null)
-                        {!!Form::text('date_paid', null, array('class' => 'form-control', 'id'=>'date_paid'))!!}
+                        {!!Form::text('date_paid', null, array('class' => 'form-control', 'id'=>'date_paid_picker'))!!}
                     @else
-                        {!!Form::text('date_paid', format_date($payment->date_paid), array('class' => 'form-control', 'id'=>'date_paid'))!!}
+                        {!!Form::text('date_paid', format_date($payment->date_paid), array('class' => 'form-control', 'id'=>'date_paid_picker'))!!}
                     @endif
                 </div>
                 @if($errors->has('date_paid'))
@@ -24,9 +24,9 @@
         <div class="form-group @if($errors->has('amount')) {{'has-error'}} @endif">
             {!!Form::label('amount', 'Amount *', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
-                <div class="input-group">
+                <div class="input-group" id="amount">
                     <span class="input-group-addon">$</span>
-                    {!!Form::text('amount', null, array('class' => 'form-control', 'id'=>'amount'))!!}
+                    {!!Form::text('amount', null, array('class' => 'form-control', 'id' => 'amount_text))!!}
                 </div>
                 @if($errors->has('amount'))
                     {!! $errors->first('amount', '<label class="control-label"
@@ -70,7 +70,7 @@
 <script>
     $(function () {
         var date = new Date();
-        $("#date_paid").datepicker({
+        $("#date_paid_picker").datepicker({
             autoclose: true,
             format: 'dd/mm/yyyy'
         });

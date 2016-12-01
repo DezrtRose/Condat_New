@@ -9,10 +9,10 @@
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Course Details</h3>
+                <h3 class="box-title">Intake Details</h3>
             </div>
             @include('flash::message')
-            {!!Form::open(array('route' => ['tenant.intake.store', $tenant_id, $institution_id], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::open(array('route' => ['tenant.intake.store', $tenant_id, $institution_id], 'class' => 'form-horizontal form-left form-intake'))!!}
             @include('Tenant::Course/form')
             <div class="box-footer clearfix">
                 <input type="submit" class="btn btn-primary pull-right" value="Add"/>

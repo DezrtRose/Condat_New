@@ -18,6 +18,7 @@ use Flash;
 use DB;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class InvoiceController extends BaseController
 {
@@ -212,6 +213,16 @@ class InvoiceController extends BaseController
 
     function postPayment($tenant_id, $invoice_id, $type = 1)
     {
+        $rules = [
+            'date_paid' => 'required',
+            'amount' => 'required',
+            'payment_method' => 'required'
+        ];
+        //$this->validate($this->request, $rules);
+        $validator = \Validator::make($this->request->all(), $rules);
+        if ($validator->fails())
+            return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
+
         switch ($type) {
             case 1:
                 $created = $this->college_payment->add($this->request->all(), $invoice_id);
@@ -225,7 +236,9 @@ class InvoiceController extends BaseController
 
         if ($created)
             \Flash::success('Payment added successfully!');
-        return redirect()->back();
+        return $this->success(['message' => 'Payment added successfully!']);
+        //return redirect()->back();
+
     }
 
 }

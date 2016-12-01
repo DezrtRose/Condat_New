@@ -81,7 +81,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add Intake</h4>
                 </div>
-                {!!Form::open(array('route' => ['tenant.intake.store', $tenant_id, $institute->institution_id], 'class' => 'form-horizontal form-left'))!!}
+                {!!Form::open(array('route' => ['tenant.intake.store', $tenant_id, $institute->institution_id], 'class' => 'form-horizontal form-left form-intake'))!!}
 
                 @include('Tenant::Intake/form')
 
@@ -109,6 +109,38 @@
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 order: [[0, 'desc']]
+            });
+
+            $(document).on("submit", ".form-intake", function (event) {
+                var formData = $(this).serialize();
+                var institute_id = $('#institute').val();
+                var url = $(this).attr('action');
+                $(this).find('.has-error').removeClass('has-error');
+                $(this).find('label.error').remove();
+                $(this).find('.callout').remove();
+
+                // process the form
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    dataType: 'json',
+                    encode: true
+                })
+                        .done(function (result) {
+                            if (result.status == 1) {
+                                window.location.reload();
+                            }
+                            else {
+                                $.each(result.data.errors, function (i, v) {
+                                    $('.form-intake').find('#' + i).after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
+                                });
+                            }
+                            setTimeout(function () {
+                                $('.callout').remove()
+                            }, 2500);
+                        });
+                event.preventDefault();
             });
         });
     </script>

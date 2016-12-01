@@ -36,7 +36,7 @@ class AddressController extends BaseController
             ->where('institutes.institution_id', $institute_id);
 
         $datatable = \Datatables::of($institutes)
-            ->addColumn('action', function ($data) use ($tenant_id){
+            ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
                     <button type="button" class="btn btn-primary">Action</button>
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -45,7 +45,7 @@ class AddressController extends BaseController
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.address.edit', [$tenant_id, $data->address_id]) . '">Edit</a></li>
-                        <li><a href="'.route('tenant.address.destroy', [$tenant_id, $data->address_id]) .'" onclick="return confirm(\'Are You Sure? \')">Delete</a></li>
+                        <li><a href="' . route('tenant.address.destroy', [$tenant_id, $data->address_id]) . '" onclick="return confirm(\'Are You Sure? \')">Delete</a></li>
                     </ul>
                 </div>
                 </div>';
@@ -59,8 +59,7 @@ class AddressController extends BaseController
     function edit($tenant_id, $address_id)
     {
         // check if from institute...
-        if($this->request->ajax())
-        {
+        if ($this->request->ajax()) {
             $data['address'] = $this->institute->getAddressDetails($address_id); //dd($data['address']);
             return view("Tenant::Address/edit", $data);
         }
@@ -68,9 +67,18 @@ class AddressController extends BaseController
 
     function update($tenant_id, $address_id)
     {
-        $data['address'] = $this->institute->editAddress($address_id, $this->request->all());
-        \Flash::success('Address Updated Successfully!');
-        return redirect()->back();
+        $rules = [
+            'number' => 'required',
+            'email' => 'required|email',
+        ];
+        $validator = \Validator::make($this->request->all(), $rules);
+        if ($validator->fails())
+            return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
+        // if validates
+        $contact_id = $this->institute->editAddress($address_id, $this->request->all());
+        if ($contact_id)
+            Flash::success('Address added successfully!');
+        return $this->success(['message' => 'Address added successfully!']);
     }
 
     function destroy($tenant_id, $address_id)

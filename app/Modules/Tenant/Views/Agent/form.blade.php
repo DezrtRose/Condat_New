@@ -5,7 +5,6 @@
 
             <div class="">
 
-
                 <div class="form-group @if($errors->has('name')) {{'has-error'}} @endif">
                     {!!Form::label('name', 'Company Name *', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
@@ -20,7 +19,7 @@
                 <div class="form-group @if($errors->has('number')) {{'has-error'}} @endif">
                     {!!Form::label('number', 'Phone Number *', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
-                        <div class="input-group">
+                        <div class="input-group" id="number">
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>

@@ -31,7 +31,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Add Contact</h4>
             </div>
-            {!!Form::open(['url' => $tenant_id.'/institutes/'.$institute->institution_id.'/contact/store', 'id' => 'add-contact', 'class' => 'form-horizontal form-left'])!!}
+            {!!Form::open(['url' => $tenant_id.'/institutes/'.$institute->institution_id.'/contact/store', 'id' => 'add-contact', 'class' => 'form-horizontal form-left form-contact'])!!}
             <div class="modal-body">
 
                 <div class="form-group">
@@ -117,6 +117,37 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
             order: [[0, 'desc']]
+        });
+
+        $(document).on("submit", ".form-contact", function (event) {
+            var formData = $(this).serialize();
+            var url = $(this).attr('action');
+            $(this).find('.has-error').removeClass('has-error');
+            $(this).find('label.error').remove();
+            $(this).find('.callout').remove();
+
+            // process the form
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                dataType: 'json',
+                encode: true
+            })
+                    .done(function (result) {
+                        if (result.status == 1) {
+                            window.location.reload();
+                        }
+                        else {
+                            $.each(result.data.errors, function (i, v) {
+                                $('.form-contact').find('#' + i).after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
+                            });
+                        }
+                        setTimeout(function () {
+                            $('.callout').remove()
+                        }, 2500);
+                    });
+            event.preventDefault();
         });
     });
 </script>

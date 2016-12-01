@@ -567,3 +567,7 @@ li.active #tile5 {
 .text-xl {
     font-size: 22px;
 }
+
+.error{
+    color : #a94442;
+}

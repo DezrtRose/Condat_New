@@ -130,7 +130,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ]);
 
             $user = User::create([
-                'role' => $request['role'], // 1 : staff, 2 : accountant, 3 : admin
+                'role' => $request['role'], // 1 : admin, 2 :staff, 3 : accountant Fix this later
                 'status' => 0, // Pending
                 'person_id' => $person->person_id,
                 'email' => $request['email']

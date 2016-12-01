@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal">&times;</button>
     <h4 class="modal-title">Edit Address</h4>
 </div>
-{!!Form::model($address, array('route' => ['tenant.address.update', $tenant_id, $address->address_id], 'class' => 'form-horizontal form-left', 'id' => 'edit-address'))!!}
+{!!Form::model($address, array('route' => ['tenant.address.update', $tenant_id, $address->address_id], 'class' => 'form-horizontal form-left form-address', 'id' => 'edit-address'))!!}
 <div class="modal-body">
     @include('Tenant::Address/form')
 </div>

@@ -68,9 +68,23 @@ class ContactController extends BaseController
 
     function update($tenant_id, $contact_id)
     {
-        $data['contact'] = $this->institute->editContact($contact_id, $this->request->all());
-        \Flash::success('Contact Updated Successfully!');
-        return redirect()->back();
+        if($this->request->ajax()) {
+            $rules = [
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'position' => 'required',
+                'number' => 'required',
+                'email' => 'required|email',
+            ];
+            $validator = \Validator::make($this->request->all(), $rules);
+            if ($validator->fails())
+                return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
+            // if validates
+            $contact_id = $this->institute->editContact($contact_id, $this->request->all());
+            if ($contact_id)
+                Flash::success('Contact Updated Successfully!');
+            return $this->success(['message' => 'Contact Updated Successfully!']);
+        }
     }
 
     function destroy($tenant_id, $contact_id)

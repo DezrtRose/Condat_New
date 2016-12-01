@@ -1,8 +1,8 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h4 class="modal-title">Edit Address</h4>
+    <h4 class="modal-title">Edit Intake</h4>
 </div>
-{!!Form::model($intake, array('route' => array('tenant.intake.update', $tenant_id, $intake->intake_id), 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
+{!!Form::model($intake, array('route' => array('tenant.intake.update', $tenant_id, $intake->intake_id), 'class' => 'form-horizontal form-left form-intake', 'method' => 'put'))!!}
 <div class="modal-body">
     @include('Tenant::Intake/form')
 </div>

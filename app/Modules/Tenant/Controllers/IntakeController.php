@@ -65,6 +65,7 @@ class IntakeController extends BaseController
                 return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
             // if validates
             $intake_id = $this->intake->add($this->request->all(), $institution_id);
+            Flash::success('Intake has been created successfully.');
             return $this->success(['intake_id' => $intake_id, 'name' => $this->request->get('description')]);
         }
         else {
@@ -130,14 +131,17 @@ class IntakeController extends BaseController
      */
     public function update($tenant_id, $intake_id)
     {
-        $user_id = $this->request->get('user_id');
-
-        $this->validate($this->request, $this->rules);
-        // if validates
-        $institute_id = $this->intake->edit($this->request->all(), $intake_id);
-        if ($institute_id)
-            Flash::success('Intake has been updated successfully.');
-        return redirect()->route('tenant.intake.index', [$tenant_id, $institute_id]);
+        if($this->request->ajax()) {
+            $validator = \Validator::make($this->request->all(), $this->rules);
+            if ($validator->fails())
+                return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
+            // if validates
+            $institute_id = $this->intake->edit($this->request->all(), $intake_id);
+            if ($institute_id)
+                Flash::success('Intake has been updated successfully.');
+            return $this->success(['intake_id' => $intake_id, 'message' => 'Intake has been updated successfully.']);
+        }
+        //return redirect()->route('tenant.intake.index', [$tenant_id, $institute_id]);
     }
 
     /**
