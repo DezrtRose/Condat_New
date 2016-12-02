@@ -99,6 +99,9 @@
             },
             success: function (result) {
                 $("#course").html(result.data.options);
+                @if(Request::segment(4) == 'edit')
+                $("#course").val({{$application->institution_course_id}});
+                @endif
                 getTuitionFee();
             }
         }).complete(function () {
@@ -117,6 +120,9 @@
             },
             success: function (result) {
                 $("#intake").html(result.data.options);
+                @if(Request::segment(4) == 'edit')
+                $("#intake").val({{$application->intake_id}});
+                @endif
             }
         }).complete(function () {
             $("#intake").show();

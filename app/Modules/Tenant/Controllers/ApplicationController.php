@@ -248,7 +248,7 @@ class ApplicationController extends BaseController
         if ($created) {
             Flash::success('Application has been updated successfully.');
         }
-        return redirect()->route('tenant.client.application', [$tenant_id, $application_id]);
+        return redirect()->route('tenant.client.application', [$tenant_id, $created->client_id]);
     }
 
     /**
