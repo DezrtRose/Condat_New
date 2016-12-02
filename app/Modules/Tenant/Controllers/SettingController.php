@@ -144,7 +144,7 @@ class SettingController extends BaseController {
 
 	public function send_email($tenant_id)
     {
-        $user_id = current_user_id();
+        $user_id = current_tenant_id();
         if(!$this->checkAuthority() && $user_id != $this->request->segment(3)) {
             abort(403, 'Unauthorized action.');
         }
