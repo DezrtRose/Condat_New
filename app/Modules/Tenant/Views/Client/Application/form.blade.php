@@ -167,6 +167,9 @@
                         var select = $('#institute');
                         select.append($("<option></option>").attr("value", result.data.institute_id).text(result.data.name));
                         select.val(result.data.institute_id);
+                        getCourses();
+                        getIntakes();
+                        getTuitionFee();
 
                         if ($(".institute option[value='']").length > 0)
                             $(this).remove();
@@ -209,6 +212,7 @@
                         var select = $('#course');
                         select.append($("<option></option>").attr("value", result.data.course_id).text(result.data.name));
                         select.val(result.data.course_id);
+                        getTuitionFee();
 
                         if ($(".course option[value='']").length > 0)
                             $(this).remove();
