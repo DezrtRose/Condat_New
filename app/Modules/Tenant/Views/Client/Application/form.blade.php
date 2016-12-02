@@ -150,6 +150,9 @@
     $(document).on("submit", "#add-institute", function (event) {
         var formData = $(this).serialize();
         var url = $(this).attr('action');
+        $(this).find('.has-error').removeClass('has-error');
+        $(this).find('label.error').remove();
+        $(this).find('.callout').remove();
 
         // process the form
         $.ajax({
@@ -189,6 +192,9 @@
         var formData = $(this).serialize();
         var institute_id = $('#institute').val();
         var url = appUrl + '/course/' + institute_id + '/store';
+        $(this).find('.has-error').removeClass('has-error');
+        $(this).find('label.error').remove();
+        $(this).find('.callout').remove();
 
         // process the form
         $.ajax({
@@ -228,6 +234,9 @@
         var formData = $(this).serialize();
         var institute_id = $('#institute').val();
         var url = appUrl + '/intakes/' + institute_id + '/store';
+        $(this).find('.has-error').removeClass('has-error');
+        $(this).find('label.error').remove();
+        $(this).find('.callout').remove();
 
         // process the form
         $.ajax({
@@ -266,6 +275,9 @@
     $(document).on("submit", "#add-subagent", function (event) {
         var formData = $(this).serialize();
         var url = $(this).attr('action');
+        $(this).find('.has-error').removeClass('has-error');
+        $(this).find('label.error').remove();
+        $(this).find('.callout').remove();
 
         // process the form
         $.ajax({
@@ -305,6 +317,9 @@
     $(document).on("submit", "#add-superagent", function (event) {
         var formData = $(this).serialize();
         var url = $(this).attr('action');
+        $(this).find('.has-error').removeClass('has-error');
+        $(this).find('label.error').remove();
+        $(this).find('.callout').remove();
 
         // process the form
         $.ajax({

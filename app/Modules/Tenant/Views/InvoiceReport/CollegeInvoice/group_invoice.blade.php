@@ -100,7 +100,9 @@
                 var groupIds = getSelectedValues();
                 var formData = $(this).serializeArray();
                 formData.push({name: 'group_ids', value: groupIds});
-
+                $(this).find('.has-error').removeClass('has-error');
+                $(this).find('label.error').remove();
+                $(this).find('.callout').remove();
                 var url = $(this).attr('action');
 
                 // process the form

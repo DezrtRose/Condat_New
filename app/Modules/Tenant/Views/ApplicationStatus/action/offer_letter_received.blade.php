@@ -131,6 +131,9 @@
             var formData = $(this).serialize();
             var institute_id = '<?php echo $application->institute_id ?>';
             var url = appUrl + '/intakes/' + institute_id + '/store';
+            $(this).find('.has-error').removeClass('has-error');
+            $(this).find('label.error').remove();
+            $(this).find('.callout').remove();
 
             // process the form
             $.ajax({
