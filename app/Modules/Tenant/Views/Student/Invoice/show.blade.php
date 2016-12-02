@@ -91,7 +91,7 @@
         <div class="col-xs-2">
           <p>
             <h4>
-            ${{ float_format($invoice->amount) }}<br>
+            ${{ float_format($invoice->invoice_amount) }}<br>
               ${{ float_format($invoice->total_gst) }} <br>
               <h3>${{ float_format($invoice->final_total) }}</h3>
               ${{ float_format($pay_details->paid) }}<br>

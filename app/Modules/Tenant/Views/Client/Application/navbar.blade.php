@@ -38,10 +38,10 @@
                                     href="{{route('tenant.application.details', [$tenant_id, $application->application_id])}}">Application
                                 Details</a></li>
                         <li class="{{($current == 'college')? 'active' : ''}}"><a
-                                    href="{{route('tenant.application.details', [$tenant_id, $application->application_id])}}{{route('tenant.application.college', [$tenant_id, $application->application_id])}}">College
+                                    href="{{route('tenant.application.college', [$tenant_id, $application->application_id])}}">College
                                 Accounts</a></li>
                         <li class="{{($current == 'students')? 'active' : ''}}"><a
-                                    href="{{route('tenant.application.details', [$tenant_id, $application->application_id])}}">Students
+                                    href="{{route('tenant.application.students', [$tenant_id, $application->application_id])}}">Students
                                 Accounts</a></li>
                         <li class="{{($current == 'subagents')? 'active' : ''}}"><a
                                     href="{{route('tenant.application.subagents', [$tenant_id, $application->application_id])}}">Sub Agent

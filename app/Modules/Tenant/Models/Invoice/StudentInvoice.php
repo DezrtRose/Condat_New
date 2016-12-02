@@ -3,6 +3,7 @@
 use App\Modules\Tenant\Models\Application\CourseApplication;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
+use App\Modules\Tenant\Models\Client\ClientPayment;
 use App\Modules\Tenant\Models\PaymentInvoiceBreakdown;
 use Illuminate\Database\Eloquent\Model;
 use DB;
@@ -112,14 +113,14 @@ class StudentInvoice extends Model
     {
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->where('student_invoices.client_id', $client_id)
-            ->select('invoices.invoice_id', 'invoices.amount')
+            ->select('invoices.invoice_id', 'invoices.final_total')
             ->orderBy('created_at', 'desc')
             ->get();
         //->lists('invoice_details', 'invoices.invoice_id');
         $invoice_list = array();
         foreach ($invoices as $key => $invoice) {
             $formatted_id = format_id($invoice->invoice_id, 'I');
-            $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->amount;
+            $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->final_total;
         }
         return $invoice_list;
     }
@@ -259,6 +260,9 @@ class StudentInvoice extends Model
     function editInvoice(array $request, $invoice_id)
     {
         $student_invoice = StudentInvoice::find($invoice_id);
+        $student_invoice->application_id = $request['application_id'];
+        $student_invoice->save();
+
         $invoice = Invoice::find($student_invoice->invoice_id);
         $invoice->amount = $request['amount'];
         $invoice->invoice_date = insert_dateformat($request['invoice_date']);
@@ -270,7 +274,7 @@ class StudentInvoice extends Model
         $invoice->due_date = insert_dateformat($request['due_date']);
         $invoice->save();
 
-        return $student_invoice->application_id;
+        return $student_invoice->client_id;
     }
 
     function getOutstandingPayments()
@@ -285,9 +289,9 @@ class StudentInvoice extends Model
         $outstanding_payments = array();
 
         foreach($invoices as $key => $invoice){
-            $paid_amount = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
-                ->join('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
-                ->where('client_id', $invoice->client_id)
+            $paid_amount = ClientPayment::leftJoin('student_application_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
+                ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+                ->where('client_payments.client_id', $invoice->client_id)
                 ->sum('client_payments.amount');
             $outstanding = $invoice->total_amount - $paid_amount;
             if($outstanding > 0)

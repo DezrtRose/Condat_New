@@ -226,8 +226,7 @@ class Client extends Model
 
     function duePayment($client_id)
     {
-        $paid_amount = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
-            ->join('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+        $paid_amount = ClientPayment::leftJoin('student_application_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
             ->where('client_id', $client_id)
             ->sum('client_payments.amount');
         $invoice_amount = $this->getInvoiceAmount($client_id);

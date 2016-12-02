@@ -26,7 +26,7 @@
             <div class="col-sm-8">
                 <div class="input-group" id="amount">
                     <span class="input-group-addon">$</span>
-                    {!!Form::text('amount', null, array('class' => 'form-control', 'id' => 'amount_text))!!}
+                    {!!Form::text('amount', null, array('class' => 'form-control', 'id' => 'amount_text'))!!}
                 </div>
                 @if($errors->has('amount'))
                     {!! $errors->first('amount', '<label class="control-label"

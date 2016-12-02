@@ -297,6 +297,7 @@ class StudentController extends BaseController
     public function editInvoice($tenant_id, $invoice_id)
     {
         $data['invoice'] = $this->invoice->getDetails($invoice_id);
+        $data['applications'] = $this->application->getClientApplication($data['invoice']->client_id);
         return view("Tenant::Student/Invoice/edit", $data);
     }
 
@@ -309,9 +310,11 @@ class StudentController extends BaseController
         ];
         $this->validate($this->request, $rules);
 
-        $application_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
+        $client_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
         Flash::success('Invoice has been updated successfully.');
-        return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
+
+        return redirect()->route('tenant.accounts.index', [$tenant_id, $client_id]);
+        //return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
     }
 
     public function deleteInvoice($tenant_id, $invoice_id)

@@ -50,7 +50,7 @@
                     {{ get_client_name($payment->client_id) }}
 
                     <h3>
-                        <small>Receipt No #{{ format_id($payment->client_payment_id, 'CI') }}</small>
+                        <small>Receipt No #{{ format_id($payment->client_payment_id, 'CP') }}</small>
                     </h3>
                     <h3>
                         <small>Payment Date {{ format_date($payment->date_paid) }}</small>
