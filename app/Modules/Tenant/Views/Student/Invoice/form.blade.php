@@ -1,11 +1,13 @@
 <div class="box-body">
     <div class="col-md-6">
+        @if(isset($applications))
         <div class="form-group">
             {!!Form::label('application_id', 'Application *', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
                 {!!Form::select('application_id', $applications, null, array('class' => 'form-control', 'id'=>'application_id'))!!}
             </div>
         </div>
+        @endif
 
         <div class="form-group @if($errors->has('invoice_date')) {{'has-error'}} @endif">
             {!!Form::label('invoice_date', 'Invoice Date *', array('class' => 'col-sm-4 control-label')) !!}
