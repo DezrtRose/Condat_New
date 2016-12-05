@@ -3,6 +3,7 @@
 use App\Modules\Tenant\Models\Application\CourseApplication;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
+use App\Modules\Tenant\Models\Client\ClientPayment;
 use App\Modules\Tenant\Models\PaymentInvoiceBreakdown;
 use Illuminate\Database\Eloquent\Model;
 use DB;
@@ -308,16 +309,17 @@ class StudentInvoice extends Model
         DB::beginTransaction();
 
         try {
-            $invoice = Invoice::find($invoice_id);
-            $stud_inv = StudentInvoice::where('invoice_id', $invoice_id)->first();
             if ($paymentDelete == false) {
                 //deleting only the connections
                 PaymentInvoiceBreakdown::where('invoice_id', $invoice_id)->delete();
             } else {
+                $payment_ids = PaymentInvoiceBreakdown::where('invoice_id', $invoice_id)->lists('payment_id');
+                ClientPayment::whereIn('client_payment_id', $payment_ids)->delete();
+                StudentApplicationPayment::whereIn('client_payment_id', $payment_ids)->delete();
                 PaymentInvoiceBreakdown::where('invoice_id', $invoice_id)->delete();
             }
-            $invoice->delete();
-            $stud_inv->delete();
+            Invoice::where('invoice_id', $invoice_id)->delete();
+            StudentInvoice::where('invoice_id', $invoice_id)->delete();
             DB::commit();
             return true;
             // all good

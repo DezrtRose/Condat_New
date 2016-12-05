@@ -77,13 +77,15 @@ class StudentApplicationPayment extends Model
                 'payment_id' => $payment->client_payment_id
             ]);
 
-            $student_payment = StudentApplicationPayment::create([
-                'course_application_id' => $application_id,
-                'client_payment_id' => $payment->client_payment_id,
-            ]);
+            if($application_id != null && !empty($application_id)) {
+                $student_payment = StudentApplicationPayment::create([
+                    'course_application_id' => $application_id,
+                    'client_payment_id' => $payment->client_payment_id,
+                ]);
+            }
 
             DB::commit();
-            return $student_payment->student_payments_id;
+            return true;
             // all good
         } catch (\Exception $e) {
             DB::rollback();

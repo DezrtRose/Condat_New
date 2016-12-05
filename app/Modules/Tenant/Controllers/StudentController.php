@@ -317,7 +317,6 @@ class StudentController extends BaseController
     public function deleteInvoice($tenant_id, $invoice_id)
     {
         $this->invoice->deleteInvoice($invoice_id, true);
-        Invoice::find($invoice_id)->delete();
         Flash::success('Invoice and payments have been deleted successfully.');
         return redirect()->back();
     }
@@ -325,7 +324,6 @@ class StudentController extends BaseController
     public function deleteInvoiceOnly($tenant_id, $invoice_id)
     {
         $this->invoice->deleteInvoice($invoice_id, false);
-        Invoice::find($invoice_id)->delete();
         Flash::success('Invoice has been deleted successfully.');
         return redirect()->back();
     }

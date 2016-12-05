@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
-    use SoftDeletes;
+    //use SoftDeletes;
 
     /**
      * The database table used by the model.
@@ -34,7 +34,7 @@ class Invoice extends Model
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    //protected $dates = ['deleted_at'];
 
     function getInvoiceDetails()
     {

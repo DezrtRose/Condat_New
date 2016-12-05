@@ -163,20 +163,15 @@
             $(document).on("click", ".delete-invoice", function () {
                 var invoiceId = $(this).attr('id');
                 $(".modal-footer .btn-action").attr('id', invoiceId);
-                // As pointed out in comments,
-                // it is superfluous to have to manually call the modal.
-                // $('#addBookDialog').modal('show');
             });
 
-            $('.delete-invoice').click(function(e){
+            $('.btn-delete').click(function(e){
                 e.preventDefault();
-                var url = $(this).attr('href');
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    async: true,
-                    data: { logDownload: true, file: $(this).attr("name") }
-                });
+                var invoiceId = $(this).attr('id');
+                var invoiceAction = $(this).data('action');
+                var url = appUrl + '/student/' + invoiceId + '/' + invoiceAction;
+                //var conf = confirm('Are you sure?');
+                window.location.replace(url);
                 return false;
             });
         });

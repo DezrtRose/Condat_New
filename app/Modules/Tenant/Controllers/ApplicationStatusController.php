@@ -88,7 +88,6 @@ class ApplicationStatusController extends BaseController
     {
         $created = $this->note->note_create($this->request->all());
         if ($created)
-
             Session::flash('success', 'Quarantinded Successfully');
         return redirect()->route('applications.offer_letter_processing.index', $tenant_id);
     }

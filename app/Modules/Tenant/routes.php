@@ -194,6 +194,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('student/{invoice_id}/editInvoice', ['as' => 'tenant.student.editInvoice', 'uses' => 'StudentController@editInvoice']);
     Route::put('student/{invoice_id}/editInvoice', ['as' => 'tenant.student.updateInvoice', 'uses' => 'StudentController@updateInvoice']);
     Route::get('student/{invoice_id}/deleteInvoice', ['as' => 'tenant.student.deleteInvoice', 'uses' => 'StudentController@deleteInvoice']);
+    Route::get('student/{invoice_id}/deleteInvoiceOnly', ['as' => 'tenant.student.deleteInvoiceOnly', 'uses' => 'StudentController@deleteInvoiceOnly']);
 
     /* Routes for subagent section */
     Route::get('applications/{application_id}/subagents', ['as' => 'tenant.application.subagents', 'uses' => 'SubAgentController@index']);
