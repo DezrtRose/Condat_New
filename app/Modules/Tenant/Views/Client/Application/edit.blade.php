@@ -9,7 +9,7 @@
 
     <div class="container">
         <div class="row">
-        @include('Tenant::Client/client_header') 
+        @include('Tenant::Client/client_header')
         </div>
         <div class="col-md-12">
             <div class="box box-primary">
@@ -18,7 +18,7 @@
                         <small>Edit</small>
                     </h3>
                 </div>
-                {!!Form::model($application, array('route' => ['tenant.application.update', $tenant_id, $application->course_application_id], 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
+                {!!Form::model($application, array('route' => ['tenant.application.update', $tenant_id, $application->application_id], 'class' => 'form-horizontal form-left', 'method' => 'put'))!!}
                 <div class="box-body">
                     @include('Tenant::Client/Application/form')
                 </div>
