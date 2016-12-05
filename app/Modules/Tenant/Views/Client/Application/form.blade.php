@@ -34,7 +34,7 @@
 
     <div class="col-sm-10">
         <div class='input-group date'>
-            <input type="text" name="end_date" class="form-control datepicker" id="end_date"
+            <input value="@if(isset($application)) {{format_date($application->end_date)}} @endif" type="text" name="end_date" class="form-control datepicker" id="end_date"
                    placeholder="dd/mm/yyyy">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -53,7 +53,7 @@
     <label for="student_id" class="col-sm-2 control-label">Student ID</label>
 
     <div class="col-sm-10">
-        <input type="text" name="student_id" class="form-control" id="student_id" placeholder="Student ID">
+        <input type="text" value="@if(isset($application)) {{$application->student_id}} @endif" name="student_id" class="form-control" id="student_id" placeholder="Student ID">
     </div>
 </div>
 <div class="form-group">
