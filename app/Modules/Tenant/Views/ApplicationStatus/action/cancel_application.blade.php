@@ -1,5 +1,5 @@
 @extends('layouts.tenant')
-@section('title', 'Application Enquiry')
+@section('title', 'Cancel Application')
 @section('breadcrumb')
     @parent
     <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
@@ -45,9 +45,9 @@
 							</div>
 
 							<div class="form-group">
-								{{ Form::label('notes', 'Notes', ['class'=>'col-md-3 form-label text-right'])}}
+								{{ Form::label('description', 'Notes', ['class'=>'col-md-3 form-label text-right'])}}
 								<div class="col-md-9">
-								{{ Form::textarea('notes', '', ['class'=>'col-md-6','rows'=>5])}}	
+								{{ Form::textarea('description', '', ['class'=>'col-md-6','rows'=>5])}}
 								</div>
 							</div>
 
