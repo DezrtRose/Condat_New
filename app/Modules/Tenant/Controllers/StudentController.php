@@ -297,7 +297,6 @@ class StudentController extends BaseController
     public function editInvoice($tenant_id, $invoice_id)
     {
         $data['invoice'] = $this->invoice->getDetails($invoice_id);
-        $data['applications'] = $this->application->getClientApplication($data['invoice']->client_id);
         return view("Tenant::Student/Invoice/edit", $data);
     }
 
@@ -310,15 +309,22 @@ class StudentController extends BaseController
         ];
         $this->validate($this->request, $rules);
 
-        $client_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
+        $application_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
         Flash::success('Invoice has been updated successfully.');
-
-        return redirect()->route('tenant.accounts.index', [$tenant_id, $client_id]);
-        //return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
+        return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
     }
 
     public function deleteInvoice($tenant_id, $invoice_id)
     {
+        $this->invoice->deleteInvoice($invoice_id, true);
+        Invoice::find($invoice_id)->delete();
+        Flash::success('Invoice and payments have been deleted successfully.');
+        return redirect()->back();
+    }
+
+    public function deleteInvoiceOnly($tenant_id, $invoice_id)
+    {
+        $this->invoice->deleteInvoice($invoice_id, false);
         Invoice::find($invoice_id)->delete();
         Flash::success('Invoice has been deleted successfully.');
         return redirect()->back();

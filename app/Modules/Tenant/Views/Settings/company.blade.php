@@ -11,7 +11,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Company Profile</h3>
             </div>
-            {!!Form::model($company_data, array('route' => ['tenant.company.store', $tenant_id], 'class' => 'form-horizontal form-left'))!!}
+            {!!Form::model($company_data, array('route' => ['tenant.company.store', $tenant_id], 'class' => 'form-horizontal form-left', 'files' => true))!!}
             <div class="box-body">
                 <div class="col-md-6">
                     <div class="">
@@ -153,6 +153,13 @@
                                                                                  for="inputError">:message</label>')
                                         !!}
                                     @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                {!!Form::label('logo', 'Company Logo', array('class' => 'col-sm-4 control-label')) !!}
+                                <div class="col-sm-8">
+                                    {!! Form::file('logo') !!}
                                 </div>
                             </div>
                         </div>

@@ -73,7 +73,7 @@ class InvoiceController extends BaseController
         /* For Navbar */
         $data['application'] = new \stdClass();
         $data['application']->application_id = $app_id = $this->getApplicationId($invoice_id, $type);
-        if($app_id != null)
+        if($app_id != null && $app_id != 0)
             $client_id = CourseApplication::find($app_id)->client_id;
         else
             $client_id = $data['invoice']->client_id;

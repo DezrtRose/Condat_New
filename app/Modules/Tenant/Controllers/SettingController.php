@@ -105,9 +105,24 @@ class SettingController extends BaseController {
 		// if validates
         $company_data = $this->request->all();
         unset($company_data['_token']);
-		$this->setting->saveSetup('company', serialize($company_data));
-        Flash::success('Company details has been updated successfully!');
-		return redirect()->route('tenant.company.edit', $tenant_id);
+		//dd($company_data);
+		$file = $this->request->input('logo');
+		$file = ($file == '') ? 'logo' : $file;
+
+		// checking file is valid.
+		if (empty($company_data['logo']) || $file_info = tenant()->folder('company', true)->upload($file)) {
+			// adding image
+			$company_data['logo'] = (!empty($company_data['logo']))? $file_info['fileName'] : '';
+			$company_data['logo_path'] = (!empty($company_data['logo']))? $file_info['pathName'] : '';
+			$this->setting->saveSetup('company', serialize($company_data));
+			Flash::success('Company details has been updated successfully!'.$file_info['pathName']);
+			return redirect()->route('tenant.company.edit', $tenant_id);
+		}
+		else {
+			Flash::error('The Logo wasn\'nt uploaded! Please try again later');
+			return redirect()->route('tenant.company.edit', $tenant_id);
+		}
+
 	}
 
 	/**
@@ -161,9 +176,20 @@ class SettingController extends BaseController {
 	public function send_email_post($tenant_id)
     {
         $post = $this->request->all();
+        $company = $this->getCompanyDetails();
+        $message = <<<EOD
+<p>{$post['body']}</p>
+<p>Please reply to {$company['company_name']} {$company['email']} for any queries.</p>
+<p>
+Thank You<br>
+Regards,<br>
+{$company['company_name']}<br>
+Condat Solutions
+</p>
+EOD;
         foreach($post['email_ids'] as $email_id) {
             $param = [
-                'content'    => $post['body'],
+                'content'    => $message,
                 'subject'    => $post['subject'],
                 'heading'    => 'Condat Solutions',
                 'subheading' => 'All your business in one space',
@@ -172,8 +198,8 @@ class SettingController extends BaseController {
                 'to_email'   => $email_id,
                 'to_name'    => '',
                 'subject'    => $post['subject'],
-                'from_email' => env('FROM_EMAIL', 'info@condat.com.au'), //change this later
-                'from_name'  => 'Condat Solutions', //change this later
+                'from_email' => 'noreply@condat.com.au', //change this later
+                'from_name'  => $company['company_name'], //change this later
             ];
             Mail::send('template.master', $param, function ($message) use ($data) {
                 $message->to($data['to_email'], $data['to_name'])
