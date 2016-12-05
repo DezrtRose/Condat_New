@@ -10,8 +10,8 @@
       <div class="row">
         <div class="col-xs-6">
           <h1>
-            
-            <img src="http://theexcursionnepal.com/assets/images/logo.png" width="400px">
+
+            <img src="{{ (isset($company['logo_path']) && !empty($company['logo_path']))? $company['logo_path'] : '' }}" height="100px">
             
           </h1>
         </div>
@@ -91,7 +91,7 @@
         <div class="col-xs-2">
           <p>
             <h4>
-            ${{ float_format($invoice->invoice_amount) }}<br>
+            ${{ float_format($invoice->amount) }}<br>
               ${{ float_format($invoice->total_gst) }} <br>
               <h3>${{ float_format($invoice->final_total) }}</h3>
               ${{ float_format($pay_details->paid) }}<br>

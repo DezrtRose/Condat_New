@@ -3,7 +3,6 @@
 use App\Modules\Tenant\Models\Application\CourseApplication;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
-use App\Modules\Tenant\Models\Client\ClientPayment;
 use App\Modules\Tenant\Models\PaymentInvoiceBreakdown;
 use Illuminate\Database\Eloquent\Model;
 use DB;
@@ -113,14 +112,14 @@ class StudentInvoice extends Model
     {
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->where('student_invoices.client_id', $client_id)
-            ->select('invoices.invoice_id', 'invoices.final_total')
+            ->select('invoices.invoice_id', 'invoices.amount')
             ->orderBy('created_at', 'desc')
             ->get();
         //->lists('invoice_details', 'invoices.invoice_id');
         $invoice_list = array();
         foreach ($invoices as $key => $invoice) {
             $formatted_id = format_id($invoice->invoice_id, 'I');
-            $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->final_total;
+            $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->amount;
         }
         return $invoice_list;
     }
@@ -188,9 +187,9 @@ class StudentInvoice extends Model
 
         if ($request['from'] != '' && $request['to'] != '')
             $invoices_query = $invoices_query->whereBetween('invoices.invoice_amount', [$request['from'], $request['to']]);
-        elseif($request['from'])
+        elseif ($request['from'])
             $invoices_query = $invoices_query->where('invoices.invoice_amount', '>=', $request['from']);
-        elseif($request['to'])
+        elseif ($request['to'])
             $invoices_query = $invoices_query->where('invoices.invoice_amount', '<=', $request['to']);
 
         if (isset($request['college_name']) && !empty($request['college_name']))
@@ -236,7 +235,7 @@ class StudentInvoice extends Model
             ->leftjoin('persons', 'persons.person_id', '=', 'clients.person_id')
             ->leftJoin('course_application', 'student_invoices.application_id', '=', 'course_application.course_application_id')
             ->leftjoin('institutes', 'course_application.institute_id', '=', 'institutes.institution_id')
-            ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id') //Only for the ones that are associated with application
+            ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id')//Only for the ones that are associated with application
             ->select(['invoices.*', 'student_invoices.*', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name'),
                 DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
                 THEN (companies.invoice_to_name)
@@ -260,9 +259,6 @@ class StudentInvoice extends Model
     function editInvoice(array $request, $invoice_id)
     {
         $student_invoice = StudentInvoice::find($invoice_id);
-        $student_invoice->application_id = $request['application_id'];
-        $student_invoice->save();
-
         $invoice = Invoice::find($student_invoice->invoice_id);
         $invoice->amount = $request['amount'];
         $invoice->invoice_date = insert_dateformat($request['invoice_date']);
@@ -274,7 +270,7 @@ class StudentInvoice extends Model
         $invoice->due_date = insert_dateformat($request['due_date']);
         $invoice->save();
 
-        return $student_invoice->client_id;
+        return $student_invoice->application_id;
     }
 
     function getOutstandingPayments()
@@ -288,14 +284,13 @@ class StudentInvoice extends Model
 
         $outstanding_payments = array();
 
-        foreach($invoices as $key => $invoice){
-            $paid_amount = ClientPayment::leftJoin('student_application_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
-                ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
-                ->where('client_payments.client_id', $invoice->client_id)
+        foreach ($invoices as $key => $invoice) {
+            $paid_amount = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
+                ->join('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+                ->where('client_id', $invoice->client_id)
                 ->sum('client_payments.amount');
             $outstanding = $invoice->total_amount - $paid_amount;
-            if($outstanding > 0)
-            {
+            if ($outstanding > 0) {
                 $client = new Client();
                 $details = $client->getDetails($invoice->client_id);
                 $outstanding_payments[$invoice->client_id]['client_name'] = $invoice->fullname;
@@ -306,5 +301,31 @@ class StudentInvoice extends Model
             }
         }
         return $outstanding_payments;
+    }
+
+    function deleteInvoice($invoice_id, $paymentDelete = false)
+    {
+        DB::beginTransaction();
+
+        try {
+            $invoice = Invoice::find($invoice_id);
+            $stud_inv = StudentInvoice::where('invoice_id', $invoice_id)->first();
+            if ($paymentDelete == false) {
+                //deleting only the connections
+                PaymentInvoiceBreakdown::where('invoice_id', $invoice_id)->delete();
+            } else {
+                PaymentInvoiceBreakdown::where('invoice_id', $invoice_id)->delete();
+            }
+            $invoice->delete();
+            $stud_inv->delete();
+            DB::commit();
+            return true;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            // something went wrong
+        }
+
     }
 }

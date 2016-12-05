@@ -63,7 +63,7 @@
                 <h3 class="box-title">Invoice Payments</h3>
 
                 <a href="{{route('tenant.'.$route_type.'.invoice', [$tenant_id, $invoice->invoice_id])}}"
-                   class="btn btn-primary btn-flat pull-right"><i class="fa fa-print"></i> Print Invoice</a>
+                   class="btn btn-primary btn-flat pull-right" target="_blank"><i class="fa fa-print"></i> Print Invoice</a>
             </div>
             <div class="box-body">
                 <table id="payments" class="table table-bordered table-striped dataTable">

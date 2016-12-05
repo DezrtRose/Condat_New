@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Carbon\Carbon;
 use App\Modules\Tenant\Models\Application\CourseApplication;
-use Illuminate\Http\Request;
 
 class ApplicationStatus extends Model
 {
@@ -291,14 +290,14 @@ class ApplicationStatus extends Model
     {
         $folder = 'document';
         $file = ($file == '') ? 'document' : $file;
-
+        $tenant_id = \Request::segment(1); //direct tenant id Krita
         $client_id = CourseApplication::find($application_id)->client_id;
         if ($file_info = tenant()->folder($folder, true)->upload($file)) {
             $document = new ApplicationStatusDocument();
             $document_id = $document->uploadDocument($application_id, $file_info, $request, $status_id);
             $document = Document::find($document_id);
             $client = new Client();
-            $client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.client.document.download', $document_id)], $application_id);
+            $client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.client.document.download', [$tenant_id, $document_id])], $application_id);
             return true;
         } else {
             return false;

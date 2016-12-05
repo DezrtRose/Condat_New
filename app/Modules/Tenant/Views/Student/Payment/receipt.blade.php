@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sample Invoice</title>
+    <title>Payment Receipt</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
@@ -12,9 +12,7 @@
     <div class="row">
         <div class="col-xs-6">
             <h1>
-
-                {{--<img src="sample invoice_files/logo.png" height="50px">--}}
-
+                <img src="{{ (isset($company['logo_path']) && !empty($company['logo_path']))? $company['logo_path'] : '' }}" height="100px">
             </h1>
         </div>
         <div class="col-xs-6 text-right">
