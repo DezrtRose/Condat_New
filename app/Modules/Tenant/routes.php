@@ -194,6 +194,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('student/{invoice_id}/editInvoice', ['as' => 'tenant.student.editInvoice', 'uses' => 'StudentController@editInvoice']);
     Route::put('student/{invoice_id}/editInvoice', ['as' => 'tenant.student.updateInvoice', 'uses' => 'StudentController@updateInvoice']);
     Route::get('student/{invoice_id}/deleteInvoice', ['as' => 'tenant.student.deleteInvoice', 'uses' => 'StudentController@deleteInvoice']);
+    Route::get('student/{invoice_id}/deleteInvoiceOnly', ['as' => 'tenant.student.deleteInvoiceOnly', 'uses' => 'StudentController@deleteInvoiceOnly']);
 
     /* Routes for subagent section */
     Route::get('applications/{application_id}/subagents', ['as' => 'tenant.application.subagents', 'uses' => 'SubAgentController@index']);
@@ -372,7 +373,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('applications/{course_application_id}/apply_offer', ['as' => 'applications.apply.offer', 'uses' => 'ApplicationStatusController@apply_offer']);
     Route::post('applications/{course_application_id}/update', ['as' => 'applications.apply.update', 'uses' => 'ApplicationStatusController@update']);
     Route::get('applications/{course_application_id}/cancel_application', ['as' => 'applications.cancel.application', 'uses' => 'ApplicationStatusController@cancel_application']);
-    Route::post('applications/{course_application_id}/cancel', ['as' => 'application.cancel', 'uses' => 'ApplicationStatusController@cancel_qurantine']);
+    Route::post('applications/{course_application_id}/cancel', ['as' => 'application.cancel', 'uses' => 'ApplicationStatusController@cancel']);
     Route::get('applications/{course_application_id}/offer_letter_received', ['as' => 'applications.offer.received', 'uses' => 'ApplicationStatusController@offer_letter_received']);
     Route::post('applications/{course_application_id}/update_offer_update', ['as' => 'applications.offer_letter.update', 'uses' => 'ApplicationStatusController@offer_received_update']);
     Route::get('applications/{course_application_id}/apply_coe', ['as' => 'applications.apply.coe', 'uses' => 'ApplicationStatusController@apply_coe']);

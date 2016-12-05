@@ -12,8 +12,8 @@
                 <p class="text-muted">You can choose between the delete options.</p>
             </div>
             <div class="modal-footer">
-                <a href="{{ route("tenant.student.deleteInvoiceOnly", [$tenant_id, 1]) }}" class="btn btn-action btn-primary" id="" onclick="return confirm('Are you sure? The action cannot be undone.')">Delete Invoice Only</a>
-                <a href="{{ route("tenant.student.deleteInvoice", [$tenant_id, 1]) }}" class="btn btn-action btn-danger" id="" onclick="return confirm('Are you sure? The action cannot be undone.')">Delete Invoice and Payments</a>
+                <a href="#" class="btn btn-action btn-primary btn-delete" data-action="deleteInvoiceOnly" id="" onclick="return confirm('Are you sure? The action cannot be undone.')">Delete Invoice Only</a>
+                <a href="#" class="btn btn-action btn-danger btn-delete" data-action="deleteInvoice" id="" onclick="return confirm('Are you sure? The action cannot be undone.')">Delete Invoice and Payments</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div><!-- /.modal-content -->

@@ -5,6 +5,7 @@ namespace App\Modules\Tenant\Controllers;
 use App\Modules\Tenant\Models\Agent;
 use App\Modules\Tenant\Models\Application\ApplicationStatusDocument;
 use App\Modules\Tenant\Models\Application\Status;
+use App\Modules\Tenant\Models\Client\ApplicationNotes;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Institute\Institute;
 use App\Modules\Tenant\Models\Institute\InstituteDocument;
@@ -19,7 +20,7 @@ use Flash;
 
 class ApplicationStatusController extends BaseController
 {
-    function __construct(CourseApplication $application, Request $request, Notes $note, ApplicationStatus $application_status, ApplicationStatusDocument $document, Intake $intake, Client $client, Institute $institute, User $user, Agent $agent, InstituteDocument $instituteDocument)
+    function __construct(CourseApplication $application, Request $request, ApplicationNotes $note, ApplicationStatus $application_status, ApplicationStatusDocument $document, Intake $intake, Client $client, Institute $institute, User $user, Agent $agent, InstituteDocument $instituteDocument)
     {
         $this->application = $application;
         $this->application_status = $application_status;
@@ -83,14 +84,13 @@ class ApplicationStatusController extends BaseController
         return view('Tenant::ApplicationStatus/action/cancel_application', ['applications' => $applications]);
     }
 
-    //cancel/qurantine actions
-    public function cancel_qurantine($tenant_id)
+    //cancel/quarantine actions
+    public function cancel($tenant_id, $application_id)
     {
-        $created = $this->note->note_create($this->request->all());
+        $created = $this->application_status->cancel($tenant_id, $this->request->all(), $application_id);
         if ($created)
-
-            Session::flash('success', 'Quarantinded Successfully');
-        return redirect()->route('applications.offer_letter_processing.index', $tenant_id);
+            Session::flash('success', 'Application Cancelled Successfully');
+        return redirect()->route('applications.cancelled.index', $tenant_id);
     }
 
     //Information for offer letter processing page
@@ -210,6 +210,12 @@ class ApplicationStatusController extends BaseController
             Flash::success(count($data['applications']).' record(s) found.');
         }
         return view('Tenant::ApplicationStatus/search', $data);
+    }
+
+    public function cancelled($tenant_id)
+    {
+        $applications = $this->application_status->getApplications(8);
+        return view('Tenant::ApplicationStatus/cancel', compact('applications'));
     }
 
 

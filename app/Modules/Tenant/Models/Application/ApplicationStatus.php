@@ -363,4 +363,26 @@ class ApplicationStatus extends Model
         return $status;
     }
 
+    function cancel($tenant_id, array $request, $course_application_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $note = new ApplicationNotes();
+            $note->add($request, $course_application_id);
+
+            $this->change_status($course_application_id, 8);
+            $this->add_timeline($tenant_id, $course_application_id, 8);
+
+            DB::commit();
+            return true;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            //return false;
+            dd($e);
+            // something went wrong
+        }
+    }
+
 }
