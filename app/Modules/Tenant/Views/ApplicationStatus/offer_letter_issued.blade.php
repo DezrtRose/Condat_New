@@ -46,10 +46,10 @@
                                    title="Apply COE"><i class=" btn btn-primary btn-sm glyphicon glyphicon-education"
                                                         data-toggle="tooltip" data-placement="top"
                                                         title="Apply COE"></i></a>
-                                <a href="{{route('tenant.client.show', [$tenant_id, $application->client_id])}}" title="view"><i
+                                <a href="{{route('tenant.application.show', [$tenant_id, $application->course_application_id])}}" title="view"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View"></i></a>
-                                <a href="{{route('tenant.client.edit', [$tenant_id, $application->client_id])}}" title="edit"><i
+                                <a href="{{route('tenant.application.edit', [$tenant_id, $application->course_application_id])}}" title="edit"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-edit"
                                             data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
                             </td>

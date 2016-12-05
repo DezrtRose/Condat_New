@@ -140,26 +140,31 @@ class UserController extends BaseController
         $created = $this->user->add($request->all());
         if ($created) {
             Flash::success('User has been created successfully.');
-
+            $company = $this->getCompanyDetails();
             // sending mail to user
             $agency = MasterCompany::where(['agencies_agent_id' => $tenant_id])->first();
             $complete_profile_url = url($tenant_id . '/login?&auth_code=' . md5($created));
             $client_message = <<<EOD
 <strong>Dear {$request['first_name']}, </srtong>
-<p>Your account has been created in Condat Solutions. Please <a href="$complete_profile_url">click here</a> or follow the link below to complete your account.</p>
+<p>Your account has been created for {$company['company_name']} Condat Solutions. Please <a href="$complete_profile_url">click here</a> or follow the link below to complete your account.</p>
 <a href="$complete_profile_url">$complete_profile_url</a>
+<p>
+Regards,<br>
+{$company['company_name']}<br>
+Condat Solutions
+</p>
 EOD;
 
             $param = ['content' => $client_message,
-                'subject' => 'Account Created Successfully',
-                'heading' => $agency->name,
+                'subject' => 'Activate Your Account',
+                'heading' => $company['company_name'],
                 'subheading' => 'All your business in one space',
             ];
             $data = ['to_email' => $request['email'],
                 'to_name' => $request['first_name'],
-                'subject' => 'Account Created Successfully',
+                'subject' => 'Activate Your Account',
                 'from_email' => 'noreply@condat.com.au', //change this later
-                'from_name' => $agency->name, //change this later
+                'from_name' => $company['company_name'], //change this later
             ];
 
             Mail::send('template.master', $param, function ($message) use ($data) {

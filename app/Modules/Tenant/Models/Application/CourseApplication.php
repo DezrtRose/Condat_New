@@ -91,7 +91,7 @@ class CourseApplication extends Model
             $application = CourseApplication::find($application_id);
             $application->institution_course_id = $request['institution_course_id'];
             $application->intake_id = $request['intake_id'];
-            $application->end_date = insert_dateformat($request['end_date']);
+            $application->end_date = insert_dateformat(trim($request['end_date']));
             $application->tuition_fee = $request['tuition_fee'];
             $application->super_agent_id = $request['super_agent_id'];
             $application->sub_agent_id = $request['sub_agent_id'];
