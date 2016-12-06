@@ -1,6 +1,5 @@
 @extends('layouts.tenant')
 @section('title', 'Application Offer Letter Processing')
-@section('heading', '<h1>Application - <small>Offer Letter Processing</small></h1>')
 @section('breadcrumb')
     @parent
     <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
@@ -16,7 +15,7 @@
 
         <div class="box box-primary">
             <div class="box-header">
-                <h3 class="box-title">All Applications</h3>
+                <h3 class="box-title">Application - Offer Letter Processing</h3>
             </div>
             <div class="box-body">
                 <table class="table table-striped table-bordered table-condensed" id="offer_table">

@@ -1,6 +1,5 @@
 @extends('layouts.tenant')
 @section('title', 'Application COE Issued')
-@section('heading', '<h1>Application - <small>COE Issued</small></h1>')
 @section('breadcrumb')
     @parent
     <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a></li>
@@ -14,7 +13,7 @@
         @include('flash::message')
         <div class="box box-primary">
             <div class="box-header">
-                <h3 class="box-title">All Applications</h3>
+                <h3 class="box-title">Application - COE Issued</h3>
             </div>
             <div class="box-body">
                 <table class="table table-striped table-bordered table-condensed" id="coe_table">
