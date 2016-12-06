@@ -67,21 +67,8 @@ class ApplicationStatusController extends BaseController
     //Information for cancel/quarantine action page whose parent page is Enquiry
     public function cancel_application($tenant_id, $course_application_id)
     {
-        $applications = CourseApplication::leftjoin('users', 'users.user_id', '=', 'course_application.user_id')
-            ->leftjoin('persons', 'persons.person_id', '=', 'users.person_id')
-            ->leftjoin('institute_courses', 'institute_courses.institute_course_id', '=', 'course_application.institution_course_id')
-            ->leftjoin('courses', 'courses.course_id', '=', 'institute_courses.course_id')
-            ->leftjoin('institutes', 'institutes.institution_id', '=', 'institute_courses.institute_id')
-            ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id')
-            ->leftjoin('intakes', 'intakes.intake_id', '=', 'course_application.intake_id')
-            ->leftjoin('application_notes', 'course_application.course_application_id', '=', 'application_notes.application_id')
-            ->leftjoin('notes', 'application_notes.note_id', '=', 'notes.notes_id')
-            ->where('course_application.course_application_id', $course_application_id)
-            ->select(['persons.first_name', 'companies.name as company', 'courses.name', 'intakes.intake_date', 'course_application.tuition_fee', 'course_application.course_application_id'])
-            ->orderBy('course_application.course_application_id', 'desc')
-            ->find($course_application_id);
-
-        return view('Tenant::ApplicationStatus/action/cancel_application', ['applications' => $applications]);
+        $data['application'] = $this->application->getDetails($course_application_id);
+        return view('Tenant::ApplicationStatus/action/cancel_application', $data);
     }
 
     //cancel/quarantine actions
@@ -89,7 +76,7 @@ class ApplicationStatusController extends BaseController
     {
         $created = $this->application_status->cancel($tenant_id, $this->request->all(), $application_id);
         if ($created)
-            Session::flash('success', 'Application Cancelled Successfully');
+            Flash::success('Application Cancelled Successfully');
         return redirect()->route('applications.cancelled.index', $tenant_id);
     }
 
@@ -119,7 +106,7 @@ class ApplicationStatusController extends BaseController
             'tuition_fee' => 'required',
         ]; //$file = $this->request->file('document'); dd($file);
         $this->validate($this->request, $upload_rules);
-        $this->application_status->offer_received($this->request->all(), $course_application_id);
+        $this->application_status->offer_received($tenant_id, $this->request->all(), $course_application_id);
         Flash::success('Offer letter received.');
         return redirect()->route('applications.offer_letter_issued.index', $tenant_id);
     }
@@ -141,9 +128,9 @@ class ApplicationStatusController extends BaseController
     //updates for applied_offer
     public function update_applied_coe($tenant_id, $course_application_id)
     {
-        $this->application_status->coe_update($this->request->all(), $course_application_id);
+        $this->application_status->coe_update($tenant_id, $this->request->all(), $course_application_id);
         Flash::success('Status Updated Successfully.');
-        return redirect()->route('applications.coe_processing.index');
+        return redirect()->route('applications.coe_processing.index', $tenant_id);
     }
 
     //Information for coe processing page
@@ -164,14 +151,8 @@ class ApplicationStatusController extends BaseController
     //updates for action_coe_issued
     public function update_coe_issued($tenant_id, $course_application_id)
     {
-        $updated = $this->application_status->coe_issued_update($this->request->all(), $course_application_id);
-        if ($updated)
-            $updated = $this->document->document_create($this->request->all());
-
-        if ($updated)
-            $updated = $this->application_status->coe_issued_create($this->request->all(), $course_application_id);
-
-        Session::flash('success', 'Updated Successfully');
+        $this->application_status->coe_issued_update($tenant_id, $this->request->all(), $course_application_id);
+        Session::flash('success', 'Status Updated Successfully');
         return redirect()->route('applications.coe_issued.index', $tenant_id);
     }
 

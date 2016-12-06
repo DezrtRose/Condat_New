@@ -1,68 +1,59 @@
 @extends('layouts.tenant')
-@section('title', 'Cancel Application')
+@section('title', 'Application Cancel')
+@section('heading', '<h1>Application - <small>Cancel</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>
-    <li>Notes</li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a>
+    </li>
+    <li>Cancel</li>
 @stop
 
+
 @section('content')
-    <div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				@if(count($errors)>0)
-					<div class="alert alert-waring">
-						<ul>
-						@foreach($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-						</ul>
-					</div>
-				@endif
-				<h1 class="margin-down">{{ $applications->first_name}} - <small>Cancel Application</small></h1>
-				
-				 @include('Tenant::ApplicationStatus/partial/navbar')
-				
-				<div class="box box-primary">
-					<div class="box-body">
-						{!! Form::open([
-									'class'=>'form-horizontal',
-									'route'=>['application.cancel', $tenant_id, $applications->course_application_id]
-						])!!}	
-						
-							<div class="form-group">
-								{{ Form::label('institute_name', 'Institute Name',['class'=>'col-md-3 form-label text-right'])}}
-								<div class="col-md-9">
-									{{ $applications->company }}	
-								</div>
-							</div>
+    <div class="col-md-12">
+        @include('Tenant::ApplicationStatus/partial/navbar')
 
-							<div class="form-group">
-								{{ Form::label('course_name', 'Course Name',['class'=>'col-md-3 form-label text-right'])}}
-								<div class="col-md-9">
-								{{ $applications->name }}	
-								</div>
-							</div>
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Application Cancel Details</h3>
+            </div>
+            <div class="box-body">
+                {!! Form::model($application, [
+                            'class'=>'form-horizontal',
+                            'route'=>['application.cancel', $tenant_id, $application->course_application_id]
+                ])!!}
 
-							<div class="form-group">
-								{{ Form::label('description', 'Notes', ['class'=>'col-md-3 form-label text-right'])}}
-								<div class="col-md-9">
-								{{ Form::textarea('description', '', ['class'=>'col-md-6','rows'=>5])}}
-								</div>
-							</div>
+                <div class="form-group">
+                    {{ Form::label('institute_name', 'Institute Name', ['class'=>'col-md-3 form-label text-right'])}}
+                    <div class="col-md-9">
+                        {{ $application->company_name }}
+                    </div>
+                </div>
 
-							<div class="form-group">
-								<div class="col-md-9 col-md-offset-3">
-								{{ Form::submit('Cancel',['class'=>'btn btn-primary'])}}
-								</div>
-							</div>
+                <div class="form-group">
+                    {{ Form::label('course_name', 'Course Name', ['class'=>'col-md-3 form-label text-right'])}}
+                    <div class="col-md-9">
+                        {{ $application->course_name }}
+                    </div>
+                </div>
 
-						{!! Form::close()!!}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="form-group">
+                    {{ Form::label('description', 'Notes', ['class'=>'col-md-3 form-label text-right'])}}
+                    <div class="col-md-9">
+                        {{ Form::textarea('description', null, ['class'=>'col-md-6','rows'=>5])}}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-9 col-md-offset-3">
+                        {{ Form::submit('Cancel',['class'=>'btn btn-primary'])}}
+                    </div>
+                </div>
+
+                {!! Form::close()!!}
+            </div>
+        </div>
+    </div>
 @stop
 					 
 
