@@ -1,5 +1,5 @@
 @extends('layouts.tenant')
-@section('title', 'Update Invoice')
+@section('title', 'Update College Invoice')
 @section('breadcrumb')
     @parent
     <li><a href="{{url($tenant_id.'/clients')}}" title="All Clients"><i class="fa fa-users"></i> Clients</a></li>

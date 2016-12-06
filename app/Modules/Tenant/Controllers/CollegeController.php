@@ -301,7 +301,7 @@ class CollegeController extends BaseController
     public function editInvoice($tenant_id, $invoice_id)
     {
         $data['invoice'] = $this->invoice->getDetails($invoice_id);
-        return view("Tenant::Student/Invoice/edit", $data);
+        return view("Tenant::College/Invoice/edit", $data);
     }
 
     public function updateInvoice($tenant_id, $invoice_id)

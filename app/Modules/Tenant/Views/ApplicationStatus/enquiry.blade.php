@@ -53,7 +53,7 @@
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-edit"
                                             data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
                                 <a href="{{ route('applications.cancel.application',[$tenant_id, $application->course_application_id])}}"
-                                   title="cancel/quarantine"><i
+                                   title="Cancel / Quarantine"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-trash"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Cancel"></i></a>
