@@ -160,7 +160,7 @@ class CollegeController extends BaseController
             ->addColumn('invoice_id', function ($data) use($tenant_id) {
                 if ((empty($data->college_invoice_id) || $data->college_invoice_id == 0) && $data->payment_type == 'College to Agent')
                     return 'Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id.'/college/payment/' . $data->college_payment_id . '/' . $data->course_application_id . '/assign') . '"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>';
-                elseif ($data->payment_type == 'College to Agent')
+                elseif ($data->payment_type == 'College to Agent' || $data->payment_type == 'Pre Claimed Commission')
                     return format_id($data->college_invoice_id, 'CI');
                 else
                     return 'Cannot Be Assigned';
