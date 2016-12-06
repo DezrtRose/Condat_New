@@ -118,35 +118,6 @@ class ApplicationStatus extends Model
         }
     }
 
-    function coe_issued_create(array $request, $course_application_id)
-    {
-        DB::beginTransaction();
-
-        try {
-
-            $status = ApplicationStatus::where('course_application_id', $course_application_id)
-                ->where('status_id', 5)
-                ->first();
-            if (!$status) {
-                $status = ApplicationStatus::create([
-                    'course_application_id' => $course_application_id,
-                    'status_id' => 5,
-                    'date_applied' => Carbon::now()
-                ]);
-            }
-
-
-            DB::commit();
-            return true;
-            // all good
-        } catch (\Exception $e) {
-            DB::rollback();
-            //return false;
-            dd($e);
-            // something went wrong
-        }
-    }
-
     function apply_offer($tenant_id, array $request, $course_application_id)
     {
         DB::beginTransaction();
@@ -191,13 +162,13 @@ class ApplicationStatus extends Model
     {
         $client = new Client();
         $client_id = CourseApplication::find($application_id)->client_id;
-        $status1 = Status::find($status_id - 1)->decription;
-        $status2 = Status::find($status_id)->decription;
+        $status1 = Status::find($status_id - 1)->description;
+        $status2 = Status::find($status_id)->description;
 
         $client->addLog($client_id, 7, ['{{NAME}}' => get_tenant_name(), '{{STATUS1}}' => $status1, '{{STATUS2}}' => $status2, '{{VIEW_LINK}}' => route('tenant.application.show', [$tenant_id, $application_id])], $application_id);
     }
 
-    function offer_received(array $request, $course_application_id)
+    function offer_received($tenant_id, array $request, $course_application_id)
     {
         DB::beginTransaction();
 
@@ -220,6 +191,8 @@ class ApplicationStatus extends Model
 
             $this->change_status($course_application_id, 3);
 
+            $this->add_timeline($tenant_id, $course_application_id, 3);
+
             DB::commit();
             return true;
             // all good
@@ -231,7 +204,7 @@ class ApplicationStatus extends Model
         }
     }
 
-    function coe_update(array $request, $course_application_id)
+    function coe_update($tenant_id, array $request, $course_application_id)
     {
         DB::beginTransaction();
 
@@ -242,6 +215,8 @@ class ApplicationStatus extends Model
 
             $this->change_status($course_application_id, 4);
 
+            $this->add_timeline($tenant_id, $course_application_id, 4);
+
             DB::commit();
             return true;
             // all good
@@ -253,18 +228,30 @@ class ApplicationStatus extends Model
         }
     }
 
-    function coe_issued_update(array $request, $course_application_id)
+    function coe_issued_update($tenant_id, array $request, $course_application_id)
     {
         DB::beginTransaction();
 
         try {
 
             $applications = CourseApplication::find($course_application_id);
-            $applications->fee_for_coe = $request['total_tuition_fee'];
-            $applications->end_date = $request['finish_date'];
-            $applications->student_id = $request['student_id'];
+            $applications->tuition_fee = $request['tuition_fee'];
+            $applications->intake_id = $request['intake_id'];
+            $applications->end_date = insert_dateformat($request['end_date']);
             $applications->save();
 
+            //Add Note
+            $note = new ApplicationNotes();
+            $note->add($request, $course_application_id);
+            $client = new Client();
+            $client->addLog($applications->client_id, 2, ['{{DESCRIPTION}}' => $request['description'], '{{NAME}}' => get_tenant_name()], $course_application_id);
+
+            //Upload Document
+            $this->uploadDocument($course_application_id, 4, $request);
+
+            $this->change_status($course_application_id, 5);
+
+            $this->add_timeline($tenant_id, $course_application_id, 5);
 
             DB::commit();
             return true;

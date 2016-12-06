@@ -3,7 +3,8 @@
 @section('heading', '<h1>Application - <small>COE Issued</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a></li>
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a>
+    </li>
     <li>COE Issued</li>
 @stop
 
@@ -46,7 +47,11 @@
 
                             <div class="col-sm-9">
                                 <div class='input-group date'>
-                                    <input type="text" name="end_date" class="form-control datepicker" id="end_date">
+                                    @if(isset($application->end_date) && $application->end_date != null)
+                                        {!!Form::text('end_date', format_date($application->end_date), array('class' => 'form-control datepicker', 'id'=>'end_date'))!!}
+                                    @else
+                                        {!!Form::text('end_date', null, array('class' => 'form-control datepicker', 'id'=>'end_date'))!!}
+                                    @endif
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -65,12 +70,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group @if($errors->has('student_id')) {{'has-error'}} @endif">
-                            {{ Form::label('student_id', 'Notes', ['class'=>'col-md-3 form-label text-right'])}}
+                        <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
+                            {{ Form::label('description', 'Notes', ['class'=>'col-md-3 form-label text-right'])}}
                             <div class="col-md-9">
-                                {{ Form::text('student_id', null, ['class'=>'form-control', 'placeholder'=>'Student ID'])}}
-                                @if($errors->has('student_id'))
-                                    {!! $errors->first('student_id', '<label class="control-label"
+                                {{ Form::textarea('description', null, ['class'=>'form-control', 'placeholder'=>'Description'])}}
+                                @if($errors->has('description'))
+                                    {!! $errors->first('description', '<label class="control-label"
                                                                               for="inputError">:message</label>') !!}
                                 @endif
                             </div>
