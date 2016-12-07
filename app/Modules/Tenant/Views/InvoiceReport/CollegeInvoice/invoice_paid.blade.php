@@ -65,6 +65,9 @@
             </div>
         </div>
     </div>
+
+    {!! Condat::registerModal() !!}
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#invoice_report_table').DataTable({
