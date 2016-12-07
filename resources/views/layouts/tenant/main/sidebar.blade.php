@@ -25,11 +25,11 @@
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-money"></i>
-                    <span>Enrollment</span>
+                    <span>Applications</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{url($tenant_id.'/applications/enquiry')}}"><i class="fa fa-circle-o"></i> Enrollment List</a></li>
-                    <li><a href="{{route('applications.search.index', $tenant_id)}}"><i class="fa fa-circle-o"></i> Filter Enrollment</a></li>
+                    <li><a href="{{url($tenant_id.'/applications/enquiry')}}"><i class="fa fa-circle-o"></i> Application List</a></li>
+                    <li><a href="{{route('applications.search.index', $tenant_id)}}"><i class="fa fa-circle-o"></i> Filter Application</a></li>
                 </ul>
             </li>
             @endif
