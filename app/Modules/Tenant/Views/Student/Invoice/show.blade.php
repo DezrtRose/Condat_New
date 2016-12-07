@@ -4,7 +4,7 @@
     <title>Sample Invoice</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   </head>
-  
+
   <body>
     <div class="container">
       <div class="row">
@@ -12,7 +12,7 @@
           <h1>
 
             <img src="{{ (isset($company['logo_path']) && !empty($company['logo_path']))? $company['logo_path'] : '' }}" height="100px">
-            
+
           </h1>
         </div>
         <div class="col-xs-6 text-right">
@@ -57,11 +57,11 @@
       <table class="table table-bordered">
         <thead class="thead-default">
           <tr>
-            
+
             <th>
               <h4>Description</h4>
             </th>
-            
+
             <th>
               <h4>Amount</h4>
             </th>
