@@ -144,7 +144,7 @@ class StudentController extends BaseController
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . url($tenant_id . "/students/payment/receipt/" . $data->client_payment_id) . '" target="_blank">Print Receipt</a></li>
                     <li><a href="' . route("application.students.editPayment", [$tenant_id, $data->student_payments_id]) . '">Edit</a></li>
-                    <li><a href="' . route("application.students.deletePayment", [$tenant_id, $data->student_payments_id]) . '" onclick="return (\'Are you sure?\')">Delete</a></li>
+                    <li><a href="' . route("application.students.deletePayment", [$tenant_id, $data->client_payment_id]) . '" onclick="return confirm(\'Are you sure?\')">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -330,8 +330,7 @@ class StudentController extends BaseController
 
     public function deletePayment($tenant_id, $payment_id)
     {
-        StudentApplicationPayment::where('client_payment_id', $payment_id)->delete();
-        ClientPayment::find($payment_id)->delete();
+        $this->payment->deletePayment($payment_id);
         Flash::success('Payment has been deleted successfully.');
         return redirect()->back();
     }

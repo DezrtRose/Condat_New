@@ -80,7 +80,7 @@ class StudentInvoice extends Model
     {
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->where('student_invoices.application_id', $application_id)
-            ->sum('invoices.amount');
+            ->sum('invoices.final_total');
         return $invoices;
     }
 
