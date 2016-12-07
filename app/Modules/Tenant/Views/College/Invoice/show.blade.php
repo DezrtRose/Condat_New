@@ -78,12 +78,14 @@
         </tr>
         </thead>
         <tbody>
+        @if($invoice->commission_amount && $invoice->gst)
         <tr>
             <td>{{ $client_name }}</td>
             <td>{{ $invoice->description }}</td>
             <td class="text-right">${{ float_format($invoice->commission_amount) }}</td>
             <td class="text-right">${{ float_format($invoice->gst) }}</td>
         </tr>
+        @endif
         <tr>
             <td>{{ $client_name }}</td>
             <td>{{ $invoice->other_description }}</td>
