@@ -21,4 +21,9 @@
             {!!Form::close()!!}
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#tuition_fee, #enrollment_fee, #material_fee, #coe_fee, #other_fee').trigger('keyup');
+        });
+    </script>
 @stop

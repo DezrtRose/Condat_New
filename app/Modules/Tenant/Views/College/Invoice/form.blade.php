@@ -129,7 +129,7 @@
                 <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
                     {!!Form::label('description', 'Description *', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
-                        {!!Form::text('description', 'Commission on tuition Fee', array('class' => 'form-control', 'id'=>'description'))!!}
+                        {!!Form::text('description', isset($invoice) ? null : 'Commission on tuition Fee', array('class' => 'form-control', 'id'=>'description'))!!}
                         @if($errors->has('description'))
                             {!! $errors->first('description', '<label class="control-label"
                                                                     for="inputError">:message</label>') !!}
@@ -142,7 +142,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
 
-                            {!!Form::text('commission_percent', 0, array('class' => 'form-control', 'id'=>'commission_percent'))!!}
+                            {!!Form::text('commission_percent', null, array('class' => 'form-control', 'id'=>'commission_percent'))!!}
                             <span class="input-group-addon">%</span>
                         </div>
                         @if($errors->has('commission_percent'))
@@ -323,6 +323,7 @@
             $('#sub_total').val(0);
             $('#commission_amount').val(0);
             $('#tuition_fee_gst').val(0);
+            $('#commission_percent').val(0);
             reset_value();
             e.preventDefault();
             var $this = $(this);
