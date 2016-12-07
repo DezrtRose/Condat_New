@@ -307,15 +307,14 @@ class CollegeController extends BaseController
     public function updateInvoice($tenant_id, $invoice_id)
     {
         $rules = [
-            'invoice_amount' => 'required|numeric',
-            'invoice_date' => 'required',
-            'due_date' => 'required'
+            'tuition_fee' => 'required|numeric',
+            'invoice_date' => 'required'
         ];
         $this->validate($this->request, $rules);
 
         $application_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
         Flash::success('Invoice has been updated successfully.');
-        return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
+        return redirect()->route('tenant.application.college', [$tenant_id, $application_id->course_application_id]);
     }
 
     public function deleteInvoice($tenant_id, $college_invoice_id)

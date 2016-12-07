@@ -171,44 +171,66 @@ class CollegeInvoice extends Model
         DB::beginTransaction();
 
         try {
-            $college_invoice = CollegeInvoice::create([
-                'course_application_id' => $application_id,
-                'total_commission' => $request['total_commission'],
-                'total_gst' => $request['total_gst'],
-                'final_total' => $request['final_total'],
-                'installment_no' => $request['installment_no'],
-                'invoice_date' => insert_dateformat($request['invoice_date'])
-            ]);
+            $college_invoice = CollegeInvoice::find($application_id)->first();
+            $college_invoice->total_commission = $request['total_commission'];
+            $college_invoice->total_gst = $request['total_gst'];
+            $college_invoice->final_total = $request['final_total'];
+            $college_invoice->installment_no = $request['installment_no'];
+            $college_invoice->invoice_date = insert_dateformat($request['invoice_date']);
+            $college_invoice->save();
 
             if(isset($request['tuition_fee']))
             {
-                $ci_commission = TuitionCommission::create([
-                    'tuition_fee' => $request['tuition_fee'],
-                    'enrollment_fee' => $request['enrollment_fee'],
-                    'material_fee' => $request['material_fee'],
-                    'coe_fee' => $request['coe_fee'],
-                    'other_fee' => $request['other_fee'],
-                    'sub_total' => $request['sub_total'],
-                    'description' => $request['description'],
-                    'commission_percent' => $request['commission_percent'],
-                    'commission_amount' => $request['commission_amount'],
-                    'commission_gst' => $request['tuition_fee_gst'],
-                    'college_invoice_id' => $college_invoice->college_invoice_id
-                ]);
+                $ci_commission = TuitionCommission::find(['college_invoice_id' => $application_id])->first();
+                if($ci_commission) {
+                    $ci_commission->tuition_fee = $request['tuition_fee'];
+                    $ci_commission->enrollment_fee = $request['enrollment_fee'];
+                    $ci_commission->material_fee = $request['material_fee'];
+                    $ci_commission->coe_fee = $request['coe_fee'];
+                    $ci_commission->other_fee = $request['other_fee'];
+                    $ci_commission->sub_total = $request['sub_total'];
+                    $ci_commission->description = $request['description'];
+                    $ci_commission->commission_percent = $request['commission_percent'];
+                    $ci_commission->commission_amount = $request['commission_amount'];
+                    $ci_commission->commission_gst = $request['tuition_fee_gst'];
+                    $ci_commission->save();
+                } else {
+                    $ci_commission = TuitionCommission::create([
+                        'tuition_fee' => $request['tuition_fee'],
+                        'enrollment_fee' => $request['enrollment_fee'],
+                        'material_fee' => $request['material_fee'],
+                        'coe_fee' => $request['coe_fee'],
+                        'other_fee' => $request['other_fee'],
+                        'sub_total' => $request['sub_total'],
+                        'description' => $request['description'],
+                        'commission_percent' => $request['commission_percent'],
+                        'commission_amount' => $request['commission_amount'],
+                        'commission_gst' => $request['tuition_fee_gst'],
+                        'college_invoice_id' => $application_id
+                    ]);
+                }
             }
 
             if(isset($request['incentive']))
             {
-                $ci_commission = OtherCommission::create([
-                    'amount' => $request['incentive'],
-                    'gst' => $request['incentive_gst'],
-                    'description' => $request['description'],
-                    'college_invoice_id' => $college_invoice->college_invoice_id
-                ]);
+                $ci_commission = OtherCommission::find(['college_invoice_id' => $application_id])->first();
+                if($ci_commission) {
+                    $ci_commission->amount = $request['incentive'];
+                    $ci_commission->gst = $request['incentive_gst'];
+                    $ci_commission->description = $request['other_description'];
+                    $ci_commission->save();
+                } else {
+                    $ci_commission = OtherCommission::create([
+                        'amount' => $request['incentive'],
+                        'gst' => $request['incentive_gst'],
+                        'description' => $request['description'],
+                        'college_invoice_id' => $college_invoice->college_invoice_id
+                    ]);
+                }
             }
 
             DB::commit();
-            return $college_invoice->college_invoice_id;
+            return $college_invoice;
             // all good
         } catch (\Exception $e) {
             DB::rollback();

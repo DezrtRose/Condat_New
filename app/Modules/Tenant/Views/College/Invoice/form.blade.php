@@ -8,7 +8,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        {!!Form::text('invoice_date', null, array('class' => 'form-control', 'id'=>'invoice_date'))!!}
+                        {!!Form::text('invoice_date', isset($invoice) ? format_date($invoice->invoice_date) : '', array('class' => 'form-control', 'id'=>'invoice_date'))!!}
                     </div>
                     @if($errors->has('invoice_date'))
                         {!! $errors->first('invoice_date', '<label class="control-label"
@@ -225,12 +225,12 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
-                    {!!Form::label('description', 'Description *', array('class' => 'col-sm-4 control-label')) !!}
+                <div class="form-group @if($errors->has('other_description')) {{'has-error'}} @endif">
+                    {!!Form::label('other_description', 'Description *', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
-                        {!!Form::text('description', null, array('class' => 'form-control', 'id'=>'description'))!!}
-                        @if($errors->has('description'))
-                            {!! $errors->first('description', '<label class="control-label"
+                        {!!Form::text('other_description', null, array('class' => 'form-control', 'id'=>'other_description'))!!}
+                        @if($errors->has('other_description'))
+                            {!! $errors->first('other_description', '<label class="control-label"
                                                                     for="inputError">:message</label>') !!}
                         @endif
                     </div>
