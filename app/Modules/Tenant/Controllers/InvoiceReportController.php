@@ -103,7 +103,7 @@ class InvoiceReportController extends BaseController
         return view("Tenant::InvoiceReport/CollegeInvoice/invoice_grouped", $data);
     }
 
-    public function showGroupedInvoices($grouped_invoice_id)
+    public function showGroupedInvoices($tenant_id, $grouped_invoice_id)
     {
         $data['invoice_details'] = $this->groupInvoice->getDetails($grouped_invoice_id);
         $data['invoice_ids'] = $this->groupInvoice->getOtherInvoicesList($grouped_invoice_id);
