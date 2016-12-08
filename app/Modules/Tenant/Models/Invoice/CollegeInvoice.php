@@ -335,7 +335,7 @@ class CollegeInvoice extends Model
 
         $invoices = $invoices_query->get();
 
-        if(isset($request['invoice_to']) && $request['invoice_to']) {
+        if(isset($request['invoice_to']) && $request['invoice_to'] && $request['invoice_to'] != 0) {
             foreach ($invoices as $key => $invoice) {
                 if ($invoice->invoice_to != $request['invoice_to'])
                     unset($invoices[$key]);

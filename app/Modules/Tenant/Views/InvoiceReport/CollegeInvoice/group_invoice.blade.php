@@ -21,7 +21,7 @@
             <div class="box-body">
 
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('invoice_to', 'Invoice To', array('class' => 'control-label')) !!}
+                    {!!Form::label('invoice_to', 'Super Agent', array('class' => 'control-label')) !!}
                     {!!Form::select('invoice_to', $invoice_to_list, null, array('class' => 'form-control select2'))!!}
                 </div>
 

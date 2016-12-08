@@ -205,7 +205,7 @@ class InvoiceReportController extends BaseController
     {
         $data['search_attributes'] = array();
         $data['invoice_to_list'] = $this->college_invoice->getInvoiceToList()->toArray();
-        //array_unshift($data['invoice_to_list'], 'All');
+        array_unshift($data['invoice_to_list'], 'All');
         $data['colleges'] = $this->institute->getList();
         $data['clients'] = $this->client->getClientNameList();
         if ($this->request->isMethod('post')) {
@@ -213,7 +213,8 @@ class InvoiceReportController extends BaseController
             $data['invoice_reports'] = $this->college_invoice->getFilterResults($data['search_attributes']);
             Flash::success(count($data['invoice_reports']) . ' record(s) found.');
         } else {
-            $data['invoice_reports'] = $this->college_invoice->getAll();
+            //$data['invoice_reports'] = $this->college_invoice->getAll();
+            $data['invoice_reports'] = array();
         }
         return view("Tenant::InvoiceReport/CollegeInvoice/group_invoice", $data);
     }
