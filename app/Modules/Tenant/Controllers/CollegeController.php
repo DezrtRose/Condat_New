@@ -186,7 +186,7 @@ class CollegeController extends BaseController
             ->select(['college_invoices.*'])
             ->orderBy('college_invoices.created_at', 'desc');*/
 
-        $invoices = CollegeInvoice::where('course_application_id', $application_id)->select(['*'])->orderBy('created_at', 'desc');
+        $invoices = CollegeInvoice::where('course_application_id', $application_id)->select(['*']);
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) use ($tenant_id) {
                 return '<div class="btn-group">
@@ -235,7 +235,7 @@ class CollegeController extends BaseController
             ->select(['college_invoices.*'])
             ->orderBy('college_invoices.created_at', 'desc');*/
 
-        $invoices = CollegeInvoice::where('course_application_id', $application_id)->where('invoice_date', '>=', Carbon\Carbon::now())->select(['*'])->orderBy('created_at', 'desc');
+        $invoices = CollegeInvoice::where('course_application_id', $application_id)->where('invoice_date', '>=', Carbon\Carbon::now())->select(['*']);
         $datatable = \Datatables::of($invoices)
             ->addColumn('action', function ($data) use($tenant_id) {
                 return '<div class="btn-group">
