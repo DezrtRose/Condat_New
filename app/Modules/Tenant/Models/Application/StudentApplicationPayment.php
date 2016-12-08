@@ -98,7 +98,7 @@ class StudentApplicationPayment extends Model
     {
         $payment = ClientPayment::create([
             'client_id' => $client_id,
-            'amount' => $request['amount'],
+            'amount' => $request['payment_type'] == 'Agent to Student' ? '-'.$request['amount'] : $request['amount'],
             'date_paid' => insert_dateformat($request['date_paid']),
             'payment_method' => $request['payment_method'],
             'payment_type' => $request['payment_type'],
