@@ -125,8 +125,8 @@
                 "columns": [
                     {data: 'college_invoice_id', name: 'college_invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},
-                    {data: 'total_commission', name: 'total_commission'},
-                    //{data: 'final_total', name: 'final_total'},
+                    //{data: 'total_commission', name: 'total_commission'},
+                    {data: 'final_total', name: 'final_total'},
                     {data: 'total_gst', name: 'total_gst'},
                     {data: 'status', name: 'status'},
                     {data: 'outstanding_amount', name: 'outstanding_amount'},
@@ -150,8 +150,8 @@
                 "columns": [
                     {data: 'college_invoice_id', name: 'college_invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},
-                    {data: 'total_commission', name: 'total_commission'},
-                    //{data: 'final_total', name: 'final_total'},
+                    //{data: 'total_commission', name: 'total_commission'},
+                    {data: 'final_total', name: 'final_total'},
                     {data: 'total_gst', name: 'total_gst'},
                     {data: 'status', name: 'status'},
                     {data: 'outstanding_amount', name: 'outstanding_amount'},

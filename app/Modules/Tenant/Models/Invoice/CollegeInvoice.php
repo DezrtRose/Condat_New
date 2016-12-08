@@ -111,7 +111,7 @@ class CollegeInvoice extends Model
 
     function getTotalPaid($application_id)
     {
-        $payments = CollegePayment::has('invoice')
+        $payments = CollegePayment::join('college_invoice_payments', 'college_payments.college_payment_id', '=', 'college_invoice_payments.ci_payment_id')
             ->where('course_application_id', $application_id)
             ->sum('amount');
         return $payments;

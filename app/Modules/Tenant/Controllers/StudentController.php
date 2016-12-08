@@ -70,7 +70,7 @@ class StudentController extends BaseController
         if ($created) {
             Flash::success('Payment has been added successfully.');
             $payment = $this->payment->getDetails($created);
-            $this->client->addLog($payment->client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => url("tenant/students/payment/receipt/" . $payment->client_payment_id)], $payment->course_application_id);
+            $this->client->addLog($payment->client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => url($tenant_id."/students/payment/receipt/" . $payment->client_payment_id)], $payment->course_application_id);
         }
         return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
     }
