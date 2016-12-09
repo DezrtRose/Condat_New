@@ -21,7 +21,7 @@
             <td>{{ format_price($payment->amount) }}</td>
             <td>{{ $payment->payment_type }}</td>
             <td>{{ $payment->payment_method }}</td>
-            <td>{{ $payment->payment_method }}</td>
+            <td>{{ get_tenant_name($payment->added_by) }}</td>
             <td>
                 <a href="{{url($tenant_id."/students/payment/receipt/" . $payment->student_payments_id)}}" title="Print Payment"><i
                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
