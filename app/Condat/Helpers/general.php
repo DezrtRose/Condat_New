@@ -298,7 +298,7 @@ function format_price($number = 0, $digits = 2)
  */
 function get_tenant_name($user_id = null)
 {
-    if($user_id == null)
+    if($user_id == null || !$user_id)
         $user_id = current_tenant_id();
     $user = \App\Modules\Tenant\Models\User::find($user_id)->profile;
         if (!empty($user))

@@ -373,13 +373,15 @@ class CollegeInvoice extends Model
 
         try {
             $invoice = CollegeInvoice::find($college_invoice_id);
+            $course_application_id = $invoice->course_application_id;
+            $invoice->delete();
             TuitionCommission::where('college_invoice_id', $college_invoice_id)->delete();
             OtherCommission::where('college_invoice_id', $college_invoice_id)->delete();
 
             $payments = new CollegePayment();
             $payments->deleteInvoicePayment($college_invoice_id);
             DB::commit();
-            return true;
+            return $course_application_id;
             // all good
         } catch (\Exception $e) {
             DB::rollback();

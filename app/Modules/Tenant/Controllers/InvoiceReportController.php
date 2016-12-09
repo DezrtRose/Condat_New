@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
+use App\Modules\Tenant\Models\Client\ClientPayment;
 use App\Modules\Tenant\Models\Institute\Institute;
 use App\Modules\Tenant\Models\Invoice\CollegeInvoice;
 use App\Modules\Tenant\Models\Invoice\GroupCollegeInvoice;
@@ -132,11 +133,10 @@ class InvoiceReportController extends BaseController
 
     public function clientPayments()
     {
-        $data['payments'] = StudentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
-            ->leftJoin('clients', 'clients.client_id', '=', 'client_payments.client_id')
+        $data['payments'] = ClientPayment::leftJoin('clients', 'clients.client_id', '=', 'client_payments.client_id')
             ->leftJoin('persons', 'persons.person_id', '=', 'clients.person_id')
             ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
-            ->select(['student_application_payments.student_payments_id', 'client_payments.*', 'payment_invoice_breakdowns.invoice_id', 'course_application_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name')])
+            ->select(['client_payments.*', 'payment_invoice_breakdowns.invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name')])
             ->get();
         return view("Tenant::InvoiceReport/Payment/clients", $data);
     }
