@@ -199,7 +199,7 @@ class CollegeController extends BaseController
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->college_invoice_id, 1]) . '">View payments</a></li>
                     <li><a href="' . route('tenant.college.invoice', [$tenant_id, $data->college_invoice_id]) . '" target="_blank">View Invoice</a></li>
                     <li><a href="'.route("tenant.college.editInvoice", [$tenant_id, $data->college_invoice_id]).'">Edit</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
+                    <li><a href="'.route("tenant.college.deleteInvoice", [$tenant_id, $data->college_invoice_id]).'">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -319,7 +319,8 @@ class CollegeController extends BaseController
 
     public function deleteInvoice($tenant_id, $college_invoice_id)
     {
-        $this->invoice->deleteInvoice($college_invoice_id);
+        $course_application_id = $this->invoice->deleteInvoice($college_invoice_id);
+        return redirect()->route('tenant.application.college', [$tenant_id, $course_application_id]);
     }
 
     public function printPdf()

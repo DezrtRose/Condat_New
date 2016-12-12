@@ -109,7 +109,9 @@ class CollegePayment extends Model
     function deleteInvoicePayment($invoice_id)
     {
         $college_invoice_payments = CollegeInvoicePayment::where('college_invoice_id', $invoice_id)->lists('ci_payment_id');
-        CollegePayment::whereIn('college_payment_id', $college_invoice_payments)->delete();
-        $college_invoice_payments->delete();
+        if(count($college_invoice_payments)) {
+            CollegePayment::whereIn('college_payment_id', $college_invoice_payments)->delete();
+            $college_invoice_payments->delete();
+        }
     }
 }

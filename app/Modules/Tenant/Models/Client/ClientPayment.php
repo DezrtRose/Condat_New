@@ -25,7 +25,7 @@ class ClientPayment extends Model
      *
      * @var array
      */
-    protected $fillable = ['client_id', 'amount', 'date_paid', 'payment_method', 'description', 'payment_type'];
+    protected $fillable = ['client_id', 'amount', 'date_paid', 'payment_method', 'description', 'payment_type', 'added_by'];
 
     function add(array $request, $client_id)
     {
@@ -38,7 +38,8 @@ class ClientPayment extends Model
                 'date_paid' => insert_dateformat($request['date_paid']),
                 'payment_method' => $request['payment_method'],
                 'payment_type' => $request['payment_type'],
-                'description' => $request['description']
+                'description' => $request['description'],
+                'added_by' => current_tenant_id()
             ]);
 
             DB::commit();

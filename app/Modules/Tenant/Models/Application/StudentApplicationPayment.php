@@ -51,7 +51,7 @@ class StudentApplicationPayment extends Model
             ]);
 
             DB::commit();
-            return $student_payment->student_payments_id;
+            return $student_payment->client_payment_id;
             // all good
         } catch (\Exception $e) {
             DB::rollback();
@@ -142,6 +142,7 @@ class StudentApplicationPayment extends Model
         DB::beginTransaction();
         try {
             StudentApplicationPayment::where('client_payment_id', $payment_id)->delete();
+            PaymentInvoiceBreakdown::where('payment_id', $payment_id)->delete();
             ClientPayment::find($payment_id)->delete();
             DB::commit();
             return true;
