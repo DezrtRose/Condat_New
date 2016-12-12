@@ -48,7 +48,15 @@
                     {{ get_client_name($payment->client_id) }}
 
                     <h3>
-                        <small>Receipt No #{{ format_id($payment->client_payment_id, 'CP') }}</small>
+                        <small>Receipt No #
+                            @if(isset($payment->client_payment_id) && !isset($payment->subagent_payments_id))
+                                {{ format_id($payment->client_payment_id, 'CP') }}
+                            @elseif(isset($payment->college_payment_id))
+                                {{ format_id($payment->college_payment_id, 'CPI') }}
+                            @elseif(isset($payment->subagent_payments_id))
+                                {{ format_id($payment->subagent_payments_id, 'SAP') }}
+                            @endif
+                        </small>
                     </h3>
                     <h3>
                         <small>Payment Date {{ format_date($payment->date_paid) }}</small>

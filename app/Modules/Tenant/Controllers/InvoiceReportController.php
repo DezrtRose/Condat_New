@@ -134,9 +134,11 @@ class InvoiceReportController extends BaseController
     public function clientPayments()
     {
         $data['payments'] = ClientPayment::leftJoin('clients', 'clients.client_id', '=', 'client_payments.client_id')
+            ->leftJoin('student_application_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
             ->leftJoin('persons', 'persons.person_id', '=', 'clients.person_id')
             ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
-            ->select(['client_payments.*', 'payment_invoice_breakdowns.invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name')])
+            ->select(['client_payments.*', 'payment_invoice_breakdowns.invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name'), 'student_application_payments.student_payments_id'])
+            ->whereRaw('student_application_payments.student_payments_id IS NOT NULL')
             ->get();
         return view("Tenant::InvoiceReport/Payment/clients", $data);
     }

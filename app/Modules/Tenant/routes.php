@@ -228,6 +228,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     /* Assign student payments to invoices */
     Route::get('college/payment/{payment_id}/{application_id}/assign', ['as' => 'tenant.college.payment.assign', 'uses' => 'CollegeController@assignInvoice']);
     Route::post('college/payment/{payment_id}/assign', ['as' => 'tenant.college.payment.postAssign', 'uses' => 'InvoiceController@postCollegeAssign']);
+    Route::get('college/payment/receipt/{payment_id}', ['as' => 'tenant.college.payment.receipt', 'uses' => 'CollegeController@printReceipt']);
 
     Route::get('clients/{client_id}/personal_details', 'ClientController@personal_details');
     Route::get('clients/{client_id}/notes', 'ClientController@notes');
@@ -413,6 +414,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('subagent/payments', ['as' => 'accounts.subagent.payments', 'uses' => 'InvoiceReportController@subagentsPayments']);
     Route::get('search/payments', ['as' => 'accounts.search.payments', 'uses' => 'InvoiceReportController@searchPayments']);
     Route::post('search/payments', ['as' => 'payments.search', 'uses' => 'InvoiceReportController@searchPayments']);
+    Route::get('subagent/payments/receipt/{payment_id}', ['as' => 'tenant.subagent.payments.receipt', 'uses' => 'SubAgentController@printReceipt']);
 
     Route::get('college/print/pdf', ['as' => 'college.print.pdf', 'uses' => 'CollegeController@printPdf']);
 

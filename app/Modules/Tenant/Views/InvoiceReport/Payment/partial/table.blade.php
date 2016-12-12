@@ -28,7 +28,7 @@
                         class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                         data-toggle="tooltip" data-placement="top"
                         title="Print Payment"></i></a>
-            <a href="{{route('client.payment.edit', [$tenant_id, $payment->client_payment_id])}}"
+            <a href="{{route('application.students.editPayment', [$tenant_id, $payment->student_payments_id])}}"
                title="Edit Payment"><i
                         class="processing btn btn-primary btn-sm glyphicon glyphicon-pencil"
                         data-toggle="tooltip" data-placement="top" title="Edit Payment"></i></a>

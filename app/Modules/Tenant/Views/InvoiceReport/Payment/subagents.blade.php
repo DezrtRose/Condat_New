@@ -33,14 +33,14 @@
 
                     @foreach($payments as $key => $payment)
                         <tr>
-                            <td>{{ format_id($payment->subagent_payments_id, 'CPI') }}</td>
+                            <td>{{ format_id($payment->subagent_payments_id, 'SAP') }}</td>
                             <td>{{ format_date($payment->date_paid) }}</td>
                             <td>{{ format_price($payment->amount) }}</td>
                             <td>{{ $payment->payment_type }}</td>
                             <td>{{ format_id($payment->invoice_id, 'CI')}}</td>
                             <td>{{ $payment->description }}</td>
                             <td>
-                                <a href="{{route('subagents.payment.view', [$tenant_id, $payment->subagent_payments_id])}}" title="Print Payment"><i
+                                <a target="_blank" href="{{route('tenant.subagent.payments.receipt', [$tenant_id, $payment->subagent_payments_id])}}" title="Print Payment"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Payment"></i></a>

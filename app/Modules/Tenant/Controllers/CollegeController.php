@@ -370,4 +370,13 @@ class CollegeController extends BaseController
         return $pdf->download('invoice.pdf');
     }
 
+    function printReceipt($tenant_id, $payment_id)
+    {
+        $data['agency'] = $this->agent->getAgentDetails();
+        $data['bank'] = $this->setting->getBankDetails();
+        $data['payment'] = $this->payment->getDetails($payment_id);
+
+        return view("Tenant::Student/Payment/receipt", $data);
+    }
+
 }
