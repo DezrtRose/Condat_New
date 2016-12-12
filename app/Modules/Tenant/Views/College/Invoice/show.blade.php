@@ -22,16 +22,16 @@
         <div class="col-xs-5">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>{{ $company['company_name'] }}</h4>
+                    <h4>{{ $company['company_name'] or '' }}</h4>
                 </div>
                 <div class="panel-body">
-                    <p>{{ $company['abn'] }}
+                    <p>{{ $company['abn'] or '' }}
 
                     <h3>
-                        <small>{{ $company['street'] }}</small>
+                        <small>{{ $company['street'] or '' }}</small>
                     </h3>
                     <h3>
-                        <small>{{ $company['suburb'] }} {{ $company['state'] }} {{ $company['postcode'] }}</small>
+                        <small>{{ $company['suburb'] or '' }} {{ $company['state'] or '' }} {{ $company['postcode'] or '' }}</small>
                     </h3>
                     </p>
                 </div>
@@ -145,11 +145,11 @@
                         <h4>Contact Details</h4>
                     </div>
                     <div class="panel-body">
-                        <p><strong>Ph</strong> : {{ $company['phone_number'] }} </p>
+                        <p><strong>Ph</strong> : {{ $company['phone_number'] or '' }} </p>
 
-                        <p><strong>Email</strong> : {{ $company['email'] }} </p>
+                        <p><strong>Email</strong> : {{ $company['email'] or '' }} </p>
 
-                        <p><strong>Website</strong> : {{ $company['website'] }}</p>
+                        <p><strong>Website</strong> : {{ $company['website'] or '' }}</p>
 
                     </div>
                 </div>
