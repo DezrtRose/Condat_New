@@ -1,6 +1,8 @@
 <?php namespace App\Modules\Tenant\Controllers;
 
 use App\Http\Requests;
+use App\Modules\Tenant\Models\Setting;
+use App\Modules\Tenant\Models\Agent;
 use App\Modules\Tenant\Models\Payment\SubAgentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Application\CourseApplication;
@@ -21,13 +23,15 @@ class SubAgentController extends BaseController
         'payment_method' => 'required|min:2|max:45'
     ];
 
-    function __construct(Client $client, Request $request, CourseApplication $application, SubAgentApplicationPayment $payment, SubAgentInvoice $invoice)
+    function __construct(Client $client, Request $request, CourseApplication $application, SubAgentApplicationPayment $payment, SubAgentInvoice $invoice, Agent $agent, Setting $setting)
     {
         $this->client = $client;
         $this->request = $request;
         $this->application = $application;
         $this->invoice = $invoice;
         $this->payment = $payment;
+        $this->agent = $agent;
+        $this->setting = $setting;
         parent::__construct();
     }
 
@@ -49,7 +53,7 @@ class SubAgentController extends BaseController
     /*
      * Controllers for payment
      * */
-    public function createPayment($application_id)
+    public function createPayment($tenant_id, $application_id)
     {
         $data['application_id'] = $application_id;
         return view("Tenant::SubAgent/Payment/add", $data);
@@ -135,7 +139,7 @@ class SubAgentController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="'.route('subagents.payment.view', [$tenant_id, $data->subagent_payments_id]).'">View</a></li>
+                    <li><a target="_blank" href="'.route('tenant.subagent.payments.receipt', [$tenant_id, $data->subagent_payments_id]).'">View</a></li>
                     <li><a href="'.route("application.subagents.editPayment", [$tenant_id, $data->subagent_payments_id]).'">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
@@ -280,6 +284,15 @@ class SubAgentController extends BaseController
         $application_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
         Flash::success('Invoice has been updated successfully.');
         return redirect()->route('tenant.application.subagents', [$tenant_id, $application_id]);
+    }
+
+    function printReceipt($tenant_id, $payment_id)
+    {
+        $data['agency'] = $this->agent->getAgentDetails();
+        $data['bank'] = $this->setting->getBankDetails();
+        $data['payment'] = $this->payment->getDetails($payment_id);
+
+        return view("Tenant::Student/Payment/receipt", $data);
     }
 
 }

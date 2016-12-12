@@ -88,7 +88,8 @@ class CollegePayment extends Model
     function getDetails($payment_id)
     {
         $payment = CollegePayment::leftJoin('college_invoice_payments', 'college_payments.college_payment_id', '=', 'college_invoice_payments.ci_payment_id')
-            ->select(['college_payments.*'])
+            ->leftJoin('course_application', 'course_application.course_application_id', '=', 'college_payments.course_application_id')
+            ->select(['college_payments.*', 'course_application.client_id'])
             ->find($payment_id);
         return $payment;
     }
