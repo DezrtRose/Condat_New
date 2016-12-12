@@ -322,4 +322,50 @@ class CollegeController extends BaseController
         $this->invoice->deleteInvoice($college_invoice_id);
     }
 
+    public function printPdf()
+    {
+        $invoice_id = 5;
+        $data['agency'] = $this->agent->getAgentDetails();
+        $data['bank'] = $this->setting->getBankDetails();
+        $data['invoice'] = $invoice = $this->invoice->getDetails($invoice_id); //dd($data['invoice']->toArray());
+        $data['client_name'] = $this->application->getClientName($invoice->course_application_id);
+        $data['pay_details'] = $this->invoice->getPayDetails($invoice_id);
+        $super_agent = CourseApplication::find($invoice->course_application_id)->super_agent_id;
+        if($super_agent != null && $super_agent != 0)
+            $data['invoice_to'] = get_agent_name($super_agent);
+        else
+            $data['invoice_to'] = 'Undefined';
+
+        $pdf = \PDF::loadView('Tenant::College/Invoice/show', $data);
+        $param = ['content'    => 'Condat Solutions Body',
+            'subject'    => 'Condat Solutions Email',
+            'heading'    => 'Condat Solutions',
+            'subheading' => 'All your business in one space',
+        ];
+        $mail_result = \Mail::send('template.master', $param, function($message) use($pdf)
+        {
+            $message->from('barberianking.007@gmail.com', 'Your Name');
+
+            $message->to('krita.maharjan@gmail.com')->subject('Invoice');
+
+            /*$message->attach($pdf->output(), array(
+                    'as' => 'invoice.pdf',
+                    'mime' => 'application/pdf')
+            );*/
+
+            //$message->attachData($pdf->output(), "invoice.pdf");
+        });
+
+        if(count(\Mail::failures()) > 0){
+            foreach(\Mail::failures() as $email_address) {
+                echo " - $email_address <br />";
+            }
+        }
+
+        dd($mail_result);
+
+        dd('ok');
+        return $pdf->download('invoice.pdf');
+    }
+
 }

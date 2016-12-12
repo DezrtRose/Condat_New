@@ -33,8 +33,8 @@
 								<tr>
 								<td width="100%" bgcolor="#33a0d5">
 								 <h1 style="font-size:38px;color:#ffffff;text-transform:uppercase;text-align:center;margin:0;line-height: 1;">
-                                        {{$heading}} </h1>
-                                  <p style="color: #fff; text-align:center; display: block;font-size: 14px;font-weight: normal;letter-spacing: 1.5px;text-transform: none;">{{$subheading}}</p>
+									 Condat Solutions </h1>
+                                  <p style="color: #fff; text-align:center; display: block;font-size: 14px;font-weight: normal;letter-spacing: 1.5px;text-transform: none;">All your business in one space</p>
 
 								</td>
 								</tr>
