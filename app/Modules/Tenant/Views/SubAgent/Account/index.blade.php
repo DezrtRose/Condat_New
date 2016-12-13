@@ -27,7 +27,6 @@
                         <th>Amount</th>
                         <th>Paid By</th>
                         <th>Payment Type</th>
-                        <th>Invoice Id</th>
                         <th>Description</th>
                         <th></th>
                     </tr>
@@ -57,7 +56,6 @@
                     {data: 'amount', name: 'amount'},
                     {data: 'payment_method', name: 'payment_method'},
                     {data: 'payment_type', name: 'payment_type'},
-                    {data: 'invoice_id', name: 'invoice_id', orderable: false, searchable: false},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
