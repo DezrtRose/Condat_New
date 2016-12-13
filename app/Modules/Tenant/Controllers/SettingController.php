@@ -115,7 +115,7 @@ class SettingController extends BaseController {
 			$company_data['logo'] = (!empty($company_data['logo']))? $file_info['fileName'] : '';
 			$company_data['logo_path'] = (!empty($company_data['logo']))? $file_info['pathName'] : '';
 			$this->setting->saveSetup('company', serialize($company_data));
-			Flash::success('Company details has been updated successfully!'.$file_info['pathName']);
+			Flash::success('Company details has been updated successfully!');
 			return redirect()->route('tenant.company.edit', $tenant_id);
 		}
 		else {

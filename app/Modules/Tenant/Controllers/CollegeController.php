@@ -325,7 +325,7 @@ class CollegeController extends BaseController
 
     public function printPdf()
     {
-        $invoice_id = 5;
+        $invoice_id = 11;
         $data['agency'] = $this->agent->getAgentDetails();
         $data['bank'] = $this->setting->getBankDetails();
         $data['invoice'] = $invoice = $this->invoice->getDetails($invoice_id); //dd($data['invoice']->toArray());
@@ -338,16 +338,17 @@ class CollegeController extends BaseController
             $data['invoice_to'] = 'Undefined';
 
         $pdf = \PDF::loadView('Tenant::College/Invoice/show', $data);
-        $param = ['content'    => 'Condat Solutions Body',
+        $param = ['content'    => '<p>Hello Sir / Madam,</p><p>An invoice has been mailed to you. Please find the attached document for further details.</p><p>Thank you!</p>',
             'subject'    => 'Condat Solutions Email',
             'heading'    => 'Condat Solutions',
             'subheading' => 'All your business in one space',
         ];
         $mail_result = \Mail::send('template.master', $param, function($message) use($pdf)
         {
-            $message->from('barberianking.007@gmail.com', 'Your Name');
+            $message->from('barberianking.007@gmail.com', 'Condat Solutions');
 
-            $message->to('krita.maharjan@gmail.com')->subject('Invoice');
+            $message->to('krita.maharjan@gmail.com')->subject('Invoice Details');
+            $message->attachData($pdf->output(), "invoice.pdf");
 
             /*$message->attach($pdf->output(), array(
                     'as' => 'invoice.pdf',
