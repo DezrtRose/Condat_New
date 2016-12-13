@@ -415,6 +415,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('search/payments', ['as' => 'accounts.search.payments', 'uses' => 'InvoiceReportController@searchPayments']);
     Route::post('search/payments', ['as' => 'payments.search', 'uses' => 'InvoiceReportController@searchPayments']);
     Route::get('subagent/payments/receipt/{payment_id}', ['as' => 'tenant.subagent.payments.receipt', 'uses' => 'SubAgentController@printReceipt']);
+    Route::get('subagent/{payment_id}/deletePayment', ['as' => 'application.subagent.deletePayment', 'uses' => 'SubAgentController@deletePayment']);
 
     Route::get('college/print/pdf', ['as' => 'college.print.pdf', 'uses' => 'CollegeController@printPdf']);
 

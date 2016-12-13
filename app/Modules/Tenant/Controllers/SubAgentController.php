@@ -141,7 +141,7 @@ class SubAgentController extends BaseController
                   <ul role="menu" class="dropdown-menu">
                     <li><a target="_blank" href="'.route('tenant.subagent.payments.receipt', [$tenant_id, $data->subagent_payments_id]).'">View</a></li>
                     <li><a href="'.route("application.subagents.editPayment", [$tenant_id, $data->subagent_payments_id]).'">Edit</a></li>
-                    <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
+                    <li><a href="'.route('application.subagent.deletePayment', [$tenant_id, $data->client_payment_id]).'">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -293,6 +293,13 @@ class SubAgentController extends BaseController
         $data['payment'] = $this->payment->getDetails($payment_id);
 
         return view("Tenant::Student/Payment/receipt", $data);
+    }
+
+    public function deletePayment($tenant_id, $payment_id)
+    {
+        $this->payment->deletePayment($payment_id);
+        Flash::success('Payment has been deleted successfully.');
+        return redirect()->back();
     }
 
 }

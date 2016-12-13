@@ -128,4 +128,19 @@ class SubAgentApplicationPayment extends Model
 
         return $student_payment->course_application_id;
     }
+
+    function deletePayment($payment_id)
+    {
+        DB::beginTransaction();
+        try {
+            SubAgentApplicationPayment::where('client_payment_id', $payment_id)->delete();
+            PaymentInvoiceBreakdown::where('payment_id', $payment_id)->delete();
+            ClientPayment::find($payment_id)->delete();
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+        }
+    }
 }
