@@ -43,7 +43,7 @@ class SubAgentController extends BaseController
      */
     public function index($tenant_id, $application_id)
     {
-        $data['stats'] = $this->invoice->getStats($application_id);
+        //$data['stats'] = $this->invoice->getStats($application_id);
         $data['application'] = $application = $this->application->getDetails($application_id);
         $data['invoice_array'] = $this->invoice->getList($application_id);
         $data['client'] = $this->client->getDetails($application->client_id);
