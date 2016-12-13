@@ -151,7 +151,7 @@ class CollegeController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="http://localhost/condat/tenant/contact/2">View</a></li>
+                    <li><a href="'.route('tenant.college.payment.receipt', [$tenant_id, $data->college_payment_id]).'">View</a></li>
                     <li><a href="'.route("tenant.application.editPayment", [$tenant_id, $data->college_payment_id]).'">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>

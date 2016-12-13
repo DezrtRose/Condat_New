@@ -24,7 +24,6 @@
                         <th>Payment Date</th>
                         <th>Amount</th>
                         <th>Payment Type</th>
-                        <th>Invoice Id</th>
                         <th>Description</th>
                         <th></th>
                     </tr>
@@ -37,7 +36,6 @@
                             <td>{{ format_date($payment->date_paid) }}</td>
                             <td>{{ format_price($payment->amount) }}</td>
                             <td>{{ $payment->payment_type }}</td>
-                            <td>{{ format_id($payment->invoice_id, 'CI')}}</td>
                             <td>{{ $payment->description }}</td>
                             <td>
                                 <a target="_blank" href="{{route('tenant.subagent.payments.receipt', [$tenant_id, $payment->subagent_payments_id])}}" title="Print Payment"><i
