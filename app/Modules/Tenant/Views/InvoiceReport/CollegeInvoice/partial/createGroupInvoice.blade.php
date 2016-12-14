@@ -5,9 +5,9 @@
 {!!Form::open(['method' => 'post', 'id' => 'add-invoice', 'class' => 'form-horizontal form-left'])!!}
 <div class="modal-body">
     <div class="form-group">
-        {!!Form::label('description', 'Description', array('class' => 'col-sm-4 control-label')) !!}
+        {!!Form::label('description', 'Invoice To', array('class' => 'col-sm-4 control-label')) !!}
         <div class="col-sm-8">
-            {!!Form::textarea('description', null, array('class' => 'form-control', 'id'=>'description'))!!}
+            {!!Form::text('description', null, array('class' => 'form-control', 'id'=>'description'))!!}
         </div>
     </div>
     <div class="form-group">
@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
+    {{--<div class="form-group">
         {!!Form::label('due_date', 'Due Date', array('class' => 'col-sm-4 control-label')) !!}
         <div class="col-sm-8">
             <div class='input-group date'>
@@ -31,7 +31,7 @@
                             </span>
             </div>
         </div>
-    </div>
+    </div>--}}
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>

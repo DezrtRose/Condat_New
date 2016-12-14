@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="form-group @if($errors->has('document')) {{'has-error'}} @endif">
-                            {{ Form::label('document', 'Upload Offer Letter', ['class'=>'col-md-3 form-label text-right'])}}
+                            {{ Form::label('document', 'Upload COE', ['class'=>'col-md-3 form-label text-right'])}}
                             <div class="col-md-9">
                                 {{ Form::file('document')}}
                                 @if($errors->has('document'))

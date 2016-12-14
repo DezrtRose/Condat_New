@@ -45,7 +45,7 @@ class GroupInvoice extends Model
             $group_invoice = GroupInvoice::create([
                 'date' => insert_dateformat($request['date']),
                 'description' => $request['description'],
-                'due_date' => insert_dateformat($request['due_date'])
+                //'due_date' => insert_dateformat($request['due_date'])
             ]);
 
             $thePostIdArray = explode(',', $request['group_ids']);
