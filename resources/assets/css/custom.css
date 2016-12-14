@@ -571,3 +571,9 @@ li.active #tile5 {
 .error{
     color : #a94442;
 }
+.college-payment-type, .subagent-payment-type {
+    display: none;
+}
+.college-payment-type .select2-container, .subagent-payment-type .select2-container {
+    width: 100%!important;
+}

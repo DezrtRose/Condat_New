@@ -24,7 +24,7 @@
 
             <div class="box-body">
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('type', 'Payment Type', array('class' => 'control-label')) !!}
+                    {!!Form::label('type', 'Payments', array('class' => 'control-label')) !!}
                     {!!Form::select('type', $type, null, array('class' => 'form-control select2'))!!}
 
                 </div>
@@ -46,7 +46,15 @@
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('payment_type', 'Payment Type', array('class' => 'control-label')) !!}
-                    {!!Form::select('type', config('constants.student_payment_type'), null, array('class' => 'form-control select2 payment-type'))!!}
+                    <div class="client-payment-type">
+                        {!!Form::select('client_payment_type', config('constants.student_payment_type'), null, array('class' => 'form-control select2 payment-type'))!!}
+                    </div>
+                    <div class="college-payment-type">
+                        {!!Form::select('college_payment_type', config('constants.college_payment_type'), null, array('class' => 'form-control select2 payment-type'))!!}
+                    </div>
+                    <div class="subagent-payment-type">
+                        {!!Form::select('subagent_payment_type', config('constants.subagent_payment_type'), null, array('class' => 'form-control select2 payment-type'))!!}
+                    </div>
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('client_name', 'Client Name', array('class' => 'control-label')) !!}
@@ -98,7 +106,7 @@
                                 <td>{{ format_price($payment->amount) }}</td>
                                 <td>{{ $payment->payment_type }}</td>
                                 <td>{{ $payment->payment_method }}</td>
-                                <td>{{ $payment->payment_method }}</td>
+                                <td>{{ get_tenant_name($payment->added_by) }}</td>
                                 <td>
                                     <a href="{{url($tenant_id."/students/payment/receipt/" . $payment->student_payments_id)}}" title="Print Payment"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
@@ -138,17 +146,44 @@
             $('.dateranger').daterangepicker({
                 autoUpdateInput: false,
                 locale: {
-                    cancelLabel: 'Clear'
+                    cancelLabel: 'Clear',
+                    format: 'DD/MM/YYYY'
                 }
             });
 
             $('.dateranger').on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
             });
 
             $('.dateranger').on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('');
             });
+
+            $('#type').on('change', function() {
+                var payment_type = $(this).val();
+                switch(payment_type) {
+                    case '1':
+                        $('.client-payment-type').show();
+                        $('.college-payment-type').hide();
+                        $('.subagent-payment-type').hide();
+                        break;
+                    case '2':
+                        $('.client-payment-type').hide();
+                        $('.college-payment-type').show();
+                        $('.subagent-payment-type').hide();
+                        break;
+                    case '3':
+                        $('.client-payment-type').hide();
+                        $('.college-payment-type').hide();
+                        $('.subagent-payment-type').show();
+                        break;
+                    default:
+                        $('.client-payment-type').show();
+                        $('.college-payment-type').hide();
+                        $('.subagent-payment-type').hide();
+                        break;
+                }
+            })
         });
     </script>
 @stop
