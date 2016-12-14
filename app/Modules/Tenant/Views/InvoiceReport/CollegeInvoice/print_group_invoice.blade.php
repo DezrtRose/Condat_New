@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>College Invoice</title>
+    <title>Group Invoice</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
@@ -15,7 +15,7 @@
             </h1>
         </div>
         <div class="col-xs-6 text-right">
-            <h2>TAX INVOICE</h2>
+            <h2>GROUP INVOICE</h2>
         </div>
     </div>
     <div class="row">
@@ -44,12 +44,12 @@
                 </div>
                 <div class="panel-body">
                     <p>
-                        {{ $invoice_to }}
+                    {{ $invoice_details->description }}
                     <h3>
-                        <small>Invoice #{{ format_id($invoice->invoice_id, 'CI') }}</small>
+                        <small>Group Invoice #{{ format_id($invoice_details->group_invoice_id, 'GI') }}</small>
                     </h3>
                     <h3>
-                        <small>Date: {{ format_date($invoice->invoice_date) }}</small>
+                        <small>Date: {{ format_date($invoice_details->date) }}</small>
                     </h3>
                     </p>
                 </div>
@@ -78,21 +78,14 @@
         </tr>
         </thead>
         <tbody>
-        @if($invoice->commission_amount && $invoice->gst)
+        @foreach($invoice_reports as $key=> $report)
         <tr>
-            <td>{{ $client_name }}</td>
-            <td>{{ $invoice->description }}</td>
-            <td class="text-right">${{ float_format($invoice->commission_amount) }}</td>
-            <td class="text-right">${{ float_format($invoice->gst) }}</td>
+            <td>{{ $report->fullname }}</td>
+            <td>{{ $report->institute_name }} / {{ $report->course_name }}</td>
+            <td class="text-right">${{ float_format($report->total_commission) }}</td>
+            <td class="text-right">${{ float_format($report->total_gst) }}</td>
         </tr>
-        @endif
-        <tr>
-            <td>{{ $client_name }}</td>
-            <td>{{ $invoice->other_description }}</td>
-            <td class="text-right">${{ float_format($invoice->incentive) }}</td>
-            <td class="text-right">${{ float_format($invoice->incentive_gst) }}</td>
-        </tr>
-
+        @endforeach
         </tbody>
     </table>
     <div class="row text-right">
@@ -103,7 +96,7 @@
                 GST : <br>
 
                 <h3>Total Amount :</h3>
-                Less Paid Amount : <br>
+                Paid Amount : <br>
 
                 <h3>Amount Due :</h3> <br>
             </h4>
@@ -112,13 +105,13 @@
         <div class="col-xs-2">
             <p>
             <h4>
-                ${{ float_format($invoice->total_commission) }} <br>
-                ${{ float_format($invoice->total_gst) }} <br>
+                ${{ float_format($invoice_details->total_amount - $invoice_details->total_gst) }} <br>
+                ${{ float_format($invoice_details->total_gst) }} <br>
 
-                <h3>${{ float_format($invoice->final_total) }} </h3>
-                ${{ float_format($pay_details->paid) }}<br>
+                <h3>${{ float_format($invoice_details->total_amount) }} </h3>
+                ${{ float_format($invoice_details->paid_amount) }}<br>
 
-                <h3>${{ float_format($pay_details->outstandingAmount) }}</h3><br>
+                <h3>${{ float_format($invoice_details->outstanding_amount) }}</h3><br>
             </h4>
             </p>
         </div>

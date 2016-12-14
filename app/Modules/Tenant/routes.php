@@ -406,7 +406,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     /* Routes for Group Invoice */
     Route::get('college_invoice_report/invoice_grouped', ['as' => 'college.invoice.grouped', 'uses' => 'InvoiceReportController@collegeInvoiceGrouped']);
     Route::get('college_invoice_report/show_grouped_invoices/{grouped_invoice_id}', ['as' => 'invoice.grouped.show', 'uses' => 'InvoiceReportController@showGroupedInvoices']);
-    Route::get('college_invoice_report/print_grouped_invoices/{grouped_invoice_id}', ['as' => 'invoice.grouped.print', 'uses' => 'InvoiceReportController@showGroupedInvoices']);
+    Route::get('college_invoice_report/print_grouped_invoices/{grouped_invoice_id}', ['as' => 'invoice.grouped.print', 'uses' => 'InvoiceReportController@printGroupedInvoice']);
     Route::get('group/{grouped_invoice_id}/invoice/{invoice_id}', ['as' => 'invoice.group.remove', 'uses' => 'InvoiceReportController@deleteGroupInvoices']);
 
     Route::get('client/payments', ['as' => 'accounts.client.payments', 'uses' => 'InvoiceReportController@clientPayments']);

@@ -113,7 +113,7 @@
                                 <a href="#" title="Add Payment"><i
                                             class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                                             data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
-                                <a href="#" title="Print Invoice"><i
+                                <a href="{{ route('tenant.group.print', [$tenant_id, ]) }}" title="Print Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Invoice"></i></a>

@@ -26,8 +26,8 @@
                         <th>Group Invoice Id</th>
                         <th>Date</th>
                         <th>Number of Invoices</th>
-                        <th>Total Amount</th>
-                        <th>Total GST</th>
+                        <th>Sub Total</th>
+                        <th>GST</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -37,13 +37,13 @@
                             <td>{{ format_id($invoice->group_invoice_id, 'GI') }}</td>
                             <td>{{ format_date($invoice->date) }}</td>
                             <td>{{ $invoice->invoiceCount }}</td>
-                            <td>{{ $invoice->total_amount }}</td>
+                            <td>{{ $invoice->total_amount - $invoice->total_gst }}</td>
                             <td>{{ $invoice->total_gst }}</td>
                             <td>
                                 <a href="{{ route('invoice.grouped.show', [$tenant_id, $invoice->group_invoice_id]) }}" title="View Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
-                                <a href="{{ route('invoice.grouped.print', [$tenant_id, $invoice->group_invoice_id]) }}" title="Print Invoice"><i
+                                <a href="{{ route('invoice.grouped.print', [$tenant_id, $invoice->group_invoice_id]) }}" target="_blank" title="Print Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Invoice"></i></a>

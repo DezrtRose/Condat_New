@@ -14,6 +14,7 @@ use App\Modules\Tenant\Models\Payment\CollegePayment;
 use App\Modules\Tenant\Models\Payment\SubAgentApplicationPayment;
 use App\Modules\Tenant\Models\Report\Report;
 use App\Modules\Tenant\Models\User;
+use App\Modules\Tenant\Models\Setting;
 use Flash;
 use DB;
 use Excel;
@@ -25,7 +26,7 @@ use Illuminate\Http\Request;
 class InvoiceReportController extends BaseController
 {
 
-    function __construct(Invoice $invoice, StudentInvoice $student_invoice, Report $report, Institute $institute, Request $request, CollegeInvoice $college_invoice, User $user, GroupInvoice $groupInvoice, Client $client)
+    function __construct(Invoice $invoice, StudentInvoice $student_invoice, Report $report, Institute $institute, Request $request, CollegeInvoice $college_invoice, User $user, GroupInvoice $groupInvoice, Client $client, Setting $setting)
     {
         $this->invoice = $invoice;
         $this->student_invoice = $student_invoice;
@@ -36,6 +37,7 @@ class InvoiceReportController extends BaseController
         $this->user = $user;
         $this->groupInvoice = $groupInvoice;
         $this->client = $client;
+        $this->setting = $setting;
         parent::__construct();
     }
 
@@ -112,11 +114,11 @@ class InvoiceReportController extends BaseController
         return view("Tenant::InvoiceReport/CollegeInvoice/show_grouped_invoices", $data);
     }
 
-    public function printInvoice($tenant_id, $grouped_invoice_id)
+    public function printGroupedInvoice($tenant_id, $grouped_invoice_id)
     {
+        $data['bank'] = $this->setting->getBankDetails();
         $data['invoice_details'] = $this->groupInvoice->getDetails($grouped_invoice_id);
-        $data['invoice_ids'] = $this->groupInvoice->getOtherInvoicesList($grouped_invoice_id);
-        $data['invoice_reports'] = $this->groupInvoice->getInvoices($grouped_invoice_id); //dd($data['invoice_details']->toArray());
+        $data['invoice_reports'] = $this->groupInvoice->getInvoices($grouped_invoice_id); //dd($data['invoice_reports']->toArray());
         return view("Tenant::InvoiceReport/CollegeInvoice/print_group_invoice", $data);
     }
 
