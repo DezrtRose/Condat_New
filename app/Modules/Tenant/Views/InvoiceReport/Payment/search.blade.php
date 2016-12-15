@@ -97,8 +97,27 @@
                         </tr>
                         </thead>
                         <tbody> <?php //dd($payments->toArray()) ?>
-
                         @foreach($payments as $key => $payment)
+                        <?php
+                        switch($search_attributes['type']) {
+                            case '1':
+                                $print_url = url($tenant_id . '/students/payment/receipt/' . $payment->client_payment_id);
+                                $edit_url = route('application.students.editPayment', [$tenant_id, $payment->student_payments_id]);
+                                break;
+                            case '2':
+                                $print_url = route('tenant.college.payment.receipt', [$tenant_id, $payment->college_payment_id]);
+                                $edit_url = route('tenant.application.editPayment', [$tenant_id, $payment->college_payment_id]);
+                                break;
+                            case '3':
+                                $print_url = route('tenant.subagent.payments.receipt', [$tenant_id, $payment->subagent_payments_id]);
+                                $edit_url = route("application.subagents.editPayment", [$tenant_id, $payment->subagent_payments_id]);
+                                break;
+                            default:
+                                $print_url = url($tenant_id . '/students/payment/receipt/' . $payment->client_payment_id);
+                                $edit_url = route('application.students.editPayment', [$tenant_id, $payment->student_payments_id]);
+                                break;
+                        }
+                        ?>
                             <tr>
 
                                 <td>{{ format_date($payment->date_paid) }}</td>
@@ -108,11 +127,11 @@
                                 <td>{{ $payment->payment_method }}</td>
                                 <td>{{ get_tenant_name($payment->added_by) }}</td>
                                 <td>
-                                    <a href="{{url($tenant_id."/students/payment/receipt/" . $payment->student_payments_id)}}" title="Print Payment"><i
+                                    <a target="_blank" href="{{$print_url}}" title="Print Payment"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Print Payment"></i></a>
-                                    <a href="{{route("application.students.editPayment", [$tenant_id, $payment->student_payments_id])}}" title="Edit Payment"><i
+                                    <a href="{{$edit_url}}" title="Edit Payment"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-pencil"
                                                 data-toggle="tooltip" data-placement="top" title="Edit Payment"></i></a>
                                 </td>
@@ -183,7 +202,8 @@
                         $('.subagent-payment-type').hide();
                         break;
                 }
-            })
+            });
+            $('#type').trigger('change');
         });
     </script>
 @stop
