@@ -184,7 +184,8 @@ class StudentInvoice extends Model
         }
 
         if (isset($request['client_name']) && $request['client_name'] != '')
-            $invoices_query = $invoices_query->where(DB::raw('CONCAT(persons.first_name, " ", persons.last_name)'), 'LIKE', '%' . $request['client_name'] . '%');
+            //$invoices_query = $invoices_query->where(DB::raw('CONCAT(persons.first_name, " ", persons.last_name)'), 'LIKE', '%' . $request['client_name'] . '%');
+            $invoices_query = $invoices_query->whereIn('student_invoices.client_id', $request['client_name']);
 
         if ($request['from'] != '' && $request['to'] != '')
             $invoices_query = $invoices_query->whereBetween('invoices.invoice_amount', [$request['from'], $request['to']]);

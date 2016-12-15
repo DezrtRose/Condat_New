@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('amount', 'Amount', array('class' => 'control-label')) !!}
+                    {!!Form::label('amount', 'Invoice Amount', array('class' => 'control-label')) !!}
                     <div class="row">
                     <div class="col-xs-6"> {!!Form::number('from', null, array('class' => 'form-control', 'placeholder' => 'From', 'id'=>'from'))!!}</div>
                     <div class="col-xs-6"> {!!Form::number('to', null, array('class' => 'form-control', 'placeholder' => 'To', 'id'=>'to'))!!}</div>
@@ -106,18 +106,18 @@
                                        data-url="{{url($tenant_id.'/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
                                                 class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                                                 data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
-                                    <a href="#" title="Print Invoice"><i
+                                    <a href="{{route('tenant.student.invoice', [$tenant_id, $invoice->student_invoice_id])}}" target="_blank" title="Print Invoice"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Print Invoice"></i></a>
-                                    <a href="{{route('tenant.student.invoice', [$tenant_id, $invoice->student_invoice_id])}}"
+                                    <a href="{{ route("tenant.invoice.payments", [$tenant_id, $invoice->invoice_id, 2]) }}"
                                        title="View Invoice"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                                 data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
-                                    <a href="#" title="Email Invoice"><i
+                                    {{--<a href="#" title="Email Invoice"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-send"
                                                 data-toggle="tooltip" data-placement="top"
-                                                title="Email Invoice"></i></a>
+                                                title="Email Invoice"></i></a>--}}
                                 </td>
                             </tr>
                         @endforeach

@@ -307,6 +307,10 @@ class CollegeInvoice extends Model
             ->orderBy('college_invoices.college_invoice_id', 'desc')
             //->where('college_invoices.invoice_date', '<=', get_today_datetime())
             ->groupBy('college_invoices.college_invoice_id');
+
+        if (isset($request['client_name']) && $request['client_name'] != '')
+            $invoices_query = $invoices_query->whereIn('course_application.client_id', $request['client_name']);
+
         if ($status == 1) { // Pending
             $invoices_query = $invoices_query->havingRaw('college_invoices.total_commission - IFNULL(SUM(college_payments.amount), 0) > 0'); //->where('college_invoices.invoice_date', '<=', get_today_datetime());
         } elseif ($status == 2) { // Paid
