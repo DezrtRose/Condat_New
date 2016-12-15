@@ -166,12 +166,12 @@ class CollegeInvoice extends Model
         return $details;
     }
 
-    function editInvoice(array $request, $application_id)
+    function editInvoice(array $request, $invoice_id)
     {
         DB::beginTransaction();
 
         try {
-            $college_invoice = CollegeInvoice::find($application_id)->first();
+            $college_invoice = CollegeInvoice::find($invoice_id); //dd($college_invoice->toArray());
             $college_invoice->total_commission = $request['total_commission'];
             $college_invoice->total_gst = $request['total_gst'];
             $college_invoice->final_total = $request['final_total'];
@@ -181,7 +181,7 @@ class CollegeInvoice extends Model
 
             if(isset($request['tuition_fee']))
             {
-                $ci_commission = TuitionCommission::find(['college_invoice_id' => $application_id])->first();
+                $ci_commission = TuitionCommission::find(['college_invoice_id' => $invoice_id])->first();
                 if($ci_commission) {
                     $ci_commission->tuition_fee = $request['tuition_fee'];
                     $ci_commission->enrollment_fee = $request['enrollment_fee'];
@@ -206,14 +206,14 @@ class CollegeInvoice extends Model
                         'commission_percent' => $request['commission_percent'],
                         'commission_amount' => $request['commission_amount'],
                         'commission_gst' => $request['tuition_fee_gst'],
-                        'college_invoice_id' => $application_id
+                        'college_invoice_id' => $invoice_id
                     ]);
                 }
             }
 
             if(isset($request['incentive']))
             {
-                $ci_commission = OtherCommission::find(['college_invoice_id' => $application_id])->first();
+                $ci_commission = OtherCommission::find(['college_invoice_id' => $invoice_id])->first();
                 if($ci_commission) {
                     $ci_commission->amount = $request['incentive'];
                     $ci_commission->gst = $request['incentive_gst'];

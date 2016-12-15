@@ -28,8 +28,8 @@
                 <ul class="nav nav-pills nav-stacked">
                     <li class="active"><a href="{{ route('tenant.client.sent', [$tenant_id, $client->client_id]) }}"><i
                                     class="fa fa-envelope-o"></i> Sent</a></li>
-                    <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-                    <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
+                    {{--<li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
+                    <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>--}}
                 </ul>
             </div>
             <!-- /.box-body -->
