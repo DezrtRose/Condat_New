@@ -88,8 +88,19 @@
         @endforeach
         </tbody>
     </table>
-    <div class="row text-right">
-        <div class="col-xs-2 col-xs-offset-8">
+    <div class="row">
+        <div class="col-xs-5 col-xs-offset-7 text-right">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p>Sub Total: <small>${{ float_format($invoice_details->total_amount - $invoice_details->total_gst) }}</small></p>
+                    <p>GST: <small>${{ float_format($invoice_details->total_gst) }}</small></p>
+                    <h3>Total Amount: <small>${{ float_format($invoice_details->total_amount) }}</small></h3>
+                    <p>Less Paid Amount: <small>${{ float_format($invoice_details->paid_amount) }}</small></p>
+                    <h3>Amount Due: <small>${{ float_format($invoice_details->outstanding_amount) }}</small></h3>
+                </div>
+            </div>
+        </div>
+        {{--<div class="col-xs-2 col-xs-offset-8">
             <p>
             <h4>
                 Sub Total : <br>
@@ -114,7 +125,7 @@
                 <h3>${{ float_format($invoice_details->outstanding_amount) }}</h3><br>
             </h4>
             </p>
-        </div>
+        </div>--}}
     </div>
     <div class="row">
         <div class="col-xs-5">

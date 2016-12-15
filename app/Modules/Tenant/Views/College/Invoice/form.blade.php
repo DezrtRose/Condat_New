@@ -58,7 +58,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('enrollment_fee', 0, array('class' => 'form-control', 'id'=>'enrollment_fee',))!!}
+                            {!!Form::text('enrollment_fee', null, array('class' => 'form-control', 'id'=>'enrollment_fee',))!!}
                         </div>
                         @if($errors->has('enrollment_fee'))
                             {!! $errors->first('enrollment_fee', '<label class="control-label"
@@ -72,7 +72,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('material_fee', 0, array('class' => 'form-control', 'id'=>'material_fee'))!!}
+                            {!!Form::text('material_fee', null, array('class' => 'form-control', 'id'=>'material_fee'))!!}
                         </div>
                         @if($errors->has('material_fee'))
                             {!! $errors->first('material_fee', '<label class="control-label"
@@ -86,7 +86,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('coe_fee', 0, array('class' => 'form-control', 'id'=>'coe_fee'))!!}
+                            {!!Form::text('coe_fee', null, array('class' => 'form-control', 'id'=>'coe_fee'))!!}
                         </div>
                         @if($errors->has('coe_fee'))
                             {!! $errors->first('coe_fee', '<label class="control-label"
@@ -100,7 +100,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('other_fee', 0, array('class' => 'form-control', 'id'=>'other_fee'))!!}
+                            {!!Form::text('other_fee', null, array('class' => 'form-control', 'id'=>'other_fee'))!!}
                         </div>
                         @if($errors->has('other_fee'))
                             {!! $errors->first('other_fee', '<label class="control-label"
@@ -114,7 +114,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('sub_total', 0, array('class' => 'form-control', 'id'=>'sub_total','placeholder'=>'click to calculate'))!!}
+                            {!!Form::text('sub_total', null, array('class' => 'form-control', 'id'=>'sub_total','placeholder'=>'click to calculate'))!!}
                         </div>
                         @if($errors->has('sub_total'))
                             {!! $errors->first('sub_total', '<label class="control-label"
