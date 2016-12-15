@@ -283,6 +283,7 @@ class CollegeInvoice extends Model
 
     function getFilterResults(array $request, $status = 1)
     {
+        $status = $request['status'];
         $invoices_query = CollegeInvoice::leftjoin('college_invoice_payments', 'college_invoice_payments.college_invoice_id', '=', 'college_invoices.college_invoice_id')
             ->leftjoin('college_payments', 'college_payments.college_payment_id', '=', 'college_invoice_payments.ci_payment_id')
             ->leftJoin('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
