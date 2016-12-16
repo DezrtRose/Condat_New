@@ -176,10 +176,11 @@ class ApplicationStatusController extends BaseController
         array_unshift($data['status'], 'All');
 
         $data['colleges'] = $this->institute->getList()->toArray();
+        $data['clients'] = $this->client->getClientNameList();
 
         $data['users'] = $this->user->getList()->toArray();
-        array_unshift($data['users'], 'All');
-
+        $data['users'][0] = 'All';
+        ksort($data['users']);
         $data['agents'] = $this->agent->getAgents();;
         unset($data['agents'][0]);
 

@@ -189,17 +189,17 @@ class CourseApplication extends Model
 
         if($request['intake_date'] != '') {
             $dates = explode(' - ', $request['intake_date']);
-            $applications_query = $applications_query->whereBetween('intakes.intake_date', array(insert_dateformat($dates[0]), insert_dateformat($dates[1])));
+            $applications_query = $applications_query->whereBetween('intakes.intake_date', array((string) insert_dateformat($dates[0]), (string) insert_dateformat($dates[1])));
         }
 
         if($request['course_name'] != '')
             $applications_query = $applications_query->where('courses.name', 'LIKE', '%'.$request['course_name'].'%');
 
-        if($request['client_name'] != '')
-            $applications_query = $applications_query->where(DB::raw('CONCAT(persons.first_name, " ", persons.last_name)'), 'LIKE', '%'.$request['client_name'].'%');
+        if(isset($request['client_name']))
+            $applications_query = $applications_query->whereIn('course_application.client_id', $request['client_name']);
 
-        if($request['invoice_to'] != '')
-            $applications_query = $applications_query->where('companies.invoice_to_name', 'LIKE', '%'.$request['invoice_to'].'%');
+        /*if($request['invoice_to'] != '')
+            $applications_query = $applications_query->where('companies.invoice_to_name', 'LIKE', '%'.$request['invoice_to'].'%');*/
 
         if(isset($request['super_agent']) && !empty($request['super_agent']))
             $applications_query = $applications_query->whereIn('course_application.super_agent_id', $request['super_agent']);

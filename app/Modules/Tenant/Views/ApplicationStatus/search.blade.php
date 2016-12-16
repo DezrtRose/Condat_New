@@ -41,11 +41,20 @@
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('client_name', 'Client Name', array('class' => 'control-label')) !!}
-                        {!!Form::text('client_name', null, array('class' => 'form-control', 'id'=>'client_name'))!!}
+                    {!!Form::select('client_name[]', $clients, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
+                    {{--{!!Form::text('client_name', null, array('class' => 'form-control', 'id'=>'client_name'))!!}--}}
                 </div>
-                <div class="form-group col-md-4 col-xs-12">
+                {{--<div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('invoice_to', 'Invoice To', array('class' => 'control-label')) !!}
                         {!!Form::text('invoice_to', null, array('class' => 'form-control', 'id'=>'invoice_to'))!!}
+                </div>--}}
+                <div class="form-group col-md-4 col-xs-12">
+                    {!!Form::label('super_agent', 'Super Agent', array('class' => 'control-label')) !!}
+                    {!!Form::select('super_agent[]', $agents, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
+                </div>
+                <div class="form-group col-md-4 col-xs-12">
+                    {!!Form::label('sub_agent', 'Sub Agent', array('class' => 'control-label')) !!}
+                    {!!Form::select('sub_agent[]', $agents, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('intake_date', 'Intake Date', array('class' => 'control-label')) !!}
@@ -66,14 +75,6 @@
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                </div>
-                <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('super_agent', 'Super Agent', array('class' => 'control-label')) !!}
-                    {!!Form::select('super_agent[]', $agents, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
-                </div>
-                <div class="form-group col-md-4 col-xs-12">
-                    {!!Form::label('sub_agent', 'Sub Agent', array('class' => 'control-label')) !!}
-                    {!!Form::select('sub_agent[]', $agents, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
                 </div>
             </div>
             {{--<div class="box-footer clearfix">
@@ -165,12 +166,13 @@
             $('.dateranger').daterangepicker({
                 autoUpdateInput: false,
                 locale: {
-                    cancelLabel: 'Clear'
+                    cancelLabel: 'Clear',
+                    format: 'DD/MM/YYYY'
                 }
             });
 
             $('.dateranger').on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
             });
 
             $('.dateranger').on('cancel.daterangepicker', function(ev, picker) {

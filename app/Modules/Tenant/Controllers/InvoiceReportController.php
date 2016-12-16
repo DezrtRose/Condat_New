@@ -237,9 +237,9 @@ class InvoiceReportController extends BaseController
                     'college_invoice_payments.college_invoice_id',
                     DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name')]);
             if($request['payment_date']) {
-                $date_range = explode('-', $request['payment_date']);
-                $from = trim($date_range[0]);
-                $to = trim($date_range[1]);
+                $date_range = explode(' - ', $request['payment_date']);
+                $from = $date_range[0];
+                $to = $date_range[1];
                 $payments = $payments->whereBetween('college_payments.date_paid', [$from, $to]);
             }
             if($request['from'] && $request['to']) {
