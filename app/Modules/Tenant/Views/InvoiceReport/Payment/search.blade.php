@@ -86,7 +86,7 @@
                     <table id="payments" class="table table-bordered table-striped dataTable">
                         <thead>
                         <tr>
-                            {{--<th>Payment ID</th>--}}
+                            <th>Payment ID</th>
                             <th>Payment Date</th>
                             <th>Client Name</th>
                             <th>Amount</th>
@@ -103,23 +103,27 @@
                             case '1':
                                 $print_url = url($tenant_id . '/students/payment/receipt/' . $payment->client_payment_id);
                                 $edit_url = route('application.students.editPayment', [$tenant_id, $payment->student_payments_id]);
+                                $prefix = 'CP';
                                 break;
                             case '2':
                                 $print_url = route('tenant.college.payment.receipt', [$tenant_id, $payment->college_payment_id]);
                                 $edit_url = route('tenant.application.editPayment', [$tenant_id, $payment->college_payment_id]);
+                                $prefix = 'CIP';
                                 break;
                             case '3':
                                 $print_url = route('tenant.subagent.payments.receipt', [$tenant_id, $payment->subagent_payments_id]);
                                 $edit_url = route("application.subagents.editPayment", [$tenant_id, $payment->subagent_payments_id]);
+                                $prefix = 'SAP';
                                 break;
                             default:
                                 $print_url = url($tenant_id . '/students/payment/receipt/' . $payment->client_payment_id);
                                 $edit_url = route('application.students.editPayment', [$tenant_id, $payment->student_payments_id]);
+                                $prefix = 'CP';
                                 break;
                         }
                         ?>
                             <tr>
-
+                                <td>{{ format_id($payment->payment_id, $prefix) }}</td>
                                 <td>{{ format_date($payment->date_paid) }}</td>
                                 <td>{{ $payment->client_name }}</td>
                                 <td>{{ format_price($payment->amount) }}</td>
