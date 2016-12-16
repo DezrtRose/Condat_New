@@ -16,10 +16,11 @@
             {!!Form::open(array('route' => ['tenant.application.storeInvoice', $tenant_id, $application_id], 'class' => 'form-horizontal form-left', 'autocomplete' => 'off'))!!}
             @include('Tenant::College/Invoice/form')
             <div class="box-footer clearfix">
-                <a class="btn btn-success" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id.'/college/payment/' . $data->college_payment_id . '/' . $data->course_application_id . '/assign') . '">Submit & Create More Invoices</a>
+                <a class="btn btn-success pull-left" data-toggle="modal" data-target="#condat-modal" data-url="{{ route('tenant.college.moreInvoice', [$tenant_id, $application_id]) }}">Submit & Create More Invoices</a>
                 <input type="submit" class="btn btn-primary pull-right" value="Submit"/>
             </div>
             {!!Form::close()!!}
         </div>
     </div>
+    {!! Condat::registerModal() !!}
 @stop

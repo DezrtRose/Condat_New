@@ -384,12 +384,10 @@ class CollegeController extends BaseController
         return view("Tenant::Student/Payment/receipt", $data);
     }
 
-    function createMoreInvoice($tenant_id, $payment_id, $application_id)
+    function createMoreInvoice($tenant_id, $application_id)
     {
-        $data['invoice_array'] = $this->invoice->getList($application_id);
-        $data['payment_id'] = $payment_id;
-        $data['college'] = true;
-        return view("Tenant::Client/Payment/assign", $data);
+        $data['application_id'] = $application_id;
+        return view("Tenant::College/Invoice/more", $data);
     }
 
 }
