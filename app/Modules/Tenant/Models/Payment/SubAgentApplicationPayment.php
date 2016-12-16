@@ -71,15 +71,15 @@ class SubAgentApplicationPayment extends Model
         DB::beginTransaction();
 
         try {
-            $payment = $this->createPayment($request);
+            $application_id = SubAgentInvoice::where('invoice_id', $invoice_id)->first()->course_application_id;
+
+            $payment = $this->createPayment($request, $application_id);
 
             /* assign payment to invoice */
             PaymentInvoiceBreakdown::create([
                 'invoice_id' => $invoice_id,
                 'payment_id' => $payment->client_payment_id
             ]);
-
-            $application_id = SubAgentInvoice::where('invoice_id', $invoice_id)->first()->course_application_id;
 
             $subagent_payment = SubAgentApplicationPayment::create([
                 'course_application_id' => $application_id,
