@@ -41,17 +41,17 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Inbox</h3>
 
-                <div class="box-tools pull-right">
+                {{--<div class="box-tools pull-right">
                     <div class="has-feedback">
                         <input type="text" class="form-control input-sm" placeholder="Search Mail">
                         <span class="glyphicon glyphicon-search form-control-feedback"></span>
                     </div>
-                </div>
+                </div>--}}
                 <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-                <div class="mailbox-controls">
+            {{--<div class="mailbox-controls">
                     <!-- Check all button -->
                     <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
                                 class="fa fa-square-o"></i>
@@ -74,7 +74,7 @@
                         <!-- /.btn-group -->
                     </div>
                     <!-- /.pull-right -->
-                </div>
+                </div>--}}
                 <div class="table-responsive mailbox-messages">
                     <table class="table table-hover table-striped">
                         <tbody>
@@ -106,7 +106,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer no-padding">
-                <div class="mailbox-controls">
+                {{--<div class="mailbox-controls">
                     <!-- Check all button -->
                     <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
                                 class="fa fa-square-o"></i>
@@ -129,7 +129,7 @@
                         <!-- /.btn-group -->
                     </div>
                     <!-- /.pull-right -->
-                </div>
+                </div>--}}
             </div>
         </div>
     </div>
