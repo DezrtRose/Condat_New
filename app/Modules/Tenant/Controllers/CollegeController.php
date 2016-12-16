@@ -119,13 +119,18 @@ class CollegeController extends BaseController
             'invoice_date' => 'required'
         ];
         $this->validate($this->request, $rules);
+        $request = $this->request->all();
         // if validates
-        $created = $this->invoice->add($this->request->all(), $application_id);
-        if ($created) {
-            Flash::success('Invoice has created successfully.');
-            $invoice = CollegeInvoice::find($created);
-            $client_id = $this->invoice->getClientId($created);
-            $this->client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => 'College Invoice', '{{DATE}}' => format_date($invoice->invoice_date), '{{AMOUNT}}' => $invoice->total_commission, '{{VIEW_LINK}}' => route('tenant.college.invoice', [$tenant_id, $invoice->college_invoice_id])], $application_id);
+        if($request['submit'] == 'Submit') {
+            $created = $this->invoice->add($request, $application_id);
+            if ($created) {
+                Flash::success('Invoice has created successfully.');
+                $invoice = CollegeInvoice::find($created);
+                $client_id = $this->invoice->getClientId($created);
+                $this->client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => 'College Invoice', '{{DATE}}' => format_date($invoice->invoice_date), '{{AMOUNT}}' => $invoice->total_commission, '{{VIEW_LINK}}' => route('tenant.college.invoice', [$tenant_id, $invoice->college_invoice_id])], $application_id);
+            }
+        } else {
+
         }
         return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
     }
@@ -151,7 +156,7 @@ class CollegeController extends BaseController
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul role="menu" class="dropdown-menu">
-                    <li><a href="'.route('tenant.college.payment.receipt', [$tenant_id, $data->college_payment_id]).'">View</a></li>
+                    <li><a href="'.route('tenant.college.payment.receipt', [$tenant_id, $data->college_payment_id]).'">Print Receipt</a></li>
                     <li><a href="'.route("tenant.application.editPayment", [$tenant_id, $data->college_payment_id]).'">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
@@ -197,7 +202,7 @@ class CollegeController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->college_invoice_id, 1]) . '">View payments</a></li>
-                    <li><a href="' . route('tenant.college.invoice', [$tenant_id, $data->college_invoice_id]) . '" target="_blank">View Invoice</a></li>
+                    <li><a href="' . route('tenant.college.invoice', [$tenant_id, $data->college_invoice_id]) . '" target="_blank">Print Invoice</a></li>
                     <li><a href="'.route("tenant.college.editInvoice", [$tenant_id, $data->college_invoice_id]).'">Edit</a></li>
                     <li><a href="'.route("tenant.college.deleteInvoice", [$tenant_id, $data->college_invoice_id]).'">Delete</a></li>
                   </ul>
@@ -246,7 +251,7 @@ class CollegeController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->college_invoice_id, 1]) . '">View payments</a></li>
-                    <li><a href="' . route('tenant.college.invoice', [$tenant_id, $data->college_invoice_id]) . '" target="_blank">View Invoice</a></li>
+                    <li><a href="' . route('tenant.college.invoice', [$tenant_id, $data->college_invoice_id]) . '" target="_blank">Print Invoice</a></li>
                     <li><a href="'.route("tenant.college.editInvoice", [$tenant_id, $data->college_invoice_id]).'">Edit</a></li>
                     <li><a href="http://localhost/condat/tenant/contact/2">Delete</a></li>
                   </ul>
@@ -283,7 +288,7 @@ class CollegeController extends BaseController
         if($super_agent != null && $super_agent != 0)
             $data['invoice_to'] = get_agent_name($super_agent);
         else
-            $data['invoice_to'] = 'Thom Zheng';
+            $data['invoice_to'] = $data['invoice']->invoice_to_name;
         return view("Tenant::College/Invoice/show", $data);
     }
 
@@ -377,6 +382,14 @@ class CollegeController extends BaseController
         $data['payment'] = $this->payment->getDetails($payment_id);
 
         return view("Tenant::Student/Payment/receipt", $data);
+    }
+
+    function createMoreInvoice($tenant_id, $payment_id, $application_id)
+    {
+        $data['invoice_array'] = $this->invoice->getList($application_id);
+        $data['payment_id'] = $payment_id;
+        $data['college'] = true;
+        return view("Tenant::Client/Payment/assign", $data);
     }
 
 }

@@ -46,6 +46,7 @@
                 <div class="panel-body">
                     <p>
                     {{--{{ get_client_name($payment->client_id) }}--}}
+                    {{ get_agent_name($sub_agent_id) }}
 
                     <h3>
                         <small>Receipt No #

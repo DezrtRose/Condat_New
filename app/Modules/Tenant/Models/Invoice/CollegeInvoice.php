@@ -44,8 +44,7 @@ class CollegeInvoice extends Model
                 'invoice_date' => insert_dateformat($request['invoice_date'])
             ]);
 
-            if(isset($request['tuition_fee']))
-            {
+            if (isset($request['tuition_fee'])) {
                 $ci_commission = TuitionCommission::create([
                     'tuition_fee' => $request['tuition_fee'],
                     'enrollment_fee' => $request['enrollment_fee'],
@@ -61,8 +60,7 @@ class CollegeInvoice extends Model
                 ]);
             }
 
-            if(isset($request['incentive']))
-            {
+            if (isset($request['incentive'])) {
                 $ci_commission = OtherCommission::create([
                     'amount' => $request['incentive'],
                     'gst' => $request['incentive_gst'],
@@ -85,7 +83,10 @@ class CollegeInvoice extends Model
     {
         $college_invoice = CollegeInvoice::leftJoin('ci_tuition_commissions', 'ci_tuition_commissions.college_invoice_id', '=', 'college_invoices.college_invoice_id')
             ->leftJoin('ci_other_commissions', 'ci_other_commissions.college_invoice_id', '=', 'college_invoices.college_invoice_id')
-            ->select('college_invoices.*', 'college_invoices.college_invoice_id as invoice_id', 'ci_tuition_commissions.*', 'ci_other_commissions.amount as incentive', 'ci_other_commissions.gst as incentive_gst', 'ci_other_commissions.description as other_description')
+            ->leftJoin('course_application', 'college_invoices.course_application_id', '=', 'course_application.course_application_id')
+            ->leftjoin('institutes', 'course_application.institute_id', '=', 'institutes.institution_id')
+            ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id')
+            ->select('college_invoices.*', 'college_invoices.college_invoice_id as invoice_id', 'ci_tuition_commissions.*', 'ci_other_commissions.amount as incentive', 'ci_other_commissions.gst as incentive_gst', 'ci_other_commissions.description as other_description', 'companies.invoice_to_name')
             ->find($invoice_id);
         return $college_invoice;
     }
@@ -96,7 +97,7 @@ class CollegeInvoice extends Model
         $stats['invoice_amount'] = $this->getTotalAmount($application_id);
         $stats['total_paid'] = $this->getTotalPaid($application_id);
         $due_amount = $stats['invoice_amount'] - $stats['total_paid'];
-        $stats['due_amount'] = ($due_amount < 0)? 0 : $due_amount;
+        $stats['due_amount'] = ($due_amount < 0) ? 0 : $due_amount;
         return $stats;
     }
 
@@ -125,10 +126,9 @@ class CollegeInvoice extends Model
             ->get();
         //->lists('invoice_details', 'invoices.invoice_id');
         $invoice_list = array();
-        foreach($invoices as $key => $invoice)
-        {
+        foreach ($invoices as $key => $invoice) {
             $formatted_id = format_id($invoice->college_invoice_id, 'CI');
-            $invoice_list[$invoice->college_invoice_id] = $formatted_id. ', $'. $invoice->total_commission;
+            $invoice_list[$invoice->college_invoice_id] = $formatted_id . ', $' . $invoice->total_commission;
         }
         return $invoice_list;
     }
@@ -154,7 +154,7 @@ class CollegeInvoice extends Model
     {
         $paid = $this->getPaidAmount($invoice_id);
         $final_total = CollegeInvoice::find($invoice_id)->final_total;
-        $outstanding = ($final_total - $paid > 0)? $final_total - $paid : 0;
+        $outstanding = ($final_total - $paid > 0) ? $final_total - $paid : 0;
         return $outstanding;
     }
 
@@ -179,10 +179,9 @@ class CollegeInvoice extends Model
             $college_invoice->invoice_date = insert_dateformat($request['invoice_date']);
             $college_invoice->save();
 
-            if(isset($request['tuition_fee']))
-            {
+            if (isset($request['tuition_fee'])) {
                 $ci_commission = TuitionCommission::find(['college_invoice_id' => $invoice_id])->first();
-                if($ci_commission) {
+                if ($ci_commission) {
                     $ci_commission->tuition_fee = $request['tuition_fee'];
                     $ci_commission->enrollment_fee = $request['enrollment_fee'];
                     $ci_commission->material_fee = $request['material_fee'];
@@ -211,10 +210,9 @@ class CollegeInvoice extends Model
                 }
             }
 
-            if(isset($request['incentive']))
-            {
+            if (isset($request['incentive'])) {
                 $ci_commission = OtherCommission::find(['college_invoice_id' => $invoice_id])->first();
-                if($ci_commission) {
+                if ($ci_commission) {
                     $ci_commission->amount = $request['incentive'];
                     $ci_commission->gst = $request['incentive_gst'];
                     $ci_commission->description = $request['other_description'];
@@ -275,7 +273,7 @@ class CollegeInvoice extends Model
         } elseif ($status == 3) { // Future
             $invoices_query = $invoices_query->where('college_invoices.invoice_date', '>', get_today_datetime());
         }
-        
+
         $invoices = $invoices_query->get();
         //dd($invoices->toArray());
         return $invoices;
@@ -283,7 +281,6 @@ class CollegeInvoice extends Model
 
     function getFilterResults(array $request, $status = 1)
     {
-        $status = $request['status'];
         $invoices_query = CollegeInvoice::leftjoin('college_invoice_payments', 'college_invoice_payments.college_invoice_id', '=', 'college_invoices.college_invoice_id')
             ->leftjoin('college_payments', 'college_payments.college_payment_id', '=', 'college_invoice_payments.ci_payment_id')
             ->leftJoin('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
@@ -297,7 +294,7 @@ class CollegeInvoice extends Model
             ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
-            ->select(['college_invoices.college_invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name',
+            ->select(['college_invoices.college_invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name', 'course_application.super_agent_id',
                 DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
                 THEN (companies.invoice_to_name)
                 ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
@@ -330,26 +327,41 @@ class CollegeInvoice extends Model
 
         if ($request['from'] != '' && $request['to'] != '')
             $invoices_query = $invoices_query->whereBetween('college_invoices.final_total', [$request['from'], $request['to']]);
-        elseif($request['from'])
+        elseif ($request['from'])
             $invoices_query = $invoices_query->where('college_invoices.final_total', '>=', $request['from']);
-        elseif($request['to'])
+        elseif ($request['to'])
             $invoices_query = $invoices_query->where('college_invoices.final_total', '<=', $request['to']);
 
-        /*if ($request['invoice_to'] != 0)
-            $invoices_query = $invoices_query->where('invoice_to', $request['invoice_to']);*/
+        if ($request['invoice_to'] != 0)
+            $invoices_query = $invoices_query->where('course_application.super_agent_id', $request['invoice_to']);
 
         $invoices = $invoices_query->get();
 
-        if(isset($request['invoice_to']) && $request['invoice_to'] && $request['invoice_to'] != 0) {
+        /*if (isset($request['invoice_to']) && $request['invoice_to'] && $request['invoice_to'] != 0) {
             foreach ($invoices as $key => $invoice) {
                 if ($invoice->invoice_to != $request['invoice_to'])
                     unset($invoices[$key]);
             }
-        }
+        }*/
         return $invoices;
     }
 
     function getInvoiceToList()
+    {
+        $list = CollegeInvoice::leftjoin('college_invoice_payments', 'college_invoice_payments.college_invoice_id', '=', 'college_invoices.college_invoice_id')
+            ->leftJoin('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
+            ->leftjoin('agents', 'agents.agent_id', '=', 'course_application.super_agent_id')
+            ->leftjoin('companies', 'companies.company_id', '=', 'agents.company_id')
+            ->select('course_application.super_agent_id AS invoice_to', 'companies.name')
+            ->whereNotNull('course_application.super_agent_id')
+            ->where('course_application.super_agent_id', '!=', '0')
+            ->orderBy('invoice_to', 'asc')
+            ->groupBy('invoice_to')
+            ->lists('name', 'invoice_to');
+        return $list;
+    }
+
+    function getInvoiceToList_bck()
     {
         $list = CollegeInvoice::leftjoin('college_invoice_payments', 'college_invoice_payments.college_invoice_id', '=', 'college_invoices.college_invoice_id')
             ->leftJoin('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
@@ -364,10 +376,10 @@ class CollegeInvoice extends Model
                     WHERE ag.agent_id = course_application.super_agent_id)
                 END
                 AS invoice_to')
-        )
-        ->orderBy('invoice_to', 'asc')
-        ->groupBy('invoice_to')
-        ->lists('invoice_to', 'invoice_to');
+            )
+            ->orderBy('invoice_to', 'asc')
+            ->groupBy('invoice_to')
+            ->lists('invoice_to', 'invoice_to');
 
         return $list;
     }

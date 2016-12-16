@@ -188,7 +188,7 @@ class StudentController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
-                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">View Invoice</a></li>
+                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">Print Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
                     <li><a href="' . route("tenant.student.deleteInvoice", [$tenant_id, $data->invoice_id]) . '" onclick="return confirm(\'Are you sure you want to delete the record?\')">Delete</a></li>
                   </ul>
@@ -239,7 +239,7 @@ class StudentController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->student_invoice_id, 2]) . '">View payments</a></li>
-                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '">View Invoice</a></li>
+                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '">Print Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
                     <li><a href="' . route("tenant.student.deleteInvoice", [$tenant_id, $data->invoice_id]) . '" onclick="return confirm(\'Are you sure you want to delete the record?\')">Delete</a></li>
                   </ul>
