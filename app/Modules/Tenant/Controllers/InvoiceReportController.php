@@ -201,7 +201,7 @@ class InvoiceReportController extends BaseController
                     'student_application_payments.student_payments_id',
                     'client_payments.*',
                     'payment_invoice_breakdowns.invoice_id',
-                    'course_application_id',
+                    'student_application_payments.course_application_id',
                     DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name')]);
             if($request['payment_date']) {
                 $date_range = explode('-', $request['payment_date']);
@@ -221,6 +221,10 @@ class InvoiceReportController extends BaseController
             }
             if(isset($request['added_by'])) {
                 $payments = $payments->whereIn('client_payments.added_by', $request['added_by']);
+            }
+            if(isset($request['college_name'])) {
+                $payments = $payments->join('course_application', 'course_application.course_application_id', '=', 'student_application_payments.course_application_id');
+                $payments = $payments->whereIn('course_application.institute_id', $request['college_name']);
             }
             $payments = $payments->where('client_payments.payment_type', $request['client_payment_type'])->get();
         } elseif ($request['type'] == 2) {
@@ -251,6 +255,10 @@ class InvoiceReportController extends BaseController
             if(isset($request['added_by'])) {
                 $payments = $payments->whereIn('college_payments.added_by', $request['added_by']);
             }
+            if(isset($request['college_name'])) {
+                $payments = $payments->join('course_application', 'course_application.course_application_id', '=', 'college_payments.course_application_id');
+                $payments = $payments->whereIn('course_application.institute_id', $request['college_name']);
+            }
             $payments = $payments->where('college_payments.payment_type', $request['college_payment_type'])->get();
         } else {
             $payments = SubAgentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'subagent_application_payments.client_payment_id')
@@ -280,6 +288,10 @@ class InvoiceReportController extends BaseController
             }
             if(isset($request['added_by'])) {
                 $payments = $payments->whereIn('client_payments.added_by', $request['added_by']);
+            }
+            if(isset($request['college_name'])) {
+                $payments = $payments->join('course_application', 'course_application.course_application_id', '=', 'subagent_application_payments.course_application_id');
+                $payments = $payments->whereIn('course_application.institute_id', $request['college_name']);
             }
             $payments = $payments->where('client_payments.payment_type', $request['client_payment_type'])->get();
         }
