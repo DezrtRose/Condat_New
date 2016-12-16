@@ -120,10 +120,10 @@
                                 <a href="#" title="View Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
-                                <a href="#" title="Email Invoice"><i
+                                {{--<a href="#" title="Email Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-send"
                                             data-toggle="tooltip" data-placement="top"
-                                            title="Email Invoice"></i></a>
+                                            title="Email Invoice"></i></a>--}}
                                 <a href="#" title="Remove From Group" id="{{ $invoice->invoice_id }}" class="remove"><i
                                             class="btn btn-primary btn-sm glyphicon glyphicon-remove-sign"
                                             data-toggle="tooltip" data-placement="top"
