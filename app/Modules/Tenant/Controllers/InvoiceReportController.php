@@ -198,7 +198,7 @@ class InvoiceReportController extends BaseController
                 ->leftJoin('persons', 'persons.person_id', '=', 'clients.person_id')
                 ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
                 ->select([
-                    'student_application_payments.student_payments_id',
+                    'student_application_payments.student_payments_id as payment_id',
                     'client_payments.*',
                     'payment_invoice_breakdowns.invoice_id',
                     'student_application_payments.course_application_id',
@@ -233,6 +233,7 @@ class InvoiceReportController extends BaseController
                 ->leftJoin('clients', 'clients.client_id', '=', 'course_application.client_id')
                 ->leftJoin('persons', 'persons.person_id', '=', 'clients.person_id')
                 ->select([
+                    'college_payments.college_payment_id as payment_id',
                     'college_payments.*',
                     'college_invoice_payments.college_invoice_id',
                     DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS client_name')]);
@@ -266,7 +267,7 @@ class InvoiceReportController extends BaseController
                 ->leftJoin('persons', 'persons.person_id', '=', 'clients.person_id')
                 ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
                 ->select([
-                    'subagent_application_payments.subagent_payments_id',
+                    'subagent_application_payments.subagent_payments_id as payment_id',
                     'subagent_application_payments.course_application_id',
                     'payment_invoice_breakdowns.invoice_id',
                     'client_payments.*']);
