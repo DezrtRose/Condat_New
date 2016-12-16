@@ -10,7 +10,7 @@
 
     <div class="col-md-3">
 
-        <a href="{{ route('tenant.client.compose', $client->client_id) }}"
+        <a href="{{ route('tenant.client.compose', [$tenant_id, $client->client_id]) }}"
            class="btn btn-primary btn-block margin-bottom">Compose</a>
 
         <div class="box box-solid">
@@ -27,8 +27,8 @@
                 <ul class="nav nav-pills nav-stacked">
                     <li><a href="{{ route('tenant.client.sent', [$tenant_id, $client->client_id]) }}"><i class="fa fa-envelope-o"></i>
                             Sent</a></li>
-                    <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-                    <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
+                    {{--<li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
+                    <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>--}}
                 </ul>
             </div>
             <!-- /.box-body -->
@@ -54,18 +54,18 @@
                 </div>
                 <!-- /.mailbox-read-info -->
                 <div class="mailbox-controls with-border text-center">
-                    <div class="btn-group">
+                    {{--<div class="btn-group">
                         <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body"
                                 title="Delete">
                             <i class="fa fa-trash-o"></i></button>
                         <a href="{{ route('tenant.client.sent', [$tenant_id, $client->client_id]) }}" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body"
                                 title="" data-original-title="Reply">
                             <i class="fa fa-reply"></i></a>
-                    </div>
+                    </div>--}}
                     <!-- /.btn-group -->
-                    <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" title=""
+                    {{--<button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" title=""
                             data-original-title="Print">
-                        <i class="fa fa-print"></i></button>
+                        <i class="fa fa-print"></i></button>--}}
                 </div>
                 <!-- /.mailbox-controls -->
                 <div class="mailbox-read-message">
@@ -74,12 +74,12 @@
                 <!-- /.mailbox-read-message -->
             </div>
             <!-- /.box-body -->
-            <div class="box-footer">
+            {{--<div class="box-footer">
                 <div class="pull-right">
                     <button type="button" class="btn btn-default"><i class="fa fa-print"></i> Print</button>
                 </div>
                 <button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</button>
-            </div>
+            </div>--}}
             <!-- /.box-footer -->
         </div>
         <!-- /. box -->
