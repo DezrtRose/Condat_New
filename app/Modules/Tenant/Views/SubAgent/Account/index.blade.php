@@ -11,6 +11,7 @@
 
     <div class="col-xs-12">
 
+        @if($application->sub_agent_id != 0 && $application->sub_agent_id != null)
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Recent Payments</h3>
@@ -34,6 +35,13 @@
                 </table>
             </div>
         </div>
+        @else
+            <div class="callout callout-warning">
+                <h4>Sub Agent Not Assigned!</h4>
+
+                <p>Sub Agent for the application is not assigned. Please visit the application <a href="{{ route('tenant.application.show', [$tenant_id, $application->application_id]) }}">dashboard</a> to add sub-agent and process further.</p>
+            </div>
+        @endif
     </div>
 
     <script type="text/javascript">

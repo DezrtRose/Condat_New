@@ -45,7 +45,7 @@ class SubAgentController extends BaseController
     {
         //$data['stats'] = $this->invoice->getStats($application_id);
         $data['application'] = $application = $this->application->getDetails($application_id);
-        $data['invoice_array'] = $this->invoice->getList($application_id);
+        //$data['invoice_array'] = $this->invoice->getList($application_id);
         $data['client'] = $this->client->getDetails($application->client_id);
         return view("Tenant::SubAgent/Account/index", $data);
     }
@@ -290,7 +290,7 @@ class SubAgentController extends BaseController
     {
         $data['agency'] = $this->agent->getAgentDetails();
         $data['bank'] = $this->setting->getBankDetails();
-        $data['payment'] = $this->payment->getDetails($payment_id);
+        $data['payment'] = $this->payment->getDetails($payment_id); dd($data['payment']->toArray());
 
         return view("Tenant::Student/Payment/receipt", $data);
     }
