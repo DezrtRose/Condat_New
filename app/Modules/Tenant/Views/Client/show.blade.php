@@ -64,10 +64,9 @@
                 <div class="box-body">
                     @if(count($remainders) > 0)
                         @foreach($remainders as $key => $remainder)
+                            <p class="text-muted">{{ format_date($remainder->reminder_date) }}</p>
                             <strong><i class="fa fa-file-text-o margin-r-5"></i> {{ $remainder->description }}
                             </strong>
-
-                            <p class="text-muted">{{ format_date($remainder->reminder_date) }}</p>
                         @endforeach
                     @else
                         <p class="text-muted well">
