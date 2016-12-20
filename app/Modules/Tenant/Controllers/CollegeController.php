@@ -114,6 +114,16 @@ class CollegeController extends BaseController
 
     public function storeInvoice($tenant_id, $application_id)
     {
+        $invoice_id = $this->storeInvFunc($tenant_id, $application_id);
+        if($this->request->input('submit') == 'Submit') {
+            return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
+        } else {
+            return redirect()->route('tenant.college.moreInvoice', [$tenant_id, $invoice_id]);
+        }
+    }
+
+    function storeInvFunc($tenant_id, $application_id)
+    {
         $rules = [
             'total_commission' => 'required|numeric',
             'invoice_date' => 'required'
@@ -121,18 +131,14 @@ class CollegeController extends BaseController
         $this->validate($this->request, $rules);
         $request = $this->request->all();
         // if validates
-        if($request['submit'] == 'Submit') {
-            $created = $this->invoice->add($request, $application_id);
-            if ($created) {
-                Flash::success('Invoice has created successfully.');
-                $invoice = CollegeInvoice::find($created);
-                $client_id = $this->invoice->getClientId($created);
-                $this->client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => 'College Invoice', '{{DATE}}' => format_date($invoice->invoice_date), '{{AMOUNT}}' => $invoice->total_commission, '{{VIEW_LINK}}' => route('tenant.college.invoice', [$tenant_id, $invoice->college_invoice_id])], $application_id);
-            }
-        } else {
-
+        $created = $this->invoice->add($request, $application_id);
+        if ($created) {
+            Flash::success('Invoice has created successfully.');
+            $invoice = CollegeInvoice::find($created);
+            $client_id = $this->invoice->getClientId($created);
+            $this->client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => 'College Invoice', '{{DATE}}' => format_date($invoice->invoice_date), '{{AMOUNT}}' => $invoice->total_commission, '{{VIEW_LINK}}' => route('tenant.college.invoice', [$tenant_id, $invoice->college_invoice_id])], $application_id);
         }
-        return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
+        return $created;
     }
 
 
@@ -384,10 +390,32 @@ class CollegeController extends BaseController
         return view("Tenant::Student/Payment/receipt", $data);
     }
 
-    function createMoreInvoice($tenant_id, $application_id)
+    function createMoreInvoice($tenant_id, $invoice_id)
     {
-        $data['application_id'] = $application_id;
+        $data['invoice'] = $this->invoice->getDetails($invoice_id);
         return view("Tenant::College/Invoice/more", $data);
+    }
+
+    function createMoreInvoice1($tenant_id, $application_id)
+    {
+        $invoice_id = $this->storeInvFunc($tenant_id, $application_id);
+        $data['invoice'] = $this->invoice->getDetails($invoice_id);
+        return view("Tenant::College/Invoice/more", $data);
+    }
+
+    function storeMoreInvoice($tenant_id, $application_id)
+    {
+        $rules = [
+            'start_date' => 'required'
+        ];
+        $this->validate($this->request, $rules);
+        $request = $this->request->all();
+        // if validates
+        $created = $this->invoice->addMore($request, $application_id, $tenant_id);
+        if ($created) {
+            Flash::success('Multiple Invoices have been created successfully.');
+        }
+        return redirect()->route('tenant.application.college', [$tenant_id, $application_id]);
     }
 
 }

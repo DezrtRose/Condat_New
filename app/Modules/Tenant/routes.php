@@ -164,8 +164,10 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('applications/invoices/{client_id}/data', 'CollegeController@getInvoicesData');
     Route::get('applications/recent/{client_id}/data', 'CollegeController@getRecentData');
     Route::get('applications/invoices/receipt/{invoice_id}', 'CollegeController@printInvoice');
-    Route::get('college/invoice/{application_id}/more', ['as' => 'tenant.college.moreInvoice', 'uses' => 'CollegeController@createMoreInvoice']);
-    Route::get('college/invoice/{application_id}', ['as' => 'tenant.college.createInvoice', 'uses' => 'CollegeController@createMoreInvoice']);
+    /*Route::get('college/invoice/{application_id}/more', ['as' => 'tenant.college.moreInvoice', 'uses' => 'CollegeController@createMoreInvoice']);
+    Route::post('college/invoice/{application_id}/more', ['as' => 'tenant.college.storeMoreInvoice', 'uses' => 'CollegeController@storeMoreInvoice']);*/
+    Route::get('college/invoice/{invoice_id}/more', ['as' => 'tenant.college.moreInvoice', 'uses' => 'CollegeController@createMoreInvoice']);
+    Route::post('college/invoice/{invoice_id}/more', ['as' => 'tenant.college.storeMoreInvoice', 'uses' => 'CollegeController@storeMoreInvoice']);
 
     /* College Invoices */
     Route::get('college/{invoice_id}/invoice', ['as' => 'tenant.college.invoice', 'uses' => 'CollegeController@show']);
@@ -229,7 +231,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
 
     /* Assign student payments to invoices */
     Route::get('college/payment/{payment_id}/{application_id}/assign', ['as' => 'tenant.college.payment.assign', 'uses' => 'CollegeController@assignInvoice']);
-    Route::post('college/payment/{payment_id}/assign', ['as' => 'tenant.college.payment.postAssign', 'uses' => 'InvoiceController@postCollegeAssign']);
+    Route::post('college/paymcollegent/{payment_id}/assign', ['as' => 'tenant.college.payment.postAssign', 'uses' => 'InvoiceController@postCollegeAssign']);
     Route::get('college/payment/receipt/{payment_id}', ['as' => 'tenant.college.payment.receipt', 'uses' => 'CollegeController@printReceipt']);
 
     Route::get('clients/{client_id}/personal_details', 'ClientController@personal_details');
