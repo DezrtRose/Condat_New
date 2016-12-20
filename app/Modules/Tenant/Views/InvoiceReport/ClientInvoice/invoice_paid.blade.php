@@ -36,7 +36,7 @@
                         <tbody>
                         @foreach($invoice_reports as $invoice)
                             <tr>
-                                <td>{{ $invoice->invoice_id }}</td>
+                                <td>{{ format_id($invoice->invoice_id, 'I') }}</td>
                                 <td>{{ $invoice->invoice_date }}</td>
                                 <td>{{ $invoice->fullname }}</td>
                                 <td>{{ $invoice->number }}</td>
@@ -49,7 +49,7 @@
                                                 class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="Add Payment"></i></a>
-                                    <a href="{{route('tenant.student.invoice', [$tenant_id, $invoice->student_invoice_id])}}"
+                                    <a target="_blank" href="{{route('tenant.student.invoice', [$tenant_id, $invoice->student_invoice_id])}}"
                                        title="Print Invoice"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                                 data-toggle="tooltip" data-placement="top"

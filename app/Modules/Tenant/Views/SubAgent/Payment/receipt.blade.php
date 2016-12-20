@@ -71,7 +71,11 @@
     <table class="table table-bordered">
         <thead class="thead-default">
         <tr>
-
+            @if($payment->client_id)
+            <th>
+                <h4>Client Name</h4>
+            </th>
+            @endif
             <th>
                 <h4>Description</h4>
             </th>
@@ -86,7 +90,9 @@
         </thead>
         <tbody>
         <tr>
-
+            @if($payment->client_id)
+            <td>{{ get_client_name($payment->client_id) }}</td>
+            @endif
             <td>{{ $payment->description }}</td>
             <td>{{ $payment->payment_method }}</td>
             <td class="text-right">${{ float_format($payment->amount) }}</td>
