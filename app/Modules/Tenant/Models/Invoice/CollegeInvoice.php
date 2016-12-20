@@ -1,8 +1,10 @@
 <?php namespace App\Modules\Tenant\Models\Invoice;
 
+use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\College\OtherCommission;
 use App\Modules\Tenant\Models\College\TuitionCommission;
 use App\Modules\Tenant\Models\Payment\CollegePayment;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
@@ -71,6 +73,65 @@ class CollegeInvoice extends Model
 
             DB::commit();
             return $college_invoice->college_invoice_id;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            // something went wrong
+        }
+    }
+
+    function addMore(array $request, $application_id, $tenant_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            for($i = 0; $i < $request['num']; $i++)
+            {
+                $added_months = $i * $request['duration'];
+                $invoice_date = Carbon::createFromFormat('d/m/Y', $request['start_date'])->addMonths($added_months);
+
+                $college_invoice = CollegeInvoice::create([
+                    'course_application_id' => $application_id,
+                    'total_commission' => $request['total_commission'],
+                    'total_gst' => $request['total_gst'],
+                    'final_total' => $request['final_total'],
+                    'installment_no' => $i+1,
+                    'invoice_date' => $invoice_date
+                ]);
+
+
+                if (isset($request['tuition_fee'])) {
+                    $ci_commission = TuitionCommission::create([
+                        'tuition_fee' => $request['tuition_fee'],
+                        'enrollment_fee' => $request['enrollment_fee'],
+                        'material_fee' => $request['material_fee'],
+                        'coe_fee' => $request['coe_fee'],
+                        'other_fee' => $request['other_fee'],
+                        'sub_total' => $request['sub_total'],
+                        'description' => $request['description'],
+                        'commission_percent' => $request['commission_percent'],
+                        'commission_amount' => $request['commission_amount'],
+                        'commission_gst' => $request['tuition_fee_gst'],
+                        'college_invoice_id' => $college_invoice->college_invoice_id
+                    ]);
+                }
+
+                if (isset($request['incentive'])) {
+                    $ci_commission = OtherCommission::create([
+                        'amount' => $request['incentive'],
+                        'gst' => $request['incentive_gst'],
+                        'description' => $request['description'],
+                        'college_invoice_id' => $college_invoice->college_invoice_id
+                    ]);
+                }
+                $client_id = $this->getClientId($college_invoice->college_invoice_id);
+                $client = new Client();
+                $client->addLog($client_id, 4, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => 'College Invoice', '{{DATE}}' => format_date($college_invoice->invoice_date), '{{AMOUNT}}' => $college_invoice->total_commission, '{{VIEW_LINK}}' => route('tenant.college.invoice', [$tenant_id, $college_invoice->college_invoice_id])], $application_id);
+            }
+
+            DB::commit();
+            return true;
             // all good
         } catch (\Exception $e) {
             DB::rollback();

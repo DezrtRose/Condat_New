@@ -10,8 +10,8 @@
       <div class="row">
         <div class="col-xs-6">
           <h1>
-            
-            <img src="http://theexcursionnepal.com/assets/images/logo.png" width="400px">
+
+            <img src="{{ (isset($company['logo_path']) && !empty($company['logo_path']))? $company['logo_path'] : '' }}" height="400px">
             
           </h1>
         </div>
