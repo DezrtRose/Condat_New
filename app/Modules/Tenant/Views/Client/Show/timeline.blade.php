@@ -42,10 +42,10 @@
                 </li>
             @endforeach
         @endforeach
-        <li class="text-center">
+        <li class="text-center" id="static-li">
             <a class="btn btn-primary" href="javascript:void(0);" id="load-timeline">Show More</a>
         </li>
-        <li id="static-li">
+        <li>
             <i class="fa fa-clock-o bg-gray"></i>
         </li>
     </ul>
