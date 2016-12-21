@@ -42,7 +42,10 @@
                 </li>
             @endforeach
         @endforeach
-        <li>
+        <li class="text-center">
+            <a class="btn btn-primary" href="javascript:void(0);" id="load-timeline">Show More</a>
+        </li>
+        <li id="static-li">
             <i class="fa fa-clock-o bg-gray"></i>
         </li>
     </ul>
@@ -85,5 +88,21 @@
             //nextSelector: 'a.jscroll-next:last',
             //contentSelector: 'li'
         });
+
+        var page = 1;
+        $('#load-timeline').on('click', function(e) {
+            e.preventDefault();
+            var token = '{{csrf_token()}}';
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': token },
+                url: '{{route('users.getMore.timeline', $tenant_id)}}',
+                type: 'post',
+                data: {page: page},
+                success: function(res) {
+                    page++;
+                    $('#static-li').before(res);
+                }
+            })
+        })
     })
 </script>

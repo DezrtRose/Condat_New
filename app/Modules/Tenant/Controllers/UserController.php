@@ -54,6 +54,33 @@ class UserController extends BaseController
         return view("Tenant::User/dashboard", $data);
     }
 
+    public function getMoreTimeline()
+    {
+        $data = '';
+        $page = $this->request['page'];
+        $timelines = $this->timeline->getTimelineWithPage($page);
+        foreach($timelines as $key => $grouped_timeline) {
+            $data .= '<li class="time-label">
+            <span class="bg-red">
+              '.readable_date($key).'
+            </span>
+            </li>';
+            foreach($grouped_timeline as $timeline) {
+                $data .= '<li>
+                    <i class="fa '.$timeline->image .'"></i>
+
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> '.get_datetime_diff($timeline->created_at);
+                if(!isset($client)) {
+                    $data .= ' | <i class="fa fa-user"></i> '.get_client_name($timeline->client_id);
+                }
+                $data .= '</span>'.$timeline->message.'</div>
+                </li>';
+            }
+        }
+        echo $data;
+    }
+
     /**
      * Display a listing of the users.
      *

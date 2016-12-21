@@ -40,6 +40,21 @@ class Timeline extends Model
             ->join('client_timeline', 'client_timeline.timeline_id', '=', 'timelines.timeline_id')
             ->select('timelines.*', 'timeline_types.image', 'client_timeline.client_id')
             ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get()
+            ->groupBy('created_date');
+        return $logs;
+    }
+
+    public function getTimelineWithPage($page = 0)
+    {
+        $limit = 10;
+        $logs = Timeline::join('timeline_types', 'timeline_types.type_id', '=', 'timelines.timeline_type_id')
+            ->join('client_timeline', 'client_timeline.timeline_id', '=', 'timelines.timeline_id')
+            ->select('timelines.*', 'timeline_types.image', 'client_timeline.client_id')
+            ->orderBy('created_at', 'desc')
+            ->offset($limit * $page)
+            ->limit($limit)
             ->get()
             ->groupBy('created_date');
         return $logs;

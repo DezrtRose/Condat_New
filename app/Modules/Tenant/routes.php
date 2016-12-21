@@ -325,6 +325,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('profile/password/{user_id}', ['as' => 'tenant.users.password', 'uses' => 'UserController@resetPassword']);
     Route::post('profile/password/{user_id}', ['as' => 'tenant.users.password', 'uses' => 'UserController@postResetPassword']);
     Route::get('users/dashboard', ['as' => 'users.dashboard', 'uses' => 'UserController@dashboard']);
+    Route::post('users/getMore', ['as' => 'users.getMore.timeline', 'uses' => 'UserController@getMoreTimeline']);
 
     /* Set reminder as completed */
     Route::get('reminder/{id}', ['as' => 'tenant.reminder.complete', 'uses' => 'UserController@completeReminder']);
