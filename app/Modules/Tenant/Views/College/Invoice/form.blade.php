@@ -44,7 +44,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('tuition_fee', null, array('class' => 'form-control', 'id'=>'tuition_fee'))!!}
+                            {!!Form::text('tuition_fee', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'tuition_fee'))!!}
                         </div>
                         @if($errors->has('tuition_fee'))
                             {!! $errors->first('tuition_fee', '<label class="control-label"
@@ -58,7 +58,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('enrollment_fee', null, array('class' => 'form-control', 'id'=>'enrollment_fee',))!!}
+                            {!!Form::text('enrollment_fee', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'enrollment_fee',))!!}
                         </div>
                         @if($errors->has('enrollment_fee'))
                             {!! $errors->first('enrollment_fee', '<label class="control-label"
@@ -72,7 +72,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('material_fee', null, array('class' => 'form-control', 'id'=>'material_fee'))!!}
+                            {!!Form::text('material_fee', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'material_fee'))!!}
                         </div>
                         @if($errors->has('material_fee'))
                             {!! $errors->first('material_fee', '<label class="control-label"
@@ -86,7 +86,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('coe_fee', null, array('class' => 'form-control', 'id'=>'coe_fee'))!!}
+                            {!!Form::text('coe_fee', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'coe_fee'))!!}
                         </div>
                         @if($errors->has('coe_fee'))
                             {!! $errors->first('coe_fee', '<label class="control-label"
@@ -100,7 +100,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('other_fee', null, array('class' => 'form-control', 'id'=>'other_fee'))!!}
+                            {!!Form::text('other_fee', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'other_fee'))!!}
                         </div>
                         @if($errors->has('other_fee'))
                             {!! $errors->first('other_fee', '<label class="control-label"
@@ -114,7 +114,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('sub_total', null, array('class' => 'form-control', 'id'=>'sub_total','placeholder'=>'click to calculate'))!!}
+                            {!!Form::text('sub_total', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'sub_total','placeholder'=>'click to calculate'))!!}
                         </div>
                         @if($errors->has('sub_total'))
                             {!! $errors->first('sub_total', '<label class="control-label"
@@ -142,7 +142,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
 
-                            {!!Form::text('commission_percent', null, array('class' => 'form-control', 'id'=>'commission_percent'))!!}
+                            {!!Form::text('commission_percent', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'commission_percent'))!!}
                             <span class="input-group-addon">%</span>
                         </div>
                         @if($errors->has('commission_percent'))
@@ -157,7 +157,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('commission_amount', null, array('class' => 'form-control', 'id'=>'commission_amount','placeholder'=>'click to calculate'))!!}
+                            {!!Form::text('commission_amount', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'commission_amount','placeholder'=>'click to calculate'))!!}
                         </div>
                         @if($errors->has('commission_amount'))
                             {!! $errors->first('commission_amount', '<label class="control-label"
@@ -170,7 +170,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('tuition_fee_gst', null, array('class' => 'form-control', 'id'=>'tuition_fee_gst','placeholder'=>'10% of Commission Amount','readonly' => 'true'))!!}
+                            {!!Form::text('tuition_fee_gst', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'tuition_fee_gst','placeholder'=>'10% of Commission Amount','readonly' => 'true'))!!}
                             <span class="input-group-addon">
                                {{ Form::checkbox('gst_checker_tuition_fee', 'incentive', true,array('id'=>'gst_checker_tuition_fee')) }} GST
                             </span>
@@ -198,7 +198,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('incentive', null, array('class' => 'form-control', 'id'=>'incentive'))!!}
+                            {!!Form::text('incentive', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'incentive'))!!}
                         </div>
                         @if($errors->has('incentive'))
                             {!! $errors->first('incentive', '<label class="control-label"
@@ -212,7 +212,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('incentive_gst', null, array('class' => 'form-control', 'id'=>'incentive_gst','placeholder'=>'10% of Incentive','readonly' => 'true'))!!}
+                            {!!Form::text('incentive_gst', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'incentive_gst','placeholder'=>'10% of Incentive','readonly' => 'true'))!!}
                             <span class="input-group-addon">
                                {{ Form::checkbox('gst_checker_incentive', 'incentive', true,array('id'=>'gst_checker_incentive')) }} GST
                             </span>
@@ -250,7 +250,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('total_commission', null, array('class' => 'form-control', 'id'=>'total_commission','placeholder'=>'sum of Commission Amount and Amount','readonly' => 'true'))!!}
+                            {!!Form::text('total_commission', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'total_commission','placeholder'=>'sum of Commission Amount and Amount','readonly' => 'true'))!!}
                         </div>
                         @if($errors->has('total_commission'))
                             {!! $errors->first('total_commission', '<label class="control-label"
@@ -264,7 +264,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('total_gst', null, array('class' => 'form-control', 'id'=>'total_gst','placeholder'=>'sum of Commission GST and GST','readonly' => 'true'))!!}
+                            {!!Form::text('total_gst', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'total_gst','placeholder'=>'sum of Commission GST and GST','readonly' => 'true'))!!}
                         </div>
                         @if($errors->has('total_gst'))
                             {!! $errors->first('total_gst', '<label class="control-label"
@@ -279,7 +279,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('final_total', null, array('class' => 'form-control', 'id'=>'final_total','placeholder'=>'sum of Total Amount and Total GST','readonly' => 'true'))!!}
+                            {!!Form::text('final_total', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'final_total','placeholder'=>'sum of Total Amount and Total GST','readonly' => 'true'))!!}
                         </div>
                         @if($errors->has('final_total'))
                             {!! $errors->first('final_total', '<label class="control-label"
@@ -292,7 +292,7 @@
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>
-                            {!!Form::text('payable_to_college', null, array('class' => 'form-control', 'id'=>'payable_to_college','placeholder'=>'Sub Total - Final Total','readonly' => 'true'))!!}
+                            {!!Form::text('payable_to_college', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'payable_to_college','placeholder'=>'Sub Total - Final Total','readonly' => 'true'))!!}
                         </div>
                         @if($errors->has('payable_to_college'))
                             {!! $errors->first('payable_to_college', '<label class="control-label"

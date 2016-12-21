@@ -17,7 +17,7 @@
             @include('Tenant::College/Invoice/form')
             <div class="box-footer clearfix">
                 {{--<a class="btn btn-success pull-left" data-toggle="modal" data-target="#condat-modal" data-url="{{ route('tenant.college.moreInvoice', [$tenant_id, $application_id]) }}">Submit & Create More Invoices</a>--}}
-                <input type="submit" class="btn btn-success pull-right" value="Submit & Create More Invoices"/>
+                <input type="submit" class="btn btn-success pull-left" value="Submit & Create More Invoices"/>
                 <input type="submit" class="btn btn-primary pull-right" value="Submit"/>
             </div>
             {!!Form::close()!!}

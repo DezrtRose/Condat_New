@@ -440,7 +440,7 @@ class ClientController extends BaseController
 
     function duePayments($tenant_id)
     {
-        $data['due_payments'] = $this->invoice->getOutstandingPayments();
+        //$data['due_payments'] = $this->invoice->getOutstandingPayments();
         return view("Tenant::Client/due", $data);
     }
 
