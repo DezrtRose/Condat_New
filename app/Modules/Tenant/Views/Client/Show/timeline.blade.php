@@ -16,7 +16,7 @@
     <!-- /.post -->
 </div>
 @endif
-@if(!empty($timelines))
+@if(!empty($timelines) && count($timelines) != 0)
     {{-- The actual timeline --}}
     <ul class="timeline timeline-inverse">
         <!-- timeline time label -->

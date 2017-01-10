@@ -30,6 +30,11 @@
                 </div>
 
                 <div class="form-group col-md-4 col-xs-12">
+                    {!!Form::label('invoice_to', 'Super Agent', array('class' => 'control-label')) !!}
+                    {!!Form::select('invoice_to', $invoice_to_list, null, array('class' => 'form-control select2'))!!}
+                </div>
+
+                <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('college_name', 'Institute Name', array('class' => 'control-label')) !!}
                     {!!Form::select('college_name[]', $colleges, null, array('class' => 'form-control select2', 'multiple' => 'multiple'))!!}
                 </div>

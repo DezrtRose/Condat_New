@@ -248,7 +248,6 @@ class InstituteController extends BaseController
     function uploadDocument($tenant_id, $institution_id)
     {
         $upload_rules = ['document' => 'required|mimes:jpeg,jpg,bmp,png,doc,docx,pdf,txt,xls,xlsx',
-            'description' => 'required',
             'type' => 'required',
         ];
         $this->validate($this->request, $upload_rules);

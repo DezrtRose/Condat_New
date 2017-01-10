@@ -10,8 +10,6 @@
 @section('content')
     <div class="col-md-12">
 
-        @include('Tenant::ApplicationStatus/partial/navbar')
-
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Application Offer Details</h3>
@@ -39,7 +37,7 @@
                 </div>
 
                 <div class="form-group @if($errors->has('tuition_fee')) {{'has-error'}} @endif">
-                    {!! Form::label('tuition_fee', 'Total Tuition Fee', ['class'=>'col-md-3 form-label text-right']) !!}
+                    {!! Form::label('tuition_fee', 'Total Tuition Fee *', ['class'=>'col-md-3 form-label text-right']) !!}
                     <div class="col-md-8">
                         <div id="total_tuition_fee" class="input-group">
                             <span class="input-group-addon">$</span>
@@ -90,7 +88,7 @@
                 </div>
 
                 <div class="form-group @if($errors->has('document')) {{'has-error'}} @endif">
-                    {{ Form::label('document', 'Upload Offer Letter', ['class'=>'col-md-3 form-label text-right'])}}
+                    {{ Form::label('document', 'Upload Offer Letter *', ['class'=>'col-md-3 form-label text-right'])}}
                     <div class="col-md-8">
                         {{ Form::file('document')}}
                         @if($errors->has('document'))
@@ -101,7 +99,7 @@
                 </div>
 
                 <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
-                    {{ Form::label('description', 'Notes', ['class'=>'col-md-3 form-label text-right'])}}
+                    {{ Form::label('description', 'Notes *', ['class'=>'col-md-3 form-label text-right'])}}
                     <div class="col-md-8">
                         {{ Form::textarea('description', null, ['class'=>'form-control', 'rows'=>3])}}
 

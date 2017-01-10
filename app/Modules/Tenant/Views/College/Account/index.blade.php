@@ -17,6 +17,7 @@
                    class="btn btn-success btn-flat pull-right"><i class="glyphicon glyphicon-plus-sign"></i> Create
                     Invoice</a>
             </div>
+
             <div class="box-body">
                 <table id="invoices" class="table table-bordered table-striped dataTable">
                     <thead>

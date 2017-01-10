@@ -393,8 +393,8 @@ class CollegeInvoice extends Model
         elseif ($request['to'])
             $invoices_query = $invoices_query->where('college_invoices.final_total', '<=', $request['to']);
 
-        /*if ($request['invoice_to'] != 0)
-            $invoices_query = $invoices_query->where('course_application.super_agent_id', $request['invoice_to']);*/
+        if ($request['invoice_to'] != 0)
+            $invoices_query = $invoices_query->where('course_application.super_agent_id', $request['invoice_to']);
 
         $invoices = $invoices_query->get();
 

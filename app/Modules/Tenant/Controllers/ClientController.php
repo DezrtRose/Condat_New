@@ -31,7 +31,7 @@ class ClientController extends BaseController
         'number' => 'required'
     ];
 
-    function __construct(Client $client, Request $request, ClientDocument $document, notes $notes, ClientNotes $client_notes, ApplicationNotes $application_notes, ClientTimeline $timeline, ClientEmail $email, StudentInvoice $invoice)
+    function __construct(Client $client, Request $request, ClientDocument $document, notes $notes, ClientNotes $client_notes, ApplicationNotes $application_notes, ClientTimeline $timeline, ClientEmail $email, StudentInvoice $invoice, StudentInvoice $student_invoice)
     {
         $this->client = $client;
         $this->request = $request;
@@ -42,6 +42,7 @@ class ClientController extends BaseController
         $this->timeline = $timeline;
         $this->email = $email;
         $this->invoice = $invoice;
+        $this->student_invoice = $student_invoice;
         parent::__construct();
     }
 
@@ -440,6 +441,7 @@ class ClientController extends BaseController
 
     function duePayments($tenant_id)
     {
+        $data['invoice_reports'] = $this->student_invoice->getAll();
         //$data['due_payments'] = $this->invoice->getOutstandingPayments();
         return view("Tenant::Client/due", $data);
     }

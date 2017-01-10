@@ -112,7 +112,7 @@ class UsersController extendS Controller{
 		//$validation=User::validate(array('username','password'));//Input::all());
 		if ($validator->fails()){
 			
-			return Redirect::to('login')->withErrors($validator->messages());
+			return Redirect::to('admin/login')->withErrors($validator->messages());
 
 			
 		}
@@ -138,7 +138,7 @@ class UsersController extendS Controller{
 	public function doLogout()
 	{
 		Auth::logout(); // log the user out of our application
-		return Redirect::to('login'); // redirect the user to the login screen
+		return Redirect::to('admin/login'); // redirect the user to the login screen
 	}
 
 	public function home(){

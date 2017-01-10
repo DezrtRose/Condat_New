@@ -11,9 +11,12 @@
     </section>
     <section class="content clearfix">
         <div class="row">
+
+            <div class="col-md-12">
             @if(Session::has('message'))
                 <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
             @endif
+            </div>
 
             @yield('content')
         </div>

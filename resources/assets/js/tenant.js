@@ -24,7 +24,7 @@ $(function () {
     });
 
     'use strict';
-    var fn = function () {
+    /*var fn = function () {
         $.ajax({
             url: appUrl + '/subscription/check',
             type: 'get',
@@ -37,7 +37,7 @@ $(function () {
             }
         })
     };
-    fn();
+    fn();*/
 
     $('.slimscroll').slimscroll({
         allowPageScroll: true

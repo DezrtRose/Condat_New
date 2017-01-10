@@ -9,11 +9,12 @@
 @stop
 @section('content')
     <div class="col-xs-12">
+        @include('flash::message')
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Subscription Renew</h3>
             </div>
-            @include('flash::message')
+
             {!!Form::open(array('method' => 'post', 'class' => 'form-horizontal form-left'))!!}
             <input type="hidden" name="return_url" value="{{url('agencies/complete_subscription_paypal')}}"/>
             <div class="box-body">
@@ -65,7 +66,7 @@
                             @foreach(config('constants.payment_type') as $key => $value)
                                 {!! Form::radio('payment_type', $key, false, ['id' => $key]) !!}
                                 {!! Form::label($key, $value, array('class' => 'control-label')) !!}
-                                
+
                             @endforeach
                         </div>
                     </div>

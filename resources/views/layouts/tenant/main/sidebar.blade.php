@@ -42,7 +42,7 @@
                     <li><a href="{{url($tenant_id.'/client_invoice_report/invoice_pending')}}"><i class="fa fa-circle-o"></i> Client Invoices</a></li>
                     <li><a href="{{url($tenant_id.'/college_invoice_report/invoice_pending')}}"><i class="fa fa-circle-o"></i> Institute Invoices</a></li>
                     <li><a href="{{url($tenant_id.'/client/payments')}}"><i class="fa fa-circle-o"></i> Payments</a></li>
-                    <li><a href="{{url($tenant_id.'/college_invoice_report/group_invoice')}}"><i class="fa fa-circle-o"></i> Group Invoice</a></li>
+                    <li><a href="{{url($tenant_id.'/college_invoice_report/invoice_grouped')}}"><i class="fa fa-circle-o"></i> Group Invoice</a></li>
                 </ul>
             </li>
             @if($current_user->role != 2) {{-- Accountant --}}

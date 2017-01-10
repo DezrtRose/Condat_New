@@ -60,18 +60,16 @@ class AgencyController extends BaseController {
                 'agency_subscriptions.subscription_status_id',
                 '=',
                 'subscription_statuses.status_id')
-            ->select(['agencies.agency_id', 'agencies.created_at', DB::raw('case when companies.phone_id = 0 then "N/A" else companies.phone_id end as phone_id'), 'company_database_name', 'companies.name', 'companies.email_id', 'end_date', DB::raw('case when subscription_id = 1 then "Basic" when subscription_id = 2 then "Standard" else "Premium" end as subscription_id, subscription_statuses.name as subscription_name')])
+            ->select(['agencies.agency_id', 'agencies.created_at', 'agencies.status', DB::raw('case when companies.phone_id = 0 then "N/A" else companies.phone_id end as phone_id'), 'company_database_name', 'companies.name', 'companies.email_id', 'end_date', DB::raw('case when subscription_id = 1 then "Basic" when subscription_id = 2 then "Standard" else "Premium" end as subscription_id, subscription_statuses.name as subscription_name')])
             ->groupBy('agency_subscriptions.agency_id');
 
 		$datatable = \Datatables::of($agencies)
 			->editColumn('agency_id', function($data){return format_id($data->agency_id, 'A'); })
 			->editColumn('end_date', function($data){return format_date($data->end_date); })
-			->addColumn('action', '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route( \'agency.show\', $agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route( \'agency.renew\', $agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route( \'agency.edit\', $agency_id) }}"><i class="fa fa-edit"></i></a>
- <form action="{{ route( \'agency.destroy\', $agency_id) }}" method="post">
-    {{ method_field(\'DELETE\') }}
-    {{ csrf_field() }}
-    <button data-toggle="tooltip" title="Delete Agency" type="submit" class="delete-agency btn btn-action-box"><i class="fa fa-trash"></i></button>
-</form>');
+			->addColumn('action', function ($data) {
+				$status_link = (($data->status == 1) ? '<a data-toggle="tooltip" title="Deactivate Agency" class="btn btn-action-box" onclick="return confirm (\'Are you sure?\')" href ="'. route('agencies.deactivate', $data->agency_id) .'"><i class="fa fa-minus-circle"></i></a>' : '<a data-toggle="tooltip" title="Reactivate Agency" class="btn btn-action-box" onclick="return confirm (\'Are you sure?\')" href ="'. route('agencies.activate', $data->agency_id) .'"><i class="fa fa-plus-circle"></i></a>');
+				return '<a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="'. route('agency.show', $data->agency_id) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="'. route('agency.renew', $data->agency_id) .'"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="'. route('agency.edit', $data->agency_id) .'"><i class="fa fa-edit"></i></a> ' . $status_link;
+			});
 		return $datatable->make(true);
 	}
 
@@ -161,6 +159,34 @@ class AgencyController extends BaseController {
         $agency = Agency::find($id);
         $agency->delete();
         return redirect('agency')->with('message', 'Agency has been removed.');
+	}
+
+	/**
+	 * Deactivate Agency.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function deactivate($id)
+	{
+        $agency = Agency::find($id);
+        $agency->status = 0;
+		$agency->save();
+        return redirect()->back()->with('message', 'Agency has been deactivated.');
+	}
+
+	/**
+	 * Activate Agency.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function activate($id)
+	{
+        $agency = Agency::find($id);
+        $agency->status = 1;
+		$agency->save();
+        return redirect()->back()->with('message', 'Agency has been activated.');
 	}
 
 	/**

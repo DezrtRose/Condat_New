@@ -1,6 +1,15 @@
 @extends('layouts.tenant')
 @section('title', 'Dashboard')
 @section('content')
+    @if(intval($sub_diff) < 31)
+        <div class="col-md-12">
+            <div class="callout callout-warning">
+                <h4>Expiring Account!</h4>
+
+                <p>Your Account expires in {{$sub_diff}} days . Please renew your Subscription to continuously explore premium features. <a href="{{ route('tenant.subscription.renew', $tenant_id) }}"> Upgrade Now</a></p>
+            </div>
+        </div>
+    @endif
     <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header with-border">
@@ -84,9 +93,9 @@
                     </ul>
                     <ul id="bars">
                         @foreach($app_stat as $key => $stat)
-                        <li>
-                            <div data-applications="{{ $stat->total }}" class="bar"></div>
-                            <span>{{ $stat->name }}</span></li>
+                            <li>
+                                <div data-applications="{{ $stat->total }}" class="bar"></div>
+                                <span>{{ $stat->name }}</span></li>
                         @endforeach
                     </ul>
                 </div>
@@ -99,32 +108,32 @@
             </div>
             <div class="box-body">
                 @if(!empty($outstanding_payments))
-                <table id="clients" class="table table-bordered table-striped dataTable">
-                    <thead>
-                    <tr>
-                        <th>Client Name</th>
-                        <th>Outstanding Amount</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($outstanding_payments as $client_id => $outstanding_payment)
-                    <tr>
-                        <td>{{ $outstanding_payment['client_name'] }}</td>
-                        <td>{{ format_price($outstanding_payment['outstanding_amount']) }}</td>
-                        <td>
-                            <a data-toggle="tooltip" title="View Client Account" class="btn btn-action-box"
-                               href="{{ route('tenant.client.show', [$tenant_id, $client_id]) }}"><i
-                                        class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                    <table id="clients" class="table table-bordered table-striped dataTable">
+                        <thead>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Outstanding Amount</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($outstanding_payments as $client_id => $outstanding_payment)
+                            <tr>
+                                <td>{{ $outstanding_payment['client_name'] }}</td>
+                                <td>{{ format_price($outstanding_payment['outstanding_amount']) }}</td>
+                                <td>
+                                    <a data-toggle="tooltip" title="View Client Account" class="btn btn-action-box"
+                                       href="{{ route('tenant.client.show', [$tenant_id, $client_id]) }}"><i
+                                                class="fa fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 @else
-                <p class="text-muted well">
-                    No outstanding payment.
-                </p>
+                    <p class="text-muted well">
+                        No outstanding payment.
+                    </p>
                 @endif
             </div>
         </div>

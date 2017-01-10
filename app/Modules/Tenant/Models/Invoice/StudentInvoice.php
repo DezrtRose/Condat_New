@@ -145,7 +145,7 @@ class StudentInvoice extends Model
             ->groupBy('invoices.invoice_id');
 
         if ($status == 1) { // Pending
-            $invoices_query = $invoices_query->havingRaw('invoices.final_total - IFNULL(SUM(client_payments.amount), 0) > 0'); //->where('college_invoices.invoice_date', '<=', get_today_datetime());
+            $invoices_query = $invoices_query->havingRaw('invoices.final_total - IFNULL(SUM(client_payments.amount), 0) > 0')->where('invoices.due_date', '<', get_today_datetime()); //->where('college_invoices.invoice_date', '<=', get_today_datetime());
         } elseif ($status == 2) { // Paid
             $invoices_query = $invoices_query->havingRaw('invoices.final_total - IFNULL(SUM(client_payments.amount), 0) <= 0')->where('invoices.invoice_date', '<=', get_today_datetime());
         } elseif ($status == 3) { // Future

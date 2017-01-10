@@ -2,10 +2,10 @@
 return [
 
     /* Database details for new tenant creation */
-    'database'   => [
-        'username'   => env('DB_USERNAME', ''),
-        'password'   => env('DB_PASSWORD', ''),
-        'db_prefix'  => env('TENANT_DB_PREFIX', ''),
+    'database' => [
+        'username' => env('DB_USERNAME', ''),
+        'password' => env('DB_PASSWORD', ''),
+        'db_prefix' => env('TENANT_DB_PREFIX', ''),
         'tbl_prefix' => env('TENANT_TABLE_PREFIX', '')
 
     ],
@@ -17,6 +17,8 @@ return [
     'subscription_years' => [1 => '1 year', 2 => '2 years', 3 => '3 years', 4 => '4 years', 5 => '5 years'],
 
     'subscription_type' => [1 => 'Basic', 2 => 'Standard', 3 => 'Premium'],
+
+    'card_type' => ['Visa' => 'Visa', 'MasterCard' => 'MasterCard', 'American Express' => 'American Express'],
 
     'payment_type' => ['Cash' => 'Cash', 'Card' => 'Card', 'Paypal' => 'Paypal', 'Others' => 'Others'],
 
@@ -30,7 +32,7 @@ return [
 
     'subagent_payment_type' => ['Sub Agent to Agent' => 'Sub Agent to Agent', 'Agent to Sub Agent' => 'Agent to Sub Agent'],
 
-    'countries'  => [
+    'countries' => [
         'AU' => 'Australia',
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
@@ -277,4 +279,19 @@ return [
         'ZM' => 'Zambia',
         'ZW' => 'Zimbabwe',
     ],
+
+    'months' => [
+        1 => 'January',
+        2 => 'February',
+        3 => 'March',
+        4 => 'April',
+        5 => 'May',
+        6 => 'June',
+        7 => 'July',
+        8 => 'August',
+        9 => 'September',
+        10 => 'October',
+        11 => 'November',
+        12 => 'December',
+    ]
 ];

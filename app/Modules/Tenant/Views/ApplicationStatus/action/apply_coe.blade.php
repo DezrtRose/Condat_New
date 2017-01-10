@@ -10,8 +10,6 @@
 @section('content')
     <div class="col-md-12">
 
-        @include('Tenant::ApplicationStatus/partial/navbar')
-
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Application Offer Details</h3>

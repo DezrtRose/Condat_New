@@ -89,7 +89,7 @@ class Tenant {
         $newConnection = $config->get('database.connections.' . $this->connection);
 
         // Override the database name.
-        $newConnection['database'] = $this->tenant_db;
+        $newConnection['database'] = $this->tenant_db; //dd($this->tenant_db);
         $newConnection['username'] = ($username == '') ? $this->DB_username : $username;
         $newConnection['password'] = ($password == '') ? $this->DB_password : $password;
 
@@ -197,14 +197,14 @@ class Tenant {
     function dataInsert($request)
     {
         // add profile
-        $profile = ['first_name' => 'Tenant'];
+        $profile = ['first_name' => ''];
         $new_person = Person::create($profile);
 
         //add Admin user
         $tenantInfoInSystem = $this->getTenantinfo();
         $user = $this->tenatUser->findOrNew(1);
         $user->email = $tenantInfoInSystem->email_id;
-        $user->role = 1; // Admin Role
+        $user->role = 3; // Admin 1- staff, 2 - accountant 3 - admin
         //$user->guid = $tenantInfoInSystem->guid;
         $user->status = 1; // Activated
         //$user->first_time = 1; // yes first time
@@ -336,10 +336,9 @@ class Tenant {
             $database_name = $_COOKIE['database_name'];
             return $database_name;
         } elseif(isset($query_string['tenant'])) {*/
-            $agency = new Agency();
-            $current_agency = $agency->where('agency_id', $tenant_id)->first();
-        /*if(empty($current_agency))
-            abort(403, 'Tenant Not Available.');*/
+        $current_agency = Agency::where('status', 1)->where('agency_id', $tenant_id)->first();
+        if(empty($current_agency) && $tenant_id != 'agency' && $tenant_id != 'register')
+            abort(403, 'Tenant Not Available.');
 
         if(!empty($current_agency)) $database_name = $current_agency->company_database_name;
         setcookie('database_name', $database_name, time() + 86400, '/');

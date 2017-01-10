@@ -172,6 +172,9 @@ return [
 
         /* Export PDF */
         Barryvdh\DomPDF\ServiceProvider::class,
+
+        /* Laravel Credit Card Payment */
+        Anouar\Paypalpayment\PaypalpaymentServiceProvider::class,
     ],
 
     /*
@@ -233,7 +236,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         /* Export PDF */
         'PDF' => Barryvdh\DomPDF\Facade::class,
-
+        /* Paypal Credit Card Payment */
+        'PaypalPayment'   => Anouar\Paypalpayment\Facades\PaypalPayment::class,
     ],
 
 ];

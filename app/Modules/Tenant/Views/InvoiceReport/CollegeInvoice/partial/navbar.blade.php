@@ -10,8 +10,6 @@
         
         <li class="{{ Request::segment(3) == 'invoice_future' ? 'active' : '' }}"><a id="tile4" href="{{ route('college.invoice.future', $tenant_id) }}">Future Invoices</a></li>
 
-        <li class="{{ Request::segment(3) == 'invoice_grouped' ? 'active' : '' }}"><a id="tile5" href="{{ route('college.invoice.grouped', $tenant_id) }}">Group Invoices</a></li>
-
         <li class="{{ Request::segment(3) == 'search' ? 'active' : '' }}"><a id="tile6" href="{{ route('college.invoice.search', $tenant_id) }}">Advance Search</a></li>
       </ul>
     </div>

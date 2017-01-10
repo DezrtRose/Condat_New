@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="col-md-12">
-
+        @include('Tenant::InvoiceReport/GroupInvoice/navbar')
         @include('flash::message')
         <div class="box box-primary">
             {!!Form::model($search_attributes, array('route' => ['college.invoice.groupInvoice', $tenant_id], 'method' => 'post', 'class' => ''))!!}

@@ -11,7 +11,6 @@
 
 @section('content')
     <div class="col-md-12">
-        @include('Tenant::ApplicationStatus/partial/navbar')
 
         <div class="box box-primary">
             <div class="box-header">

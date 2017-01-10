@@ -97,9 +97,7 @@
                 </table>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title"><i class="fa fa-map-marker"></i> Address Details</h3>

@@ -122,6 +122,14 @@ class InvoiceReportController extends BaseController
         return view("Tenant::InvoiceReport/CollegeInvoice/print_group_invoice", $data);
     }
 
+    public function clearGroupedInvoice($tenant_id, $grouped_invoice_id)
+    {
+        $request = $this->request->all();
+        $this->groupInvoice->clearInvoice($request, $grouped_invoice_id);
+        Flash::success('Group Invoice Payment has been cleared.');
+        return redirect()->route('college.invoice.grouped', $tenant_id);
+    }
+
     public function collegeInvoiceSearch()
     {
         $data['status'] = [0 => 'All',
@@ -132,6 +140,8 @@ class InvoiceReportController extends BaseController
         $data['colleges'] = $this->institute->getList();
         $data['clients'] = $this->client->getClientNameList();
         $data['search_attributes'] = array();
+        $data['invoice_to_list'] = $this->college_invoice->getInvoiceToList()->toArray();
+        array_unshift($data['invoice_to_list'], 'All');
 
         if ($this->request->isMethod('post')) {
             $data['search_attributes'] = $this->request->all();
@@ -332,7 +342,7 @@ class InvoiceReportController extends BaseController
     {
         $this->groupInvoice->addMoreInvoices($this->request->all(), $group_invoice_id);
         Flash::success('Invoices added successfully.');
-        return  redirect()->route('invoice.grouped.show', [$tenant_id, $group_invoice_id]);
+        return redirect()->route('invoice.grouped.show', [$tenant_id, $group_invoice_id]);
     }
 
     public function deleteGroupInvoices($tenant_id, $group_invoice_id, $invoice_id)

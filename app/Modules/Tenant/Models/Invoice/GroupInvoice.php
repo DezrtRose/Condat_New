@@ -1,5 +1,6 @@
 <?php namespace App\Modules\Tenant\Models\Invoice;
 
+use App\Modules\Tenant\Models\Payment\CollegePayment;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
@@ -119,6 +120,39 @@ class GroupInvoice extends Model
         return $grouped_invoice;
     }
 
+    function clearInvoice(array $request, $group_invoice_id)
+    {
+        DB::beginTransaction();
+        try {
+            $invoices = $this->getInvoices($group_invoice_id);
+            foreach ($invoices as $invoice) {
+                $outstanding = $invoice->total_commission - $invoice->total_paid;
+                if ($outstanding > 0) {
+                    $payment = CollegePayment::create([
+                        'course_application_id' => $invoice->course_application_id,
+                        'amount' => $outstanding,
+                        'date_paid' => insert_dateformat($request['date_paid']),
+                        'payment_method' => $request['payment_method'],
+                        'payment_type' => $request['payment_type'],
+                        'description' => $request['description']
+                    ]);
+
+                    CollegeInvoicePayment::create([
+                        'ci_payment_id' => $payment->college_payment_id,
+                        'college_invoice_id' => $invoice->college_invoice_id
+                    ]);
+                }
+            }
+            DB::commit();
+            return true;
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            // something went wrong
+        }
+    }
+
     function getInvoices($grouped_invoice_id)
     {
         $college_invoices_id = GroupCollegeInvoice::where('group_invoices_id', $grouped_invoice_id)->lists('college_invoices_id');
@@ -136,7 +170,7 @@ class GroupInvoice extends Model
             ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
-            ->select(['college_invoices.college_invoice_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name',
+            ->select(['college_invoices.college_invoice_id', 'course_application.course_application_id', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name',
                 DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
                 THEN (companies.invoice_to_name)
                 ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
@@ -168,7 +202,7 @@ class GroupInvoice extends Model
 
         $invoices = CollegeInvoice::whereNotIn('college_invoices.college_invoice_id', $college_invoices_ids)
             ->lists('college_invoice_id', 'college_invoice_id');
-        foreach($invoices as $key => $invoice) {
+        foreach ($invoices as $key => $invoice) {
             $invoices[$key] = format_id($invoice, 'CI');
         }
         return $invoices;

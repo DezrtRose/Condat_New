@@ -86,7 +86,7 @@ class FrontendController extends BaseController {
 
     /**
      * Create APP
-     * @param $string
+     * @param $stringy
      * @return mixed|string
      */
     function createDomain($string)

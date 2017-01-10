@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Tenant\Controllers;
 
 use App\Http\Requests;
+use App\Modules\Agency\Models\AgencySubscription;
 use App\Modules\Tenant\Models\Address;
 use App\Modules\Tenant\Models\Person\Person;
 use App\Modules\Tenant\Models\Person\PersonAddress;
@@ -29,8 +30,6 @@ class AuthController extends BaseController {
         $url_query = $request->all();
         if(isset($url_query['auth_code']) && $url_query['auth_code'] != '') {
             $agent_data = User::join('persons', 'persons.person_id', '=', 'users.person_id')
-                ->join('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
-                ->join('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
                 ->where([
                     ['auth_code', '=', $url_query['auth_code']],
                     ['password', '=', '']
@@ -51,6 +50,16 @@ class AuthController extends BaseController {
 
         $credentials = $request->only('email', 'password');
         if (auth()->guard('tenants')->attempt($credentials, $request->has('remember'))) {
+
+            //Check if subscription has exceeded the date
+            $agency_subscription = AgencySubscription::where('agency_id', '=', $tenant_id)->where('is_current', '=', 1)->first();
+
+            if($agency_subscription) {
+                if($agency_subscription->end_date < date('Y-m-d')) {
+                    Flash::error('The subscription date has been exceeded. Please renew your subscription to access the features.');
+                    return redirect()->route('tenant.subscription.renew', $tenant_id);
+                }
+            }
             return $tenantUser->redirectIfValid(auth()->guard('tenants')->user(), $tenant_id);
         }
         return redirect()->route('tenant.login', $tenant_id)->with('message', 'These credentials do not match our records.')->withInput($request->only('email', 'remember'));
@@ -58,7 +67,7 @@ class AuthController extends BaseController {
 
     public function logout($tenant_id)
     {
-        $this->auth->logout();
+        auth()->logout();
         return redirect()->route('tenant.login', $tenant_id);
     }
 

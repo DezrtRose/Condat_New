@@ -22,6 +22,7 @@ return [
     ],
 
     'payment_action' => 'Sale', // Can Only Be 'Sale', 'Authorization', 'Order'
-    'currency' => 'USD',
+    'currency' => 'AUD',
+    'country' => 'AU',
     'notify_url' => '', // Change this accordingly for your application.
 ];

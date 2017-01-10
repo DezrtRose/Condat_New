@@ -20,7 +20,7 @@ class ConnectController extends BaseController {
         $email_ids = [];
         foreach($companies as $company) {
             $email_ids += [
-                $company->name . "-" . $company->email_id => $company->name . " (" . $company->email_id . ")",
+                $company->company_id => $company->name . " (" . $company->email_id . ")",
             ];
         }
 		return view("Connect::index", compact('email_ids'));
@@ -33,9 +33,13 @@ class ConnectController extends BaseController {
 	 */
 	public function sendEmail(Request $request)
 	{
-		$post = $request->all();
+		$post = $request->all(); //dd($post['email_ids']);
         foreach($post['email_ids'] as $email_id) {
-            $data = explode('-', $email_id);
+			$data = array();
+			$company = Company::find($email_id);
+			$data[0] = $company->name;
+			$data[1] = $company->email_id;
+            //$data = explode('-', $email_id);
             $param = [
                 'content'    => $post['message'],
                 'subject'    => $post['subject'],
@@ -55,7 +59,7 @@ class ConnectController extends BaseController {
                     ->from($data['from_email'], $data['from_name']);
             });
         }
-        Flash::success('Email has been sent to clients.');
+        Flash::success('Email has been sent to client(s).');
         return redirect()->route('connect.index');
 	}
 

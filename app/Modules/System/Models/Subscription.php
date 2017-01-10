@@ -43,13 +43,15 @@ class Subscription extends Model
             $subscription_id = $request['subscription_type'];
             $base_amount = $this->amount($subscription_id);
             $amount = ($base_amount * $request['subscription_years']) - (($request['subscription_years'] - 1) / 100) * (($base_amount * $request['subscription_years']) * 5);
-            if($request['payment_type'] == 'Card' || $request['payment_type'] == 'Paypal') {
+            if($request['payment_type'] == 'Paypal') {
                 $return_url = isset($request['return_url']) ? $request['return_url'] : '';
                 $paypal_parameters = $request;
                 $paypal_parameters['total_amount'] = $amount;
                 $paypal_parameters['return_url'] = $return_url;
                 $paypal_parameters['agency_id'] = $agency_id;
                 return $this->_process_paypal($paypal_parameters);
+            } elseif($request['payment_type'] == 'Credit Card'){
+
             } else {
                 $previous_sub = AgencySubscription::where('agency_id', $agency_id)->orderBy('agency_subscription_id', 'desc')->first();
                 $expiry_date = get_expiry_date(null, $request['subscription_years']);
@@ -154,7 +156,7 @@ class Subscription extends Model
         }
     }
 
-    function renew_paypal($data)
+    function renew_paypal($data, $tenant_id = null)
     {
         DB::beginTransaction();
         try {
@@ -162,11 +164,11 @@ class Subscription extends Model
             $subscription_id = $post_data[4];
             $subscription_years = $post_data[2];
             $payment_type = $post_data[3];
-            $agency_id = $post_data[6];
+            $agency_id = ($tenant_id != null)? $tenant_id : $post_data[6];
             $amount = $post_data[5];
             $previous_sub = AgencySubscription::where('agency_id', $agency_id)->orderBy('agency_subscription_id', 'desc')->first();
             $expiry_date = get_expiry_date(null, $subscription_years);
-            $subscription_type = 1;
+            $subscription_type = 2;
             if(!empty($previous_sub)) {
                 $previous_sub->is_current = 0;
                 $previous_sub->save();

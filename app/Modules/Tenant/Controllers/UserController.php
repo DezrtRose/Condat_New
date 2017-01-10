@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Modules\Agency\Models\Agency;
+use App\Modules\Agency\Models\AgencySubscription;
 use App\Modules\Tenant\Models\Company\Company;
 use App\Modules\Agency\Models\Company as MasterCompany;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Flash;
 use App\Modules\Tenant\Models\Application\ApplicationStatus;
 use Mail;
+use Carbon\Carbon;
 
 class UserController extends BaseController
 {
@@ -40,13 +42,20 @@ class UserController extends BaseController
     }
 
     // user dashboard
-    public function dashboard()
+    public function dashboard($tenant_id)
     {
         $data['active_clients'] = $this->user->activeClient();
         $data['timelines'] = $this->timeline->getTimeline();
         $data['outstanding_payments'] = $this->invoice->getOutstandingPayments();
 
-        $data['app_stat'] = $this->applicationStatus->getStats(); //dd($data['app_stat']->toArray());
+        $agency_subscription = AgencySubscription::where('agency_id', '=', $tenant_id)->where('is_current', '=', 1)->first();
+        $data['sub_stat'] = $agency_subscription->subscription_status_id;
+        $sub_date = Carbon::createFromFormat('Y-m-d', $agency_subscription->end_date);
+        $today = Carbon::today();
+        $data['sub_diff'] = $today->diffInDays($sub_date, false); //dd($data['sub_diff']);
+        //$data['sub_diff'] = Carbon::createFromFormat('Y-m-d', $agency_subscription->end_date)->diffInDays();
+
+        $data['app_stat'] = $this->applicationStatus->getStats();
         for ($record = 1; $record <= 7; $record++) {
             $data['status'][$record] = $this->applicationStatus->statusRecord($record);
         }
@@ -86,9 +95,10 @@ class UserController extends BaseController
      *
      * @return Response
      */
-    public function index()
+    public function index($tenant_id)
     {
-        return view("Tenant::User/index");
+        $data['agency_subscription'] = AgencySubscription::where('agency_id', '=', $tenant_id)->where('is_current', '=', 1)->first()->subscription_id;
+        return view("Tenant::User/index", $data);
     }
 
     /**
@@ -128,7 +138,7 @@ class UserController extends BaseController
                 return format_datetime($data->created_at);
             })
             ->editColumn('role', function ($data) {
-                return $data->role == 1 ? 'Staff' : 'Accountant';
+                return ucwords(UserLevel::find($data->role)->name);
             });
         // Global search function
         if ($keyword = $request->get('search')['value']) {
@@ -143,10 +153,15 @@ class UserController extends BaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($tenant_id)
     {
         if(!$this->checkAuthority()) {
             abort(403, 'Unauthorized action.');
+        }
+        $agency_subscription = AgencySubscription::where('agency_id', '=', $tenant_id)->where('is_current', '=', 1)->first()->subscription_id;
+        if($agency_subscription == 1 && get_total_count('TU') >= 10) {
+            Flash::success('Maximum number of users (10) has been reached. Please upgrade the subscription plan to access unlimited number of users for the system.');
+            return redirect()->route('tenant.user.index', $tenant_id);
         }
         $data['user_levels'] = UserLevel::where('name', '!=', 'Admin')->lists('name', 'user_level_id');
         return view('Tenant::User/add', $data);

@@ -1103,6 +1103,8 @@ CREATE TABLE IF NOT EXISTS `institute_document` (
   `description` varchar(145) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Institution Documents';
 
+ALTER TABLE  `institute_document` CHANGE  `institute_document_id`  `institute_document_id` INT( 11 ) NOT NULL AUTO_INCREMENT ;
+
 -- --------------------------------------------------------
 
 --

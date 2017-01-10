@@ -9,7 +9,7 @@
 @stop
 @section('content')
     <div class="col-md-12">
-        @include('Tenant::InvoiceReport/CollegeInvoice/partial/navbar')
+        @include('Tenant::InvoiceReport/GroupInvoice/navbar')
         @include('flash::message')
     </div>
     <div class="col-md-3 col-sm-12">
@@ -29,6 +29,10 @@
 
                 <p class="text-muted">{{ format_date($invoice_details->date) }}</p>
 
+                <strong><i class="fa fa-file-text-o margin-r-5"></i> Invoice To </strong>
+
+                <p class="text-muted">{{ $invoice_details->description }}</p>
+
                 <strong><i class="fa fa-file-text-o margin-r-5"></i> Total Amount </strong>
 
                 <p class="text-muted">{{ format_price($invoice_details->total_amount) }}</p>
@@ -44,10 +48,6 @@
                 <strong><i class="fa fa-file-text-o margin-r-5"></i> Due Amount </strong>
 
                 <p class="text-muted">{{ format_price($invoice_details->outstanding_amount) }}</p>
-
-                <strong><i class="fa fa-file-text-o margin-r-5"></i> Due Date</strong>
-
-                <p class="text-muted">{{ format_date($invoice_details->due_date)}}</p>
 
                 <strong><i class="fa fa-file-text-o margin-r-5"></i> Description </strong>
 
@@ -110,20 +110,16 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="#" title="Add Payment"><i
+                                <a data-toggle="modal" data-target="#condat-modal" data-url="{{ url($tenant_id.'/invoices/' . $invoice->college_invoice_id . '/payment/add/1') }}" title="Add Payment"><i
                                             class=" btn btn-primary btn-sm glyphicon glyphicon-shopping-cart"
                                             data-toggle="tooltip" data-placement="top" title="Add Payment"></i></a>
-                                <a href="{{ route('tenant.college.invoice', [$tenant_id, $invoice->college_invoice_id]) }}" title="Print Invoice"><i
+                                <a href="{{ route('tenant.college.invoice', [$tenant_id, $invoice->college_invoice_id]) }}" target="_blank" title="Print Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Print Invoice"></i></a>
-                                <a href="#" title="View Invoice"><i
+                                <a href="{{ route("tenant.invoice.payments", [$tenant_id, $invoice->college_invoice_id, 1]) }}" title="View Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
-                                {{--<a href="#" title="Email Invoice"><i
-                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-send"
-                                            data-toggle="tooltip" data-placement="top"
-                                            title="Email Invoice"></i></a>--}}
                                 <a href="#" title="Remove From Group" id="{{ $invoice->invoice_id }}" class="remove"><i
                                             class="btn btn-primary btn-sm glyphicon glyphicon-remove-sign"
                                             data-toggle="tooltip" data-placement="top"

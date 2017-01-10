@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Modules\Agency\Models\Agency;
 
 class AuthController extends BaseController {
 
@@ -107,6 +108,14 @@ class AuthController extends BaseController {
 			'password' => bcrypt($data['password']),
 			'status' => 0 //pending
 		]);
+	}
+
+	function agencyLogin()
+	{
+		$data['agencies'] = Agency::leftJoin('companies','agencies.agency_id','=','companies.agencies_agent_id')
+			->select('agency_id', 'companies.name')
+			->get();
+		return view('Auth::agencies', $data);
 	}
 
 }

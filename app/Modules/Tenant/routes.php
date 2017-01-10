@@ -46,10 +46,12 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::post('forgot-password', ['as' => 'tenant.forgetPassword', 'uses' => 'PasswordController@postForgotPassword']);
     Route::get('reset-password/{code}', ['as' => 'system.reminders.getReset', 'uses' => 'PasswordController@getReset']);
     Route::post('reset-password/{code}', ['as' => 'system.reminders.postReset', 'uses' => 'PasswordController@postReset']);
-});
+}); // for numeric parameter
 
 /* Tenant Routes for pages that need authentication */
 Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware' => 'auth.tenant', 'namespace' => 'App\Modules\Tenant\Controllers'), function () {
+
+    Route::get('logout', ['as' => 'tenant.logout', 'uses' => 'AuthController@logout']);
 
     /* Routes for File upload */
     Route::post('file/upload', 'FileController@upload');
@@ -231,7 +233,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
 
     /* Assign student payments to invoices */
     Route::get('college/payment/{payment_id}/{application_id}/assign', ['as' => 'tenant.college.payment.assign', 'uses' => 'CollegeController@assignInvoice']);
-    Route::post('college/paymcollegent/{payment_id}/assign', ['as' => 'tenant.college.payment.postAssign', 'uses' => 'InvoiceController@postCollegeAssign']);
+    Route::post('college/payment/{payment_id}/assign', ['as' => 'tenant.college.payment.postAssign', 'uses' => 'InvoiceController@postCollegeAssign']);
     Route::get('college/payment/receipt/{payment_id}', ['as' => 'tenant.college.payment.receipt', 'uses' => 'CollegeController@printReceipt']);
 
     Route::get('clients/{client_id}/personal_details', 'ClientController@personal_details');
@@ -412,6 +414,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('college_invoice_report/invoice_grouped', ['as' => 'college.invoice.grouped', 'uses' => 'InvoiceReportController@collegeInvoiceGrouped']);
     Route::get('college_invoice_report/show_grouped_invoices/{grouped_invoice_id}', ['as' => 'invoice.grouped.show', 'uses' => 'InvoiceReportController@showGroupedInvoices']);
     Route::get('college_invoice_report/print_grouped_invoices/{grouped_invoice_id}', ['as' => 'invoice.grouped.print', 'uses' => 'InvoiceReportController@printGroupedInvoice']);
+    Route::post('college_invoice_report/clear_grouped_invoices/{grouped_invoice_id}', ['as' => 'invoice.grouped.clear', 'uses' => 'InvoiceReportController@clearGroupedInvoice']);
     Route::get('group/{grouped_invoice_id}/invoice/{invoice_id}', ['as' => 'invoice.group.remove', 'uses' => 'InvoiceReportController@deleteGroupInvoices']);
 
     Route::get('client/payments', ['as' => 'accounts.client.payments', 'uses' => 'InvoiceReportController@clientPayments']);
@@ -442,8 +445,10 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
 
     // checking subscription expiry
     Route::get('subscription/check', 'SubscriptionController@checkSubscription');
-    Route::get('subscription/renew', 'SubscriptionController@renew');
+    Route::get('subscription/renew', ['as' => 'tenant.subscription.renew', 'uses' => 'SubscriptionController@renew']);
     Route::post('subscription/renew', 'SubscriptionController@submitRenew');
+
+    Route::get('subscription/test', 'SubscriptionController@test');
     Route::post('subscription/get_subscription_amount', 'SubscriptionController@get_subscription_amount');
     Route::get('subscription/complete_subscription_paypal', 'SubscriptionController@complete_subscription_paypal');
 

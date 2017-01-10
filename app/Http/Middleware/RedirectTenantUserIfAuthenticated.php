@@ -34,7 +34,6 @@ class RedirectTenantUserIfAuthenticated {
 	 */
 	public function handle($request, Closure $next)
 	{
-
        // check for valid tenant
         $this->validateTenant();
 

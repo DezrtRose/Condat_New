@@ -24,7 +24,7 @@ class Agency extends Model
      *
      * @var array
      */
-    protected $fillable = ['agency_id', 'guid', 'description', 'company_database_name'];
+    protected $fillable = ['agency_id', 'guid', 'status', 'description', 'company_database_name'];
 
 
     /* Connecting to the master database */
@@ -40,7 +40,6 @@ class Agency extends Model
         //DB::beginTransaction();
 
         try {
-
             /* Agency Address Details */
             $address = Address::create([
                 'line1' => isset($request['line1']) ? $request['line1'] : '',
@@ -76,6 +75,9 @@ class Agency extends Model
                 'addresses_address_id' => $address->address_id
             ]);
 
+            //remove 2 lines
+            //$request['company_database_name'] = 'tenant19';
+            //$agency = Agency::find(19);
             //create independent database
             $tenant = app('App\Condat\Libraries\Tenant');
             $unique_auth_code = $request['unique_auth_code'] = md5(uniqid($agency->agency_id, true));
@@ -83,17 +85,25 @@ class Agency extends Model
             $tenant->newTenant($request);
 
             // sending email to agency
-            $complete_profile_url = url('tenant/login?tenant=' . $agency->agency_id . '&auth_code=' . $unique_auth_code);
+            $complete_profile_url = url($agency->agency_id.'/login?tenant=' . $agency->agency_id . '&auth_code=' . $unique_auth_code);
+            $agency_url = route('tenant.login', $agency->agency_id);
             $agency_message = <<<EOD
-<strong>Respected {$request['name']}, </srtong>
+<strong>{$request['name']}, </srtong>
 <p>Your agency account has been created successfully on Condat Solutions. Please <a href="$complete_profile_url">click here</a> or follow the link below to complete the registration process.</p>
 <a href="$complete_profile_url">$complete_profile_url</a>
+
+<p><strong>Login Steps</strong><br/><br/>
+
+Once setup is done you can login to your account.
+To access your login page please always follow the link below: <br/>
+$agency_url<br/><br/>
+Or you can also access your system link from LOG IN section of <a href= "condat.com.au"> condat.com.au</a></p>
 EOD;
 
             $param = ['content' => $agency_message,
                 'subject' => 'Agency Created Successfully',
                 'heading' => 'Condat Solutions',
-                'subheading' => 'All your business in one space',
+                'subheading' => 'Work Smart Work Fast',
             ];
             $data = ['to_email' => $request['email_id'],
                 'to_name' => $request['name'],
@@ -116,7 +126,7 @@ EOD;
             // something went wrong
         }
 
-        if ($agency) return $agency->id;
+        if ($agency) return $agency->agency_id;
         else return false;
     }
 
@@ -182,5 +192,4 @@ EOD;
         if ($agency) return $agency->id;
         else return false;
     }
-
 }

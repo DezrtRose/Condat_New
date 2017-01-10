@@ -23,12 +23,13 @@
                     <thead>
                     <tr class="text-nowrap">
                         <th>Invoice Id</th>
-                        <th>Date</th>
+                        <th>Invoice Date</th>
                         <th>Client Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Invoice Amount</th>
-                        <th>Total gst</th>
+                        <th>Institute Name</th>
+                        <th>Course Name</th>
+                        <th>Invoice To</th>
+                        <th>Total Amount</th>
+                        <th>Total GST</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -38,8 +39,9 @@
                             <td>{{ format_id($invoice->invoice_id, 'CI') }}</td>
                             <td>{{ format_date($invoice->invoice_date) }}</td>
                             <td>{{ $invoice->fullname }}</td>
-                            <td>{{ $invoice->number }}</td>
-                            <td>{{ $invoice->email }}</td>
+                            <td>{{ $invoice->institute_name }}</td>
+                            <td>{{ $invoice->course_name }}</td>
+                            <td>{{ $invoice->invoice_to }}</td>
                             <td>{{ format_price($invoice->total_commission) }}</td>
                             <td>{{ format_price($invoice->total_gst) }}</td>
                             <td>

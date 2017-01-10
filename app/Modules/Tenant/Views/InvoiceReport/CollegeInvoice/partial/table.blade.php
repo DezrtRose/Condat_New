@@ -3,7 +3,7 @@
     <tr class="text-nowrap">
         {!! (isset($is_group) && $is_group == true)? '<th>Select</th>' : '' !!}
         <th>Invoice Id</th>
-        <th>Date</th>
+        <th>Invoice Date</th>
         <th>Client Name</th>
         <th>Institute Name</th>
         <th>Course Name</th>

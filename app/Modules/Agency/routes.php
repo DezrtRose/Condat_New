@@ -2,6 +2,8 @@
 
 Route::group(array('module' => 'Agency', 'middleware' => ['auth'], 'namespace' => 'App\Modules\Agency\Controllers'), function() {
     Route::resource('agency', 'AgencyController');
+    Route::get('agencies/{id}/deactivate', ['as' => 'agencies.deactivate', 'uses' => 'AgencyController@deactivate']);
+    Route::get('agencies/{id}/activate', ['as' => 'agencies.activate', 'uses' => 'AgencyController@activate']);
     Route::get('agencies/data', 'AgencyController@getData');
     Route::get('domain/suggestion/{name}', 'AgencyController@getDomainSuggestion');
     Route::get('subscription/{id}/renew', ['as' => 'agency.renew', 'uses' => 'AgencyController@subscriptionRenew']);

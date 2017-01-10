@@ -2,9 +2,12 @@
 
 Route::group(array('module' => 'Auth', 'middleware' => ['guest'], 'namespace' => 'App\Modules\Auth\Controllers'), function() {
 
+    // Tenant List routes
+    Route::get('login', ['as' => 'agencies.login', 'uses' => 'AuthController@agencyLogin']);
+
     // Authentication routes
-    Route::get('login', 'AuthController@getLogin');
-    Route::post('login', 'AuthController@postLogin');
+    Route::get('admin', 'AuthController@getLogin');
+    Route::post('admin', 'AuthController@postLogin');
 
     // Registration routes
     Route::get('register', 'AuthController@getRegister');

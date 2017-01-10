@@ -10,7 +10,7 @@
 
 @section('content')
     <div class="col-md-12">
-        @include('Tenant::InvoiceReport/CollegeInvoice/partial/navbar')
+        @include('Tenant::InvoiceReport/GroupInvoice/navbar')
         @include('flash::message')
     </div>
 
@@ -25,9 +25,11 @@
                     <tr class="text-nowrap">
                         <th>Group Invoice Id</th>
                         <th>Date</th>
+                        <th>Invoice To</th>
                         <th>Number of Invoices</th>
                         <th>Sub Total</th>
                         <th>GST</th>
+                        <th>Outstanding Amount</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -36,13 +38,19 @@
                         <tr>
                             <td>{{ format_id($invoice->group_invoice_id, 'GI') }}</td>
                             <td>{{ format_date($invoice->date) }}</td>
+                            <td>{{ $invoice->description }}</td>
                             <td>{{ $invoice->invoiceCount }}</td>
-                            <td>{{ $invoice->total_amount - $invoice->total_gst }}</td>
-                            <td>{{ $invoice->total_gst }}</td>
+                            <td>{{ format_price($invoice->total_amount - $invoice->total_gst) }}</td>
+                            <td>{{ format_price($invoice->total_gst) }}</td>
+                            <td>{{ format_price($invoice->outstanding_amount) }}</td>
                             <td>
                                 <a href="{{ route('invoice.grouped.show', [$tenant_id, $invoice->group_invoice_id]) }}" title="View Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                             data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
+                                <a href="#" target="_blank" title="Clear Invoice" data-toggle="modal" data-target="#clear-modal{{$invoice->group_invoice_id}}"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-usd"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Clear Payment"></i></a>
                                 <a href="{{ route('invoice.grouped.print', [$tenant_id, $invoice->group_invoice_id]) }}" target="_blank" title="Print Invoice"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"
                                             data-toggle="tooltip" data-placement="top"
@@ -56,11 +64,70 @@
         </div>
     </div>
 
+    @foreach($invoice_reports as $invoice)
+    <div class="modal fade modal" id="clear-modal{{$invoice->group_invoice_id}}" tabindex="-1" role="dialog" aria-labelledby="clear-modal{{$invoice->group_invoice_id}}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Payment Details</h4>
+                </div>
+                {!!Form::open(['route' => ['invoice.grouped.clear', $tenant_id, $invoice->group_invoice_id], 'method'=> 'post', 'class' => 'form-horizontal'])!!}
+                <div class="modal-body">
+                    <div class="form-group">
+                        {!!Form::label('date_paid', 'Payment Date *', array('class' => 'col-md-4 control-label')) !!}
+                        <div class="col-md-8">
+                            <div class="input-group date" id="date_paid">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                {!!Form::text('date_paid', null, array('class' => 'form-control date_paid_picker'))!!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {!!Form::label('payment_method', 'Payment Method *', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            {!!Form::text('payment_method', null, array('class' => 'form-control', 'id'=>'payment_method'))!!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {!!Form::label('payment_type', 'Payment Type *', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            {!!Form::select('payment_type', ['College to Agent' => 'College to Agent', 'Pre Claimed Commission' => 'Pre Claimed Commission'], null, array('class' => 'form-control', 'id'=>'payment_type'))!!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {!!Form::label('description', 'Description', array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            {!!Form::textarea('description', null, array('class' => 'form-control', 'id'=>'description'))!!}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i>
+                        Save
+                    </button>
+                </div>
+                {!!Form::close()!!}
+            </div>
+        </div>
+
+    </div>
+    @endforeach
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#invoice_report_table').DataTable({
                 "pageLength": 50,
                 order: [[0, 'desc']]
+            });
+
+            $(".date_paid_picker").datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy'
             });
         });
     </script>

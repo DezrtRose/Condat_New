@@ -24,7 +24,6 @@ class AgenciesController extendS Controller{
 	public function index(){
 
 		$agencies = Agency::index();
-
 		return view("agencies/index")->with('agencies', $agencies);
 
 	}
