@@ -3,7 +3,7 @@
 @section('heading', '<h1>College Invoice - <small>Advanced Search</small></h1>')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url($tenant_id.'/clients')}}" title="All College Invoices"><i class="fa fa-users"></i> College
+    <li><a href="{{url($tenant_id.'/clients')}}" title="All College Invoices"><i class="fa fa-users"></i> Institute
             Invoices</a></li>
     <li>Advanced Search</li>
 @stop
@@ -103,11 +103,14 @@
             });
 
             $('.dateranger').daterangepicker({
+                locale: {
+                    format: 'DD/MM/YYYY'
+                },
                 autoUpdateInput: false
             });
 
             $('.dateranger').on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
             });
 
             $('.dateranger').on('cancel.daterangepicker', function(ev, picker) {

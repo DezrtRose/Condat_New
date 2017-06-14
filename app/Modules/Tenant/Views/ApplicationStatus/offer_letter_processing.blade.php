@@ -28,7 +28,7 @@
                         <th>College Name</th>
                         <th>Course Name</th>
                         <th>Start date</th>
-                        <th>Invoice To</th>
+                        <th>Super Agent</th>
                         <th>Processing</th>
                     </tr>
                     </thead>
@@ -42,7 +42,7 @@
                             <td>{{ $application->company }}</td>
                             <td>{{ $application->name }}</td>
                             <td>{{ format_date($application->intake_date) }}</td>
-                            <td>{{ $application->company }}</td>
+                            <td>{{ get_agent_name($application->super_agent_id) }}</td>
                             <td>
                                 <a href="{{ route('applications.offer.received', [$tenant_id, $application->course_application_id]) }}"
                                    title="Offer Received"><i
@@ -57,6 +57,11 @@
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-edit"
                                             data-toggle="tooltip" data-placement="top"
                                             title="Edit"></i></a>
+                                <a href="{{ route('applications.revert.application',[$tenant_id, $application->course_application_id])}}"
+                                   title="Revert Status" onclick="return confirm('Are you sure? The application status will be changed to Enquiry.')"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-refresh"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Revert Status"></i></a>
                                 <a href="{{ route('applications.cancel.application',[$tenant_id, $application->course_application_id])}}"
                                    title="Cancel / Quarantine"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-trash"

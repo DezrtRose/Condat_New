@@ -238,6 +238,7 @@ class Institute extends Model
     {
         $institutes = Institute::leftJoin('companies', 'institutes.company_id', '=', 'companies.company_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'companies.phone_id')
+            ->orderBy('companies.name', 'asc')
             ->lists('companies.name', 'institutes.institution_id');
         return $institutes;
     }

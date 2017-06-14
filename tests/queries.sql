@@ -440,5 +440,26 @@ ALTER TABLE `institute_phones` CHANGE `institute_phone_id` `institute_phone_id` 
 
 /* Done */
 
-/* 13th November Live Chnages*/
+/* 13th November Live Changes*/
 ALTER TABLE `intakes` ADD `deleted_at` DATETIME NULL DEFAULT NULL ;
+
+/* Live Changes */
+UPDATE `college_payments` SET `payment_type`='Company to College / Super Agent' WHERE `payment_type` = 'Company to College';
+
+UPDATE `college_payments` SET `payment_type`='Client to College / Super Agent' WHERE `payment_type` = 'Student to College';
+
+/*not able to view accounts college account + staff : Consultant*/
+INSERT INTO `condat_tenant`.`user_levels` (`user_level_id`, `name`, `description`, `value`) VALUES (NULL, 'Consultant', 'Consultant', '6');
+
+/* Add to Master Database */
+ALTER TABLE `subscription_payments` ADD `stripe_transaction_id` VARCHAR(255) NOT NULL ;
+
+PAYPAL_LIVE_API_USERNAME=info_api1.condat.com.au
+PAYPAL_LIVE_API_PASSWORD=5L3ADXYJ46WZM9L4
+PAYPAL_LIVE_API_SECRET=AFcWxV21C7fd0v3bYYYRCpSSRl31A8ZSvLN0RWT6AAc4jM8ynQmBLcpj
+
+ALTER TABLE `users` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE AFTER `status`;
+
+ALTER TABLE `subscription_payments` CHANGE `stripe_transaction_id` `stripe_transaction_id` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+
+UPDATE `condat_master`.`subscriptions` SET `description` = 'Standard' WHERE `subscriptions`.`subscription_id` = 2;

@@ -5,6 +5,8 @@ namespace App\Modules\Tenant\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Tenant\Models\Client\ClientNotes;
 use App\Modules\Tenant\Models\Country;
+use App\Modules\Tenant\Models\Invoice\CollegeInvoice;
+use App\Modules\Tenant\Models\Invoice\StudentInvoice;
 use App\Modules\Tenant\Models\Person\Person;
 use App\Modules\Tenant\Models\UserLevel;
 use Carbon\Carbon;
@@ -24,6 +26,8 @@ class BaseController extends Controller{
 		View::share('current_user', $this->current_user());
 		// share current logged in user details all views
 		View::share('reminders', $this->getReminders());
+		// share random alerts in all views
+		View::share('alerts', $this->getNotifications());
 		// share list of countries in all views
 		View::share('countries', $this->get_country_list());
 		// share company details in all views
@@ -50,8 +54,11 @@ class BaseController extends Controller{
 			$role = UserLevel::find($current_user->role);
 			$profile = Person::find($current_user->person_id);
 			$current_user->full_name = $profile->first_name . ' ' . $profile->last_name;
+			$current_user->first_name = $profile->first_name;
+			$current_user->last_name = $profile->last_name;
 			$current_user->profile = $profile;
 			$current_user->role_type = $role->name;
+			$current_user->level_value = $role->value;
 			$current_user->level = $role->value;
 		}
 		return $current_user;
@@ -112,6 +119,31 @@ class BaseController extends Controller{
 
 	}
 
+	function getNotifications()
+	{
+		$notification_arr = array();
+		$tenant_id = \Illuminate\Support\Facades\Request::segment(1);
+		//Student pending invoice
+		$studentInvoice = new StudentInvoice();
+		$studInvoices = $studentInvoice->getRandomPendingInvoice();
+		if(!empty($studInvoices)) {
+			foreach($studInvoices as $studInvoice) {
+				$desc = (isset($studInvoice->description) && $studInvoice->description != '')? ucfirst($studInvoice->description) : 'Student invoice';
+				$notification_arr[] = '<a href="' . route("tenant.invoice.payments", [$tenant_id, $studInvoice->invoice_id, 2]) . '" target="_blank"><i class="fa fa-user text-aqua"></i><strong>'.$desc.'</strong> of <strong>'. $studInvoice->fullname. '</strong> is still outstanding.</a>';
+			}
+		};//dd($notification_arr);
+		$colInvoice = new CollegeInvoice();
+		$collegeInvoices = $colInvoice->getRandomPendingInvoice();
+		if(!empty($collegeInvoices)) {
+			foreach($collegeInvoices as $collegeInvoice) {
+				$notification_arr[] = '<a href="' . route("tenant.invoice.payments", [$tenant_id, $collegeInvoice->college_invoice_id, 1]) . '"><i class="fa fa-building text-green"></i>Invoice for <strong>'. $collegeInvoice->institute_name .'</strong> of <strong>'. $collegeInvoice->fullname .'</strong> is outstanding.</a>';
+			}
+		}
+		if(!empty($notification_arr))
+			$notification_arr = array_random($notification_arr, 5);
+		return $notification_arr;
+	}
+
 	function getCompanyDetails()
 	{
 		$setting = new Setting();
@@ -124,9 +156,9 @@ class BaseController extends Controller{
         $current_user = $this->current_user()->toArray();
         if($current_user['level'] >= '12')
             return true;
-        elseif($current_user['level'] >= '9' && $current_user['level'] < '12')
+        elseif($current_user['level'] >= '8' && $current_user['level'] < '12')
             return false;
-        elseif($current_user['level'] >= '3' && $current_user['level'] < '9')
+        elseif($current_user['level'] >= '4' && $current_user['level'] < '8')
             return false;
     }
 

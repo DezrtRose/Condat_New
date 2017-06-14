@@ -8,14 +8,20 @@
 
 <body>
 <div class="container">
+    <style type="text/css">
+        th, td {
+            border-top: 0 none !important;
+        }
+    </style>
     <div class="row">
         <div class="col-xs-6">
             <h1>
-                <img src="{{ (isset($company['logo_path']) && !empty($company['logo_path']))? $company['logo_path'] : '' }}" height="100px">
+                <img src="{{ (isset($company['logo_path']) && !empty($company['logo_path']))? $company['logo_path'] : '' }}"
+                     height="100px">
             </h1>
         </div>
         <div class="col-xs-6 text-right">
-            <h2>GROUP INVOICE</h2>
+            <h2>TAX INVOICE</h2>
         </div>
     </div>
     <div class="row">
@@ -44,7 +50,8 @@
                 </div>
                 <div class="panel-body">
                     <p>
-                    {{ $invoice_details->description }}
+                        {{ $invoice_details->description }}
+
                     <h3>
                         <small>Group Invoice #{{ format_id($invoice_details->group_invoice_id, 'GI') }}</small>
                     </h3>
@@ -79,19 +86,42 @@
         </thead>
         <tbody>
         @foreach($invoice_reports as $key=> $report)
-        <tr>
-            <td>{{ $report->fullname }}</td>
-            <td>{{ $report->institute_name }} / {{ $report->course_name }}</td>
-            <td class="text-right">${{ float_format($report->total_commission) }}</td>
-            <td class="text-right">${{ float_format($report->total_gst) }}</td>
-        </tr>
+            <tr>
+                <td>{{ $report->fullname }}</td>
+                <td>{{ $report->institute_name }} / {{ $report->course_name }}</td>
+                <td class="text-right">${{ float_format($report->total_commission) }}</td>
+                <td class="text-right">${{ float_format($report->total_gst) }}</td>
+            </tr>
         @endforeach
         </tbody>
     </table>
     <div class="row">
-        <div class="col-xs-5 col-xs-offset-7 text-right">
+        <div class="col-xs-6 col-xs-offset-6">
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-body text-right">
+                    {{--<table class="table no-border pull-right">
+                        <tr>
+                            <th class="text-right">Sub Total :</th>
+                            <td>${{ float_format($invoice_details->total_amount - $invoice_details->total_gst) }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">GST :</th>
+                            <td>${{ float_format($invoice_details->total_gst) }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right"><h3>Total Amount :</h3></th>
+                            <td><h3>${{ float_format($invoice_details->total_amount) }}</h3></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right">Less Paid Amount :</th>
+                            <td>${{ float_format($invoice_details->paid_amount) }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right"><h3>Amount Due :</h3></th>
+                            <td><h3>${{ float_format($invoice_details->outstanding_amount) }}</h3></td>
+                        </tr>
+                    </table>--}}
+
                     <p>Sub Total: <small>${{ float_format($invoice_details->total_amount - $invoice_details->total_gst) }}</small></p>
                     <p>GST: <small>${{ float_format($invoice_details->total_gst) }}</small></p>
                     <h3>Total Amount: <small>${{ float_format($invoice_details->total_amount) }}</small></h3>
@@ -136,7 +166,8 @@
                 <div class="panel-body">
                     <p>{{ $bank['account_name'] }}</p>
 
-                    <p><strong>BSB</strong> : {{ $bank['bsb'] }} | <strong>Account Number</strong> : {{ $bank['number'] }}</p>
+                    <p><strong>BSB</strong> : {{ $bank['bsb'] }} | <strong>Account Number</strong>
+                        : {{ $bank['number'] }}</p>
 
                     <p>{{ $bank['name'] }}</p>
                 </div>

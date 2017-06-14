@@ -44,6 +44,11 @@ $(function () {
     });
 });
 
+$(".icheck").iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+    increaseArea: '20%' // optional
+});
+
 $(document).ajaxComplete(function () {
     $(".icheck").iCheck({
         checkboxClass: 'icheckbox_square-blue',
@@ -55,4 +60,38 @@ $(document).ajaxComplete(function () {
 
 $('body').on('focus',".date-picker", function(){
     $(this).datepicker();
+});
+
+/* Contact Floating Form */
+$(document).ready(function(){
+    // process the form
+    $('.enquiry-form').submit(function(event) {
+        // get the form data
+        var formData = $('.enquiry-form').serialize();
+
+        // process the form
+        $.ajax({
+            type        : 'POST',
+            url         : appUrl + '/enquiry',
+            data        : formData,
+            dataType    : 'json'
+        })
+            // using the done promise callback
+            .done(function(data) {
+                $('.enquiry-form')[0].reset();
+                $('.content .row').before('<div class="callout callout-enq callout-success"><p>Enquiry Sent Successfully!</p></div>');
+                $('#contactModal').modal('hide');
+                setTimeout(function () {
+                    $('.callout-enq').remove()
+                }, 3000);
+            });
+
+        event.preventDefault();
+    });
+
+
+    $('.slimscroll').slimscroll({
+        allowPageScroll: true
+    });
+
 });

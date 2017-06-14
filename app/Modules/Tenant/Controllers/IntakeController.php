@@ -66,7 +66,7 @@ class IntakeController extends BaseController
             // if validates
             $intake_id = $this->intake->add($this->request->all(), $institution_id);
             Flash::success('Intake has been created successfully.');
-            return $this->success(['intake_id' => $intake_id, 'name' => $this->request->get('description')]);
+            return $this->success(['intake_id' => $intake_id, 'description' => $this->request->get('intake_date') . " " . $this->request->get('description')]);
         }
         else {
             $this->validate($this->request, $this->rules);

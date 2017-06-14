@@ -50,6 +50,22 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
+                            <tbody>
+                            @foreach($new_agencies as $key => $new_agency)
+                                <tr>
+                                    <td>{{ format_id($new_agency->agency_id, 'A') }}</td>
+                                    <td>{{ $new_agency->name }}</td>
+                                    <td>{{ $new_agency->phone_id }}</td>
+                                    <td>{{ $new_agency->subscription_id }}</td>
+                                    <td>{{ $new_agency->subscription_name }}</td>
+                                    <td>{{ format_date($new_agency->end_date) }}</td>
+                                    <td>
+                                        <?php $status_link = (($new_agency->status == 1) ? '<a data-toggle="tooltip" title="Deactivate Agency" class="btn btn-action-box" onclick="return confirm (\'Are you sure?\')" href ="'. route('agencies.deactivate', $new_agency->agency_id) .'"><i class="fa fa-minus-circle"></i></a>' : '<a data-toggle="tooltip" title="Reactivate Agency" class="btn btn-action-box" onclick="return confirm (\'Are you sure?\')" href ="'. route('agencies.activate', $new_agency->agency_id) .'"><i class="fa fa-plus-circle"></i></a>') ?>
+                                        <a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route('agency.show', $new_agency->agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route('agency.renew', $new_agency->agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route('agency.edit', $new_agency->agency_id) }}"><i class="fa fa-edit"></i></a> {!! $status_link !!}
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="expiring">
@@ -65,6 +81,22 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
+                            <tbody>
+                            @foreach($expiring_agencies as $key => $expiring_agency)
+                                <tr>
+                                    <td>{{ format_id($expiring_agency->agency_id, 'A') }}</td>
+                                    <td>{{ $expiring_agency->name }}</td>
+                                    <td>{{ $expiring_agency->phone_id }}</td>
+                                    <td>{{ $expiring_agency->subscription_id }}</td>
+                                    <td>{{ $expiring_agency->subscription_name }}</td>
+                                    <td>{{ format_date($expiring_agency->end_date) }}</td>
+                                    <td>
+                                        <?php $status_link = (($expiring_agency->status == 1) ? '<a data-toggle="tooltip" title="Deactivate Agency" class="btn btn-action-box" onclick="return confirm (\'Are you sure?\')" href ="'. route('agencies.deactivate', $expiring_agency->agency_id) .'"><i class="fa fa-minus-circle"></i></a>' : '<a data-toggle="tooltip" title="Reactivate Agency" class="btn btn-action-box" onclick="return confirm (\'Are you sure?\')" href ="'. route('agencies.activate', $expiring_agency->agency_id) .'"><i class="fa fa-plus-circle"></i></a>') ?>
+                                        <a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route('agency.show', $expiring_agency->agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route('agency.renew', $expiring_agency->agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route('agency.edit', $expiring_agency->agency_id) }}"><i class="fa fa-edit"></i></a> {!! $status_link !!}
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="expired">
@@ -80,6 +112,22 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
+                            <tbody>
+                            @foreach($expired_agencies as $key => $expired_agency)
+                                <tr>
+                                    <td>{{ format_id($expired_agency->agency_id, 'A') }}</td>
+                                    <td>{{ $expired_agency->name }}</td>
+                                    <td>{{ $expired_agency->phone_id }}</td>
+                                    <td>{{ $expired_agency->subscription_id }}</td>
+                                    <td>{{ $expired_agency->subscription_name }}</td>
+                                    <td>{{ format_date($expired_agency->end_date) }}</td>
+                                    <td>
+                                        <?php $status_link = (($expired_agency->status == 1) ? '<a data-toggle="tooltip" title="Deactivate Agency" class="btn btn-action-box" onclick="return confirm (\'Are you sure?\')" href ="'. route('agencies.deactivate', $expired_agency->agency_id) .'"><i class="fa fa-minus-circle"></i></a>' : '<a data-toggle="tooltip" title="Reactivate Agency" class="btn btn-action-box" onclick="return confirm (\'Are you sure?\')" href ="'. route('agencies.activate', $expired_agency->agency_id) .'"><i class="fa fa-plus-circle"></i></a>') ?>
+                                        <a data-toggle="tooltip" title="View Agency" class="btn btn-action-box" href ="{{ route('agency.show', $expired_agency->agency_id) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Renew Agency Subscription" class="btn btn-action-box" href ="{{ route('agency.renew', $expired_agency->agency_id) }}"><i class="fa fa-refresh"></i></a> <a data-toggle="tooltip" title="Edit Agency" class="btn btn-action-box" href ="{{ route('agency.edit', $expired_agency->agency_id) }}"><i class="fa fa-edit"></i></a> {!! $status_link !!}
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -90,51 +138,18 @@
     <script type="text/javascript">
         $(document).ready(function () {
             oTable = $('#new-agencies').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": appUrl + "/dashboard/newAgencyData",
-                "columns": [
-                    {data: 'agency_id', name: 'agencies.agency_id'},
-                    {data: 'name', name: 'companies.name'},
-                    {data: 'phone_id', name: 'phone_id'},
-                    {data: 'subscription_id', name: 'subscription_id'},
-                    {data: 'subscription_name', name: 'subscription_statuses.name'},
-                    {data: 'end_date', name: 'end_date'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
-                "order": [[0, 'desc']]
+                "pageLength": 50,
+                order: [[0, 'desc']]
             });
 
             eTable = $('#expiring-agencies').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": appUrl + "/dashboard/expiringAgencyData",
-                "columns": [
-                    {data: 'agency_id', name: 'agencies.agency_id'},
-                    {data: 'name', name: 'companies.name'},
-                    {data: 'phone_id', name: 'phone_id'},
-                    {data: 'subscription_id', name: 'subscription_id'},
-                    {data: 'subscription_name', name: 'subscription_statuses.name'},
-                    {data: 'end_date', name: 'end_date'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
-                "order": [[0, 'desc']]
+                "pageLength": 50,
+                order: [[0, 'desc']]
             });
 
             exTable = $('#expired-agencies').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": appUrl + "/dashboard/expiredAgencyData",
-                "columns": [
-                    {data: 'agency_id', name: 'agencies.agency_id'},
-                    {data: 'name', name: 'companies.name'},
-                    {data: 'phone_id', name: 'phone_id'},
-                    {data: 'subscription_id', name: 'subscription_id'},
-                    {data: 'subscription_name', name: 'subscription_statuses.name'},
-                    {data: 'end_date', name: 'end_date'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
-                "order": [[0, 'desc']]
+                "pageLength": 50,
+                order: [[0, 'desc']]
             });
         });
     </script>

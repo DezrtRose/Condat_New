@@ -259,7 +259,7 @@ class AgencyController extends BaseController {
 
 		$this->validate($this->request, $rules);*/
 
-		$updated = $this->subscription->renew($this->request->all(), $agency_id);
+		$updated = $this->subscription->renew($this->request->all(), $agency_id, $admin = true);
 		if($updated)
 			Flash::success('Subscription has been renewed successfully.');
         else

@@ -20,7 +20,7 @@
             </div>
 
             <div class="form-group @if($errors->has('total_tuition_fee')) {{'has-error'}} @endif">
-                {!!Form::label('total_tuition_fee', 'Tuition Fee *', array('class' => 'col-sm-3 control-label')) !!}
+                {!!Form::label('total_tuition_fee', 'Total Tuition Fee *', array('class' => 'col-sm-3 control-label')) !!}
                 <div class="col-sm-8">
                     <div class="input-group" id="total_tuition_fee">
                         <span class="input-group-addon">$</span>
@@ -35,11 +35,15 @@
             </div>
 
             <div class="form-group @if($errors->has('coe_fee')) {{'has-error'}} @endif">
-                {!!Form::label('coe_fee', 'COE Issue Field*', array('class' => 'col-sm-3 control-label')) !!}
+                {!!Form::label('coe_fee', 'Fee For COE*', array('class' => 'col-sm-3 control-label')) !!}
                 <div class="col-sm-8">
                     <div class="input-group" id="coe_fee">
                         <span class="input-group-addon">$</span>
-                        {!!Form::text('coe_fee', null, array('class' => 'form-control'))!!}
+                        @if(!isset($course))
+                            {!!Form::text('coe_fee', 0, array('class' => 'form-control'))!!}
+                        @else
+                            {!!Form::text('coe_fee', null, array('class' => 'form-control'))!!}
+                        @endif
                         <span class="input-group-addon">.00</span>
                     </div>
                     @if($errors->has('coe_fee'))

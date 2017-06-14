@@ -1,5 +1,7 @@
 <?php namespace App\Modules\Tenant\Models\Application;
 
+use App\Modules\Tenant\Models\Course\Course;
+use App\Modules\Tenant\Models\Course\CourseFee;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Carbon;
@@ -45,6 +47,12 @@ class CourseApplication extends Model
         DB::beginTransaction();
 
         try {
+            $fee = CourseFee::leftJoin('fees', 'fees.fee_id', '=', 'course_fees.fees_id')
+                ->select('fees.total_tuition_fee', 'fees.coe_fee')
+                ->where('course_fees.course_id', $request['institution_course_id'])
+                ->first();
+            $fee_for_coe = (!empty($fee))? $fee->coe_fee : '0';
+
             $application = CourseApplication::create([
                 'institution_course_id' => $request['institution_course_id'],
                 'intake_id' => $request['intake_id'],
@@ -55,6 +63,7 @@ class CourseApplication extends Model
                 'user_id' => current_tenant_id(),
                 'student_id' => $request['student_id'],
                 'client_id' => $client_id,
+                'fee_for_coe' => $fee_for_coe,
                 //'total_discount' => $request['total_discount'],
                 'institute_id' => $request['institute_id'],
                 //'location_id' => $request['location_id'],

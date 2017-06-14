@@ -8,7 +8,7 @@
         <th>Institute Name</th>
         <th>Course Name</th>
         <th>Invoice To</th>
-        <th>Total Amount</th>
+        <th>Sub Total</th>
         <th>Total GST</th>
         <th>Outstanding</th>
         <th></th>
@@ -24,14 +24,14 @@
             <td>{{ $invoice->institute_name }}</td>
             <td>{{ $invoice->course_name }}</td>
             <td>{{ $invoice->invoice_to }}</td>
-            <td>{{ format_price($invoice->final_total) }}</td>
+            <td>{{ format_price($invoice->total_commission) }}</td>
             <td>{{ format_price($invoice->total_gst) }}</td>
 
             <td>
-                @if(($invoice->total_commission) - ($invoice->total_paid) == 0)
+                @if(($invoice->final_total) - ($invoice->total_paid) == 0)
                     {{ '-' }}
                 @else
-                    {{ format_price(($invoice->total_commission) - ($invoice->total_paid)) }}
+                    {{ format_price(($invoice->final_total) - ($invoice->total_paid)) }}
                 @endif
             </td>
             <td>

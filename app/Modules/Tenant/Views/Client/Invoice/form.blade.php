@@ -16,9 +16,9 @@
                         <i class="fa fa-calendar"></i>
                     </div>
                     @if(!isset($invoice) || $invoice->invoice_date == null)
-                        {!!Form::text('invoice_date', null, array('class' => 'form-control', 'id'=>'invoice_date'))!!}
+                        {!!Form::text('invoice_date', get_formatted_today_date(), array('class' => 'form-control', 'autocomplete' => 'off', 'id'=>'invoice_date'))!!}
                     @else
-                        {!!Form::text('invoice_date', format_date($invoice->invoice_date), array('class' => 'form-control', 'id'=>'invoice_date'))!!}
+                        {!!Form::text('invoice_date', format_date($invoice->invoice_date), array('class' => 'form-control', 'autocomplete' => 'off', 'id'=>'invoice_date'))!!}
                     @endif
                 </div>
                 @if($errors->has('invoice_date'))
@@ -188,7 +188,8 @@
     $(function () {
         $("#invoice_date").datepicker({
             format: 'dd/mm/yyyy',
-            autoclose: true
+            autoclose: true,
+            todayHighlight: true
         });
 
         $("#due_date").datepicker({

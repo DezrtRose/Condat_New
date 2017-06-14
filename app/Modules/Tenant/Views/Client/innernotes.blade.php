@@ -107,7 +107,7 @@
                             <div class="">
                                 <div class='input-group date'>
                                     <input type="text" name="reminder_date" class="form-control datepicker"
-                                           id="reminder_date" placeholder="yyyy-mm-dd">
+                                           id="reminder_date" placeholder="dd/mm/yyyy">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>

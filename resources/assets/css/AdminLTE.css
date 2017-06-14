@@ -927,7 +927,7 @@ a:focus {
 .navbar-nav > .notifications-menu > .dropdown-menu,
 .navbar-nav > .messages-menu > .dropdown-menu,
 .navbar-nav > .tasks-menu > .dropdown-menu {
-  width: 280px;
+  width: 350px;
   padding: 0 0 0 0;
   margin: 0;
   top: 100%;
@@ -4372,6 +4372,9 @@ table.text-center th {
 }
 .text-maroon {
   color: #d81b60 !important;
+}
+.text-white {
+  color: #ffffff !important;
 }
 .link-muted {
   color: #7a869d;

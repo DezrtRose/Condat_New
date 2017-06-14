@@ -53,6 +53,8 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
 
     Route::get('logout', ['as' => 'tenant.logout', 'uses' => 'AuthController@logout']);
 
+    Route::post('enquiry', ['as' => 'tenant.enquiry', 'uses' => 'UserController@enquiry']);
+
     /* Routes for File upload */
     Route::post('file/upload', 'FileController@upload');
     Route::get('file/delete', 'FileController@delete');
@@ -66,6 +68,12 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::put('clients/{id}', ['as' => 'tenant.client.update', 'uses' => 'ClientController@update']);
     Route::delete('clients/{id}', ['as' => 'tenant.client.destroy', 'uses' => 'ClientController@destroy']);
     Route::get('client/due', ['as' => 'tenant.client.due', 'uses' => 'ClientController@duePayments']);
+
+    /* Routes for Import */
+    Route::get('import', ['as' => 'tenant.client.import', 'uses' => 'ClientController@import']);
+    Route::get('downloadExcel/{type}', 'ClientController@downloadExcel');
+    Route::post('postImport', ['as' => 'tenant.client.postImport', 'uses' => 'ClientController@importExcel']);
+    Route::post('confirmImport', ['as' => 'tenant.client.confirmImport', 'uses' => 'ClientController@confirmImport']);
 
     Route::post('clients/{id}/upload', ['as' => 'tenant.client.upload', 'uses' => 'ClientController@upload']);
     Route::post('clients/{id}/urlUpload', ['as' => 'tenant.client.urlUpload', 'uses' => 'ClientController@urlUpload']);
@@ -163,8 +171,6 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     /* Create invoices for a application college */
     Route::get('applications/{application_id}/invoice', ['as' => 'tenant.application.invoice', 'uses' => 'CollegeController@createInvoice']);
     Route::post('applications/{application_id}/storeInvoice', ['as' => 'tenant.application.storeInvoice', 'uses' => 'CollegeController@storeInvoice']);
-    Route::get('applications/invoices/{client_id}/data', 'CollegeController@getInvoicesData');
-    Route::get('applications/recent/{client_id}/data', 'CollegeController@getRecentData');
     Route::get('applications/invoices/receipt/{invoice_id}', 'CollegeController@printInvoice');
     /*Route::get('college/invoice/{application_id}/more', ['as' => 'tenant.college.moreInvoice', 'uses' => 'CollegeController@createMoreInvoice']);
     Route::post('college/invoice/{application_id}/more', ['as' => 'tenant.college.storeMoreInvoice', 'uses' => 'CollegeController@storeMoreInvoice']);*/
@@ -173,9 +179,13 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
 
     /* College Invoices */
     Route::get('college/{invoice_id}/invoice', ['as' => 'tenant.college.invoice', 'uses' => 'CollegeController@show']);
+    Route::get('college/{invoice_id}/pdf', ['as' => 'tenant.college.pdf', 'uses' => 'CollegeController@downloadPdf']);
+    Route::get('college/{invoice_id}/mail', ['as' => 'tenant.college.mail', 'uses' => 'CollegeController@mailPdf']);
+    Route::post('college/{invoice_id}/mail', ['as' => 'tenant.college.mail', 'uses' => 'CollegeController@postMailPdf']);
     Route::get('college/{invoice_id}/editInvoice', ['as' => 'tenant.college.editInvoice', 'uses' => 'CollegeController@editInvoice']);
     Route::put('college/{invoice_id}/editInvoice', ['as' => 'tenant.college.editInvoice', 'uses' => 'CollegeController@updateInvoice']);
     Route::get('college/{invoice_id}/deleteInvoice', ['as' => 'tenant.college.deleteInvoice', 'uses' => 'CollegeController@deleteInvoice']);
+    Route::get('college/{invoice_id}/deleteInvoiceOnly', ['as' => 'tenant.college.deleteInvoiceOnly', 'uses' => 'CollegeController@deleteInvoiceOnly']);
 
     /* Routes for student section */
     Route::get('applications/{application_id}/students', ['as' => 'tenant.application.students', 'uses' => 'StudentController@index']);
@@ -197,6 +207,9 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
 
     /* Student Invoices */
     Route::get('student/{invoice_id}/invoice', ['as' => 'tenant.student.invoice', 'uses' => 'StudentController@show']);
+    Route::get('student/{invoice_id}/pdf', ['as' => 'tenant.student.pdf', 'uses' => 'StudentController@downloadPdf']);
+    Route::get('student/{invoice_id}/mail', ['as' => 'tenant.student.mail', 'uses' => 'StudentController@mailPdf']);
+    Route::post('student/{invoice_id}/mail', ['as' => 'tenant.student.mail', 'uses' => 'StudentController@postMailPdf']);
     Route::get('student/{invoice_id}/editInvoice', ['as' => 'tenant.student.editInvoice', 'uses' => 'StudentController@editInvoice']);
     Route::put('student/{invoice_id}/editInvoice', ['as' => 'tenant.student.updateInvoice', 'uses' => 'StudentController@updateInvoice']);
     Route::get('student/{invoice_id}/deleteInvoice', ['as' => 'tenant.student.deleteInvoice', 'uses' => 'StudentController@deleteInvoice']);
@@ -212,6 +225,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::put('subagents/{payment_id}/editPayment', ['as' => 'application.subagents.updatePayment', 'uses' => 'SubAgentController@updatePayment']);
     Route::get('subagents/payments/{client_id}/data', 'SubAgentController@getPaymentsData');
     Route::get('subagents/{payment_id}/payment/view', ['as' => 'subagents.payment.view', 'uses' => 'SubAgentController@viewPayment']);
+    Route::get('subagents/{payment_id}/payment/invoice', ['as' => 'subagents.invoice.upload', 'uses' => 'SubAgentController@uploadInvoice']);
 
     /* Create invoices for a application sub agents */
     Route::get('subagents/{application_id}/invoice', ['as' => 'application.subagents.invoice', 'uses' => 'SubAgentController@createInvoice']);
@@ -235,6 +249,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('college/payment/{payment_id}/{application_id}/assign', ['as' => 'tenant.college.payment.assign', 'uses' => 'CollegeController@assignInvoice']);
     Route::post('college/payment/{payment_id}/assign', ['as' => 'tenant.college.payment.postAssign', 'uses' => 'InvoiceController@postCollegeAssign']);
     Route::get('college/payment/receipt/{payment_id}', ['as' => 'tenant.college.payment.receipt', 'uses' => 'CollegeController@printReceipt']);
+    Route::get('college/payment/delete/{payment_id}', ['as' => 'tenant.college.payment.delete', 'uses' => 'CollegeController@deletePayment']);
 
     Route::get('clients/{client_id}/personal_details', 'ClientController@personal_details');
     Route::get('clients/{client_id}/notes', 'ClientController@notes');
@@ -327,13 +342,15 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('profile/password/{user_id}', ['as' => 'tenant.users.password', 'uses' => 'UserController@resetPassword']);
     Route::post('profile/password/{user_id}', ['as' => 'tenant.users.password', 'uses' => 'UserController@postResetPassword']);
     Route::get('users/dashboard', ['as' => 'users.dashboard', 'uses' => 'UserController@dashboard']);
+    //Route::get('notification', ['as' => 'dashboard.notification', 'uses' => 'UserController@getNotification']);
     Route::post('users/getMore', ['as' => 'users.getMore.timeline', 'uses' => 'UserController@getMoreTimeline']);
+    Route::post('clients/{id}/getMore', ['as' => 'clients.getMore.timeline', 'uses' => 'ClientController@getMoreTimeline']);
 
     /* Set reminder as completed */
     Route::get('reminder/{id}', ['as' => 'tenant.reminder.complete', 'uses' => 'UserController@completeReminder']);
 
     /*routes for innerdocument*/
-    Route::get('client/data', 'ClientController@getData');
+    //Route::get('client/data', 'ClientController@getData');
     Route::get('clients/{client_id}/innerdocument', ['as' => 'tenant.client.innerdocument', 'uses' => 'ClientController@innerdocument']);
     Route::post('clients/{client_id}/innerdocument', 'ClientController@uploadInnerDocument');
     Route::get('clients/innerdocument/{document_id}/download', ['as' => 'tenant.client.innerdocument.download', 'uses' => 'ClientController@downloadDocument']);
@@ -341,7 +358,6 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
 
     /*routes for notes*/
     Route::get('clients/{client_id}/notes', 'ClientController@notes');
-    Route::get('client/data', 'ClientController@getData');
     Route::get('clients/{client_id}/notes', ['as' => 'tenant.client.notes', 'uses' => 'ClientController@notes']);
     Route::post('clients/{client_id}/notes', 'ClientController@uploadClientNotes');
     Route::get('note/{notes_id}/delete', ['as' => 'tenant.client.notes.delete', 'uses' => 'ClientController@deleteNote']);
@@ -386,6 +402,7 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::post('applications/{course_application_id}/update_offer_update', ['as' => 'applications.offer_letter.update', 'uses' => 'ApplicationStatusController@offer_received_update']);
     Route::get('applications/{course_application_id}/apply_coe', ['as' => 'applications.apply.coe', 'uses' => 'ApplicationStatusController@apply_coe']);
     Route::post('applications/{course_application_id}/update_applied_coe', ['as' => 'applications.update.applied.coe', 'uses' => 'ApplicationStatusController@update_applied_coe']);
+    Route::get('applications/{course_application_id}/revert', ['as' => 'applications.revert.application', 'uses' => 'ApplicationStatusController@revert']);
     //Route::get('application/enquiry/data', 'ApplicationStatusController@getData');
     //Route::post('applications/{course_application_id}/status',['as' => 'applications.status', 'uses' => 'ApplicationsStatusController@status']);
 
@@ -425,8 +442,6 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::get('subagent/payments/receipt/{payment_id}', ['as' => 'tenant.subagent.payments.receipt', 'uses' => 'SubAgentController@printReceipt']);
     Route::get('subagent/{payment_id}/deletePayment', ['as' => 'application.subagent.deletePayment', 'uses' => 'SubAgentController@deletePayment']);
 
-    Route::get('college/print/pdf', ['as' => 'college.print.pdf', 'uses' => 'CollegeController@printPdf']);
-
     Route::get('college_invoice_report/group_invoice', ['as' => 'college.invoice.groupInvoice', 'uses' => 'InvoiceReportController@groupInvoice']);
     Route::post('college_invoice_report/group_invoice', ['as' => 'college.invoice.groupInvoice', 'uses' => 'InvoiceReportController@groupInvoice']);
     Route::get('invoice/group', ['as' => 'college.groupInvoice.create', 'uses' => 'InvoiceReportController@createGroupInvoice']);
@@ -452,4 +467,18 @@ Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware'
     Route::post('subscription/get_subscription_amount', 'SubscriptionController@get_subscription_amount');
     Route::get('subscription/complete_subscription_paypal', 'SubscriptionController@complete_subscription_paypal');
 
+});
+
+/* Tenant additional features for standard agencies */
+Route::group(array('prefix' => '{tenant_id}', 'module' => 'Tenant', 'middleware' => ['auth.tenant', 'standard.features'], 'namespace' => 'App\Modules\Tenant\Controllers'), function () {
+    Route::get('email', 'EmailController@index');
+    Route::post('email', 'EmailController@sendMail');
+});
+
+Route::get('send_test_email', function(){
+    $abc = Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
+    {
+        $message->to('krita.maharjan@gmail.com');
+    });
+    print_r($abc);
 });

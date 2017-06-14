@@ -28,7 +28,7 @@
                 <input type="hidden" name="tenant" value="{{$tenant_id}}">
 
                 <div class="form-group has-feedback">
-                    <input type="text" class="form-control" name="email" placeholder="Email"
+                    <input type="text" class="form-control" name="email" placeholder="Email *"
                            value="{{$agent_data->email}}" readonly/>
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 

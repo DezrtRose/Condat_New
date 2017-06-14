@@ -47,13 +47,13 @@
                 <div class="form-group col-md-4 col-xs-12">
                     {!!Form::label('payment_type', 'Payment Type', array('class' => 'control-label')) !!}
                     <div class="client-payment-type">
-                        {!!Form::select('client_payment_type', config('constants.student_payment_type'), null, array('class' => 'form-control select2 payment-type'))!!}
+                        {!!Form::select('client_payment_type[]', config('constants.student_payment_type'), null, array('class' => 'form-control select2 payment-type', 'multiple' => 'multiple'))!!}
                     </div>
                     <div class="college-payment-type">
-                        {!!Form::select('college_payment_type', config('constants.college_payment_type'), null, array('class' => 'form-control select2 payment-type'))!!}
+                        {!!Form::select('college_payment_type[]', config('constants.all_college_payment_type'), null, array('class' => 'form-control select2 payment-type', 'multiple' => 'multiple'))!!}
                     </div>
                     <div class="subagent-payment-type">
-                        {!!Form::select('subagent_payment_type', config('constants.subagent_payment_type'), null, array('class' => 'form-control select2 payment-type'))!!}
+                        {!!Form::select('subagent_payment_type[]', config('constants.subagent_payment_type'), null, array('class' => 'form-control select2 payment-type', 'multiple' => 'multiple'))!!}
                     </div>
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
@@ -102,7 +102,7 @@
                         switch($search_attributes['type']) {
                             case '1':
                                 $print_url = url($tenant_id . '/students/payment/receipt/' . $payment->client_payment_id);
-                                $edit_url = route('application.students.editPayment', [$tenant_id, $payment->student_payments_id]);
+                                $edit_url = route('application.students.editPayment', [$tenant_id, $payment->payment_id]);
                                 $prefix = 'CP';
                                 break;
                             case '2':
@@ -111,8 +111,8 @@
                                 $prefix = 'CIP';
                                 break;
                             case '3':
-                                $print_url = route('tenant.subagent.payments.receipt', [$tenant_id, $payment->subagent_payments_id]);
-                                $edit_url = route("application.subagents.editPayment", [$tenant_id, $payment->subagent_payments_id]);
+                                $print_url = route('tenant.subagent.payments.receipt', [$tenant_id, $payment->payment_id]);
+                                $edit_url = route("application.subagents.editPayment", [$tenant_id, $payment->payment_id]);
                                 $prefix = 'SAP';
                                 break;
                             default:

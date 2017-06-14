@@ -7,12 +7,13 @@
 @stop
 @section('content')
     @include('Tenant::Client/Application/navbar')
-
+    <br/>
     <div class="col-xs-3">
         <?php if($type == 1) $route_type = 'college'; elseif($type == 2) $route_type = 'student'; else $route_type = 'subagents'; ?>
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Invoice Details</h3>
+                    <a href="{{ $invoice->edit_link }}" class="btn btn-success pull-right btn-sm"><i class="fa fa-pencil"></i></a>
                 </div>
                 <!-- Recent Payments -->
                 <div class="box-body">
@@ -63,7 +64,8 @@
                 <h3 class="box-title">Invoice Payments</h3>
 
                 <a href="{{route('tenant.'.$route_type.'.invoice', [$tenant_id, $invoice->invoice_id])}}"
-                   class="btn btn-primary btn-flat pull-right" target="_blank"><i class="fa fa-print"></i> Print Invoice</a>
+                   class="btn btn-primary btn-flat pull-right" target="_blank"><i class="fa fa-print"></i> Print Invoice </a>
+                <a href="#" class="btn btn-success btn-flat pull-right marginRight" data-toggle="modal" data-target="#condat-modal" data-url="{{ $invoice->payment_link }}"><i class="fa fa-money"></i> Add Payment </a>&nbsp;&nbsp;
             </div>
             <div class="box-body">
                 <table id="payments" class="table table-bordered table-striped dataTable">

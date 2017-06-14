@@ -103,7 +103,7 @@
                             <td>{{ format_price($invoice->total_gst) }}</td>
 
                             <td>
-                                @if(($invoice->total_commission) - ($invoice->total_paid) == 0)
+                                @if(($invoice->total_commission) - ($invoice->total_paid) <= 0)
                                     {{ '-' }}
                                 @else
                                     {{ format_price(($invoice->total_commission) - ($invoice->total_paid)) }}

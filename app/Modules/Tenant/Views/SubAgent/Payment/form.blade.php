@@ -9,9 +9,9 @@
                         <i class="fa fa-calendar"></i>
                     </div>
                     @if(!isset($payment) || $payment->date_paid == null)
-                        {!!Form::text('date_paid', null, array('class' => 'form-control', 'id'=>'date_paid_picker'))!!}
+                        {!!Form::text('date_paid', null, array('class' => 'form-control', 'id'=>'date_paid_picker', 'autocomplete' => 'off'))!!}
                     @else
-                        {!!Form::text('date_paid', format_date($payment->date_paid), array('class' => 'form-control', 'id'=>'date_paid_picker'))!!}
+                        {!!Form::text('date_paid', format_date($payment->date_paid), array('class' => 'form-control', 'id'=>'date_paid_picker', 'autocomplete' => 'off'))!!}
                     @endif
                 </div>
                 @if($errors->has('date_paid'))

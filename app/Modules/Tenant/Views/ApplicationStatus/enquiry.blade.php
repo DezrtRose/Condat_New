@@ -26,7 +26,7 @@
                         <th>College Name</th>
                         <th>Course Name</th>
                         <th>Start date</th>
-                        <th>Invoice To</th>
+                        <th>Super Agent</th>
                         <th>Processing</th>
                     </tr>
                     </thead>
@@ -40,7 +40,7 @@
                             <td>{{ $application->company }}</td>
                             <td>{{ $application->name }}</td>
                             <td>{{ format_date($application->intake_date) }}</td>
-                            <td>{{ $application->invoice_to }}</td>
+                            <td>{{ get_agent_name($application->super_agent_id) }}</td>
                             <td>
                                 <a href="{{ route('applications.apply.offer',[$tenant_id, $application->course_application_id])}}"
                                    title="Apply Offer"><i class=" btn btn-primary btn-sm glyphicon glyphicon-education"

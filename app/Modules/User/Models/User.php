@@ -26,8 +26,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['given_name', 'surname', 'username', 'password', 'email', 'status',
-        'role', 'remember_token', 'title', 'added_by_users_id', 'activation_key'];
+    protected $fillable = ['given_name', 'surname', 'username', 'password', 'email', 'status', 'is_active', 'role', 'remember_token', 'title', 'added_by_users_id', 'activation_key'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -48,14 +47,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         if ($user->status == 0) {
             \Auth::logout();
-            return redirect()->to('login')->withInput()->with('message', 'Your account has not been activated.');
+            return redirect()->to('admin')->withInput()->with('message', 'Your account has not been activated.');
         } elseif ($user->status == 2) {
             \Auth::logout();
-            return redirect()->to('login')->withInput()->with('message', 'Your account has been suspended.');
+            return redirect()->to('admin')->withInput()->with('message', 'Your account has been suspended.');
         } elseif ($user->status == 3) {
             \Auth::logout();
-            return redirect()->to('login')->withInput()->with('message', 'Your account has been permanently blocked.');
+            return redirect()->to('admin')->withInput()->with('message', 'Your account has been permanently blocked.');
         }
+
+        if ($user->is_active == 0) {
+            \Auth::logout();
+            return redirect()->to('admin')->withInput()->with('message', 'Your account has been deactivated. Please contact your system admin.');
+        }
+
         return redirect('dashboard');
     }
 
@@ -182,8 +187,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->orderBy('users.user_id', 'desc')
             ->simplePaginate(15);
 
-
         return $users;
+    }
+
+    public function getProfile($user_id)
+    {
+        $user = DB::table('users')
+            ->select('users.*')
+            ->where('users.id', $user_id)
+            ->first();
+
+        $user->profile = new \stdClass();
+        $user->profile->first_name = $user->given_name;
+        $user->profile->last_name = $user->surname;
+        return $user;
     }
 
 

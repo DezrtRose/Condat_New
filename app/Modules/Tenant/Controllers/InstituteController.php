@@ -20,6 +20,7 @@ class InstituteController extends BaseController
         'name' => 'required|min:2|max:155',
         'short_name' => 'required|min:2|max:55',
         'number' => 'required',
+        'invoice_to_name' => 'required',
         'website' => 'required|min:2|max:155'
     ];
 
@@ -40,7 +41,12 @@ class InstituteController extends BaseController
      */
     public function index()
     {
-        return view("Tenant::Institute/index");
+        $data['institutes'] = Institute::leftJoin('companies', 'institutes.company_id', '=', 'companies.company_id')
+            ->leftJoin('phones', 'phones.phone_id', '=', 'companies.phone_id')
+            ->select(['institutes.institution_id', 'institutes.short_name', 'institutes.added_by', 'institutes.created_at', 'companies.name', 'companies.phone_id', 'companies.website', 'companies.invoice_to_name', 'phones.number'])
+            ->orderBy('institution_id', 'desc')
+            ->get();
+        return view("Tenant::Institute/index", $data);
     }
 
     /**
@@ -53,7 +59,7 @@ class InstituteController extends BaseController
         $institutes = Institute::leftJoin('companies', 'institutes.company_id', '=', 'companies.company_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'companies.phone_id')
             //->leftJoin('users', 'users.user_id', '=', 'institutes.added_by')
-            ->select(['institutes.institution_id', 'institutes.short_name', 'institutes.created_at', 'companies.name', 'companies.phone_id', 'companies.website', 'companies.invoice_to_name', 'phones.number'])
+            ->select(['institutes.institution_id', 'institutes.short_name', 'institutes.added_by', 'institutes.created_at', 'companies.name', 'companies.phone_id', 'companies.website', 'companies.invoice_to_name', 'phones.number'])
             ->orderBy('institution_id', 'desc');
 
         $datatable = \Datatables::of($institutes)

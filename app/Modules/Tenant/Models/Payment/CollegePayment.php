@@ -26,7 +26,7 @@ class CollegePayment extends Model
      *
      * @var array
      */
-    protected $fillable = ['course_application_id', 'amount', 'date_paid', 'payment_method', 'description', 'payment_type'];
+    protected $fillable = ['course_application_id', 'amount', 'date_paid', 'payment_method', 'description', 'payment_type', 'added_by'];
 
     /* Defining relationships */
     public function invoice()
@@ -45,7 +45,8 @@ class CollegePayment extends Model
                 'date_paid' => insert_dateformat($request['date_paid']),
                 'payment_method' => $request['payment_method'],
                 'payment_type' => $request['payment_type'],
-                'description' => $request['description']
+                'description' => $request['description'],
+                'added_by' => current_tenant_id()
             ]);
 
             DB::commit();
@@ -62,7 +63,7 @@ class CollegePayment extends Model
     {
         $payments = CollegePayment::where('course_application_id', $application_id)
             ->where('course_application_id', $application_id)
-            ->whereIn('payment_type', ['Agent to College', 'Student to College'])
+            ->whereIn('payment_type', ['Company to College / Super Agent', 'Client to College / Super Agent'])
             ->sum('amount');
         return $payments;
     }
@@ -71,7 +72,7 @@ class CollegePayment extends Model
     {
         $payments = CollegePayment::where('course_application_id', $application_id)
             ->where('course_application_id', $application_id)
-            ->where('payment_type', 'College to Agent')
+            ->where('payment_type', 'College / Super Agent to Company')
             ->sum('amount');
         return $payments;
     }
@@ -110,9 +111,35 @@ class CollegePayment extends Model
     function deleteInvoicePayment($invoice_id)
     {
         $college_invoice_payments = CollegeInvoicePayment::where('college_invoice_id', $invoice_id)->lists('ci_payment_id');
-        if(count($college_invoice_payments)) {
+        if (count($college_invoice_payments)) {
             CollegePayment::whereIn('college_payment_id', $college_invoice_payments)->delete();
-            $college_invoice_payments->delete();
+            CollegeInvoicePayment::where('college_invoice_id', $invoice_id)->delete();
+        }
+    }
+
+    function deleteInvoicePaymentLink($invoice_id)
+    {
+        $college_invoice_payments = CollegeInvoicePayment::where('college_invoice_id', $invoice_id)->lists('ci_payment_id');
+        if (count($college_invoice_payments)) {
+            CollegeInvoicePayment::where('college_invoice_id', $invoice_id)->delete();
+        }
+    }
+
+    function deletePayment($payment_id)
+    {
+
+        DB::beginTransaction();
+
+        try {
+            $payment = CollegePayment::find($payment_id);
+            $payment->delete();
+            CollegeInvoicePayment::where('ci_payment_id', $payment_id)->delete();
+            DB::commit();
+            return $payment->course_application_id;
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            // something went wrong
         }
     }
 }

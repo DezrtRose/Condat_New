@@ -66,7 +66,7 @@ class CollegeInvoice extends Model
                 $ci_commission = OtherCommission::create([
                     'amount' => $request['incentive'],
                     'gst' => $request['incentive_gst'],
-                    'description' => $request['description'],
+                    'description' => $request['other_description'],
                     'college_invoice_id' => $college_invoice->college_invoice_id
                 ]);
             }
@@ -147,7 +147,7 @@ class CollegeInvoice extends Model
             ->leftJoin('course_application', 'college_invoices.course_application_id', '=', 'course_application.course_application_id')
             ->leftjoin('institutes', 'course_application.institute_id', '=', 'institutes.institution_id')
             ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id')
-            ->select('college_invoices.*', 'college_invoices.college_invoice_id as invoice_id', 'ci_tuition_commissions.*', 'ci_other_commissions.amount as incentive', 'ci_other_commissions.gst as incentive_gst', 'ci_other_commissions.description as other_description', 'companies.invoice_to_name')
+            ->select('college_invoices.*', 'college_invoices.college_invoice_id as invoice_id', 'ci_tuition_commissions.*', 'institutes.institution_id', 'ci_tuition_commissions.commission_gst as tuition_fee_gst', 'ci_other_commissions.amount as incentive', 'ci_other_commissions.gst as incentive_gst', 'ci_other_commissions.description as other_description', 'companies.invoice_to_name', 'companies.name as company_name')
             ->find($invoice_id);
         return $college_invoice;
     }
@@ -214,7 +214,8 @@ class CollegeInvoice extends Model
     function getOutstandingAmount($invoice_id)
     {
         $paid = $this->getPaidAmount($invoice_id);
-        $final_total = CollegeInvoice::find($invoice_id)->final_total;
+        $col_inv = CollegeInvoice::find($invoice_id);
+        $final_total = (!empty($col_inv))? $col_inv->final_total : 0;
         $outstanding = ($final_total - $paid > 0) ? $final_total - $paid : 0;
         return $outstanding;
     }
@@ -328,7 +329,7 @@ class CollegeInvoice extends Model
             ->groupBy('college_invoices.college_invoice_id');
 
         if ($status == 1) { // Pending
-            $invoices_query = $invoices_query->havingRaw('college_invoices.total_commission - IFNULL(SUM(college_payments.amount), 0) > 0'); //->where('college_invoices.invoice_date', '<=', get_today_datetime());
+            $invoices_query = $invoices_query->havingRaw('college_invoices.total_commission - IFNULL(SUM(college_payments.amount), 0) > 0')->where('college_invoices.invoice_date', '<=', get_today_datetime());
         } elseif ($status == 2) { // Paid
             $invoices_query = $invoices_query->havingRaw('college_invoices.total_commission - IFNULL(SUM(college_payments.amount), 0) <= 0');
         } elseif ($status == 3) { // Future
@@ -336,6 +337,60 @@ class CollegeInvoice extends Model
         }
 
         $invoices = $invoices_query->get();
+        //dd($invoices->toArray());
+        return $invoices;
+    }
+
+    function getRandomPendingInvoice()
+    {
+        $invoice = CollegeInvoice::leftjoin('college_invoice_payments', 'college_invoice_payments.college_invoice_id', '=', 'college_invoices.college_invoice_id')
+            ->leftjoin('college_payments', 'college_payments.college_payment_id', '=', 'college_invoice_payments.ci_payment_id')
+            ->leftJoin('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
+            ->leftjoin('courses', 'course_application.institution_course_id', '=', 'courses.course_id')
+            ->leftjoin('institute_courses', 'institute_courses.course_id', '=', 'courses.course_id')
+            ->leftjoin('institutes', 'institute_courses.institute_id', '=', 'institutes.institution_id')
+            ->leftjoin('companies', 'companies.company_id', '=', 'institutes.company_id')
+            ->leftjoin('clients', 'clients.client_id', '=', 'course_application.client_id')
+            ->leftjoin('persons', 'persons.person_id', '=', 'clients.person_id')
+            ->leftjoin('person_emails', 'persons.person_id', '=', 'person_emails.person_id')
+            ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
+            ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
+            ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
+            ->select(['college_invoices.college_invoice_id', 'companies.invoice_to_name',
+                DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'),
+                'email', 'phones.number', 'companies.name as institute_name', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), 'companies.name as institute_name', 'courses.name as course_name',
+                DB::raw('CASE WHEN (ISNULL(course_application.super_agent_id) OR course_application.super_agent_id = 0)
+                THEN (companies.invoice_to_name)
+                ELSE (SELECT comp.name FROM companies as comp JOIN agents as ag
+                    ON ag.company_id = comp.company_id
+                    WHERE ag.agent_id = course_application.super_agent_id)
+                END
+                AS invoice_to')])
+            ->groupBy('college_invoices.college_invoice_id')
+            ->havingRaw('college_invoices.total_commission - IFNULL(SUM(college_payments.amount), 0) > 0')
+            ->where('college_invoices.invoice_date', '<=', get_today_datetime())
+            ->inRandomOrder()
+            ->take(5)
+            ->get();
+
+        return $invoice;
+    }
+
+    function getInvoicesData($application_id, $future = false)
+    {
+        $invoices_query = CollegeInvoice::leftjoin('college_invoice_payments', 'college_invoice_payments.college_invoice_id', '=', 'college_invoices.college_invoice_id')
+            ->leftjoin('college_payments', 'college_payments.college_payment_id', '=', 'college_invoice_payments.ci_payment_id')
+            ->leftJoin('course_application', 'course_application.course_application_id', '=', 'college_invoices.course_application_id')
+            ->select(['college_invoices.college_invoice_id', 'college_invoices.final_total', 'college_invoices.college_invoice_id as invoice_id', 'college_invoices.final_total', 'college_invoices.total_gst', 'college_invoices.total_commission', 'college_invoices.invoice_date', DB::raw('IFNULL(SUM(college_payments.amount), 0) AS total_paid'), DB::raw('college_invoices.final_total - IFNULL(SUM(college_payments.amount), 0) AS outstanding_amount')])
+            ->where('course_application.course_application_id', $application_id)
+            ->orderBy('college_invoices.college_invoice_id', 'desc')
+            ->groupBy('college_invoices.college_invoice_id');
+
+        if ($future == true) // Future Invoice
+            $invoices_query = $invoices_query->where('invoice_date', '>=', Carbon::now());
+
+        $invoices = $invoices_query->get();
+
         //dd($invoices->toArray());
         return $invoices;
     }
@@ -445,19 +500,26 @@ class CollegeInvoice extends Model
         return $list;
     }
 
-    function deleteInvoice($college_invoice_id)
+    function deleteInvoice($college_invoice_id, $paymentDelete = false)
     {
         DB::beginTransaction();
 
         try {
             $invoice = CollegeInvoice::find($college_invoice_id);
             $course_application_id = $invoice->course_application_id;
-            $invoice->delete();
+            CollegeInvoice::where('college_invoice_id', $college_invoice_id)->delete();
             TuitionCommission::where('college_invoice_id', $college_invoice_id)->delete();
             OtherCommission::where('college_invoice_id', $college_invoice_id)->delete();
+            GroupCollegeInvoice::where('college_invoices_id', $college_invoice_id)->delete();
 
             $payments = new CollegePayment();
-            $payments->deleteInvoicePayment($college_invoice_id);
+            if ($paymentDelete == false) {
+                //deleting only the connections
+                $payments->deleteInvoicePaymentLink($college_invoice_id);
+            } else {
+                $payments->deleteInvoicePayment($college_invoice_id);
+            }
+
             DB::commit();
             return $course_application_id;
             // all good

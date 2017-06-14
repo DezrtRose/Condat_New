@@ -130,7 +130,7 @@ class SettingController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function updateBank()
+	public function updateBank($tenant_id)
 	{
 		$bank_rules = [
 			'number' => 'required',
@@ -143,7 +143,7 @@ class SettingController extends BaseController {
 		$all = $this->request->except('_token');
 		$this->setting->saveSetup('bank', @serialize($all));
 		Flash::success('Bank details has been updated successfully!');
-		return redirect()->route('tenant.bank.edit');
+		return redirect()->route('tenant.bank.edit', $tenant_id);
 	}
 
 	/**

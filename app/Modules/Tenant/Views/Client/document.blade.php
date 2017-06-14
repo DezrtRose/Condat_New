@@ -19,9 +19,6 @@
             The supported mime types for the documents are Images, Word, TXT, PDF and Excel files.
         </div>
     </div>
-    <div class="col-xs-12 mainContainer">
-        @include('flash::message')
-    </div>
 
     <div class="col-md-4 col-xs-12">
         <div class="box box-primary">
@@ -62,15 +59,6 @@
                 {!! Form::close() !!}
 
                 <div class="clearfix"></div>
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
             </div>
         </div>
     </div>

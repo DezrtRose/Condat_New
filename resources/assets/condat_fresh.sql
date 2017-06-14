@@ -362,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `client_notes` (
 CREATE TABLE IF NOT EXISTS `client_payments` (
   `client_payment_id` int(11) NOT NULL,
   `client_id` int(11) DEFAULT NULL,
-  `amount` decimal(10,0) DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
   `date_paid` datetime DEFAULT NULL,
   `payment_method` varchar(45) DEFAULT NULL,
   `description` mediumtext,
@@ -424,7 +424,7 @@ CREATE TABLE IF NOT EXISTS `college_invoice_payments` (
 
 CREATE TABLE IF NOT EXISTS `college_payments` (
   `college_payment_id` int(11) NOT NULL COMMENT 'to track the payment made to college or made by college',
-  `amount` decimal(10,0) DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
   `date_paid` datetime DEFAULT NULL,
   `payment_method` varchar(45) DEFAULT NULL,
   `description` mediumtext,
@@ -1103,7 +1103,6 @@ CREATE TABLE IF NOT EXISTS `institute_document` (
   `description` varchar(145) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Institution Documents';
 
-ALTER TABLE  `institute_document` CHANGE  `institute_document_id`  `institute_document_id` INT( 11 ) NOT NULL AUTO_INCREMENT ;
 
 -- --------------------------------------------------------
 
@@ -1454,7 +1453,7 @@ INSERT INTO `settings` (`id`, `name`, `value`, `created_at`, `updated_at`) VALUE
 (1, 'company', 'a:1:{s:12:"company_name";s:10:"Enter Company Name";}', '2016-03-23 22:42:20', '2016-03-23 22:42:20'),
 (2, 'domain', 'tenant', '2016-03-23 22:42:20', '2016-03-23 22:42:20'),
 (3, 'folder', 'hqFzcwYdO5', '2016-03-23 22:42:20', '2016-03-23 22:42:20'),
-(4, 'bank', 'a:4:{s:4:"name";s:18:"Common Wealth Bank";s:12:"account_name";s:13:"Jenish Maskey";s:6:"number";s:12:"0430 807 730";s:3:"bsb";s:7:"062 106";}', '2016-07-17 18:58:41', '2016-07-17 18:58:41');
+(4, 'bank', 'a:4:{s:4:"name";s:18:" ";s:12:"account_name";s:13:" ";s:6:"number";s:12:" ";s:3:" ";s:7:" ";}', '2016-07-17 18:58:41', '2016-07-17 18:58:41');
 
 -- --------------------------------------------------------
 
@@ -1743,9 +1742,10 @@ CREATE TABLE IF NOT EXISTS `user_levels` (
 --
 
 INSERT INTO `user_levels` (`user_level_id`, `name`, `description`, `value`) VALUES
-(1, 'staff', 'staff members of agency', 9),
-(2, 'accountant', 'accountant of agency', 3),
-(3, 'admin', 'adminstrator of all system', 12);
+(1, 'staff', 'staff members of agency', 8),
+(2, 'accountant', 'accountant of agency', 4),
+(3, 'admin', 'adminstrator of all system', 12),
+(4, 'Consultant', 'Consultant', 6);
 
 --
 -- Indexes for dumped tables
@@ -2073,6 +2073,7 @@ ALTER TABLE `institute_course_branch`
 -- Indexes for table `institute_document`
 --
 ALTER TABLE `institute_document`
+CHANGE `institute_document_id` `institute_document_id` INT(11) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`institute_document_id`);
 
 --

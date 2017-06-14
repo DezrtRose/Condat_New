@@ -82,7 +82,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                {!!Form::text('date_paid', null, array('class' => 'form-control date_paid_picker'))!!}
+                                {!!Form::text('date_paid', null, array('class' => 'form-control date_paid_picker', 'autocomplete' => 'off'))!!}
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                     <div class="form-group">
                         {!!Form::label('payment_type', 'Payment Type *', array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
-                            {!!Form::select('payment_type', ['College to Agent' => 'College to Agent', 'Pre Claimed Commission' => 'Pre Claimed Commission'], null, array('class' => 'form-control', 'id'=>'payment_type'))!!}
+                            {!!Form::select('payment_type', ['College / Super Agent to Company' => 'College / Super Agent to Company', 'Pre Claimed Commission' => 'Pre Claimed Commission'], null, array('class' => 'form-control', 'id'=>'payment_type'))!!}
                         </div>
                     </div>
                     <div class="form-group">

@@ -67,24 +67,26 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
+                    <tbody>
+                        @foreach($courses as $course)
+                            <tr>
+                                <td>{{ format_id($course->course_id, 'COU') }}</td>
+                                <td>{{ $course->name }}</td>
+                                <td>{{ $course->level }}</td>
+                                <td>{{ format_price($course->total_tuition_fee) }}</td>
+                                <td>{{ $course->commission_percent }}%</td>
+                                <td><a data-toggle="tooltip" title="View Course" class="btn btn-action-box" href ="{{ route('tenant.course.show', [$tenant_id, $course->course_id]) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit Course" class="btn btn-action-box" href ="{{ route('tenant.course.edit', [$tenant_id, $course->course_id]) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Course" class="delete-user btn btn-action-box" href="{{ route('tenant.course.destroy', [$tenant_id, $course->course_id]) }}"><i class="fa fa-trash"></i></a></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            oTable = $('#courses').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": appUrl + "/courses/" + <?php echo $institution_id ?> +"/data",
-                "columns": [
-                    {data: 'course_id', name: 'course_id'},
-                    {data: 'name', name: 'name'},
-                    {data: 'level', name: 'level'},
-                    {data: 'total_tuition_fee', name: 'total_tuition_fee'},
-                    {data: 'commission_percent', name: 'commission_percent'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
+            $('#courses').DataTable({
+                "pageLength": 50,
                 order: [[0, 'desc']]
             });
         });

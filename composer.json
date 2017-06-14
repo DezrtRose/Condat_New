@@ -13,10 +13,13 @@
         "artem-schander/l5-modular": "dev-master",
         "yajra/laravel-datatables-oracle": "~6.0",
         "greggilbert/recaptcha": "dev-master",
-        "srmklive/paypal": "^1.3",
         "maatwebsite/excel": "~2.1.0",
         "barryvdh/laravel-dompdf": "^0.7.0",
-        "anouar/paypalpayment": "~1.0"
+        "zizaco/entrust": "5.2.x-dev",
+        "srmklive/paypal": "^1.3",
+        "anouar/paypalpayment": "~1.0",
+        "stripe/stripe-php": "3.*",
+        "genealabs/laravel-caffeine": "~0.3.0"
     },
     "require-dev": {
         "symfony/dom-crawler": "~3.0",

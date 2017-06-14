@@ -2,10 +2,16 @@
 $(function () {
     $("#invoice_date").datepicker({
         format: 'dd/mm/yyyy',
-        autoclose: true
+        autoclose: true,
+        todayHighlight: true
     });
 
     $("#due_date").datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true
+    });
+
+    $(".date-picker").datepicker({
         format: 'dd/mm/yyyy',
         autoclose: true
     });
@@ -161,4 +167,5 @@ $(function () {
         $('#final_total').val(final_total.toFixed(2));
         $('#payable_to_college').val(payable_to_college.toFixed(2));
     }
+    gst_change();
 });

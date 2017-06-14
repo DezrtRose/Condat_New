@@ -106,7 +106,8 @@ class SubAgentApplicationPayment extends Model
             'date_paid' => insert_dateformat($request['date_paid']),
             'payment_method' => $request['payment_method'],
             'payment_type' => $request['payment_type'],
-            'description' => $request['description']
+            'description' => $request['description'],
+            'added_by' => current_tenant_id()
         ]);
         return $payment;
     }
@@ -142,5 +143,15 @@ class SubAgentApplicationPayment extends Model
             DB::rollback();
             dd($e);
         }
+    }
+
+    function getAll($application_id)
+    {
+        $payments = SubAgentApplicationPayment::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'subagent_application_payments.client_payment_id')
+            ->leftJoin('payment_invoice_breakdowns', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+            ->where('course_application_id', $application_id)
+            ->select(['subagent_application_payments.subagent_payments_id', 'subagent_application_payments.course_application_id', 'payment_invoice_breakdowns.invoice_id', 'client_payments.*'])
+            ->get();
+        return $payments;
     }
 }

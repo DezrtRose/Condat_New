@@ -28,7 +28,7 @@ class AuthController extends BaseController {
 	{
 		$validator = Validator::make($request->all(), array('email' => 'required', 'password' => 'required'));
 		if ($validator->fails())
-			return redirect()->to('login')->withErrors($validator)->withInput();
+			return redirect()->to('admin')->withErrors($validator)->withInput();
 
 		$credentials = $request->only('email', 'password');
 		if ($this->auth->attempt($credentials, $request->has('remember'))) {
@@ -114,6 +114,7 @@ class AuthController extends BaseController {
 	{
 		$data['agencies'] = Agency::leftJoin('companies','agencies.agency_id','=','companies.agencies_agent_id')
 			->select('agency_id', 'companies.name')
+			->where('status', '!=', 0)
 			->get();
 		return view('Auth::agencies', $data);
 	}

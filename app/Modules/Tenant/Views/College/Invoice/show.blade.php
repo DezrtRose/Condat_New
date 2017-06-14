@@ -78,7 +78,7 @@
         </tr>
         </thead>
         <tbody>
-        @if($invoice->commission_amount && $invoice->commission_gst)
+        @if($invoice->commission_amount || $invoice->commission_gst)
         <tr>
             <td>{{ $client_name }}</td>
             <td>{{ $invoice->description }}</td>
@@ -86,7 +86,7 @@
             <td class="text-right">${{ float_format($invoice->commission_gst) }}</td>
         </tr>
         @endif
-        @if($invoice->incentive && $invoice->incentive_gst)
+        @if($invoice->incentive || $invoice->incentive_gst)
         <tr>
             <td>{{ $client_name }}</td>
             <td>{{ $invoice->other_description }}</td>
@@ -142,11 +142,11 @@
                     <h4>Bank details</h4>
                 </div>
                 <div class="panel-body">
-                    <p>{{ $bank['account_name'] }}</p>
+                    <p>{{ $bank['account_name'] or '' }}</p>
 
-                    <p><strong>BSB</strong> : {{ $bank['bsb'] }} | <strong>Account Number</strong> : {{ $bank['number'] }}</p>
+                    <p><strong>BSB</strong> : {{ $bank['bsb'] or '' }} | <strong>Account Number</strong> : {{ $bank['number'] or '' }}</p>
 
-                    <p>{{ $bank['name'] }}</p>
+                    <p>{{ $bank['name'] or '' }}</p>
                 </div>
             </div>
         </div>

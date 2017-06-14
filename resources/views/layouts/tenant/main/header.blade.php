@@ -24,6 +24,27 @@
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+                <li class="dropdown notifications-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-warning">{{ count($alerts) }}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header"><i class="fa fa-warning text-yellow"></i> You have {{ count($alerts) }} alerts.</li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+
+                            <ul class="menu normal-wrap">
+                                @foreach($alerts as $key => $alert)
+                                <li>
+                                    {!! $alert !!}
+                                </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                        {{--<li class="footer"><a href="#">View all</a></li>--}}
+                    </ul>
+                </li>
                 <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                         <i class="fa fa-flag-o"></i>
@@ -42,8 +63,11 @@
                                             <a href="{{route('tenant.client.show', [$tenant_id, $reminder->client_id])}}">
                                                 <h3>
                                                     <input type="checkbox" class="icheck com-reminder" id="{{ $reminder->notes_id }}" />
-                                                    {{$reminder->first_name . ' ' . $reminder->last_name}} - {{ trim(substr($reminder->description, 0, 20)) }}@if(strlen($reminder->description) > 20) {{'...'}}@endif
-                                                    <small class="pull-right">{{ format_date($reminder->reminder_date) }}</small>
+                                                    <span data-toggle="tooltip" data-placement="bottom" title="{{$reminder->description}}">{{ trim(substr($reminder->description, 0, 40)) }}@if(strlen($reminder->description) > 40) {{'...'}}@endif</span>
+                                                    <span class="col-md-12">
+                                                        <span class="col-md-6"><small>{{$reminder->first_name . ' ' . $reminder->last_name}}</small></span>
+                                                        <span class="col-md-6 text-right"><small>{{ format_date($reminder->reminder_date) }}</small></span>
+                                                    </span>
                                                 </h3>
                                             </a>
                                         </li>
@@ -75,7 +99,7 @@
                                 <small>Member since {{shorten_date($current_user->created_at)}}</small>
                                 <small>User ID {{format_id($current_user->user_id, 'U')}}</small>
                                 <small>{{ $current_user->role_type }}</small> {{--fix this later--}}
-                                <small>{{ $company['company_name'] }}</small>
+                                <small>{{ $company['company_name'] or '' }}</small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
@@ -84,7 +108,7 @@
                                 <a href="{{route('tenant.user.edit', [$tenant_id, $current_user->user_id])}}" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{url('logout')}}" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="{{route('tenant.logout', $tenant_id)}}" class="btn btn-default btn-flat">Sign out</a>
                             </div>
                         </li>
                     </ul>

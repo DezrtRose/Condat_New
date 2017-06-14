@@ -15,8 +15,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => '',
-        'secret' => '',
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
     ],
 
     'mandrill' => [
@@ -30,9 +30,9 @@ return [
     ],
 
     'stripe' => [
-        'model'  => App\User::class,
-        'key'    => '',
-        'secret' => '',
+        'model'  => \App\Modules\Tenant\Models\User::class,
+        'key'    => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
     ],
 
 ];

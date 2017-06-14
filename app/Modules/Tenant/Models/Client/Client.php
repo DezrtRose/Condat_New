@@ -164,7 +164,7 @@ class Client extends Model
             $person_email = PersonEmail::firstOrCreate(['person_id' => $client->person_id]);
 
             //for when not saved, remove this when no old records
-            if($person_email->email_id != 0) {
+            if ($person_email->email_id != 0) {
                 $email = Email::find($person_email->email_id);
                 $email->email = $request['email'];
                 $email->save();
@@ -282,10 +282,10 @@ class Client extends Model
             $header = str_replace(array_keys($param), array_values($param), $template->header);
             $body = str_replace(array_keys($param), array_values($param), $template->body);
             $footer = str_replace(array_keys($param), array_values($param), $template->footer);
-            $add_class = ($template->body == null && $template->footer == null)? ' no-border' : '';
-            $message = '<h3 class="timeline-header'.$add_class.'">'.$header.'</h3>';
-            $message .= ($template->body != null)? '<div class="timeline-body">'.$body.'</div>' : '';
-            $message .= ($template->footer != null) ? '<div class="timeline-footer">'.$footer.'</div>' : '';
+            $add_class = ($template->body == null && $template->footer == null) ? ' no-border' : '';
+            $message = '<h3 class="timeline-header' . $add_class . '">' . $header . '</h3>';
+            $message .= ($template->body != null) ? '<div class="timeline-body">' . $body . '</div>' : '';
+            $message .= ($template->footer != null) ? '<div class="timeline-footer">' . $footer . '</div>' : '';
         }
         return $message;
     }
@@ -296,7 +296,7 @@ class Client extends Model
             ->leftJoin('person_emails', 'person_emails.person_id', '=', 'persons.person_id')
             ->leftJoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->find($client_id);
-        return !empty($email)? $email->email : '';
+        return !empty($email) ? $email->email : '';
     }
 
     function uploadImage($client_id, $file, array $request)
@@ -319,7 +319,8 @@ class Client extends Model
             return $photo->photo_id;
         } catch (Exception $e) {
             File::delete(tenant()->folder('customer')->path($file['fileName']));
-            DB::rollback(); dd($e);
+            DB::rollback();
+            dd($e);
             return false;
         }
 
@@ -328,9 +329,99 @@ class Client extends Model
     function getClientNameList()
     {
         $list = Client::join('persons', 'persons.person_id', '=', 'clients.person_id')
-                ->select('client_id', DB::raw('CONCAT(persons.first_Name, " ", persons.last_Name) AS full_name'))
-                ->orderBy('full_name', 'asc')
-                ->lists('full_name', 'client_id');
+            ->select('client_id', DB::raw('CONCAT(persons.first_Name, " ", persons.last_Name) AS full_name'))
+            ->orderBy('full_name', 'asc')
+            ->lists('full_name', 'client_id');
         return $list;
+    }
+
+    function getList()
+    {
+        $clients = Client::leftJoin('persons', 'clients.person_id', '=', 'persons.person_id')
+            ->leftJoin('person_emails', 'person_emails.person_id', '=', 'persons.person_id')
+            ->leftJoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
+            ->leftJoin('person_addresses', 'person_addresses.person_id', '=', 'persons.person_id')
+            ->leftJoin('addresses', 'addresses.address_id', '=', 'person_addresses.address_id')
+            ->join('users', 'clients.added_by', '=', 'users.user_id')
+            ->join('persons as user_profile', 'user_profile.person_id', '=', 'users.person_id')
+            ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
+            ->leftJoin('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
+            ->leftJoin('active_clients', function ($q) {
+                $q->on('active_clients.client_id', '=', 'clients.client_id');
+                $q->where('active_clients.user_id', '=', current_tenant_id());
+            })
+            ->select(['clients.client_id', 'clients.added_by', 'clients.added_by', 'clients.referred_by', 'emails.email', 'phones.number', 'clients.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), DB::raw('CONCAT(user_profile.first_name, " ", user_profile.last_name) AS added_by'), 'active_clients.id as active_id', 'addresses.country_id'])
+            ->get();
+        return $clients;
+    }
+
+
+    /*
+     * Import client info
+     * Output client id
+     */
+    function import(array $request)
+    {
+        // Saving client profile
+        $person = Person::create([
+            'first_name' => $request['first_name'],
+            'middle_name' => ($request['middle_name'] == null) ? '' : $request['middle_name'],
+            'last_name' => $request['last_name'],
+            'dob' => ($request['dob'] == null) ? '' : insert_dateformat($request['dob']),
+            'sex' => ($request['sex'] == null) ? 'Male' : $request['sex'],
+            'passport_no' => ($request['passport_no'] == null) ? '' : $request['passport_no']
+        ]);
+
+        /*$user = User::create([
+            'email' => $request['email'],
+            'role' => 0, // 0 : client, 1 : admin, 2 : super-admin
+            'status' => 0, // Pending
+            'person_id' => $person->person_id, // pending
+        ]);*/
+
+        $email = Email::create([
+            'email' => ($request['email'] == null) ? '' : $request['email']
+        ]);
+
+        PersonEmail::create([
+            'person_id' => $person->person_id,
+            'email_id' => $email->email_id,
+            'is_primary' => 1
+        ]);
+
+        $client = Client::create([
+            //'user_id' => $user->user_id,
+            'person_id' => $person->person_id,
+            'added_by' => current_tenant_id(),
+            'referred_by' => ($request['referred_by'] == null) ? '' : $request['referred_by'],
+            'description' => ($request['description'] == null) ? '' : $request['description'],
+        ]);
+
+        // Add address
+        $address = Address::create([
+            'street' => ($request['street'] == null) ? '' : $request['street'],
+            'suburb' => ($request['suburb'] == null) ? '' : $request['suburb'],
+            'postcode' => ($request['postcode'] == null) ? '' : $request['postcode'],
+            'state' => ($request['state'] == null) ? '' : $request['state'],
+            'country_id' => ($request['country'] == null) ? '263' : get_country_id($request['country']),
+        ]);
+
+        PersonAddress::create([
+            'address_id' => $address->address_id,
+            'person_id' => $person->person_id,
+            'is_current' => 1
+        ]);
+
+        // Add Phone Number
+        $phone = new Phone();
+        $number = ($request['phone'] == null) ? '' : $request['phone'];
+        $phone_id = $phone->add($number);
+        PersonPhone::create([
+            'phone_id' => $phone_id,
+            'person_id' => $person->person_id,
+            'is_primary' => 1
+        ]);
+
+        return $client->client_id;
     }
 }

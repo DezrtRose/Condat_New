@@ -10,10 +10,11 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">All Institutions</h3>
-                <a href="{{route('tenant.institute.create', $tenant_id)}}" class="btn btn-primary btn-flat pull-right">Add New Institute</a>
+                <a href="{{route('tenant.institute.create', $tenant_id)}}" class="btn btn-primary btn-flat pull-right">Add
+                    New Institute</a>
             </div>
             <div class="search">
-                
+
             </div>
 
             <div class="box-body">
@@ -22,33 +23,44 @@
                     <tr>
                         <th>Institute ID</th>
                         <th>Institute Name</th>
-                        <th>Short Name</th> 
+                        <th>Short Name</th>
                         <th>Phone</th>
-                        <th>Website</th>    
+                        <th>Website</th>
                         <th>Created By</th>
                         <th>Actions</th>
-                        
                     </tr>
                     </thead>
+                    <tbody>
+                    @foreach($institutes as $institute)
+                        <tr>
+                            <td>{{ format_id($institute->institution_id, 'I') }}</td>
+                            <td>{{ $institute->name }}</td>
+                            <td>{{ $institute->short_name }}</td>
+                            <td>{{ $institute->number }}</td>
+                            <td><a href="{{ $institute->website }}" target="_blank">{{ $institute->website }}</a></td>
+                            <td>{{ get_tenant_name($institute->added_by) }}</td>
+                            <td><a data-toggle="tooltip" title="View Institute" class="btn btn-action-box"
+                                   href="{{ route('tenant.institute.show', [$tenant_id, $institute->institution_id]) }}"><i
+                                            class="fa fa-eye"></i></a> <a data-toggle="tooltip"
+                                                                          title="Institute Documents"
+                                                                          class="btn btn-action-box"
+                                                                          href="{{ route('tenant.institute.document', [$tenant_id, $institute->institution_id]) }}"><i
+                                            class="fa fa-file"></i></a> <a data-toggle="tooltip"
+                                                                           title="Edit Institute"
+                                                                           class="btn btn-action-box"
+                                                                           href="{{ route('tenant.institute.edit', [$tenant_id, $institute->institution_id]) }}"><i
+                                            class="fa fa-edit"></i></a></td>
+                        </tr>
+                    @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            oTable = $('#institutes').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": appUrl + "/institutes/data",
-                "columns": [
-                    {data: 'institution_id', name: 'institution_id'},
-                    {data: 'name', name: 'name'},
-                    {data: 'short_name', name: 'short_name'},  
-                    {data: 'number', name: 'number'},
-                    {data: 'website', name: 'website'},
-                    {data: 'added_by', name: 'added_by'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
+            $('#institutes').DataTable({
+                "pageLength": 50,
                 order: [[0, 'desc']]
             });
         });

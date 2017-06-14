@@ -98,14 +98,14 @@ class StudentInvoice extends Model
     {
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->where('student_invoices.application_id', $application_id)
-            ->select('invoices.invoice_id', 'invoices.amount')
+            ->select('invoices.invoice_id', 'invoices.invoice_amount')
             ->orderBy('created_at', 'desc')
             ->get();
         //->lists('invoice_details', 'invoices.invoice_id');
         $invoice_list = array();
         foreach ($invoices as $key => $invoice) {
             $formatted_id = format_id($invoice->invoice_id, 'SI');
-            $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->amount;
+            $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->invoice_amount;
         }
         return $invoice_list;
     }
@@ -114,14 +114,14 @@ class StudentInvoice extends Model
     {
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->where('student_invoices.client_id', $client_id)
-            ->select('invoices.invoice_id', 'invoices.amount')
+            ->select('invoices.invoice_id', 'invoices.invoice_amount')
             ->orderBy('created_at', 'desc')
             ->get();
         //->lists('invoice_details', 'invoices.invoice_id');
         $invoice_list = array();
         foreach ($invoices as $key => $invoice) {
             $formatted_id = format_id($invoice->invoice_id, 'I');
-            $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->amount;
+            $invoice_list[$invoice->invoice_id] = $formatted_id . ', $' . $invoice->invoice_amount;
         }
         return $invoice_list;
     }
@@ -137,7 +137,7 @@ class StudentInvoice extends Model
             ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
-            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'emails.email', 'phones.number', 'invoices.invoice_amount', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date',
+            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'emails.email', 'phones.number', 'invoices.invoice_amount', 'invoices.discount', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date',
                 DB::raw('SUM(client_payments.amount) AS total_paid')
             ])
             ->orderBy('invoices.invoice_id', 'desc')
@@ -155,6 +155,29 @@ class StudentInvoice extends Model
         return $invoices;
     }
 
+    function getRandomPendingInvoice()
+    {
+        $invoice = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
+            ->leftjoin('payment_invoice_breakdowns', 'payment_invoice_breakdowns.invoice_id', '=', 'invoices.invoice_id')
+            ->leftjoin('client_payments', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+            ->leftjoin('clients', 'clients.client_id', '=', 'student_invoices.client_id')
+            ->leftjoin('persons', 'persons.person_id', '=', 'clients.person_id')
+            ->leftjoin('person_emails', 'persons.person_id', '=', 'person_emails.person_id')
+            ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
+            ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
+            ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
+            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'emails.email', 'phones.number', 'invoices.invoice_amount', 'invoices.description', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date',
+                DB::raw('SUM(client_payments.amount) AS total_paid')
+            ])
+            ->groupBy('invoices.invoice_id')
+            ->havingRaw('invoices.final_total - IFNULL(SUM(client_payments.amount), 0) > 0')
+            ->where('invoices.due_date', '<', get_today_datetime())
+            ->inRandomOrder()
+            ->take(5)
+            ->get();
+        return $invoice;
+    }
+
     function getFilterResults(array $request)
     {
         $invoices_query = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
@@ -167,7 +190,7 @@ class StudentInvoice extends Model
             ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
             ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
             ->leftjoin('course_application', 'course_application.course_application_id', '=', 'student_invoices.application_id')
-            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'invoices.invoice_amount', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date', DB::raw('SUM(client_payments.amount) AS total_paid')])
+            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'email', 'phones.number', 'invoices.invoice_amount', 'invoices.discount', 'student_invoices.student_invoice_id', 'invoices.final_total', 'invoices.invoice_id', 'invoices.total_gst', 'invoices.invoice_date', DB::raw('SUM(client_payments.amount) AS total_paid')])
             ->orderBy('invoices.created_at', 'desc')
             ->groupBy('invoices.invoice_id');
 
@@ -334,5 +357,19 @@ class StudentInvoice extends Model
             // something went wrong
         }
 
+    }
+
+
+    function getStudentDetails($invoice_id)
+    {
+        $invoice = StudentInvoice::leftjoin('clients', 'clients.client_id', '=', 'student_invoices.client_id')
+            ->leftjoin('persons', 'persons.person_id', '=', 'clients.person_id')
+            ->leftjoin('person_emails', 'persons.person_id', '=', 'person_emails.person_id')
+            ->leftjoin('emails', 'emails.email_id', '=', 'person_emails.email_id')
+            ->leftjoin('person_phones', 'persons.person_id', '=', 'person_phones.person_id')
+            ->leftjoin('phones', 'person_phones.phone_id', '=', 'phones.phone_id')
+            ->select([DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'emails.email', 'phones.number'])
+            ->find($invoice_id);
+        return $invoice;
     }
 }

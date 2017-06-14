@@ -19,24 +19,31 @@
                 <div class="form-group">
                     {!!Form::label('num', 'Number Of Invoices', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
-                        {!!Form::number('num', null, array('class' => 'form-control', 'id'=>'num', 'min'=>1))!!}
+                        {!!Form::select('num', [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10], 1, array('class' => 'form-control input-xs', 'id' => 'num'))!!}
+                        {{--{!!Form::number('num', null, array('class' => 'form-control', 'id'=>'num', 'min'=>1))!!}--}}
                     </div>
                 </div>
                 <div class="form-group">
-                    {!!Form::label('duration', 'Duration', array('class' => 'col-sm-4 control-label')) !!}
+                    {!!Form::label('duration', 'Duration (Months)', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
-                        {!!Form::number('duration', null, array('class' => 'form-control input-xs', 'id' => 'duration', 'placeholder' => 'Months'))!!}
+                        {{--{!!Form::number('duration', null, array('class' => 'form-control input-xs', 'id' => 'duration', 'placeholder' => 'Months'))!!}--}}
+                        {!!Form::select('duration', [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17, 18 => 18, 19 => 19, 20 => 20, 21 => 21, 22 => 22, 23 => 23, 24 => 24], 1, array('class' => 'form-control input-xs', 'id' => 'duration'))!!}
                     </div>
                 </div>
-                <div class="form-group">
-                    {!!Form::label('start_date', 'Start Date', array('class' => 'col-sm-4 control-label')) !!}
+                <div class="form-group @if($errors->has('start_date')) {{'has-error'}} @endif">
+                    {!!Form::label('start_date', 'Start Date *', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
                         <div class="input-group" id="start_date">
-                            {!!Form::text('start_date', null, array('class' => 'form-control date-picker'))!!}
+                            {!!Form::text('start_date', null, array('class' => 'form-control date-picker', 'autocomplete' => 'off'))!!}
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
                         </div>
+
+                        @if($errors->has('start_date'))
+                            {!! $errors->first('start_date', '<label class="control-label"
+                                                                     for="inputError">:message</label>') !!}
+                        @endif
                     </div>
                 </div>
             </div>
@@ -56,7 +63,7 @@
                     <div class="panel-body">
                         <div class="col-sm-6">
 
-                            <div class="form-group @if($errors->has('invoice_amount')) {{'has-error'}} @endif">
+                            <div class="form-group @if($errors->has('tuition_fee')) {{'has-error'}} @endif">
                                 {!!Form::label('tuition_fee', 'Tuition Fee *', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
                                     <div class="input-group">
@@ -146,7 +153,7 @@
                             <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
                                 {!!Form::label('description', 'Description *', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
-                                    {!!Form::text('description', isset($invoice) ? null : 'Commission on tuition Fee', array('class' => 'form-control', 'id'=>'description'))!!}
+                                    {!!Form::text('description', null, array('class' => 'form-control', 'id'=>'description'))!!}
                                     @if($errors->has('description'))
                                         {!! $errors->first('description', '<label class="control-label"
                                                                                 for="inputError">:message</label>') !!}
@@ -189,7 +196,7 @@
                                         <span class="input-group-addon">$</span>
                                         {!!Form::text('tuition_fee_gst', null, array('class' => 'form-control', 'id'=>'tuition_fee_gst','placeholder'=>'10% of Commission Amount','readonly' => 'true'))!!}
                                         <span class="input-group-addon">
-                               {{ Form::checkbox('gst_checker_tuition_fee', 'incentive', true,array('id'=>'gst_checker_tuition_fee')) }}
+                                        {{ Form::checkbox('gst_checker_tuition_fee', 'incentive', true, array('id'=>'gst_checker_tuition_fee')) }}
                                             GST
                             </span>
                                     </div>
@@ -266,7 +273,7 @@
                     <div class="panel-body">
                         <div class="col-sm-6">
                             <div class="form-group @if($errors->has('total_commission')) {{'has-error'}} @endif">
-                                {!!Form::label('total_commission', 'Total Amount *', array('class' => 'col-sm-4 control-label')) !!}
+                                {!!Form::label('total_commission', 'Sub Total *', array('class' => 'col-sm-4 control-label')) !!}
                                 <div class="col-sm-8">
                                     <div class="input-group">
                                         <span class="input-group-addon">$</span>
@@ -326,7 +333,8 @@
                 </div>
             </div>
             <div class="box-footer">
-                <button type="reset" class="btn btn-danger pull-left">Reset</button>
+                <a href="{{ route('tenant.application.college', [$tenant_id, $invoice->course_application_id]) }}" class="btn btn-danger pull-left">Cancel</a>
+                {{--<button type="reset" class="btn btn-danger pull-left">Cancel</button>--}}
                 <button type="submit" class="btn btn-success btn-sub pull-right">Submit</button>
             </div>
         </div>

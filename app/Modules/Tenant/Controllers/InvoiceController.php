@@ -46,10 +46,16 @@ class InvoiceController extends BaseController
      */
     function postAssign($tenant_id, $payment_id)
     {
+        $rules = ['invoice_id' => 'required'];
+        $validator = \Validator::make($this->request->all(), $rules);
+        if ($validator->fails())
+            return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
+
         $assigned = $this->payment_invoice->assign($this->request->all(), $payment_id);
         if ($assigned) {
             \Flash::success('Payment assigned to invoice successfully!');
-            return redirect()->back();
+            return $this->success();
+            //return redirect()->back();
         }
     }
 
@@ -58,16 +64,22 @@ class InvoiceController extends BaseController
      */
     function postCollegeAssign($tenant_id, $payment_id)
     {
+        $rules = ['invoice_id' => 'required'];
+        $validator = \Validator::make($this->request->all(), $rules);
+        if ($validator->fails())
+            return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
+
         $assigned = $this->college_payment->assign($this->request->all(), $payment_id);
         if ($assigned) {
             \Flash::success('Payment assigned to invoice successfully!');
-            return redirect()->back();
+            return $this->success();
+            //return redirect()->back();
         }
     }
 
     function payments($tenant_id, $invoice_id, $type = 1)
     {
-        $data['invoice'] = $this->getInvoiceDetails($invoice_id, $type);
+        $data['invoice'] = $this->getInvoiceDetails($tenant_id, $invoice_id, $type);
         $data['invoice_id'] = $invoice_id;
         $data['type'] = $type;
         /* For Navbar */
@@ -97,7 +109,7 @@ class InvoiceController extends BaseController
         return $application_id;
     }
 
-    function getInvoiceDetails($invoice_id, $type)
+    function getInvoiceDetails($tenant_id, $invoice_id, $type)
     {
         switch ($type) {
             case 1:
@@ -109,10 +121,12 @@ class InvoiceController extends BaseController
                 $outstanding = $invoice->final_total - $invoice->paid;
                 $invoice->outstanding = ($outstanding > 0 )? $invoice->final_total - $invoice->paid : 0;
                 $invoice->status = ($outstanding > 0 )? 'Outstanding' : 'Paid';
+                $invoice->edit_link = route("tenant.college.editInvoice", [$tenant_id, $invoice->invoice_id]);
+                $invoice->payment_link = url($tenant_id."/invoices/" . $invoice->invoice_id . "/payment/add/1");
                 break;
             case 2:
                 $invoice = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-                    ->select(['student_invoice_id as invoice_id', 'student_invoices.application_id', 'student_invoices.client_id', 'invoice_date', 'invoice_amount as total_amount', 'total_gst', 'final_total'])
+                    ->select(['student_invoice_id as invoice_id', 'invoices.invoice_id as raw_invoice_id', 'student_invoices.application_id', 'student_invoices.client_id', 'invoice_date', 'invoice_amount as total_amount', 'total_gst', 'final_total'])
                     ->where('student_invoices.invoice_id', $invoice_id)
                     ->first();
                 $invoice->paid = $this->student_invoice->getPaidAmount($invoice_id);
@@ -121,11 +135,14 @@ class InvoiceController extends BaseController
                 $invoice->outstanding = ($outstanding > 0 )? $invoice->final_total - $invoice->paid : 0;
                 $invoice->status = ($outstanding > 0 )? 'Outstanding' : 'Paid';
 
-                $invoice->formatted_id = format_id($invoice->invoice_id, 'I');
+                $invoice->formatted_id = format_id($invoice->raw_invoice_id, 'I');
+                $invoice->edit_link = route("tenant.student.editInvoice", [$tenant_id, $invoice->invoice_id]);
+                $invoice->payment_link = url($tenant_id . '/invoices/' . $invoice->raw_invoice_id . '/payment/add/2');
                 break;
             default:
                 $invoice = SubAgentInvoice::where('invoice_id', $invoice_id)->select('*', 'course_application_id as application_id')->first();
                 $invoice->formatted_id = format_id($invoice->invoice_id, 'I');
+                $invoice->edit_link = route("tenant.subagents.editInvoice", [$tenant_id, $invoice->subagent_invoice_id]);
         }
         //dd($invoice->toArray());
         return $invoice;
@@ -195,7 +212,7 @@ class InvoiceController extends BaseController
             ->where('payment_invoice_breakdowns.invoice_id', $invoice_id)
             ->select(['student_application_payments.student_payments_id', 'client_payments.*', 'client_payments.client_payment_id as payment_id'])
             ->get();*/
-        $payments = PaymentInvoiceBreakdown::leftJoin('client_payments', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
+        $payments = PaymentInvoiceBreakdown::join('client_payments', 'client_payments.client_payment_id', '=', 'payment_invoice_breakdowns.payment_id')
             ->leftJoin('student_application_payments', 'client_payments.client_payment_id', '=', 'student_application_payments.client_payment_id')
             ->where('payment_invoice_breakdowns.invoice_id', $invoice_id)
             ->select(['student_application_payments.student_payments_id', 'client_payments.*', 'client_payments.client_payment_id as payment_id'])

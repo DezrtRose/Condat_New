@@ -44,11 +44,10 @@ function tenant_route($route, $param = array())
 function current_user()
 {
     $user = \Auth::user();
-    $user->isSuperAdmin = ($user->role == 1);
+    /*$user->isSuperAdmin = ($user->role == 1);
     $user->isAdmin = ($user->role == 2);
     $user->isSales = ($user->role == 3);
-    $user->isMarketer = ($user->role == 4);
-
+    $user->isMarketer = ($user->role == 4);*/
     return $user;
 }
 
@@ -274,6 +273,7 @@ function get_expiry_date($date = null, $years = null)
 function get_today_datetime()
 {
     $today = Carbon\Carbon::now();
+    //$today = Carbon\Carbon::now();
     return $today;
 }
 
@@ -298,9 +298,11 @@ function format_price($number = 0, $digits = 2)
  */
 function get_tenant_name($user_id = null)
 {
+    $original_user_id = $user_id;
     if($user_id == null || !$user_id)
         $user_id = current_tenant_id();
     $user = \App\Modules\Tenant\Models\User::find($user_id)->profile;
+        //if (!empty($user) && $original_user_id != 0)
         if (!empty($user))
             return $user->first_name . ' ' . $user->last_name;
         else
@@ -329,8 +331,15 @@ function get_agent_name($agent_id = null)
 
 function get_country($country_id)
 {
-    $applicant = \App\Modules\Tenant\Models\Country::find($country_id);
-    $name = (!empty($applicant)) ? $applicant->name : 'Undefined';
+    $country = \App\Modules\Tenant\Models\Country::find($country_id);
+    $name = (!empty($country)) ? $country->name : 'Undefined';
+    return $name;
+}
+
+function get_country_id($country)
+{
+    $country = \App\Modules\Tenant\Models\Country::where('name', $country)->first();
+    $name = (!empty($country)) ? $country->country_id : 263; //default australia
     return $name;
 }
 
@@ -384,3 +393,15 @@ function limit_char($x, $length = 200)
         return $y;
     }
 }
+
+function array_random($arr, $num = 1) {
+    shuffle($arr);
+    $r = array();
+    if(count($arr) < 5) $num = count($arr);
+    for ($i = 0; $i < $num; $i++) {
+        $r[] = $arr[$i];
+    }
+    return $r;
+    //return $num == 1 ? $r[0] : $r;
+}
+

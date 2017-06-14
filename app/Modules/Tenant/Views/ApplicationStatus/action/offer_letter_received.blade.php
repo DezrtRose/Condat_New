@@ -101,7 +101,7 @@
                 <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
                     {{ Form::label('description', 'Notes *', ['class'=>'col-md-3 form-label text-right'])}}
                     <div class="col-md-8">
-                        {{ Form::textarea('description', null, ['class'=>'form-control', 'rows'=>3])}}
+                        {{ Form::textarea('description', 'Offer Letter Received', ['class'=>'form-control', 'rows'=>3])}}
 
                         @if($errors->has('description'))
                             {!! $errors->first('description', '<label class="control-label"
@@ -144,7 +144,7 @@
                     .done(function (result) {
                         if (result.status == 1) {
                             var select = $('#intake');
-                            select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.name));
+                            select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.description));
                             select.val(result.data.intake_id);
 
                             if ($(".intake option[value='']").length != 0)

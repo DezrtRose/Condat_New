@@ -45,6 +45,7 @@ class SubAgentController extends BaseController
     {
         //$data['stats'] = $this->invoice->getStats($application_id);
         $data['application'] = $application = $this->application->getDetails($application_id);
+        $data['payments'] = $this->payment->getAll($application_id);
         //$data['invoice_array'] = $this->invoice->getList($application_id);
         $data['client'] = $this->client->getDetails($application->client_id);
         return view("Tenant::SubAgent/Account/index", $data);
@@ -141,7 +142,7 @@ class SubAgentController extends BaseController
                   <ul role="menu" class="dropdown-menu">
                     <li><a target="_blank" href="'.route('tenant.subagent.payments.receipt', [$tenant_id, $data->subagent_payments_id]).'">Print Receipt</a></li>
                     <li><a href="'.route("application.subagents.editPayment", [$tenant_id, $data->subagent_payments_id]).'">Edit</a></li>
-                    <li><a href="'.route('application.subagent.deletePayment', [$tenant_id, $data->client_payment_id]).'">Delete</a></li>
+                    <li><a href="'.route('application.subagent.deletePayment', [$tenant_id, $data->client_payment_id]).'" onclick="return confirm(\'Are you sure you want to delete the record?\')">Delete Payment</a></li>
                   </ul>
                 </div>';
             })
@@ -293,6 +294,12 @@ class SubAgentController extends BaseController
         $data['payment'] = $this->payment->getDetails($payment_id);
         $data['sub_agent_id'] = CourseApplication::find($data['payment']->course_application_id)->sub_agent_id;
 
+        $details = $this->getCompanyDetails();
+        if(!isset($details['abn'])){
+            Flash::error('Company details have not been stored yet. Please fill out the form and save it to proceed further.');
+            return redirect()->route('tenant.company.edit', $tenant_id);
+        }
+
         return view("Tenant::SubAgent/Payment/receipt", $data);
     }
 
@@ -301,6 +308,25 @@ class SubAgentController extends BaseController
         $this->payment->deletePayment($payment_id);
         Flash::success('Payment has been deleted successfully.');
         return redirect()->back();
+    }
+
+    function uploadInvoice($tenant_id, $payment_id)
+    {
+        $folder = 'document';
+        $file = $this->request->input('document');
+        $file = ($file == '') ? 'document' : $file;
+
+        if ($file_info = tenant()->folder($folder, true)->upload($file)) {
+            $document_id = $this->document->uploadDocument($application_id, $file_info, $this->request->all());
+            $document = Document::find($document_id);
+            $client_id = CourseApplication::find($application_id)->client_id;
+            $this->client->addLog($client_id, 3, ['{{NAME}}' => get_tenant_name(), '{{DESCRIPTION}}' => $document->description, '{{TYPE}}' => $document->type, '{{FILE_NAME}}' => $document->name, '{{VIEW_LINK}}' => $document->shelf_location, '{{DOWNLOAD_LINK}}' => route('tenant.application.document.download', [$tenant_id, $document_id])]);
+            \Flash::success('File uploaded successfully!');
+            return redirect()->route('tenant.application.document', [$tenant_id, $application_id]);
+        }
+
+        \Flash::danger('Uploaded file is not valid!');
+        return redirect()->route('tenant.application.subagents', $tenant_id);
     }
 
 }

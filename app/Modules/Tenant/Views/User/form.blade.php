@@ -51,9 +51,9 @@
                         <i class="fa fa-calendar"></i>
                     </div>
                     @if(isset($user->dob))
-                        {!!Form::text('dob', format_date($user->dob), array('class' => 'form-control', 'id'=>'dob'))!!}
+                        {!!Form::text('dob', format_date($user->dob), array('class' => 'form-control', 'id'=>'dob', 'autocomplete' => 'off'))!!}
                     @else
-                        {!!Form::text('dob', null, array('class' => 'form-control', 'id'=>'dob'))!!}
+                        {!!Form::text('dob', null, array('class' => 'form-control', 'id'=>'dob', 'autocomplete' => 'off'))!!}
                     @endif
                 </div>
                 @if($errors->has('dob'))

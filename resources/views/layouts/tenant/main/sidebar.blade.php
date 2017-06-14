@@ -3,7 +3,7 @@
 
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            @if($current_user->role != 2) {{-- Accountant --}}
+            @if($current_user->level_value > 4) {{-- Not Accountant --}}
             <li class="treeview">
                 <a href="{{url($tenant_id.'/users/dashboard')}}">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -19,6 +19,7 @@
                     <li><a href="{{url($tenant_id.'/clients')}}"><i class="fa fa-circle-o"></i> View All</a></li>
                     <li><a href="{{url($tenant_id.'/clients/create')}}"><i class="fa fa-circle-o"></i> Add</a></li>
                     {{--<li><a href="{{url($tenant_id.'/clients')}}"><i class="fa fa-circle-o"></i> Advanced Search</a></li>--}}
+                    <li><a href="{{url($tenant_id.'/import')}}"><i class="fa fa-circle-o"></i> Import</a></li>
                     <li><a href="{{url($tenant_id.'/client/due')}}"><i class="fa fa-circle-o"></i> Due Payments</a></li>
                 </ul>
             </li>
@@ -33,6 +34,7 @@
                 </ul>
             </li>
             @endif
+            @if($current_user->level_value != 6) {{-- Except Consultant--}}
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-money"></i>
@@ -45,7 +47,8 @@
                     <li><a href="{{url($tenant_id.'/college_invoice_report/invoice_grouped')}}"><i class="fa fa-circle-o"></i> Group Invoice</a></li>
                 </ul>
             </li>
-            @if($current_user->role != 2) {{-- Accountant --}}
+            @endif
+            @if($current_user->level_value > 4) {{-- Not Accountant --}}
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-building"></i>
@@ -91,11 +94,11 @@
                     <li><a href="{{url($tenant_id.'/agents/create')}}"><i class="fa fa-circle-o"></i> All Sent</a></li>
                 </ul>
             </li>--}}
-            @if($current_user->role_type != 'staff')
+            @if($current_user->level_value > 8) {{-- Only Admin --}}
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-users"></i>
-                    <span>Users</span>
+                    <span>Users </span>
                     <span class="label label-primary pull-right">{{get_total_count('TU')}}</span>
                 </a>
                 <ul class="treeview-menu">
@@ -103,8 +106,11 @@
                     <li><a href="{{url($tenant_id.'/user/create')}}"><i class="fa fa-circle-o"></i> Add</a></li>
                 </ul>
             </li>
-            @endif
-            @if($current_user->role_type != 'staff')
+            <li class="treeview">
+                <a href="{{url($tenant_id.'/email')}}">
+                    <i class="fa fa-envelope"></i> <span>Bulk Email</span>
+                </a>
+            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-gears"></i>

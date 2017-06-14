@@ -802,7 +802,4 @@ $(function () {
 
     'use strict';
 
-    $('.slimscroll').slimscroll({
-        allowPageScroll: true
-    });
 });

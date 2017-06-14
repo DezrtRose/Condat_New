@@ -39,6 +39,15 @@ class CourseController extends BaseController
      */
     public function index($tenant_id, $institution_id)
     {
+        $data['courses'] = InstituteCourse::join('courses', 'institute_courses.course_id', '=', 'courses.course_id')
+            ->leftJoin('course_fees', 'course_fees.course_id', '=', 'courses.course_id')
+            ->leftJoin('course_levels', 'course_levels.level_id', '=', 'courses.level_id')
+            ->leftJoin('fees', 'fees.fee_id', '=', 'course_fees.fees_id')
+            ->where('institute_courses.institute_id', $institution_id)
+            ->select(['institute_courses.description', 'courses.course_id', 'courses.name', 'course_levels.name as level', 'courses.commission_percent', 'fees.total_tuition_fee'])
+            ->orderBy('course_id', 'desc')
+            ->get();
+
         $data['institute'] = $this->institute->getDetails($institution_id);
         $data['institution_id'] = $institution_id;
         return view("Tenant::Course/index", $data);

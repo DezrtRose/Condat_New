@@ -1,9 +1,9 @@
-<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 <section class="margin-to-up margin-to-down">
 <nav class="nav-bar">
     <div class="nav-container">
       <ul class="nav-list">
-        <li><a id="tile1" href="#">College Invoices</a></li>
+        <li><a id="tile1" href="#">Institute Invoices</a></li>
         <li class="{{ Request::segment(3) == 'invoice_pending' ? 'active' : '' }}"><a id="tile2" href="{{ route('college.invoice.pending', $tenant_id) }}">Pending Invoices</a></li>
         
         <li class="{{ Request::segment(3) == 'invoice_paid' ? 'active' : '' }}"><a id="tile3" href="{{ route('college.invoice.paid', $tenant_id) }}">Paid Invoices</a></li>

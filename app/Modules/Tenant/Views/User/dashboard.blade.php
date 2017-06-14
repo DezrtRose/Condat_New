@@ -1,15 +1,17 @@
 @extends('layouts.tenant')
 @section('title', 'Dashboard')
 @section('content')
-    @if(intval($sub_diff) < 31)
-        <div class="col-md-12">
-            <div class="callout callout-warning">
-                <h4>Expiring Account!</h4>
 
-                <p>Your Account expires in {{$sub_diff}} days . Please renew your Subscription to continuously explore premium features. <a href="{{ route('tenant.subscription.renew', $tenant_id) }}"> Upgrade Now</a></p>
-            </div>
+    <div class="col-md-12">
+        @if(intval($sub_diff) < 31)
+        <div class="callout callout-warning">
+            <h4>Expiring Account!</h4>
+
+            <p>Your Account expires in {{$sub_diff}} days . Please renew your Subscription to continuously explore premium features. <a href="{{ route('tenant.subscription.renew', $tenant_id) }}"> Upgrade Now</a></p>
         </div>
-    @endif
+        @endif
+    </div>
+
     <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header with-border">
@@ -49,7 +51,7 @@
                         <tr>
                             <td>{{ $value->first_name }} {{ $value->middle_name }} {{ $value->last_name }} </td>
                             <td>{{ $value->number }}</td>
-                            <td>{{ $value->email }}</td>
+                            <td><a href="mailto:{{ $value->email }}">{{ $value->email }}</a></td>
 
                             <td>
                                 <div class="box-tools pull-left">
@@ -95,7 +97,7 @@
                         @foreach($app_stat as $key => $stat)
                             <li>
                                 <div data-applications="{{ $stat->total }}" class="bar"></div>
-                                <span>{{ $stat->name }}</span></li>
+                                <span><a href="{{ $stat->link }}" target="_blank">{{ $stat->name }}</a></span></li>
                         @endforeach
                     </ul>
                 </div>
@@ -143,6 +145,21 @@
     <script src="{{ URL::asset('/local/public/js/chart.js') }}"></script>
     <script type="text/javascript">
 
+        /* Randomized notification */
+        /*setTimeout( function() {
+            getNotifications();
+        }, '100000'); //100 seconds
+
+        function getNotifications() {
+            $.ajax({
+                url: appUrl + "/notification",
+                success: function (result) {
+                    $(".notification").html(result.data.notification);
+                }
+            })
+        }
+        getNotifications();*/
+
         /* Make clients inactive */
         $(document).on('click', '.inactive', function (event) {
             var clientId = $(this).attr('id');
@@ -166,4 +183,5 @@
             return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
         }
     </script>
+    {!! Condat::registerModal() !!}
 @stop

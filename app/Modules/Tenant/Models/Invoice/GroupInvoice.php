@@ -126,7 +126,7 @@ class GroupInvoice extends Model
         try {
             $invoices = $this->getInvoices($group_invoice_id);
             foreach ($invoices as $invoice) {
-                $outstanding = $invoice->total_commission - $invoice->total_paid;
+                $outstanding = $invoice->final_total - $invoice->total_paid;
                 if ($outstanding > 0) {
                     $payment = CollegePayment::create([
                         'course_application_id' => $invoice->course_application_id,

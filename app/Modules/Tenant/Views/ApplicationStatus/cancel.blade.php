@@ -27,7 +27,7 @@
                         <th>College Name</th>
                         <th>Course Name</th>
                         <th>Start date</th>
-                        <th>Invoice To</th>
+                        <th>Super Agent</th>
                         <th>Processing</th>
                     </tr>
                     </thead>
@@ -41,7 +41,7 @@
                             <td>{{ $application->company }}</td>
                             <td>{{ $application->name }}</td>
                             <td>{{ format_date($application->intake_date) }}</td>
-                            <td>{{ $application->invoice_to }}</td>
+                            <td>{{ get_agent_name($application->super_agent_id) }}</td>
                             <td>
                                 <a href="{{ route('tenant.application.show', [$tenant_id, $application->course_application_id])  }}" title="view"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
@@ -49,6 +49,11 @@
                                 <a href="{{ route('tenant.application.edit', [$tenant_id, $application->course_application_id]) }}" title="edit"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-edit"
                                             data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
+                                <a href="{{ route('applications.revert.application',[$tenant_id, $application->course_application_id])}}"
+                                   title="Revert Status" onclick="return confirm('Are you sure? The application status will be changed to Enquiry.')"><i
+                                            class="processing btn btn-primary btn-sm glyphicon glyphicon-refresh"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Revert Status"></i></a>
                             </td>
                         </tr>
                     @endforeach

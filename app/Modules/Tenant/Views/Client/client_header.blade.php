@@ -107,4 +107,6 @@
         </div>
     </div>
 
+    @include('flash::message')
+
 </div>

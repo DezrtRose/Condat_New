@@ -1,0 +1,76 @@
+/* Agency Filter CSS */
+.filtr-item {
+    padding: 1rem;
+}
+
+.item-desc, .item-position {
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 5px;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    color: white;
+    font-weight: 300;
+    display: block;
+    padding: 8px;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.item-position {
+    left: 1rem;
+    top: 1rem;
+    padding: 0.75rem 1.25rem;
+    right: auto;
+    bottom: auto;
+}
+
+/* Filter controls */
+.simplefilter li, .multifilter li, .sortandshuffle li {
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+}
+.simplefilter li {
+    background-color: #585858;
+}
+.simplefilter li.active {
+    background-color: #212121;
+}
+.multifilter li {
+    background-color: #4b9eff;
+}
+.multifilter li.active {
+    background-color: #2265b4;
+}
+
+/* Shuffle and sort controls */
+select {
+    padding: 1rem 1rem;
+    text-transform: uppercase;
+}
+.sortandshuffle .shuffle-btn {
+    background-color: #dec800;
+}
+.sortandshuffle .sort-btn {
+    background-color: #3c8dbc;
+}
+.sortandshuffle .sort-btn.active {
+    background-color: #357ca5;
+}
+
+/* Search control */
+.search-row {
+    margin-left: 2.5rem;
+}
+.filtr-search {
+    padding: 0.5rem;
+    text-transform: uppercase;
+}
+
+.round-bdr {
+    border-radius: 5px;
+}

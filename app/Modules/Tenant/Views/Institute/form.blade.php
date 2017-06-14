@@ -42,7 +42,7 @@
 
 
         <div class="form-group @if($errors->has('website')) {{'has-error'}} @endif">
-            {!!Form::label('website', 'Website', array('class' => 'col-sm-4 control-label')) !!}
+            {!!Form::label('website', 'Website *', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
                 {!!Form::text('website', null, array('class' => 'form-control', 'id'=>'website'))!!}
                 @if($errors->has('website'))
@@ -53,7 +53,7 @@
         </div>
 
         <div class="form-group @if($errors->has('invoice_to_name')) {{'has-error'}} @endif">
-            {!!Form::label('invoice_to_name', 'Invoice To', array('class' => 'col-sm-4 control-label')) !!}
+            {!!Form::label('invoice_to_name', 'Invoice To *', array('class' => 'col-sm-4 control-label')) !!}
             <div class="col-sm-8">
                 {!!Form::text('invoice_to_name', null, array('class' => 'form-control', 'id'=>'invoice_to_name'))!!}
                 @if($errors->has('invoice_to_name'))

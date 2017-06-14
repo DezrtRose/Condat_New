@@ -5,6 +5,7 @@ use App\Modules\Agency\Models\Agency;
 use App\Modules\Agency\Models\AgencySubscription;
 use App\Modules\Tenant\Models\Company\Company;
 use App\Modules\Agency\Models\Company as MasterCompany;
+use App\Modules\Tenant\Models\Invoice\CollegeInvoice;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
 use App\Modules\Tenant\Models\Notes;
 use App\Modules\Tenant\Models\Timeline\Timeline;
@@ -26,17 +27,18 @@ class UserController extends BaseController
         'first_name' => 'required|min:2|max:55',
         'last_name' => 'required|min:2|max:55',
         'middle_name' => 'min:2|max:55',
-        'dob' => 'required',
         'number' => 'required'
     ];
 
-    function __construct(User $user, ApplicationStatus $applicationStatus, Timeline $timeline, StudentInvoice $invoice, Notes $note, Request $request)
+    function __construct(User $user, ApplicationStatus $applicationStatus, Timeline $timeline, StudentInvoice $invoice, Notes $note, Request $request, StudentInvoice $studentInvoice, CollegeInvoice $collegeInvoice)
     {
         $this->user = $user;
         $this->applicationStatus = $applicationStatus;
         $this->timeline = $timeline;
         $this->invoice = $invoice;
         $this->note = $note;
+        $this->studentInvoice = $studentInvoice;
+        $this->collegeInvoice = $collegeInvoice;
         $this->request = $request;
         parent::__construct();
     }
@@ -56,6 +58,21 @@ class UserController extends BaseController
         //$data['sub_diff'] = Carbon::createFromFormat('Y-m-d', $agency_subscription->end_date)->diffInDays();
 
         $data['app_stat'] = $this->applicationStatus->getStats();
+
+        /* Links for application status */
+        $links = array();
+        $links[0] = route('applications.enquiry.index', $tenant_id);
+        $links[1] = route('applications.offer_letter_processing.index', $tenant_id);
+        $links[2] = route('applications.offer_letter_issued.index', $tenant_id);
+        $links[3] = route('applications.coe_processing.index', $tenant_id);
+        $links[4] = route('applications.coe_issued.index', $tenant_id);
+        $links[5] = route('applications.cancelled.index', $tenant_id);
+
+        for($record = 0; $record <= 4; $record++) {
+            $data['app_stat'][$record]['link'] = $links[$record];
+        }
+        //dd($data['app_stat']->toArray());
+
         for ($record = 1; $record <= 7; $record++) {
             $data['status'][$record] = $this->applicationStatus->statusRecord($record);
         }
@@ -63,7 +80,7 @@ class UserController extends BaseController
         return view("Tenant::User/dashboard", $data);
     }
 
-    public function getMoreTimeline()
+    public function getMoreTimeline($tenant_id)
     {
         $data = '';
         $page = $this->request['page'];
@@ -81,7 +98,7 @@ class UserController extends BaseController
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i> '.get_datetime_diff($timeline->created_at);
                 if(!isset($client)) {
-                    $data .= ' | <i class="fa fa-user"></i> '.get_client_name($timeline->client_id);
+                    $data .= ' | <a href="'.route('tenant.client.show', [$tenant_id, $timeline->client_id]).'"><i class="fa fa-user"></i> '.get_client_name($timeline->client_id).'</a>';
                 }
                 $data .= '</span>'.$timeline->message.'</div>
                 </li>';
@@ -97,6 +114,12 @@ class UserController extends BaseController
      */
     public function index($tenant_id)
     {
+        $data['users'] = User::join('persons', 'persons.person_id', '=', 'users.person_id')
+            ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
+            ->leftJoin('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
+            ->leftJoin('user_levels', 'users.role', '=', 'user_levels.user_level_id')
+            ->select(['users.user_id', 'persons.first_name', 'persons.last_name', 'users.email', 'phones.number', 'users.role', 'users.status', 'users.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), 'user_levels.name as user_role'])
+            ->get();
         $data['agency_subscription'] = AgencySubscription::where('agency_id', '=', $tenant_id)->where('is_current', '=', 1)->first()->subscription_id;
         return view("Tenant::User/index", $data);
     }
@@ -187,7 +210,7 @@ class UserController extends BaseController
             $agency = MasterCompany::where(['agencies_agent_id' => $tenant_id])->first();
             $complete_profile_url = url($tenant_id . '/login?&auth_code=' . md5($created));
             $client_message = <<<EOD
-<strong>Dear {$request['first_name']}, </srtong>
+<strong>Dear {$request['first_name']}, </strong>
 <p>Your account has been created for {$company['company_name']} Condat Solutions. Please <a href="$complete_profile_url">click here</a> or follow the link below to complete your account.</p>
 <a href="$complete_profile_url">$complete_profile_url</a>
 <p>
@@ -336,6 +359,103 @@ EOD;
         Flash::success('User status has been updated successfully.');
 
         return redirect()->route('tenant.user.index', $tenant_id);
+    }
+
+    public function enquiry($tenant_id)
+    {
+        $request = $this->request->all();
+        // sending mail to user
+        $agency = MasterCompany::where(['agencies_agent_id' => $tenant_id])->first();
+        $company = $this->getCompanyDetails();
+        $user = $this->current_user();
+        $client_message = <<<EOD
+<strong>Dear admin, </strong>
+<p>You've received an system support query. The details are listed below: </p>
+<strong>Company Name : </strong>{$company['company_name']}<br/>
+<strong>Agency ID : </strong>{$tenant_id}<br/>
+<strong>Name : </strong>{$user->full_name}<br/>
+<strong>Email : </strong>{$user->email}<br/>
+<strong>Subject : </strong>{$request['subject']}<br/>
+<strong>Message : </strong>{$request['message']}<br/>
+<p>
+Regards,<br>
+Condat Solutions
+</p>
+EOD;
+
+        $param = ['content' => $client_message,
+            'subject' => 'System Support Query',
+            'heading' => $company['company_name'],
+            'subheading' => 'All your business in one space',
+        ];
+        $data = ['to_email' => 'support@condat.com.au', //'krita.maharjan@gmail.com',
+            'to_name' => 'Condat Admin',
+            'subject' => 'System Support Query',
+            'from_email' => env('FROM_EMAIL', 'info@condat.com.au'),
+            'from_name' => $company['company_name'], //change this later
+        ];
+
+        Mail::send('template.master', $param, function ($message) use ($data) {
+            $message->to($data['to_email'], $data['to_name'])
+                ->subject($data['subject'])
+                ->from($data['from_email'], $data['from_name']);
+        });
+
+        return $this->success();
+    }
+
+    public function getNotification1($tenant_id)
+    {
+        $notification_arr = array();
+        //Student pending invoice
+        $studInvoice = $this->studentInvoice->getRandomPendingInvoice();
+        if(!empty($studInvoice)) {
+            $notification_arr[] = 'Student Invoice <strong>'. format_id($studInvoice->invoice_id, 'I') .'</strong> is still pending. Click <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $studInvoice->invoice_id . '/payment/add/2') . '">here</a> to add payment to the invoice.';
+        }
+        $collegeInvoice = $this->collegeInvoice->getRandomPendingInvoice();
+        if(!empty($collegeInvoice)) {
+            $notification_arr[] = 'College Invoice <strong>'. format_id($collegeInvoice->college_invoice_id, 'CI') .'</strong> is still pending. Click <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="'.url($tenant_id."/invoices/" . $collegeInvoice->college_invoice_id . "/payment/add/1") .'">here</a> to add payment to the invoice.';
+        }
+        if(!empty($notification_arr))
+            $notification = '<div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-warning"></i>Pending Invoice!</h4>
+
+                <p>'.$notification_arr[array_rand($notification_arr)].'</p>
+              </div>';
+        else
+            $notification = '';
+        return $this->success(['notification' => $notification]);
+    }
+
+    public function getNotification($tenant_id)
+    {
+        $notification_arr = array();
+        //Student pending invoice
+        $studInvoice = $this->studentInvoice->getRandomPendingInvoice();
+        if(!empty($studInvoice)) {
+            $notification_arr[] = 'Student Invoice <strong>'. format_id($studInvoice->invoice_id, 'I') .'</strong> is still pending. Click <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $studInvoice->invoice_id . '/payment/add/2') . '">here</a> to add payment to the invoice.';
+        }
+        $collegeInvoice = $this->collegeInvoice->getRandomPendingInvoice();
+        if(!empty($collegeInvoice)) {
+            $notification_arr[] = 'College Invoice <strong>'. format_id($collegeInvoice->college_invoice_id, 'CI') .'</strong> is still pending. Click <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="'.url($tenant_id."/invoices/" . $collegeInvoice->college_invoice_id . "/payment/add/1") .'">here</a> to add payment to the invoice.';
+        }
+        if(!empty($notification_arr)) {
+            $nots = array_rand($notification_arr, 5);
+            foreach($nots as $key => $not) {
+
+            }
+
+            $notification = '<div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-warning"></i>Pending Invoice!</h4>
+
+                <p>' . $notification_arr[array_rand($notification_arr)] . '</p>
+              </div>';
+        }
+        else
+            $notification = '';
+        return $this->success(['notification' => $notification]);
     }
 
 }

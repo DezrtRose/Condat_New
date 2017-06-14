@@ -41,7 +41,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    //'timezone' => 'UTC',
+    'timezone' => env('TIMEZONE', 'Australia/Sydney'),
 
     /*
     |--------------------------------------------------------------------------
@@ -175,6 +176,13 @@ return [
 
         /* Laravel Credit Card Payment */
         Anouar\Paypalpayment\PaypalpaymentServiceProvider::class,
+
+        /* User Role Access */
+        Zizaco\Entrust\EntrustServiceProvider::class,
+
+        /* To Keep Forms Awake */
+        GeneaLabs\LaravelCaffeine\LaravelCaffeineServiceProvider::class,
+
     ],
 
     /*
@@ -238,6 +246,8 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         /* Paypal Credit Card Payment */
         'PaypalPayment'   => Anouar\Paypalpayment\Facades\PaypalPayment::class,
+        /* User Access Permission */
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     ],
 
 ];

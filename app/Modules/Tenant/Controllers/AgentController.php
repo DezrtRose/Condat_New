@@ -34,7 +34,11 @@ class AgentController extends BaseController
      */
     public function index()
     {
-        return view("Tenant::Agent/index");
+        $data['agents'] = Agent::join('companies', 'companies.company_id', '=', 'agents.company_id')
+            ->leftJoin('phones', 'phones.phone_id', '=', 'companies.phone_id')
+            ->select(['companies.name', 'companies.website', 'agents.description', 'agents.agent_id', 'agents.email', 'agents.added_by', 'agents.created_at', 'phones.number'])
+            ->get();
+        return view("Tenant::Agent/index", $data);
     }
 
     /**
@@ -90,7 +94,7 @@ class AgentController extends BaseController
                 return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
             // if validates
             $agent_id = $this->agent->add($this->request->all());
-            return $this->success(['$gent_id' => $agent_id, 'name' => $this->request->get('name')]);
+            return $this->success(['agent_id' => $agent_id, 'name' => $this->request->get('name')]);
         } else {
             $this->validate($this->request, $this->rules);
             // if validates

@@ -17,6 +17,7 @@ use Flash;
 use Illuminate\Support\Facades\Validator;
 use Mail;
 use DB;
+use Excel;
 
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class ClientController extends BaseController
     protected $rules = [
         'first_name' => 'required|min:2|max:145',
         'last_name' => 'required|min:2|max:55',
-        'middle_name' => 'alpha|min:2|max:145',
+        'middle_name' => 'min:2|max:145',
         'number' => 'required'
     ];
 
@@ -53,7 +54,8 @@ class ClientController extends BaseController
      */
     public function index()
     {
-        return view("Tenant::Client/index");
+        $data['clients'] = $this->client->getList();
+        return view("Tenant::Client/index", $data);
     }
 
     /**
@@ -72,40 +74,50 @@ class ClientController extends BaseController
             ->join('persons as user_profile', 'user_profile.person_id', '=', 'users.person_id')
             ->leftJoin('person_phones', 'person_phones.person_id', '=', 'persons.person_id')
             ->leftJoin('phones', 'phones.phone_id', '=', 'person_phones.phone_id')
-            ->leftJoin('active_clients', function($q) {
+            ->leftJoin('countries', 'countries.country_id', '=', 'addresses.country_id')
+            ->leftJoin('active_clients', function ($q) {
                 $q->on('active_clients.client_id', '=', 'clients.client_id');
                 $q->where('active_clients.user_id', '=', current_tenant_id());
             })
-            ->select(['clients.client_id', 'clients.added_by', 'clients.added_by', 'emails.email', 'phones.number', 'clients.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), DB::raw('CONCAT(user_profile.first_name, " ", user_profile.last_name) AS added_by'), 'active_clients.id as active_id', 'addresses.country_id']);
+            ->select(['clients.client_id', 'clients.referred_by', 'emails.email', 'phones.number', 'clients.created_at', DB::raw('CONCAT(persons.first_name, " ", persons.last_name) AS fullname'), DB::raw('CONCAT(user_profile.first_name, " ", user_profile.last_name) AS added_by'), 'active_clients.id as active_id', 'countries.name as country']);
 
         $datatable = \Datatables::of($clients)
-            ->addColumn('action', function ($data) use($tenant_id) {
-               return '<a data-toggle="tooltip" title="View Client" class="btn btn-action-box" href ="'.route('tenant.client.show', [$tenant_id, $data->client_id]) .'"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Client Documents" class="btn btn-action-box" href ="'.route('tenant.client.document', [$tenant_id, $data->client_id]) .'"><i class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Client" class="btn btn-action-box" href ="'.route('tenant.client.edit', [$tenant_id, $data->client_id]) .'"><i class="fa fa-edit"></i></a>';
+            ->addColumn('action', function ($data) use ($tenant_id) {
+                return '<a data-toggle="tooltip" title="View Client" class="btn btn-action-box"
+                                   href="'. route('tenant.client.show', [$tenant_id, $data->client_id]) .'"><i
+                                            class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Client Documents"
+                                                                          class="btn btn-action-box"
+                                                                          href="'. route('tenant.client.document', [$tenant_id, $data->client_id]) .'"><i
+                                            class="fa fa-file"></i></a> <a data-toggle="tooltip" title="Edit Client"
+                                                                           class="btn btn-action-box"
+                                                                           href="'.route('tenant.client.edit', [$tenant_id, $data->client_id]) .'"><i
+                                            class="fa fa-edit"></i></a>';
             })
-            ->addColumn('active', function ($data) {
+            ->editColumn('status', function ($data) {
                 return ($data->active_id != null)? '<input type="checkbox" value=1 class="icheck active" id="'.$data->client_id.'" checked = "checked" />' : '<input type="checkbox" value=0 class="icheck active" id="'.$data->client_id.'"/>';
             })
             ->editColumn('created_at', function ($data) {
                 return format_datetime($data->created_at);
             })
-            ->editColumn('country_id', function ($data) {
-                if(!empty($data->country_id))
-                    return Country::find($data->country_id)->name;
-                else
-                    return '';
-            })
-            ->editColumn('client_id', function ($data) {
-                return format_id($data->client_id, 'C');
-            })
-            /*->editColumn('added_by', function ($data) {
-                return get_tenant_name($data->added_by);
-            })*/;
-        //->editColumn('referred_by', function($data){return get_user_name($data->referred_by); })
+            ->editColumn('client_id', function($data){return format_id($data->client_id, 'C'); })
+            ->editColumn('email', function($data){return '<a href="mailto:'.$data->email.'">'. $data->email .'</a>'; });
         // Global search function
         if ($keyword = $this->request->get('search')['value']) {
             $datatable->filterColumn('fullname', 'whereRaw', "CONCAT(persons.first_name, ' ', persons.last_name) like ?", ["%$keyword%"]);
+
             $datatable->filterColumn('added_by', 'whereRaw', "CONCAT(user_profile.first_name, ' ', user_profile.last_name) like ?", ["%$keyword%"]);
         }
+
+        /*->filter(function ($query) use ($request) {
+            $keyword = $this->request->get('search')['value'];
+        if ($request->has('fullname')) {
+            $query->where('fullname', 'whereRaw', "CONCAT(persons.first_name, ' ', persons.last_name) like ?", ["%$keyword%"]);
+        }
+
+        if ($request->has('added_by')) {
+            $query->where('added_by', 'whereRaw', "CONCAT(user_profile.first_name, ' ', user_profile.last_name) like ?", ["%$keyword%"]);
+        }
+    });*/
         return $datatable->make(true);
     }
 
@@ -158,8 +170,7 @@ class ClientController extends BaseController
         $data['remainders'] = $this->client_notes->getAll($client_id, true);
         $data['timelines'] = $this->timeline->getDetails($client_id);
         $data['due_payment'] = $this->client->duePayment($client_id);
-
-        $data['timeline_list'] = $this->timeline->getTimeline($client_id);
+        //$data['timeline_list'] = $this->timeline->getTimeline($client_id);//dd($data['timeline_list']->toArray());
         return view("Tenant::Client/show", $data);
     }
 
@@ -180,10 +191,10 @@ class ClientController extends BaseController
         /* Getting the client details*/
         $data['client'] = $this->client->getDetails($client_id);
         if ($data['client'] != null) {
-            if(!session()->has('from')){
+            if (!session()->has('from')) {
                 session()->put('from', url()->previous());
             }
-            $data['client']->dob = format_date($data['client']->dob);
+            //$data['client']->dob = format_date($data['client']->dob);
             return view('Tenant::Client/edit', $data);
         } else
             return show_404();
@@ -199,7 +210,7 @@ class ClientController extends BaseController
     {
         $email_id = $this->request->get('email_id');
         /* Additional validation rules checking for uniqueness */
-        $this->rules['email'] = 'email|min:5|max:55|unique:emails,email,'.$email_id.',email_id';
+        $this->rules['email'] = 'email|min:5|max:55|unique:emails,email,' . $email_id . ',email_id';
 
         $this->validate($this->request, $this->rules);
         // if validates
@@ -300,11 +311,11 @@ class ClientController extends BaseController
         $this->validate($this->request, $upload_rules);
 
         $note_id = $this->client_notes->add($client_id, $request);
-        if($note_id) {
+        if ($note_id) {
             \Flash::success('Notes uploaded successfully!');
             $this->client->addLog($client_id, 2, ['{{DESCRIPTION}}' => $this->getNoteFormat($note_id), '{{NAME}}' => get_tenant_name()]);
         }
-        if($this->request->get('timeline') == 1)
+        if ($this->request->get('timeline') == 1)
             return redirect()->route('tenant.client.show', [$tenant_id, $client_id]);
         else
             return redirect()->route('tenant.client.notes', [$tenant_id, $client_id]);
@@ -314,9 +325,9 @@ class ClientController extends BaseController
     function getNoteFormat($note_id)
     {
         $note = Notes::find($note_id);
-        $format = $note->description. "<br/>";
-        if($note->remind == 1)
-            $format .= "<strong>Reminder Date : </strong>". format_date($note->reminder_date);
+        $format = $note->description . "<br/>";
+        if ($note->remind == 1)
+            $format .= "<strong>Reminder Date : </strong>" . format_date($note->reminder_date);
         return $format;
     }
 
@@ -341,7 +352,7 @@ class ClientController extends BaseController
     function removeActive($tenant_id, $client_id)
     {
         $active = ActiveClient::where('client_id', $client_id)->where('user_id', current_tenant_id())->first();
-        if(!empty($active)) $active->delete();
+        if (!empty($active)) $active->delete();
     }
 
     function compose($tenant_id, $client_id)
@@ -374,7 +385,7 @@ class ClientController extends BaseController
         $request = $this->request->all();
         $request['email'] = $client->email;
 
-        if($request['email'] != '') {
+        if ($request['email'] != '') {
             $param = ['content' => $request['body'],
                 'subject' => $request['subject'],
                 'heading' => 'Condat Solutions',
@@ -416,12 +427,12 @@ class ClientController extends BaseController
 
         $this->validate($this->request, $rules);
 
-        if(is_array(getimagesize($url))) {
+        if (is_array(getimagesize($url))) {
             //$extension =
             $extension = pathinfo($url, PATHINFO_EXTENSION);
             //remove get request
             $extension = strtok($extension, '?');
-            $filename = str_random(4).'-'.str_slug($title).'.'. $extension;
+            $filename = str_random(4) . '-' . str_slug($title) . '.' . $extension;
             //get file content from url
             $file = file_get_contents($url);
 
@@ -430,11 +441,11 @@ class ClientController extends BaseController
             $file_info = array();
             $file_info['fileName'] = $filename;
             $file_info['pathName'] = $location;
-            $file = file_put_contents($location.$filename, $file);
+            $file = file_put_contents($location . $filename, $file);
             $photo_id = $this->client->uploadImage($client_id, $file_info, $this->request->all());
             \Flash::success('Photo uploaded successfully!');
         } else {
-            \Flash::error('Unable to upload. Please try another image');
+            \Flash::error('Unable to upload. The provided URL doesn\'t contain link of an image. Please try another image.');
         }
         return redirect()->back();
     }
@@ -444,6 +455,116 @@ class ClientController extends BaseController
         $data['invoice_reports'] = $this->student_invoice->getAll();
         //$data['due_payments'] = $this->invoice->getOutstandingPayments();
         return view("Tenant::Client/due", $data);
+    }
+
+    /**
+     * Return View file
+     *
+     * @return array
+     */
+    public function import()
+    {
+        return view("Tenant::Client/import");
+    }
+
+    function importExcel($tenant_id)
+    {
+        if ($this->request->hasFile('import_file')) {
+            $path = $this->request->file('import_file')->getRealPath();
+
+            $data = Excel::load($path, function ($reader) {
+            })->get();
+
+            if (!empty($data) && $data->count()) {
+                $dataArray['clients'] = $clients = $data->toArray(); //dd($dataArray['clients']);
+
+                /*if(isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($first_name) && isset($description)){
+
+                }*/
+                $view = view("Tenant::Client/imported_clients", $dataArray);
+                $template = $view->render();
+                return $this->success(['template' => $template]);
+            }
+        }
+
+        return $this->fail(['template' => '<p class="text-muted well">An error has been encountered. <br/> Either the file is not supported or there are no records to be uploaded.</p>']);
+    }
+
+    function confirmImport($tenant_id)
+    {
+        if ($this->request->hasFile('import_file')) {
+            $path = $this->request->file('import_file')->getRealPath();
+
+            $data = Excel::load($path, function ($reader) {
+            })->get();
+
+            $errors = array();
+            $insert = array();
+            $imported_clients = array();
+
+            if (!empty($data) && $data->count()) {
+                $clients = $data->toArray();
+
+                foreach ($clients as $key => $client) {
+                    /* Additional validations for creating user */
+                    $rules = ['first_name' => 'required|min:2|max:145',
+                        'last_name' => 'required|min:2|max:55',
+                        'middle_name' => 'alpha|min:2|max:145',
+                        'phone' => 'required',
+                        'email' => 'email|min:5|max:55|unique:emails'];
+                    $messages = [
+                        'email.unique' => 'Client with the same email address already exists.',
+                    ];
+
+                    if (!empty($client)) {
+                        $validator = Validator::make($client, $rules, $messages);
+                        if ($validator->fails()) {
+                            $errors[$key] = $validator->messages()->all();
+                        } else {
+                            $insert[] = $this->client->import($client);
+                            $imported_clients[] = $client;
+                        }
+                    }
+                }
+                $temp_data['clients'] = $imported_clients;
+                $temp_data['errors'] = $errors;
+
+                $view = view("Tenant::Client/imported_clients", $temp_data);
+                $template = $view->render();
+                return $this->success(['message' => count($insert) . ' clients imported successfully!', 'errors' => $errors, 'template' => $template]);
+            }
+        }
+
+        return $this->fail(['message' => 'An error has been encountered. <br/> Either the file is not supported or there are no records to be uploaded.']);
+    }
+
+    public function getMoreTimeline($tenant_id, $client_id)
+    {
+        $data = '';
+        $page = $this->request['page'];
+        $app = $this->request['app'];
+        $app = ($app == 1)? true : false;
+        $timelines = $this->timeline->getTimelineWithPage($page, $client_id, $app);
+        foreach($timelines as $key => $grouped_timeline) {
+            $data .= '<li class="time-label">
+            <span class="bg-red">
+              '.readable_date($key).'
+            </span>
+            </li>';
+            foreach($grouped_timeline as $timeline) {
+                $data .= '<li>
+                    <i class="fa '.$timeline->image .'"></i>
+
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> '.get_datetime_diff($timeline->created_at);
+                $data .= '</span>'.$timeline->message.'</div>
+                </li>';
+            }
+        }
+        if(count($timelines) > 0)
+            echo $data;
+        else
+            return $this->fail();
     }
 
 }

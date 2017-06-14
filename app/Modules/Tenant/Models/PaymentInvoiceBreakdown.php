@@ -1,6 +1,7 @@
 <?php
 namespace App\Modules\Tenant\Models;
 
+use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use Illuminate\Database\Eloquent\Model;
 
 Class PaymentInvoiceBreakdown extends Model{

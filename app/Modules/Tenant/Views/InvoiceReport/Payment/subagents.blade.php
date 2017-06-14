@@ -22,9 +22,12 @@
                     <tr>
                         <th>Payment ID</th>
                         <th>Payment Date</th>
+                        <th>Sub Agent Name</th>
+                        <th>Institute Name</th>
+                        <th>Client Name</th>
                         <th>Amount</th>
                         <th>Payment Type</th>
-                        <th>Description</th>
+                        <th>Added By</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -34,9 +37,12 @@
                         <tr>
                             <td>{{ format_id($payment->subagent_payments_id, 'SAP') }}</td>
                             <td>{{ format_date($payment->date_paid) }}</td>
+                            <td>{{ get_agent_name($payment->sub_agent_id) }}</td>
+                            <td>{{ $payment->company_name }}</td>
+                            <td>{{ $payment->client_name }}</td>
                             <td>{{ format_price($payment->amount) }}</td>
                             <td>{{ $payment->payment_type }}</td>
-                            <td>{{ $payment->description }}</td>
+                            <td>{{ get_tenant_name($payment->added_by) }}</td>
                             <td>
                                 <a target="_blank" href="{{route('tenant.subagent.payments.receipt', [$tenant_id, $payment->subagent_payments_id])}}" title="Print Payment"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"

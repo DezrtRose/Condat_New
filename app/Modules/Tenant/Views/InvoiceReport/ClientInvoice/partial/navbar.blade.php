@@ -1,4 +1,4 @@
-<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 <nav class="nav-bar">
   <div class="nav-container">
     <a id="nav-menu" class="nav-menu">&#9776; Menu</a>

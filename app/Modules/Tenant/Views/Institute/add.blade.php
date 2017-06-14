@@ -21,5 +21,17 @@
             {!!Form::close()!!}
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#name').focusout(function() {
+                var curVal = $('#invoice_to_name').val();
+                var instName = $(this).val();
+                if(curVal != '' || $('#invoice_to_name').is(':empty'))
+                {
+                    $('#invoice_to_name').val(instName);
+                }
+            });
+        });
+    </script>
 @stop
 

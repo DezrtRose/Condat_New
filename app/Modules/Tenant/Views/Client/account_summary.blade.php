@@ -11,7 +11,6 @@
         <div class="row">
             @include('Tenant::Client/client_header')
         </div>
-        @include('flash::message')
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Recent Invoices</h3>
@@ -26,6 +25,7 @@
                         <th>Invoice ID</th>
                         <th>Invoice Date</th>
                         <th>Description</th>
+                        <th>Discount</th>
                         <th>Invoice Amount</th>
                         <th>GST</th>
                         <th>Status</th>
@@ -73,6 +73,7 @@
                         <th>Invoice ID</th>
                         <th>Invoice Date</th>
                         <th>Description</th>
+                        <th>Discount</th>
                         <th>Invoice Amount</th>
                         <th>GST</th>
                         <th>Status</th>
@@ -127,6 +128,7 @@
                     {data: 'invoice_id', name: 'invoices.invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
+                    {data: 'discount', name: 'discount'},
                     {data: 'invoice_amount', name: 'invoice_amount'},
                     {data: 'total_gst', name: 'total_gst'},
                     {data: 'status', name: 'status'},
@@ -151,6 +153,7 @@
                     {data: 'invoice_id', name: 'invoice_id'},
                     {data: 'invoice_date', name: 'invoice_date'},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
+                    {data: 'discount', name: 'discount'},
                     {data: 'invoice_amount', name: 'invoice_amount'},
                     {data: 'total_gst', name: 'total_gst'},
                     {data: 'status', name: 'status'},
@@ -174,7 +177,40 @@
                 window.location.replace(url);
                 return false;
             });
+
+            $(document).on("submit", "#add-invoice", function (event) {
+                var formData = $(this).serialize();
+                var url = $(this).attr('action');
+                $(this).find('.has-error').removeClass('has-error');
+                $(this).find('label.error').remove();
+                $(this).find('.callout').remove();
+
+                // process the form
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    dataType: 'json',
+                    encode: true
+                })
+                        .done(function (result) {
+                            if (result.status == 1) {
+                                $('#condat-modal').modal('hide');
+                                window.location.reload();
+                            }
+                            else {
+                                $.each(result.data.errors, function (i, v) {
+                                    $('#add-invoice').find('#' + i).after('<label class="error ">' + v + '</label>').closest('.form-group').addClass('has-error');
+                                });
+                            }
+                            setTimeout(function () {
+                                $('.callout').remove()
+                            }, 2500);
+                        });
+                event.preventDefault();
+            });
         });
     </script>
+    {!! Condat::js('client_mail.js') !!}
     {!! Condat::registerModal() !!}
 @stop

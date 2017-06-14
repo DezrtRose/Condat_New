@@ -177,7 +177,8 @@ class TenantFileSystem {
      */
     function upload($file, $fileName = null)
     {
-        if (Request::hasFile($file) || Request::file($file)->isValid()) {
+        //if (Request::hasFile($file) || Request::file($file)->isValid()) {
+        if (Request::hasFile($file) && Request::file($file)->isValid()) {
             $extension = Request::file($file)->getClientOriginalExtension();
             if($fileName == null) {
                 $fullName = Request::file($file)->getClientOriginalName();
@@ -185,6 +186,14 @@ class TenantFileSystem {
             }
             $destinationPath = $this->path();
             $fileName = $this->getFilename($fileName, $extension);
+
+            /* Checking for duplicate names */
+            // how many files matching this name already exist?
+            $count = count(glob($destinationPath . '/*' . $fileName));
+            // prepend that count to the front of the filename if a duplicate exists
+            $fileName = ($count > 0) ? $count . '-' . $fileName: $fileName;
+            // place the file in the right place with the new name
+
             $data = Request::file($file)->move($destinationPath, $fileName);
             $return = ['pathName' => str_replace('\\', '/',url($data->getPathname())), 'fileName' => $data->getFilename()];
 

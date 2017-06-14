@@ -17,9 +17,9 @@
                         <i class="fa fa-calendar"></i>
                     </div>
                     @if(!isset($invoice) || $invoice->invoice_date == null)
-                        {!!Form::text('invoice_date', null, array('class' => 'form-control', 'id'=>'invoice_date'))!!}
+                        {!!Form::text('invoice_date', get_formatted_today_date(), array('class' => 'form-control', 'id'=>'invoice_date', 'autocomplete' => 'off'))!!}
                     @else
-                        {!!Form::text('invoice_date', format_date($invoice->invoice_date), array('class' => 'form-control', 'id'=>'invoice_date'))!!}
+                        {!!Form::text('invoice_date', format_date($invoice->invoice_date), array('class' => 'form-control', 'id'=>'invoice_date', 'autocomplete' => 'off'))!!}
                     @endif
                 </div>
                 @if($errors->has('invoice_date'))
@@ -48,7 +48,11 @@
             <div class="col-sm-8">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    {!!Form::text('discount', 0, array('class' => 'form-control', 'id'=>'discount','autocomplete'=>'off'))!!}
+                    @if(isset($invoice->discount))
+                        {!!Form::text('discount', null, array('class' => 'form-control', 'id'=>'discount','autocomplete'=>'off'))!!}
+                    @else
+                        {!!Form::text('discount', 0, array('class' => 'form-control', 'id'=>'discount','autocomplete'=>'off'))!!}
+                    @endif
                 </div>
                 @if($errors->has('discount'))
                     {!! $errors->first('discount', '<label class="control-label"
@@ -78,7 +82,7 @@
                     <span class="input-group-addon">$</span>
                     {!!Form::text('total_gst', null, array('class' => 'form-control', 'id'=>'gst','placeholder'=>'10% of Amount ','readonly' => 'true'))!!}
                     <span class="input-group-addon">
-                               {{ Form::checkbox('gst_checker_incentive', 'incentive', false,array('id'=>'gst_checker_incentive')) }}
+                               {{ Form::checkbox('gst_checker_incentive', 'incentive', false, array('id'=>'gst_checker_incentive')) }}
                         GST
                             </span>
                 </div>
@@ -188,7 +192,8 @@
     $(function () {
         $("#invoice_date").datepicker({
             autoclose: true,
-            format: 'dd/mm/yyyy'
+            format: 'dd/mm/yyyy',
+            todayHighlight: true
         });
 
         $("#due_date").datepicker({

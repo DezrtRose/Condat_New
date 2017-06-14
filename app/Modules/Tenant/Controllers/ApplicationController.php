@@ -120,9 +120,13 @@ class ApplicationController extends BaseController
     public function store($tenant_id, $client_id)
     {
         /* Additional validations for creating user */
-        /*$this->rules['email'] = 'required|email|min:5|max:55|unique:users';
+        $rules = [
+            'institute_id' => 'required',
+            'institution_course_id' => 'required',
+            'intake_id' => 'required',
+        ];
 
-        $this->validate($this->request, $this->rules);*/
+        $this->validate($this->request, $rules);
         // if validates
         $created = $this->application->add($this->request->all(), $client_id);
         if ($created) {
@@ -244,6 +248,14 @@ class ApplicationController extends BaseController
      */
     public function update($tenant_id, $application_id)
     {
+        /* Additional validations for creating user */
+        $rules = [
+            'institute_id' => 'required',
+            'institution_course_id' => 'required',
+            'intake_id' => 'required',
+        ];
+
+        $this->validate($this->request, $rules);
         $created = $this->application->edit($this->request->all(), $application_id);
         if ($created) {
             Flash::success('Application has been updated successfully.');

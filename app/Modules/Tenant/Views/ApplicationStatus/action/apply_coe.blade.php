@@ -54,8 +54,9 @@
                             {!! $errors->first('fee_for_coe', '<label class="control-label"
                                                                       for="inputError">:message</label>') !!}
                         @endif
-
-                        <a href="{{ $offer_letter->shelf_location }}" target="_blank">View Offer Letter</a><br>
+                        @if(isset($offer_letter) && isset($offer_letter->shelf_location))
+                            <a href="{{ $offer_letter->shelf_location }}" target="_blank">View Offer Letter</a><br>
+                        @endif
                     </div>
                 </div>
 

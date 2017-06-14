@@ -1,362 +1,348 @@
-<?php
-// Start the session
-session_start();
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"> <!--<![endif]-->
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-    <title>Nepcoms ICT</title>
-    <link href="styles/style.css" rel="stylesheet" type="text/css"/>
-
-
-    <link href="fmslideshow_assets/fmslideshow.min.css" rel="stylesheet" type="text/css"/>
-    <link href="styles/flexslider.css" rel="stylesheet" type="text/css"/>
-    <link href="remodal/remodal.css" rel="stylesheet" type="text/css"/>
-    <link href="remodal/remodal-default-theme.css" rel="stylesheet" type="text/css"/>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="http://cufon.shoqolate.com/js/cufon-yui.js"></script>
-    <script src="fmslideshow_assets/note-this.cufonfonts.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include depricated functions for fmslide -->
-    <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
-    <!--<script src="fmslideshow_assets/jquery-1.6.2.min.js"></script>-->
-    <script src="fmslideshow_assets/fmslideshow.min.js"></script>
-    <script src="js/jquery.flexslider-min.js"></script>
-    <script src="remodal/remodal.js"></script>
-
-    <script>
-
-        jQuery(function ($) {
-            $('#jq_fmslideshow').fmslideshow({
-
-                //Note: if you need to modify further see the available variable in fmslideshow.js file.
-
-                banner_width: 940,
-                banner_height: 400,
-
-                image_background: "fmslideshow_assets/bg.png",
-                image_topShadow: "fmslideshow_assets/top_border.png",
-                image_bottomShadow: "fmslideshow_assets/bottom_border.png",
-
-                background_fullScreen: true,
-                background_move: true,
-                background_moveDistance: 700,
-
-                buttons_type: 1,
-                buttons_autoHide: true,
-
-                button_nextPrevious_autoHide: true,
-                button_nextPrevious_type: 1,
-                button_next_align: "C",
-                button_next_spacing: "0,420",
-                button_previous_align: "C",
-                button_previous_spacing: "0,-420"
-
-            });
-        });
-
-    </script>
-
-
-    <style type="text/css">
-        @font-face {
-            font-family: 'BebasNeueRegular';
-            src: url('fonts/BebasNeue-webfont.eot');
-            src: url('fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
-            url('fonts/BebasNeue-webfont.woff') format('woff'),
-            url('fonts/BebasNeue-webfont.ttf') format('truetype'),
-            url('fonts/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
-            font-weight: normal;
-            font-style: normal;
-
-        }
-    </style>
-
-
+    <title>Condat Solutions</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link
+        href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300'
+        rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100' rel='stylesheet' type='text/css'>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/plugins/flexslider/flexslider.css">
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
-<body>
-<div id="snav" class="en">
-    <ul>
-        <li> <a href="#modal"> <i class="fa fa-star"></i> <span>Special Offer</span> </a> </li>
-    </ul>
-</div>
-
-<div class="header_liner"></div>
-<div id="wrapper">
-    <div class="container">
-        <div class="header">
-            <div class="logo"><a href="index.php"><img src="images/logo.jpg"/></a></div>
-            <div class="menu">
-                <ul>
-                    <li class="active"><a href="index.php">home</a></li>
-                    <li><a href="whoweare.php">who we are</a></li>
-                    <li><a href="whatwedo.php">what we do</a></li>
-                    <li><a href="ourwork.php">our work</a></li>
-                    <li><a href="contact.php">contact us</a></li>
-
-                </ul>
-            </div>
-            <!-- End of menu  -->
-        </div>
-        <!-- End of header  -->
-    </div>
-    <!-- End of container  -->
-
-
-    <div id="jq_fmslideshow" style="position:relative; overflow:hidden; background-color:#fbfbfb" align="left">
-
-        <div id="fmslideshow" style="visibility:hidden">
-
-
-            <!--Slide 1 -->
-            <div>
-
-                <img data-align="TC" data-spacing="0,0" data-inOutDirection="L" data-inOutDistance="50" class="imgSty"
-                     src="image_slideshow/image1.png" alt="fmslideshow"/>
-
-                <div data-align="C" data-spacing="-40,0" data-inOutDirection="RL" data-inOutDistance="30"
-                     class="divStyle">
-                    <span class="txtLarge" style="background-color:#fff; color:#000">Growing Your Business</span>
-                </div>
-
-                <div data-align="C" data-spacing="20,0" data-inOutDirection="LR" data-inOutDistance="30"
-                     class="divStyle">
-                 <span class="txtMedium" style=" color:#000; background-color:#fff;">
-Locally,Socially & Organically</span>
-                </div>
-
-            </div>
-
-
-            <!--Slide 3 -->
-            <div>
-                <img data-align="BL" data-spacing="0,50" data-inOutDirection="BB" data-inOutDistance="50" class="imgSty"
-                     src="image_slideshow/image2.png" alt="fmslideshow"/>
-
-                <div data-align="TR" data-spacing="70,0" data-inOutDirection="RL" class="divStyle" style="width:460px">
-                    <span class="txtLarge" style="background-color:#000000">WEB DESIGNING</span>
-                </div>
-
-                <div data-align="TR" data-spacing="20,0" data-inOutDirection="LR" class="divStyle"
-                     data-inOutDistance="60" style="width:400px">
-                    <span class="txtMedium" style="background-color:#000000;">We build creative, effective & professional websites</span>
-                </div>
-
-            </div>
-
-
-            <!--Slide 10 -->
-            <div>
-
-                <img data-align="LC" data-spacing="150,0" data-inOutDirection="L" data-inOutDistance="25" class="imgSty"
-                     src="image_slideshow/seo.png" alt="fmslideshow"/>
-
-                <div data-align="TC" data-spacing="70,220" data-inOutDirection="BR" data-inOutDistance="20"
-                     class="divStyle" style="width:400px">
-                    <span class="txtMedium" style="background-color:#000000; color:#FFF">SIMPLIFYING THE</span>
-                </div>
-
-                <div data-align="TC" data-spacing="5,195" data-inOutDirection="BR" data-inOutDistance="20"
-                     class="divStyle" style="width:360px">
-                    <span class="txtMedium"
-                          style="background-color:#000000; color:#FFF">EVER-CHANGING WORLD OF</span></span>
-                </div>
-
-                <div data-align="TC" data-spacing="10,220" data-inOutDirection="BR" data-inOutDistance="20"
-                     class="divStyle" style="width:400px">
-                    <span class="txtMedium"
-                          style="background-color:#000000; color:#FFF">INTERNET TECHNOLOGIES.</a></span>
-                </div>
-
-            </div>
-
-
-            <!--Slide 11 -->
-            <div>
-
-                <img data-align="TC" data-spacing="50,0" data-inOutDirection="TB" data-inOutDistance="25" class="imgSty"
-                     src="image_slideshow/image10.png" alt="fmslideshow"/>
-
-                <img data-align="TL" data-spacing="50,100" data-inOutDirection="LL" data-inOutDistance="50"
-                     class="imgSty" src="image_slideshow/image13.png" alt="fmslideshow"/>
-
-                <img data-align="TR" data-spacing="50,100" data-inOutDirection="RR" data-inOutDistance="50"
-                     class="imgSty" src="image_slideshow/image14.png" alt="fmslideshow"/>
-
-                <div data-align="BC" data-spacing="100,0" data-inOutDirection="BT" data-inOutDistance="20"
-                     class="divStyle">
-                    <span class="txtExMedium" style="color:#000;">Design & Development that reap rewards</span><br/>
-
-                </div>
-
-            </div>
-
-            <!-- End slide-->
-
-
-        </div>
-
-    </div>
-
-
-    <div class="container">
-        <div class="packages">
-
-            <ul>
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/website_design_ico.jpg"/></a></li>
-                        <li><a href="#"><h3>Web Design</h3></a><a href="#"><p>the front door of your business</p></a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/seo_ico.jpg"/></a></li>
-                        <li><a href="#"><h3>Search Engine Op. (SEO)</h3></a><a href="#"><p>be found and increase
-                                    sales</p></a></li>
-
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/website_design_ico.jpg"/></a></li>
-                        <li><a href="#"><h3>Logo Design</h3></a><a href="#"><p>have a clear, professional image</p></a>
-                        </li>
-
-                    </ul>
-                </li>
-
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/web_redesign_ico.jpg"/></a></li>
-                        <li><a href="#"><h3>Website re-design</h3></a><a href="#"><p>tweaking your site to
-                                    perfection</p></a></li>
-
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/animation_ico.jpg"/></a></li>
-                        <li><a href="#"><h3>Animation</h3></a><a href="#"><p>keep yourself interactive </p></a></li>
-
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/ecommerce.jpg"/></a></li>
-                        <li><a href="#"><h3>eCommerce</h3></a><a href="#"><p>stand out from your competitors.</p></a>
-                        </li>
-
-                    </ul>
-                </li>
-
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/websit_redesign_ico2.jpg"/></a></li>
-                        <li><a href="#"><h3>Blogs / CMS Systems</h3></a><a href="#"><p>take full control of your
-                                    website</p></a></li>
-
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/mobile_app_ico.jpg"/></a></li>
-                        <li><a href="#"><h3>Mobile App Design</h3></a><a href="#"><p>get your website on Mobile!</p></a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li><a href="#"><img src="images/social_media_ico.jpg"/></a></li>
-                        <li><a href="#"><h3>Social Media Networking</h3></a><a href="#"><p>network with other
-                                    businesses</p></a></li>
-
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <!-- End of packages  -->
-        <div class="fun_and_innovative">
-            <h1>our work is fun and innovative</h1>
-
-            <p>if your goal is high, we are design and marketing agency that can take you there. We are the company
-                which is more thana website design, development and search engine optimization(SEO) agency</p>
-            <img src="images/our_process.jpg">
-            <span>Every client is considered important. Whether you are a startup or a huge corporation - if you appeciate quality, then we are the company for you. Your website is you hardest working employee; invest wisely in it </span>
-        </div>
-        <!-- End of fun and innovative  -->
-
-        <?php include 'our_clients.php'; ?>
-        <div class="our_products">
-            <h2><a href="#">our products</a></h2>
-
-            <div class="display">
-                <a href="http://www.moneytransfer.webunisoft.com"><img src="images/our_prod_img.jpg" width="149"
-                                                                       height="180"/></a>
-
-                <p align="right">Record Client Details<br/>
-                    Print Receipt<br/>
-                    Create austrac report in minutes<br/>
-                    multiuser access<br/>
-                    allow agent to use is<br/>
-                    full support provided</p>
-            </div>
-
-        </div>
-        <!-- End of our_products  -->
-        <div class="clr"></div>
-
-    </div>
-    <!-- End of container  -->
-    <?php include 'footer.php'; ?>
-
-</div>
-<!-- End of wrapperr  -->
-<div class="remodal" data-remodal-id="modal" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-    <button data-remodal-action="close" class="remodal-close" aria-label="Close"></button>
-    <div>
-        <h2 id="modal1Title" class="modal-title">Special Offer</h2>
-
-        <p id="modal1Desc" class="modal-body">
-            Develop your website starting from <strong>$500</strong>* only. For more info, <a href="contact.php">contact
-                us</a>.<br/>
-            Offer valid from March to April.
-            <br/>
-            <br/>
-            <br/>
-            <small>*Conditions Apply!</small>
-        </p>
-    </div>
-    <br>
-    <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
-    <a href="contact.php" class="remodal-confirm">OK</a>
-</div>
-
-
+<body class="features-page">
+<!-- ******HEADER****** -->
 <?php
-//check if first time
-if (!isset($_SESSION['modal'])){
-    $_SESSION['modal'] = true;
+include("navbar-header.html");
 ?>
 
-<script type="text/javascript">
-    $(document).ready(function (e) {
-        var inst = $('[data-remodal-id=modal]').remodal({
-            modifier: 'with-red-theme'
-        });
-        inst.open();
-    });
-</script>
+<div class="headline-bg">
+</div>
+<!--//headline-bg-->
 
-<?php } ?>
+<!-- ******Video Section****** -->
+<section class="features-video section section-on-bg">
+    <div class="container text-center">
+        <h2 class="title">Take a quick tour to see how it works</h2>
 
+        <div class="video-container">
+            <iframe src="//player.vimeo.com/video/90299717?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff"
+                    width="720" height="405" frameborder="0" webkitallowfullscreen mozallowfullscreen
+                    allowfullscreen></iframe>
+        </div>
+        <!--//video-container-->
+    </div>
+    <!--//container-->
+</section>
+<!--//feature-video-->
+
+<!-- ******Features Section****** -->
+<section class="features-tabbed section">
+    <div class="container">
+        <h2 class="title text-center">Product Features</h2>
+
+        <div class="row">
+            <div class="container">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs text-center" role="tablist">
+                    <li class="active"><a href="#feature-1" role="tab" data-toggle="tab"><i
+                                class="fa fa-cloud-upload"></i><br/><span
+                                class="hidden-sm hidden-xs">Client Management</span></a></li>
+                    <li><a href="#feature-2" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i><br/><span
+                                class="hidden-sm hidden-xs">Insitute Management</span></a></li>
+                    <li><a href="#feature-3" role="tab" data-toggle="tab"><i class="fa fa-photo"></i><br/><span
+                                class="hidden-sm hidden-xs">Enrollment Management</span></a></li>
+                    <li class="last"><a href="#feature-4" role="tab" data-toggle="tab"><i
+                                class="fa fa-users"></i><br/><span class="hidden-sm hidden-xs">Invoice Management</span></a>
+                    </li>
+
+                    <li class="last"><a href="#feature-5" role="tab" data-toggle="tab"><i
+                                class="fa fa-users"></i><br/><span class="hidden-sm hidden-xs">Emails</span></a></li>
+                    <li class="last"><a href="#feature-6" role="tab" data-toggle="tab"><i
+                                class="fa fa-users"></i><br/><span
+                                class="hidden-sm hidden-xs">Task & Reminders</span></a></li>
+                    <li class="last"><a href="#feature-7" role="tab" data-toggle="tab"><i
+                                class="fa fa-users"></i><br/><span
+                                class="hidden-sm hidden-xs">User Management</span></a></li>
+                    <li class="last"><a href="#feature-8" role="tab" data-toggle="tab"><i
+                                class="fa fa-users"></i><br/><span class="hidden-sm hidden-xs">Reports Management</span></a>
+                    </li>
+                </ul>
+                <!--//nav-tabs-->
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="feature-1">
+                        <h3 class="title sr-only">Client Management</h3>
+
+                        <div class="desc text-left">
+                            <p>Easily Search and Manage Your client under one system and be organise with all the
+                                updates of your clients</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-star"></i>Search information of clients</li>
+                                <li><i class="fa fa-star"></i>Track outstanding Amount</li>
+                                <li><i class="fa fa-star"></i>View update and notification of Clients</li>
+                                <li><i class="fa fa-star"></i>Attached documents of clients</li>
+                            </ul>
+
+                            <p>Below is the screenshot of the Client Dashboard</p>
+                        </div>
+                        <!--//desc-->
+                        <figure class="figure text-center">
+                            <img class="img-responsive" src="assets/images/screenshot/client-dashboard.png" alt=""
+                                 width="1000px" height="500px"/>
+                            <figcaption class="figure-caption">(Client Dashboard)</figcaption>
+                        </figure>
+                        <p>System with provide you notificate related to clients regarding their payments and due
+                            task </p>
+                    </div>
+                    <!--//tab-pane-->
+                    <div class="tab-pane" id="feature-2">
+                        <h3 class="title sr-only">Institute Management</h3>
+                        <figure class="figure text-center">
+                            <img class="img-responsive" src="assets/images/features/institute-dashboard.png" alt=""/>
+                            <figcaption class="figure-caption">(Screenshot source: Condat Solutions)</figcaption>
+                        </figure>
+                        <div class="desc text-left">
+                            <p>Easily organize the institute list and records to become ready with applications.</p>
+
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-star"></i>Record Institute Details and their locations</li>
+                                <li><i class="fa fa-star"></i>Manage Courses of that institutes</li>
+                                <li><i class="fa fa-star"></i>Add Contact Person and their details</li>
+                                <li><i class="fa fa-star"></i>Add intake of the institute</li>
+                                <li><i class="fa fa-star"></i>Assign Super Agent along with their commission.</li>
+                            </ul>
+                        </div>
+                        <!--//desc-->
+                    </div>
+                    <!--//tab-pane-->
+                    <div class="tab-pane" id="feature-3">
+                        <h3 class="title sr-only">Enrollment Management</h3>
+                        <figure class="figure text-center">
+                            <img class="img-responsive" src="assets/images/features/application-mgmt.png" alt=""/>
+                            <figcaption class="figure-caption">(Screenshot source: Condat Solutions)</figcaption>
+                        </figure>
+                        <div class="desc text-left">
+                            <p>Track all the step of your student enrollment process and stay up to date with latest
+                                status.</p>
+
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-star"></i>Enroll clients into Institutes.</li>
+                                <li><i class="fa fa-star"></i>Create Multiple Invoices to Track the Commission from
+                                    college and clients
+                                </li>
+                                <li><i class="fa fa-star"></i>Record payment of College and Clients related to the
+                                    application
+                                </li>
+                                <li><i class="fa fa-star"></i>Assign Super Agent and Sub Agent for the application</li>
+                                <li><i class="fa fa-star"></i>Track and update every status of the application</li>
+                                <li><i class="fa fa-star"></i>Attached documents to the application along with offer
+                                    letter and Coe.
+                                </li>
+
+                                <li><i class="fa fa-star"></i>Filter the application according to your requirements.
+                                </li>
+                            </ul>
+
+                        </div>
+                        <!--//desc-->
+                    </div>
+                    <!--//tab-pane-->
+                    <div class="tab-pane" id="feature-4">
+                        <h3 class="title sr-only">Invoice Management</h3>
+                        <figure class="figure text-center">
+                            <img class="img-responsive" src="assets/images/features/invoice-mgmt.png" alt=""/>
+                            <figcaption class="figure-caption">(Screenshot source: Condat Solutions)</figcaption>
+                        </figure>
+                        <div class="desc text-left">
+                            <p>Manage and Track Your Invoices</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-star"></i>Create / Manage College Invoice and super Agent Invoice
+                                </li>
+                                <li><i class="fa fa-star"></i>Create / Manage Client Invoice</li>
+                                <li><i class="fa fa-star"></i>Create Multiple Invoice for current payment and future
+                                    payments
+                                </li>
+                                <li><i class="fa fa-star"></i>Get Reports of Pending and Paid Invoices</li>
+                                <li><i class="fa fa-star"></i>Export Reports into Pdf, Excel, Print or copy</li>
+                                <li><i class="fa fa-star"></i>Merge multiple invoices to create 1 Group Invoice</li>
+                                <li><i class="fa fa-star"></i>Print Invoice directly from the system</li>
+                            </ul>
+                        </div>
+                        <!--//desc-->
+                    </div>
+                    <!--//tab-pane-->
+
+                    <div class="tab-pane" id="feature-5">
+                        <h3 class="title sr-only">Emails</h3>
+                        <figure class="figure text-center">
+                            <img class="img-responsive" src="assets/images/features/email.png" alt=""/>
+                            <figcaption class="figure-caption">(Screenshot source: Condat Solutions)</figcaption>
+                        </figure>
+                        <div class="desc text-left">
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-star"></i>Record all the payments of college, sub agents and clients
+                                </li>
+                                <li><i class="fa fa-star"></i>Record all the commission and discount/cashback</li>
+                                <li><i class="fa fa-star"></i>Assign multiple payments to the invoices</li>
+                                <li><i class="fa fa-star"></i>Print Receipt for Payments</li>
+                                <li><i class="fa fa-star"></i>Filter and export the payment records</li>
+                            </ul>
+                        </div>
+                        <!--//desc-->
+                    </div>
+                    <!--//tab-pane-->
+
+                    <div class="tab-pane" id="feature-6">
+                        <h3 class="title sr-only">Task & Reminders</h3>
+                        <figure class="figure text-center">
+                            <img class="img-responsive" src="assets/images/features/task.png" alt=""/>
+                            <figcaption class="figure-caption">(Screenshot source: Condat Solutions)</figcaption>
+                        </figure>
+                        <div class="desc text-left">
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-star"></i>Update all the task and get reminded of any outstanding
+                                    task.
+                                </li>
+                                <li><i class="fa fa-star"></i>Get list of all the notification, changes and updates
+                                    directly into dashboard
+                                </li>
+                            </ul>
+                        </div>
+                        <!--//desc-->
+                    </div>
+                    <!--//tab-pane-->
+
+                    <div class="tab-pane" id="feature-7">
+                        <h3 class="title sr-only">User Management</h3>
+                        <figure class="figure text-center">
+                            <img class="img-responsive" src="assets/images/features/user-mgmt.png" alt=""/>
+                            <figcaption class="figure-caption">(Screenshot source: Condat Solutions)</figcaption>
+                        </figure>
+                        <div class="desc text-left">
+                            <p>Assign users with different Level to grant various access to the system.</p>
+
+                            <p>Users have 3 levels:</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-star"></i>Admin<br/>
+                                    Access to all the features of the system
+                                </li>
+                                <li><i class="fa fa-star"></i>
+                                    Staff<br/>
+                                    Access to most of the features of the system<br/>
+                                    Excluding:<br/>
+                                    Users Management<br/>
+                                    Company Details Management
+                                </li>
+                                <li><i class="fa fa-star"></i>
+                                    Accountant<br/>
+                                    Access to only account part of the system
+                                </li>
+                            </ul>
+                        </div>
+                        <!--//desc-->
+                    </div>
+                    <!--//tab-pane-->
+
+                    <div class="tab-pane" id="feature-8">
+                        <h3 class="title sr-only">Reports Management</h3>
+                        <figure class="figure text-center">
+                            <img class="img-responsive" src="assets/images/features/reports.png" alt=""/>
+                            <figcaption class="figure-caption">(Screenshot source: Condat Solutions)</figcaption>
+                        </figure>
+                        <div class="desc text-left">
+                            <p>Search and Generate report of various records to better organize your Data</p>
+
+                            <p>Generate Report for:</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-star"></i>Application</li>
+                                <li><i class="fa fa-star"></i>Invoice</li>
+                                <li><i class="fa fa-star"></i>Payment</li>
+                                <li><i class="fa fa-star"></i>Group Invoice</li>
+                                <li><i class="fa fa-star"></i>Export Reports to Excel | Pdf | Print | Copy | CSV</li>
+                            </ul>
+                        </div>
+                        <!--//desc-->
+                    </div>
+                    <!--//tab-pane-->
+
+                </div>
+                <!--//tab-content-->
+            </div>
+            <!--//col-md-x-->
+        </div>
+        <!--//row-->
+    </div>
+    <!--//container-->
+</section>
+<!--//features-tabbed-->
+
+<!-- ******Steps Section****** -->
+<section class="steps section">
+    <div class="container">
+        <h2 class="title text-center">3 Simple Steps to Get you started with Velocity</h2>
+
+        <div class="row">
+            <div class="step text-center col-md-4 col-sm-4 col-xs-12">
+                <h3 class="title"><span class="number">1</span><br/><span class="text">Sign up</span></h3>
+
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
+            </div>
+            <!--//step-->
+            <div class="step text-center col-md-4 col-sm-4 col-xs-12">
+                <h3 class="title"><span class="number">2</span><br/><span class="text">Choose your lorem ipsum</span>
+                </h3>
+
+                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+            </div>
+            <!--//step-->
+            <div class="step text-center col-md-4 col-sm-4 col-xs-12">
+                <h3 class="title"><span class="number">3</span><br/><span class="text">Start building ipsum</span></h3>
+
+                <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
+                    imperdiet.</p>
+            </div>
+            <!--//step-->
+        </div>
+        <!--//row-->
+
+        <div class="text-center"><a class="btn btn-cta btn-cta-primary" href="signup.html">Get Started - It's Free</a>
+        </div>
+
+    </div>
+    <!--//container-->
+</section>
+<!--//steps-->
+
+<?php include('footer.html') ?>
 </body>
 </html>
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^condat.com.au/$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.condat.com.au$
+RewriteCond %{REQUEST_URI} !condat/local/
+RewriteRule (.*) /condat/local/$1 [L]

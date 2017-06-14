@@ -8,7 +8,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        {!!Form::text('invoice_date', isset($invoice) ? format_date($invoice->invoice_date) : '', array('class' => 'form-control', 'id'=>'invoice_date'))!!}
+                        {!!Form::text('invoice_date', isset($invoice) ? format_date($invoice->invoice_date) : get_formatted_today_date(), array('class' => 'form-control', 'id'=>'invoice_date', 'autocomplete' => 'off'))!!}
                     </div>
                     @if($errors->has('invoice_date'))
                         {!! $errors->first('invoice_date', '<label class="control-label"
@@ -34,12 +34,13 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <span class="panel-title">Commission on Tuition Fee</span>
-            <a href="#" class="btn btn-warning btn-collapse btn-flat btn-xs pull-right"><i class="fa fa-minus-circle"></i> Remove</a>
+            <a href="#" class="btn btn-warning btn-collapse btn-flat btn-xs pull-right"><i
+                        class="fa fa-minus-circle"></i> Remove</a>
         </div>
         <div class="panel-body">
             <div class="col-sm-6">
 
-                <div class="form-group @if($errors->has('invoice_amount')) {{'has-error'}} @endif">
+                <div class="form-group @if($errors->has('tuition_fee')) {{'has-error'}} @endif">
                     {!!Form::label('tuition_fee', 'Tuition Fee *', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
                         <div class="input-group">
@@ -127,7 +128,7 @@
             <div class="col-sm-6">
 
                 <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
-                    {!!Form::label('description', 'Description *', array('class' => 'col-sm-4 control-label')) !!}
+                    {!!Form::label('description', 'Description', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
                         {!!Form::text('description', isset($invoice) ? null : 'Commission on tuition Fee', array('class' => 'form-control', 'id'=>'description'))!!}
                         @if($errors->has('description'))
@@ -141,8 +142,8 @@
                     {!!Form::label('commission_percent', 'Commission Percent *', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
                         <div class="input-group">
-
-                            {!!Form::text('commission_percent', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'commission_percent'))!!}
+                            <?php $default_per = (isset($commission_percent))? $commission_percent : 0  ?>
+                            {!!Form::text('commission_percent', isset($invoice)? null : $default_per, array('class' => 'form-control', 'id'=>'commission_percent'))!!}
                             <span class="input-group-addon">%</span>
                         </div>
                         @if($errors->has('commission_percent'))
@@ -172,7 +173,13 @@
                             <span class="input-group-addon">$</span>
                             {!!Form::text('tuition_fee_gst', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'tuition_fee_gst','placeholder'=>'10% of Commission Amount','readonly' => 'true'))!!}
                             <span class="input-group-addon">
-                               {{ Form::checkbox('gst_checker_tuition_fee', 'incentive', true,array('id'=>'gst_checker_tuition_fee')) }} GST
+                                @if((isset($invoice) && $invoice->tuition_fee_gst != 0) || !isset($invoice))
+                                    {{ Form::checkbox('gst_checker_tuition_fee', 'incentive', true, array('id'=>'gst_checker_tuition_fee')) }}
+                                    GST
+                                @else
+                                    {{ Form::checkbox('gst_checker_tuition_fee', 'incentive', null, array('id'=>'gst_checker_tuition_fee')) }}
+                                    GST
+                                @endif
                             </span>
                         </div>
                         @if($errors->has('tuition_fee_gst'))
@@ -188,7 +195,8 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <span class="panel-title">Other Commission</span>
-            <a href="#" class="btn btn-warning btn-collapse-incentive btn-flat btn-xs pull-right"><i class="fa fa-minus-circle"></i> Remove</a>
+            <a href="#" class="btn btn-warning btn-collapse-incentive btn-flat btn-xs pull-right"><i
+                        class="fa fa-minus-circle"></i> Remove</a>
         </div>
         <div class="panel-body">
             <div class="col-sm-6">
@@ -206,7 +214,6 @@
                         @endif
                     </div>
                 </div>
-
                 <div class="form-group @if($errors->has('incentive_gst')) {{'has-error'}} @endif">
                     {!!Form::label('incentive_gst', 'GST *', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
@@ -214,7 +221,14 @@
                             <span class="input-group-addon">$</span>
                             {!!Form::text('incentive_gst', isset($invoice)? null : 0, array('class' => 'form-control', 'id'=>'incentive_gst','placeholder'=>'10% of Incentive','readonly' => 'true'))!!}
                             <span class="input-group-addon">
-                               {{ Form::checkbox('gst_checker_incentive', 'incentive', true,array('id'=>'gst_checker_incentive')) }} GST
+                                @if((isset($invoice) && $invoice->incentive_gst != 0) || !isset($invoice))
+                                    {{ Form::checkbox('gst_checker_incentive', 'incentive', true, array('id'=>'gst_checker_incentive')) }}
+                                    GST
+                                @else
+                                    {{ Form::checkbox('gst_checker_incentive', 'incentive', null, array('id'=>'gst_checker_incentive')) }}
+                                    GST
+                                @endif
+
                             </span>
                         </div>
                         @if($errors->has('incentive_gst'))
@@ -226,7 +240,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group @if($errors->has('other_description')) {{'has-error'}} @endif">
-                    {!!Form::label('other_description', 'Description *', array('class' => 'col-sm-4 control-label')) !!}
+                    {!!Form::label('other_description', 'Description', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
                         {!!Form::text('other_description', null, array('class' => 'form-control', 'id'=>'other_description'))!!}
                         @if($errors->has('other_description'))
@@ -246,7 +260,7 @@
         <div class="panel-body">
             <div class="col-sm-6">
                 <div class="form-group @if($errors->has('total_commission')) {{'has-error'}} @endif">
-                    {!!Form::label('total_commission', 'Total Amount *', array('class' => 'col-sm-4 control-label')) !!}
+                    {!!Form::label('total_commission', 'Sub Total*', array('class' => 'col-sm-4 control-label')) !!}
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon">$</span>

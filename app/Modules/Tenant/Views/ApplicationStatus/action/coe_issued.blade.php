@@ -51,7 +51,7 @@
                                     @else
                                         {!!Form::text('end_date', null, array('class' => 'form-control datepicker', 'id'=>'end_date'))!!}
                                     @endif
-                            <span class="input-group-addon">
+                                    <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                                 </div>
@@ -72,7 +72,7 @@
                         <div class="form-group @if($errors->has('description')) {{'has-error'}} @endif">
                             {{ Form::label('description', 'Notes', ['class'=>'col-md-3 form-label text-right'])}}
                             <div class="col-md-9">
-                                {{ Form::textarea('description', null, ['class'=>'form-control', 'placeholder'=>'Description'])}}
+                                {{ Form::textarea('description', 'COE Issued', ['class'=>'form-control', 'placeholder'=>'Description'])}}
                                 @if($errors->has('description'))
                                     {!! $errors->first('description', '<label class="control-label"
                                                                               for="inputError">:message</label>') !!}
@@ -84,17 +84,18 @@
                             {{ Form::submit('Submit',['class'=>'btn btn-primary pull-right'])}}
                             {{ Form::submit('Submit & Continue to Invoice',['class'=>'btn btn-success pull-left'])}}
                         </div>
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
         </div>
     </div>
     {{ Condat::js("$('.datepicker').datepicker({
-                    format: 'dd/mm/yyyy',
-                    autoclose: true,
-                    todayHighlight: true
-                });"
-                )
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        todayHighlight: true
+    });"
+    )
     }}
 @stop
 

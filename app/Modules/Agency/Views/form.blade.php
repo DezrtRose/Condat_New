@@ -202,8 +202,8 @@
             <div class="form-group">
                 {!!Form::label('subscription_type', 'Subscription Type (1 month trail)', array('class' => 'col-sm-4 control-label')) !!}
                 <div class="col-sm-8">
-                    {!!Form::select('subscription_type', ['Basic'], null, array('class' =>
-                    'form-control', 'disabled' => 'disabled'))!!}
+                    {!!Form::select('subscription_type', [1 => 'Basic', 2 => 'Standard'], null, array('class' =>
+                    'form-control'))!!}
                 </div>
             </div>
         </fieldset>

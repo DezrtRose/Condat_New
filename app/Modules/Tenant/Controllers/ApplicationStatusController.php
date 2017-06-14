@@ -200,5 +200,13 @@ class ApplicationStatusController extends BaseController
         return view('Tenant::ApplicationStatus/cancel', compact('applications'));
     }
 
+    public function revert($tenant_id, $application_id)
+    {
+        $this->application_status->change_status($application_id, 1);
+        //$this->application_status->add_timeline($tenant_id, $application_id, 1); Need to find the previous status
+        Flash::success('Application Status Updated Successfully!');
+        return redirect()->route('applications.enquiry.index', $tenant_id);
+    }
+
 
 } //controller ends here

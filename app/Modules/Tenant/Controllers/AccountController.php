@@ -91,7 +91,7 @@ class AccountController extends BaseController
         if ($created) {
             Flash::success('Payment has been added successfully.');
             $payment = ClientPayment::find($created);
-            $this->client->addLog($client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => '']);
+            $this->client->addLog($client_id, 5, ['{{NAME}}' => get_tenant_name(), '{{TYPE}}' => $payment->payment_type, '{{DESCRIPTION}}' => $payment->description, '{{DATE}}' => format_date($payment->date_paid), '{{AMOUNT}}' => $payment->amount, '{{VIEW_LINK}}' => url($tenant_id. "/students/payment/receipt/" . $payment->client_payment_id)]);
         }
         return redirect()->route('tenant.accounts.index', [$tenant_id, $client_id]);
     }
@@ -193,7 +193,7 @@ class AccountController extends BaseController
         $invoices = StudentInvoice::join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
             ->select(['invoices.*', 'student_invoices.student_invoice_id'])
             ->where('student_invoices.client_id', $client_id)
-            ->select('student_invoices.student_invoice_id', 'invoices.invoice_id', 'invoices.invoice_date', 'invoices.description', 'invoices.invoice_amount', 'invoices.total_gst', DB::raw('(SELECT
+            ->select('student_invoices.student_invoice_id', 'invoices.invoice_id', 'invoices.invoice_date', 'invoices.description', 'invoices.invoice_amount', 'invoices.discount', 'invoices.total_gst', DB::raw('(SELECT
     IF((invoices.`final_total` - SUM(client_payments.amount) > 0 OR ISNULL(SUM(client_payments.amount))), \'Outstanding\', \'Paid\')
   FROM
     client_payments 
@@ -222,7 +222,9 @@ class AccountController extends BaseController
                   </button>
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
-                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">View Invoice</a></li>
+                    <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">Print Invoice</a></li>
+                    <li><a href="' . route('tenant.student.pdf', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">Download PDF</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.student.mail', [$tenant_id, $data->student_invoice_id]) . '">Mail Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
                     <li><a type="button" data-toggle="modal" data-target="#deleteInvoice" id="'.$data->invoice_id.'" class="delete-invoice">Delete</a></li>
                   </ul>
@@ -253,6 +255,9 @@ class AccountController extends BaseController
             })
             ->editColumn('invoice_amount', function ($data) {
                 return format_price($data->invoice_amount);
+            })
+            ->editColumn('discount', function ($data) {
+                return format_price($data->discount);
             })
             ->editColumn('invoice_id', function ($data) {
                 return format_id($data->invoice_id, 'I');
@@ -307,6 +312,12 @@ class AccountController extends BaseController
             })
             ->editColumn('invoice_id', function ($data) {
                 return format_id($data->invoice_id, 'I');
+            })
+            ->editColumn('invoice_amount', function ($data) {
+                return format_price($data->invoice_amount);
+            })
+            ->editColumn('discount', function ($data) {
+                return format_price($data->discount);
             });
         return $datatable->make(true);
     }

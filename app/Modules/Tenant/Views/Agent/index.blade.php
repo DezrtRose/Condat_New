@@ -26,6 +26,19 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
+                    <tbody>
+                    @foreach($agents as $agent)
+                    <tr>
+                        <td>{{ format_id($agent->agent_id, 'Ag') }}</td>
+                        <td>{{ $agent->name }}</td>
+                        <td>{{ $agent->number }}</td>
+                        <td><a href="mailto:{{ $agent->email }}">{{ $agent->email }}</a></td>
+                        <td><a href="{{ $agent->website }}" target="_blank">{{ $agent->website }}</a></td>
+                        <td>{{ get_tenant_name($agent->added_by) }}</td>
+                        <td><a data-toggle="tooltip" title="View Agent" class="btn btn-action-box" href ="{{ route('tenant.agents.show', [$tenant_id, $agent->agent_id]) }}"><i class="fa fa-eye"></i></a> <a data-toggle="tooltip" title="Edit Agent" class="btn btn-action-box" href ="{{ route('tenant.agents.edit', [$tenant_id, $agent->agent_id]) }}"><i class="fa fa-edit"></i></a> <a data-toggle="tooltip" title="Delete Agent" class="delete-user btn btn-action-box" href="{{ route( 'tenant.agents.destroy', [$tenant_id, $agent->agent_id]) }}"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+                    @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -33,19 +46,8 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            oTable = $('#agents').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": appUrl + "/agent/data",
-                "columns": [
-                    {data: 'agent_id', name: 'agent_id'},
-                    {data: 'name', name: 'name'},
-                    {data: 'number', name: 'number'},
-                    {data: 'email', name: 'email'},
-                    {data: 'website', name: 'website'},
-                    {data: 'user_email', name: 'user_email'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
+            $('#agents').DataTable({
+                "pageLength": 50,
                 order: [[0, 'desc']]
             });
         });

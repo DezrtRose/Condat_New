@@ -77,6 +77,7 @@
                             <th>Client Name</th>
                             <th>Phone</th>
                             <th>Email</th>
+                            <th>Discount</th>
                             <th>Invoice Amount</th>
                             <th>Total gst</th>
                             <th>Outstanding</th>
@@ -91,6 +92,7 @@
                                 <td>{{ $invoice->fullname }}</td>
                                 <td>{{ $invoice->number }}</td>
                                 <td>{{ $invoice->email }}</td>
+                                <td>{{ format_price($invoice->discount) }}</td>
                                 <td>{{ format_price($invoice->invoice_amount) }}</td>
                                 <td>{{ format_price($invoice->total_gst) }}</td>
 
@@ -114,10 +116,11 @@
                                        title="View Invoice"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                                 data-toggle="tooltip" data-placement="top" title="View Invoice"></i></a>
-                                    {{--<a href="#" title="Email Invoice"><i
+
+                                    <a href="#" data-toggle="modal" data-target="#condat-modal" data-url="{{ route('tenant.student.mail', [$tenant_id, $invoice->student_invoice_id]) }}"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-send"
                                                 data-toggle="tooltip" data-placement="top"
-                                                title="Email Invoice"></i></a>--}}
+                                                title="Mail Invoice"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -149,12 +152,13 @@
             $('.dateranger').daterangepicker({
                 autoUpdateInput: false,
                 locale: {
-                    cancelLabel: 'Clear'
+                    cancelLabel: 'Clear',
+                    format: 'DD/MM/YYYY'
                 }
             });
 
             $('.dateranger').on('apply.daterangepicker', function (ev, picker) {
-                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
             });
 
             $('.dateranger').on('cancel.daterangepicker', function (ev, picker) {
@@ -162,4 +166,6 @@
             });
         });
     </script>
+    {!! Condat::js('client_mail.js') !!}
+    {!! Condat::registerModal() !!}
 @stop

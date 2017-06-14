@@ -15,7 +15,7 @@
             {!!Form::model($search_attributes, array('route' => ['college.invoice.groupInvoice', $tenant_id], 'method' => 'post', 'class' => ''))!!}
             <div class="box-header">
                 <h3 class="box-title">Filter Options</h3>
-                <a href="{{route('college.invoice.grouped', $tenant_id)}}" class="btn btn-primary pull-right">View Group Invoice</a>
+                {{--<a href="{{route('college.invoice.grouped', $tenant_id)}}" class="btn btn-primary pull-right">View Group Invoice</a>--}}
                 {{--<input type="submit" class="btn btn-primary pull-right" value="Search"/>--}}
             </div>
 

@@ -2,7 +2,7 @@
 @section('title', 'Application View')
 @section('breadcrumb')
     @parent
-    <li><a href="{{url('tenant/application')}}" title="All Applications"><i class="fa fa-users"></i> Applications</a>
+    <li><a href="{{url('tenant/application')}}" title="All Applications"><i class="fa fa-users"></i> Applicationss</a>
     </li>
     <li>View</li>
 @stop
@@ -24,7 +24,7 @@
                     <div class="col-sm-9">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <span class="panel-title">Course Information</span>
+                                <span class="panel-title">Course Information </span>
                                 <a href="{{ route( 'tenant.application.edit', [$tenant_id, $application->application_id]) }}" class="btn btn-primary btn-flat btn-xs pull-right"><i class="fa fa-pencil"></i> Edit Application</a>
                             </div>
                             <div class="panel-body">
@@ -129,7 +129,7 @@
                                         None
                                         <button class="btn btn-primary btn-xs pull-right" data-toggle="modal"
                                                 data-target="#superAgentModal"><i class="glyphicon glyphicon-plus-sign"></i>
-                                            Add
+                                            Assign
                                         </button>
                                     @endif
                                 </div>
@@ -149,7 +149,7 @@
                                         None
                                         <button class="btn btn-primary btn-xs pull-right" data-toggle="modal"
                                                 data-target="#agentModal"><i class="glyphicon glyphicon-plus-sign"></i>
-                                            Add
+                                            Assign
                                         </button>
                                     @endif
                                 </div>
@@ -174,14 +174,14 @@
                             </div>
                         </div>
 
-                        <div class="panel panel-default">
+                        {{--<div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Uninvoice Amount</h3>
                             </div>
                             <div class="panel-body">
                                 <h3>{{ format_price($uninvoiced_amount) }}</h3>
                             </div>
-                        </div>
+                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -209,7 +209,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i>
-                        Add
+                        Assign
                     </button>
                 </div>
                 {!!Form::close()!!}
@@ -239,7 +239,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i>
-                        Add
+                        Assign
                     </button>
                 </div>
                 {!!Form::close()!!}

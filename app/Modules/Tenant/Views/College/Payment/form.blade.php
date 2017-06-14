@@ -9,9 +9,9 @@
                         <i class="fa fa-calendar"></i>
                     </div>
                     @if(!isset($payment) || $payment->date_paid == null)
-                        {!!Form::text('date_paid', null, array('class' => 'form-control', 'id'=>'date_paid_picker'))!!}
+                        {!!Form::text('date_paid', null, array('class' => 'form-control', 'id'=>'date_paid_picker', 'autocomplete' => 'off'))!!}
                     @else
-                        {!!Form::text('date_paid', format_date($payment->date_paid), array('class' => 'form-control', 'id'=>'date_paid_picker'))!!}
+                        {!!Form::text('date_paid', format_date($payment->date_paid), array('class' => 'form-control', 'id'=>'date_paid_picker', 'autocomplete' => 'off'))!!}
                     @endif
                 </div>
                 @if($errors->has('date_paid'))
@@ -54,7 +54,7 @@
                 @elseif($pay_type == 2)
                     {!!Form::select('payment_type', config('constants.payment_to_college'), null, array('class' => 'form-control', 'id'=>'payment_type'))!!}
                 @else
-                    {!!Form::select('payment_type', ['College To Agent' => 'College To Agent', 'Pre Claimed Commission' => 'Pre Claimed Commission'], null, array('class' => 'form-control', 'id'=>'payment_type'))!!}
+                    {!!Form::select('payment_type', ['College / Super Agent to Company' => 'College / Super Agent to Company', 'Pre Claimed Commission' => 'Pre Claimed Commission'], null, array('class' => 'form-control', 'id'=>'payment_type'))!!}
                 @endif
             </div>
         </div>

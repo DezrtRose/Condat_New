@@ -7,16 +7,7 @@
 @stop
 @section('content')
         @include('Tenant::Client/client_header')
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @include('flash::message')
+
         <div class="col-md-3">
             <!-- About Me Box -->
             <div class="box box-primary">

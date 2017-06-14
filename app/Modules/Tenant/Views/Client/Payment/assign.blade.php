@@ -6,7 +6,7 @@
 {!!Form::open(['url' => $action, 'id' => 'add-invoice', 'class' => 'form-horizontal form-left'])!!}
 <div class="modal-body">
     <div class="form-group">
-        {!!Form::label('invoice_id', 'Invoice', array('class' => 'col-sm-4 control-label')) !!}
+        {!!Form::label('invoice_id', 'Invoice *', array('class' => 'col-sm-4 control-label')) !!}
         <div class="col-sm-8">
             {!!Form::select('invoice_id', $invoice_array, null, array('class' => 'form-control', 'id'=>'invoice_id'))!!}
         </div>

@@ -22,10 +22,12 @@
                     <tr>
                         <th>Payment ID</th>
                         <th>Payment Date</th>
+                        <th>Institute Name</th>
+                        <th>Client Name</th>
                         <th>Amount</th>
                         <th>Payment Type</th>
                         <th>Invoice Id</th>
-                        <th>Description</th>
+                        <th>Added By</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -35,10 +37,12 @@
                         <tr>
                             <td>{{ format_id($payment->college_payment_id, 'CPI') }}</td>
                             <td>{{ format_date($payment->date_paid) }}</td>
+                            <td>{{ $payment->company_name }}</td>
+                            <td>{{ $payment->client_name }}</td>
                             <td>{{ format_price($payment->amount) }}</td>
                             <td>{{ $payment->payment_type }}</td>
-                            <td>{{ format_id($payment->college_invoice_id, 'CI')}}</td>
-                            <td>{{ $payment->description }}</td>
+                            <td>{{ ($payment->college_invoice_id != 0)? format_id($payment->college_invoice_id, 'CI') : ''}}</td>
+                            <td>{{ get_tenant_name($payment->added_by) }}</td>
                             <td>
                                 <a target="_blank" href="{{route('tenant.college.payment.receipt', [$tenant_id, $payment->college_payment_id])}}" title="Print Payment"><i
                                             class="processing btn btn-primary btn-sm glyphicon glyphicon-print"

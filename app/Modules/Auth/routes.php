@@ -1,3 +1,4 @@
+
 <?php
 
 Route::group(array('module' => 'Auth', 'middleware' => ['guest'], 'namespace' => 'App\Modules\Auth\Controllers'), function() {

@@ -53,7 +53,7 @@
                     </tr>
                     <tr>
                         <th>Email ID</th>
-                        <td>{{$agency->email_id}}</td>
+                        <td><a href="mailto:{{ $agency->email_id }}">{{ $agency->email_id }}</a></td>
                     </tr>
                     <tr>
                         <th>Phone</th>

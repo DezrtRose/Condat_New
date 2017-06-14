@@ -5,6 +5,7 @@ use App\Modules\Tenant\Models\Application\StudentApplicationPayment;
 use App\Modules\Tenant\Models\Client\Client;
 use App\Modules\Tenant\Models\Application\CourseApplication;
 use App\Modules\Tenant\Models\Client\ClientPayment;
+use App\Modules\Tenant\Models\Email;
 use App\Modules\Tenant\Models\Invoice\CollegeInvoicePayment;
 use App\Modules\Tenant\Models\Invoice\Invoice;
 use App\Modules\Tenant\Models\Invoice\StudentInvoice;
@@ -13,6 +14,7 @@ use App\Modules\Tenant\Models\Payment\CollegePayment;
 use App\Modules\Tenant\Models\Setting;
 use Flash;
 use DB;
+use PDF;
 use Carbon;
 
 use Illuminate\Http\Request;
@@ -189,8 +191,10 @@ class StudentController extends BaseController
                   <ul role="menu" class="dropdown-menu">
                     <li><a href="' . route("tenant.invoice.payments", [$tenant_id, $data->invoice_id, 2]) . '">View Payments</a></li>
                     <li><a href="' . route('tenant.student.invoice', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">Print Invoice</a></li>
+                    <li><a href="' . route('tenant.student.pdf', [$tenant_id, $data->student_invoice_id]) . '" target="_blank">Download PDF</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#condat-modal" data-url="' . route('tenant.student.mail', [$tenant_id, $data->student_invoice_id]) . '">Mail Invoice</a></li>
                     <li><a href="' . route("tenant.student.editInvoice", [$tenant_id, $data->student_invoice_id]) . '">Edit</a></li>
-                    <li><a href="' . route("tenant.student.deleteInvoice", [$tenant_id, $data->invoice_id]) . '" onclick="return confirm(\'Are you sure you want to delete the record?\')">Delete</a></li>
+                    <li><a type="button" data-toggle="modal" data-target="#deleteInvoice" id="'.$data->invoice_id.'" class="delete-invoice">Delete</a></li>
                   </ul>
                 </div>';
             })
@@ -201,12 +205,21 @@ class StudentController extends BaseController
             ->addColumn('outstanding_amount', function ($data) use ($tenant_id) {
                 $outstanding = $this->invoice->getOutstandingAmount($data->invoice_id);
                 if ($outstanding != 0)
-                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                    return format_price($outstanding) . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
-                    return 0;
+                    return format_price(0);
             })
             ->editColumn('invoice_date', function ($data) {
                 return format_date($data->invoice_date);
+            })
+            ->editColumn('total_gst', function ($data) {
+                return format_price($data->total_gst);
+            })
+            ->editColumn('invoice_amount', function ($data) {
+                return format_price($data->invoice_amount);
+            })
+            ->editColumn('discount', function ($data) {
+                return format_price($data->discount);
             })
             ->editColumn('invoice_id', function ($data) {
                 return format_id($data->invoice_id, 'I');
@@ -252,12 +265,21 @@ class StudentController extends BaseController
             ->addColumn('outstanding_amount', function ($data) use ($tenant_id) {
                 $outstanding = $this->invoice->getOutstandingAmount($data->invoice_id);
                 if ($outstanding != 0)
-                    return $outstanding . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
+                    return format_price($outstanding) . ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="' . url($tenant_id . '/invoices/' . $data->invoice_id . '/payment/add/2') . '"><i class="glyphicon glyphicon-plus-sign"></i> Add Payment</a>';
                 else
-                    return 0;
+                    return format_price(0);
             })
             ->editColumn('invoice_date', function ($data) {
                 return format_date($data->invoice_date);
+            })
+            ->editColumn('total_gst', function ($data) {
+                return format_price($data->total_gst);
+            })
+            ->editColumn('invoice_amount', function ($data) {
+                return format_price($data->invoice_amount);
+            })
+            ->editColumn('discount', function ($data) {
+                return format_price($data->discount);
             })
             ->editColumn('invoice_id', function ($data) {
                 return format_id($data->invoice_id, 'I');
@@ -284,11 +306,47 @@ class StudentController extends BaseController
         return view("Tenant::Student/Payment/receipt", $data);
     }
 
+    function downloadPdf($tenant_id, $invoice_id)
+    {
+        $data['agency'] = $this->agent->getAgentDetails();
+        $data['bank'] = $this->setting->getBankDetails();
+        $data['invoice'] = $invoice = $this->invoice->getDetails($invoice_id);
+        $details = $this->getCompanyDetails();
+        if(!isset($details['abn'])){
+            if(!$this->checkAuthority()) {
+                Flash::error('Company details have not been stored yet. Please contact the system administrator to proceed further.');
+                return redirect()->route('tenant.application.students', [$tenant_id, $invoice->application_id]);
+            } else {
+                Flash::error('Company details have not been stored yet. Please fill out the form and save it to proceed further.');
+                return redirect()->route('tenant.company.edit', $tenant_id);
+            }
+        }
+        //$data['client_name'] = $this->application->getClientName($invoice->course_application_id);
+        $data['pay_details'] = $this->invoice->getPayDetails($invoice->invoice_id);
+        $pdf = PDF::loadView('Tenant::Student/Invoice/pdf', $data);
+        return $pdf->stream();
+        //return $pdf->download('invoice.pdf');
+
+        //return view("Tenant::Student/Payment/receipt", $data);
+    }
+
     public function show($tenant_id, $invoice_id)
     {
         $data['agency'] = $this->agent->getAgentDetails();
         $data['bank'] = $this->setting->getBankDetails();
-        $data['invoice'] = $invoice = $this->invoice->getDetails($invoice_id); //dd($data['invoice']->toArray());
+        $data['invoice'] = $invoice = $this->invoice->getDetails($invoice_id);
+        if (empty($invoice))
+            abort(404);
+        $details = $this->getCompanyDetails();
+        if(!isset($details['abn'])){
+            if(!$this->checkAuthority()) {
+                Flash::error('Company details have not been stored yet. Please contact the system administrator to proceed further.');
+                return redirect()->route('tenant.application.students', [$tenant_id, $invoice->application_id]);
+            } else {
+                Flash::error('Company details have not been stored yet. Please fill out the form and save it to proceed further.');
+                return redirect()->route('tenant.company.edit', $tenant_id);
+            }
+        }
         //$data['client_name'] = $this->application->getClientName($invoice->course_application_id);
         $data['pay_details'] = $this->invoice->getPayDetails($invoice->invoice_id);
         return view("Tenant::Student/Invoice/show", $data);
@@ -311,7 +369,12 @@ class StudentController extends BaseController
 
         $application_id = $this->invoice->editInvoice($this->request->all(), $invoice_id);
         Flash::success('Invoice has been updated successfully.');
-        return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
+        if($application_id == 0 || $application_id == null) {
+            $client_id = StudentInvoice::find($invoice_id)->client_id;
+            return redirect()->route('tenant.accounts.index', [$tenant_id, $client_id]);
+        }
+        else
+            return redirect()->route('tenant.application.students', [$tenant_id, $application_id]);
     }
 
     public function deleteInvoice($tenant_id, $invoice_id)
@@ -333,6 +396,89 @@ class StudentController extends BaseController
         $this->payment->deletePayment($payment_id);
         Flash::success('Payment has been deleted successfully.');
         return redirect()->back();
+    }
+
+    function mailPdf($tenant_id, $invoice_id)
+    {
+        $data['email_list'] = Email::where('email', '!=', '')->lists('email', 'email');
+        $data['student'] = $this->invoice->getStudentDetails($invoice_id);
+        $data['invoice'] = $this->invoice->getDetails($invoice_id);
+        return view("Tenant::Student/Invoice/mail", $data);
+    }
+
+    function postMailPdf($tenant_id, $invoice_id)
+    {
+        $rules = [
+            'to' => 'required|array|min:1',
+            'subject' => 'required',
+        ];
+        $request_array = $this->request->all(); //dd($request_array);
+        $validator = \Validator::make($request_array, $rules);
+        if ($validator->fails())
+            return $this->fail(['errors' => $validator->getMessageBag()->toArray()]);
+
+        /*if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+        }*/
+
+        $data['agency'] = $this->agent->getAgentDetails();
+        $data['bank'] = $this->setting->getBankDetails();
+        $data['invoice'] = $invoice = $this->invoice->getDetails($invoice_id);
+        $details = $this->getCompanyDetails();
+        if(!isset($details['abn'])){
+            if(!$this->checkAuthority()) {
+                Flash::error('Company details have not been stored yet. Please contact the system administrator to proceed further.');
+                return redirect()->route('tenant.application.students', [$tenant_id, $invoice->application_id]);
+            } else {
+                Flash::error('Company details have not been stored yet. Please fill out the form and save it to proceed further.');
+                return redirect()->route('tenant.company.edit', $tenant_id);
+            }
+        }
+        //$data['client_name'] = $this->application->getClientName($invoice->course_application_id);
+        $data['pay_details'] = $this->invoice->getPayDetails($invoice->invoice_id);
+        $pdf = PDF::loadView('Tenant::Student/Invoice/pdf', $data);
+        $newPdf =  $pdf->stream();
+
+        $company_name = (isset($details['company_name']) && $details['company_name'] != '')? $details['company_name'] : 'Condat Solutions';
+
+        $content = <<<EOD
+<strong>Dear {$invoice->client_name}, </strong>
+<p>You've received a mail for student invoice. <br/>
+Please refer the attached document for more details.</p>
+<p>
+Regards,<br>
+{$company_name}<br>
+</p>
+EOD;
+
+        $param = ['content' => $request_array['body'],
+            'subject' => $request_array['subject'],
+            'heading' => $company_name,
+            'subheading' => 'All your business in one space',
+        ];
+
+        $mail = \Mail::send('template.master', $param, function($message) use ($newPdf, $invoice, $request_array, $details)
+        {
+            $message->to($request_array['to']);
+            if(isset($request_array['cc']))
+                $message->cc($request_array['cc']);
+            if(isset($request_array['sendBcc']) && $request_array['sendBcc'] == 'on')
+                $message->bcc($this->current_user()->email);
+            $message->subject($request_array['subject']);
+            //$message->from($this->current_user()->email, $details['company_name']);
+            $message->from('noreply@condat.com.au', $details['company_name']);
+            $message->attachData($newPdf, format_id($invoice->invoice_id, 'I').'.pdf', ['mime' => 'application/pdf']);
+            if(isset($details['email']))
+                $message->replyTo($details['email'], $details['company_name']);
+        });
+
+        if($mail)
+            Flash::success('Mail has been sent successfully.');
+        else
+            Flash::error('An error encountered while sending the mail. Please try again later.');
+
+        return $this->success(['message' => 'Process Complete!']);
+        //return redirect()->route('tenant.application.students', [$tenant_id, $invoice->application_id]);
     }
 
 }

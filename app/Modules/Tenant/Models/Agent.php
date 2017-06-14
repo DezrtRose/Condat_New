@@ -170,7 +170,7 @@ Class Agent extends Model
         if (!empty($agent))
             return $agent->name;
         else
-            return 'Undefined';
+            return ''; // N/A
     }
 
     function getAgents()

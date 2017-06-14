@@ -1,4 +1,4 @@
-<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 <section class="margin-to-up margin-to-down">
     <nav class="nav-bar">
         <div class="nav-container">

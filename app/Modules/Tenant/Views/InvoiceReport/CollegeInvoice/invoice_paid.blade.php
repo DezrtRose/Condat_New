@@ -28,7 +28,7 @@
                         <th>Institute Name</th>
                         <th>Course Name</th>
                         <th>Invoice To</th>
-                        <th>Total Amount</th>
+                        <th>Sub Total</th>
                         <th>Total GST</th>
                         <th></th>
                     </tr>

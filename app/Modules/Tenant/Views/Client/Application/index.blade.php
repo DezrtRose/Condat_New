@@ -9,7 +9,6 @@
 
     @include('Tenant::Client/client_header')
     <div class="col-xs-12 col-md-12">
-        @include('flash::message')
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Manage Applications</h3>

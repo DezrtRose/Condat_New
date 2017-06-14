@@ -1,25 +1,33 @@
-<div class="form-group">
-    {!!Form::label('institute_id', 'Select Institute', array('class' => 'col-md-2 col-sm-12 control-label')) !!}
+<div class="form-group @if($errors->has('institute_id')) {{'has-error'}} @endif">
+    {!!Form::label('institute_id', 'Select Institute *', array('class' => 'col-md-2 col-sm-12 control-label')) !!}
     <div class="col-md-10 col-sm-12">
         {!!Form::select('institute_id', $institutes, null, array('class' => 'form-control institute', 'id' => 'institute'))!!}
         <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal"
            data-url="{{ url($tenant_id.'/application/institute/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
             Institute</a>
+        @if($errors->has('institute_id'))
+                    {!! $errors->first('institute_id', '<label class="control-label"
+                                                             for="inputError">:message</label>') !!}
+                @endif
     </div>
 </div>
 
-<div class="form-group">
-    {!!Form::label('institution_course_id', 'Select Course', array('class' => 'col-md-2 col-sm-12 control-label')) !!}
+<div class="form-group @if($errors->has('institution_course_id')) {{'has-error'}} @endif">
+    {!!Form::label('institution_course_id', 'Select Course *', array('class' => 'col-md-2 col-sm-12 control-label')) !!}
     <div class="col-md-10 col-sm-12">
         {!!Form::select('institution_course_id', $courses, null, array('class' => 'form-control course', 'id' => 'course'))!!}
         <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal"
            data-url="{{ url($tenant_id.'/application/course/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
             Course</a>
+        @if($errors->has('institution_course_id'))
+                    {!! $errors->first('institution_course_id', '<label class="control-label"
+                                                             for="inputError">:message</label>') !!}
+                @endif
     </div>
 </div>
 
-<div class="form-group">
-    <label for="intake" class="col-sm-2 control-label">Select Intake</label>
+<div class="form-group @if($errors->has('intake_id')) {{'has-error'}} @endif">
+    <label for="intake" class="col-sm-2 control-label">Select Intake *</label>
 
     <div class="col-sm-10">
         {!!Form::select('intake_id', $intakes, null, array('class' =>
@@ -27,6 +35,10 @@
         <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal"
            data-url="{{ url($tenant_id.'/application/intake/add')}}"><i class="glyphicon glyphicon-plus-sign"></i> Add
             Intake</a>
+            @if($errors->has('intake_id'))
+                    {!! $errors->first('intake_id', '<label class="control-label"
+                                                             for="inputError">:message</label>') !!}
+                @endif
     </div>
 </div>
 <div class="form-group">
@@ -34,8 +46,11 @@
 
     <div class="col-sm-10">
         <div class='input-group date'>
-            <input value="@if(isset($application)) {{format_date($application->end_date)}} @endif" type="text" name="end_date" class="form-control datepicker" id="end_date"
-                   placeholder="dd/mm/yyyy">
+            @if(!isset($application))
+                {!! Form::text('end_date', null, array('class' => 'form-control datepicker', 'id' => 'end_date', 'placeholder' => "dd/mm/yyyy")) !!}
+            @else
+                {!! Form::text('end_date', format_date($application->end_date), array('class' => 'form-control datepicker', 'id' => 'end_date', 'placeholder' => "dd/mm/yyyy")) !!}
+            @endif
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -43,7 +58,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label for="tuition_fee" class="col-sm-2 control-label">Tuition Fee</label>
+    <label for="tuition_fee" class="col-sm-2 control-label">Total Tuition Fee</label>
 
     <div class="col-sm-10">
         <input type="text" name="tuition_fee" class="form-control" id="fee" placeholder="Tuition Fee">
@@ -53,7 +68,7 @@
     <label for="student_id" class="col-sm-2 control-label">Student ID</label>
 
     <div class="col-sm-10">
-        <input type="text" value="@if(isset($application)) {{$application->student_id}} @endif" name="student_id" class="form-control" id="student_id" placeholder="Student ID">
+        {!! Form::text('student_id', null, array('class' => 'form-control', 'id' => 'student_id', 'placeholder' => "Student ID")) !!}
     </div>
 </div>
 <div class="form-group">
@@ -99,8 +114,11 @@
             },
             success: function (result) {
                 $("#course").html(result.data.options);
-                @if(Request::segment(4) == 'edit')
+                {{--@if(Request::segment(4) == 'edit')
                 $("#course").val({{$application->institution_course_id}});
+                @endif--}}
+                @if(old('institution_course_id'))
+                    $("#course").val({{old('institution_course_id')}});
                 @endif
                 getTuitionFee();
             }
@@ -120,8 +138,11 @@
             },
             success: function (result) {
                 $("#intake").html(result.data.options);
-                @if(Request::segment(4) == 'edit')
+                {{--@if(Request::segment(4) == 'edit')
                 $("#intake").val({{$application->intake_id}});
+                @endif--}}
+                @if(old('intake_id'))
+                    $("#intake").val({{old('intake_id')}});
                 @endif
             }
         }).complete(function () {
@@ -150,6 +171,16 @@
     $(document).ready(function () {
         getCourses();
         getIntakes();
+    });
+
+    $(document).on('focusout', '#add-institute #name', function() {
+    //$('#add-institute #name').focusout(function() {
+        var curVal = $('#invoice_to_name').val();
+        var instName = $(this).val();
+        if(curVal != '' || $('#invoice_to_name').is(':empty'))
+        {
+            $('#invoice_to_name').val(instName);
+        }
     });
 
     // process the institute form
@@ -259,7 +290,7 @@
                 .done(function (result) {
                     if (result.status == 1) {
                         var select = $('#intake');
-                        select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.name));
+                        select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.description));
                         select.val(result.data.intake_id);
 
                         if ($(".intake option[value='']").length != 0)

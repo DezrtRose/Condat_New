@@ -107,7 +107,7 @@
                     .done(function (result) {
                         if (result.status == 1) {
                             var select = $('#intake');
-                            select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.name));
+                            select.append($("<option></option>").attr("value", result.data.intake_id).text(result.data.description));
                             select.val(result.data.intake_id);
 
                             if ($(".intake option[value='']").length != 0)

@@ -19,7 +19,7 @@
             <div class="box-body">
                 {!! Form::model($application, [
                             'class'=>'form-horizontal',
-                            'route'=>['application.cancel', $tenant_id, $application->course_application_id]
+                            'route'=>['application.cancel', $tenant_id, $application->application_id]
                 ])!!}
 
                 <div class="form-group">

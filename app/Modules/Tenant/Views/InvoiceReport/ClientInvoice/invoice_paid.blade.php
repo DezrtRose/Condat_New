@@ -28,6 +28,7 @@
                             <th>Client Name</th>
                             <th>Phone</th>
                             <th>Email</th>
+                            <th>Discount</th>
                             <th>Invoice Amount</th>
                             <th>Total gst</th>
                             <th></th>
@@ -37,12 +38,13 @@
                         @foreach($invoice_reports as $invoice)
                             <tr>
                                 <td>{{ format_id($invoice->invoice_id, 'I') }}</td>
-                                <td>{{ $invoice->invoice_date }}</td>
+                                <td>{{ format_date($invoice->invoice_date) }}</td>
                                 <td>{{ $invoice->fullname }}</td>
                                 <td>{{ $invoice->number }}</td>
                                 <td>{{ $invoice->email }}</td>
-                                <td>{{ $invoice->invoice_amount }}</td>
-                                <td>{{ $invoice->total_gst }}</td>
+                                <td>{{ format_price($invoice->discount) }}</td>
+                                <td>{{ format_price($invoice->invoice_amount) }}</td>
+                                <td>{{ format_price($invoice->total_gst) }}</td>
                                 <td>
                                     <a data-toggle="modal" data-target="#condat-modal"
                                        data-url="{{url($tenant_id.'/invoices/' . $invoice->invoice_id . '/payment/add/2')}}"><i
@@ -59,10 +61,10 @@
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-eye-open"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="View Invoice"></i></a>
-                                    {{--<a href="#" title="Email Invoice"><i
+                                    <a href="#" data-toggle="modal" data-target="#condat-modal" data-url="{{ route('tenant.student.mail', [$tenant_id, $invoice->student_invoice_id]) }}"><i
                                                 class="processing btn btn-primary btn-sm glyphicon glyphicon-send"
                                                 data-toggle="tooltip" data-placement="top"
-                                                title="Email Invoice"></i></a>--}}
+                                                title="Mail Invoice"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -84,18 +86,6 @@
             });
         });
     </script>
+    {!! Condat::js('client_mail.js') !!}
     {!! Condat::registerModal() !!}
 @stop
-                      
-
-                      
-                            
-                
-
-      
-
-              
-
-
-              
-        

@@ -18,7 +18,9 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\VerifyCsrfToken::class,
+        \GeneaLabs\LaravelCaffeine\Http\Middleware\LaravelCaffeineDripMiddleware::class,
     ];
+
 
     /**
      * The application's route middleware.
@@ -29,10 +31,14 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'auth.system'  => 'App\Http\Middleware\RedirectSystemUser',
+        'auth.system' => 'App\Http\Middleware\RedirectSystemUser',
         'guest.system' => 'App\Http\Middleware\RedirectSystemUserIfAuthenticated',
         'preventSystem' => 'App\Http\Middleware\PreventSystemAccess',
-        'auth.tenant'  => 'App\Http\Middleware\RedirectTenantUser',
+        'auth.tenant' => 'App\Http\Middleware\RedirectTenantUser',
+        'standard.features' => 'App\Http\Middleware\StandardFeatures',
         'guest.tenant' => 'App\Http\Middleware\RedirectTenantUserIfAuthenticated',
+        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
+        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
+        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
     ];
 }

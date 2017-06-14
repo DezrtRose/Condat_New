@@ -85,6 +85,7 @@ class Course extends Model
     {
         $courses = InstituteCourse::join('courses', 'institute_courses.course_id', '=', 'courses.course_id')
             ->where('institute_courses.institute_id', $institute_id)
+            ->orderBy('courses.name', 'asc')
             ->lists('courses.name', 'courses.course_id');
         return $courses;
     }

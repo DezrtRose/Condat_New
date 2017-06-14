@@ -8,7 +8,7 @@ class SubscriptionPayment extends Model {
     protected $connection = 'master';
     protected $primaryKey = "subscription_payment_id";
 
-    protected $fillable = array('amount', 'payment_date', 'payment_type', 'agency_subscription_id');
+    protected $fillable = array('amount', 'payment_date', 'payment_type', 'agency_subscription_id', 'stripe_transaction_id');
 
     public $timestamps = false;
 

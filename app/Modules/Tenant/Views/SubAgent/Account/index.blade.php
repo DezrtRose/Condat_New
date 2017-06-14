@@ -10,7 +10,7 @@
     @include('Tenant::Client/Application/navbar')
 
     <div class="col-xs-12">
-
+    <br/>
         @if($application->sub_agent_id != 0 && $application->sub_agent_id != null)
         <div class="box box-primary">
             <div class="box-header with-border">
@@ -29,9 +29,46 @@
                         <th>Paid By</th>
                         <th>Payment Type</th>
                         <th>Description</th>
+                        {{--<th>Invoice</th>--}}
                         <th></th>
                     </tr>
                     </thead>
+                    <tbody>
+                    @foreach($payments as $key => $payment)
+                    <tr>
+                        <td>{{ format_id($payment->subagent_payments_id, 'SAP') }}</td>
+                        <td>{{ format_date($payment->date_paid) }}</td>
+                        <td>{{ format_price($payment->amount) }}</td>
+                        <td>{{ $payment->payment_method }}</td>
+                        <td>{{ $payment->payment_type }}</td>
+                        <td>{{ $payment->description }}</td>
+                        {{--<td>
+                            @if(empty($payment->invoice_id) || $payment->invoice_id == 0)
+                                Uninvoiced <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="{{url($tenant_id.'/payment/'.$payment->client_payment_id.'/'.$payment->course_application_id.'/assign')}}"><i class="glyphicon glyphicon-plus-sign"></i> Assign to Invoice</a>
+                            @else
+                                {{format_id($payment->invoice_id, 'I')}}
+                            @endif
+                        </td>--}}
+                        {{--<td>
+                            <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#condat-modal" data-url="{{route('subagents.invoice.upload', [$tenant_id, $payment->client_payment_id])}}"><i class="fa fa-upload"></i> Upload Invoice</a>
+                        </td>--}}
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-primary" type="button">Action</button>
+                                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul role="menu" class="dropdown-menu">
+                                    <li><a target="_blank" href="{{route('tenant.subagent.payments.receipt', [$tenant_id, $payment->subagent_payments_id])}}">Print Receipt</a></li>
+                                    <li><a href="{{route("application.subagents.editPayment", [$tenant_id, $payment->subagent_payments_id])}}">Edit</a></li>
+                                    <li><a href="{{route('application.subagent.deletePayment', [$tenant_id, $payment->client_payment_id])}}" onclick="return confirm('Are you sure you want to delete the record?')">Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -47,26 +84,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             oTable = $('#payments').DataTable({
-                "processing": true,
-                "serverSide": true,
-
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": true,
-
-                "ajax": appUrl + "/subagents/payments/" + <?php echo $application->application_id ?> +"/data",
-                "columns": [
-                    {data: 'subagent_payments_id', name: 'subagent_payments_id'},
-                    {data: 'date_paid', name: 'date_paid'},
-                    {data: 'amount', name: 'amount'},
-                    {data: 'payment_method', name: 'payment_method'},
-                    {data: 'payment_type', name: 'payment_type'},
-                    {data: 'description', name: 'description', orderable: false, searchable: false},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
+                "pageLength": 50,
                 order: [[0, 'desc']]
             });
         });

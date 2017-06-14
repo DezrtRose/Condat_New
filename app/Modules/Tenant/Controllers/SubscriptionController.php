@@ -1,17 +1,19 @@
 <?php namespace App\Modules\Tenant\Controllers;
 
 use App\Http\Requests;
+use App\Modules\Tenant\Models\Customer;
+use App\Modules\Tenant\Models\User;
 use Flash;
 use DB;
 use Illuminate\Http\Request;
 use Carbon;
 use App\Modules\Agency\Models\AgencySubscription;
-use Illuminate\Support\Facades\Auth;
 use App\Modules\Agency\Models\Company;
 use App\Modules\System\Models\Subscription;
 use Mockery\Exception;
 use Srmklive\PayPal\Services\ExpressCheckout;
 use PaypalPayment;
+use PayPal\Exception\PayPalConnectionException;
 
 class SubscriptionController extends BaseController
 {
@@ -21,6 +23,20 @@ class SubscriptionController extends BaseController
     {
         $this->request = $request;
         $this->subscription = $subscription;
+
+        $this->_apiContext = Paypalpayment::ApiContext(
+            'AewUoZdjESBeOWRiUxc6GEVZJxQQ0R8nlqiEcrlv7ikbMz4VLf9nFm4dl02KNNvJXq54YzGNy_kntE77',
+            'ECojXK1WGugEMBu8ncOITeXK-teXfNilAfTNh9rA019jFnMcolzKf77P4bywwZacQReXoAd-Luub3j0Z');
+
+        /* Sandbox account for info@condat.com.au
+         * $this->_apiContext = Paypalpayment::ApiContext(
+            'AVK7FeFkmcTBqpuoTpnZGn_8Xnpo_U2BTm_lo-JHUGwXUECVmxqNs2-y40U6oMOxeIOWgKQIYgFQe7GU',
+            'EPwdN-9XSul1oTRGy8YTp-q0G8x1d9ZiOnW5bpof40TZ6cEQRLx5OvPpZ-ZZsaktieAxikZafh5LP4sH');*/
+
+        /*$this->_apiContext = Paypalpayment::ApiContext(
+            'AVl4CuClCi529x3-AGeOieGhTcZOO16ZOMTgBZ2hIjislH39obSFwHH0iTa9ttnGVAEYzoOV1BcB9avY',
+            'EPKODdkv3-wN0LddHx3zPE2aNa1QteOhlq68R2HbHFFRcH_NXVylKpzPFr1t2rNu5eb_hV8I2L6JtYeu');*/
+
         parent::__construct();
     }
 
@@ -45,16 +61,16 @@ class SubscriptionController extends BaseController
     public function renew($tenant_id)
     {
         $user_id = current_tenant_id();
-        if(!$this->checkAuthority() && $user_id != $this->request->segment(3)) {
+        /*if(!$this->checkAuthority() && $user_id != $this->request->segment(3)) {
             abort(403, 'Unauthorized action.');
-        }
+        }*/
         $agency_id = current_tenant_id();
         $data['companyDetails'] = Company::where('agencies_agent_id', $agency_id)->first();
 
         $data['agency_subscription'] = $agency_subscription = AgencySubscription::where('agency_id', '=', $tenant_id)->where('is_current', '=', 1)->first();
         //dd($agency_subscription->toArray());
             if($agency_subscription->end_date < date('Y-m-d')) {
-                return view('Tenant::Subscription/earlyrenew', $data);
+                return view('Tenant::Subscription/renew', $data);
             } else {
                 return view('Tenant::Subscription/earlyrenew', $data);
             }
@@ -76,31 +92,91 @@ class SubscriptionController extends BaseController
 
     public function submitRenew($agency_id)
     {
-        $agency_id = current_tenant_id();
-        $req = $this->request->all();
+        $renewed = $this->subscription->renew($this->request->all(), $agency_id);
+        ($renewed) ? Flash::success('Subscription has been renewed successfully.') : Flash::danger('Subscription could not be renewed. Please contact the system administrator to report the issue.');
+        return redirect()->route('tenant.user.index', $agency_id);
+    }
 
-        if($req['payment_type'] == 'Credit Card')
-            $this->_card_payment($req);
-        else
-            $this->subscription->renew($req, $agency_id);
+    public function _stripe_payment()
+    {
+        $req = $this->request->all();
+        $subscription_id = $req['subscription_type'];
+
+        $data = Subscription::find($subscription_id);
+        $amount = ($data->amount * $req['subscription_years']) - (($req['subscription_years'] - 1) / 100) * (($data->amount * $req['subscription_years']) * 5);
+
+        $token = $this->request->input('stripeToken');
+        $email = $this->request->input('email');
+
+        \Stripe\Stripe::setApiKey(env('TEST_STRIPE_SECRET_KEY'));
+        $amountCents = $amount * 100;
+
+        $emailCheck = Customer::where('email', $email)->value('email');dd('ok');
+
+        // If the email doesn't exist in the database create new customer and customer record
+        if (!isset($emailCheck)) {
+            // Create a new Stripe customer
+            try {
+                $customer = \Stripe\Customer::create([
+                    'source' => $token,
+                    'email' => $email,
+                    'metadata' => [
+                        "First Name" => $this->current_user()->first_name,
+                        "Last Name" => $this->current_user()->last_name
+                    ]
+                ]);
+            } catch (\Stripe\Error\Card $e) {
+                return redirect()->back()
+                    ->withErrors($e->getMessage())
+                    ->withInput();
+            }
+            $customerID = $customer->id;
+
+            // Create a customer in the database with Stripe ID
+            Customer::create([
+                'first_name' => $this->current_user()->first_name,
+                'last_name' => $this->current_user()->last_name,
+                'email' => $email,
+                'stripe_customer_id' => $customerID,
+            ]);
+        } else {
+            $customerID = Customer::where('email', $email)->value('stripe_customer_id');
+        }
+        // Charging the Customer with the selected amount
+        try {
+            // Charging the Customer with the selected amount
+            $charge = \Stripe\Charge::create([
+                'amount' => $amountCents,
+                'currency' => 'aud',
+                'customer' => $customerID,
+                'metadata' => [
+                    'product_name' => 'Condat Solutions Subscription Renew'
+                ]
+            ]);
+            return $charge;
+        } catch (\Stripe\Error\Card $e) {
+            return redirect()->back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
     }
 
     public function _card_payment($request)
     {
-        $this->_apiContext = Paypalpayment::ApiContext(config('paypal_payment.account.ClientId'), config('paypal_payment.account.ClientSecret'));
         $subscription_id = $request['subscription_type'];
-        //$base_amount = $this->amount($subscription_id);
-        $base_amount = 10;
-        $amount = ($base_amount * $request['subscription_years']) - (($request['subscription_years'] - 1) / 100) * (($base_amount * $request['subscription_years']) * 5);
+
+        $data = Subscription::find($subscription_id);
+        $amount = ($data->amount * $request['subscription_years']) - (($request['subscription_years'] - 1) / 100) * (($data->amount * $request['subscription_years']) * 5);
         // ### CreditCard
         $card = Paypalpayment::creditCard();
-        $card->setType("visa")
-            ->setNumber("4758411877817150")
-            ->setExpireMonth("05")
-            ->setExpireYear("2019")
-            ->setCvv2("456")
-            ->setFirstName("Joe")
-            ->setLastName("Shopper");
+
+        $card->setType($request['card_type'])
+            ->setNumber($request['card_number'])
+            ->setExpireMonth($request['expiration_month'])
+            ->setExpireYear($request['expiration_year'])
+            ->setCvv2($request['cvc'])
+            ->setFirstName($this->current_user()->first_name)
+            ->setLastName($this->current_user()->last_name);
 
         // ### FundingInstrument
         // A resource representing a Payer's funding instrument.
@@ -120,12 +196,11 @@ class SubscriptionController extends BaseController
             ->setFundingInstruments(array($fi));
 
         $item1 = Paypalpayment::item();
-        $item1->setName('Ground Coffee 40 oz')
-            ->setDescription('Ground Coffee 40 oz')
+        $item1->setName('Condat Solutions')
+            ->setDescription('Condat Subscription Renew')
             ->setCurrency('AUD')
             ->setQuantity(1)
             ->setPrice($amount);
-
 
         $itemList = Paypalpayment::itemList();
         $itemList->setItems(array($item1));
@@ -148,7 +223,7 @@ class SubscriptionController extends BaseController
         $transaction = Paypalpayment::transaction();
         $transaction->setAmount($amountObj)
             ->setItemList($itemList)
-            ->setDescription("Payment description")
+            ->setDescription("Condat Subscription Renew")
             ->setInvoiceNumber(uniqid());
 
         // ### Payment
@@ -167,12 +242,14 @@ class SubscriptionController extends BaseController
             // using a valid ApiContext
             // The return object contains the status;
             $payment->create($this->_apiContext);
-        } catch (\PPConnectionException $ex) {
+            return $payment;
+
+        } catch (PayPalConnectionException $ex) {
+        //} catch (\PayPalConnectionException $ex) {
+            echo $ex->getData();
             return  "Exception: " . $ex->getMessage() . PHP_EOL;
             exit(1);
         }
-
-        dd($payment);
     }
 
     public function complete_subscription_paypal($tenant_id)
@@ -187,7 +264,7 @@ class SubscriptionController extends BaseController
             unset($_COOKIE['paypal_payment_data']);
             $provider->doExpressCheckoutPayment($data, $payment_data['TOKEN'], $payment_data['PAYERID']);
             $update = $this->subscription->renew_paypal($payment_data['CUSTOM'], $tenant_id);
-            ($update) ? Flash::success('Subscription has been renewed successfully.') : Flash::success('Subscription could not be renewed.');
+            ($update) ? Flash::success('Subscription has been renewed successfully.') : Flash::danger('Subscription could not be renewed.');
             return redirect()->route('tenant.user.index', $tenant_id);
         } catch (Exception $e) {
             Flash::success($e->getMessage());
@@ -197,6 +274,7 @@ class SubscriptionController extends BaseController
 
     public function test()
     {
+        dd(date('l jS \of F Y h:i:s A'));
         $agency_id = 19;
 
         // sending email to agency

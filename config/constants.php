@@ -18,19 +18,22 @@ return [
 
     'subscription_type' => [1 => 'Basic', 2 => 'Standard', 3 => 'Premium'],
 
-    'card_type' => ['Visa' => 'Visa', 'MasterCard' => 'MasterCard', 'American Express' => 'American Express'],
+    'card_type' => ['visa' => 'Visa', 'mastercard' => 'MasterCard', 'American Express' => 'American Express'],
 
     'payment_type' => ['Cash' => 'Cash', 'Card' => 'Card', 'Paypal' => 'Paypal', 'Others' => 'Others'],
 
-    'payment_by' => ['Student To Agent' => 'Student To Agent', 'Agent To Student' => 'Agent To Student'],
+    'payment_by' => ['Client To Company' => 'Client To Company', 'Company To Client' => 'Company To Client'],
 
-    'college_payment_type' => ['College to Agent' => 'College to Agent', 'Agent to College' => 'Agent to College', 'Student to College' => 'Student to College', 'College to Student' => 'College to Student'],
+    'college_payment_type' => ['College / Super Agent to Company' => 'College / Super Agent to Company', 'Company to College / Super Agent' => 'Company to College / Super Agent', 'Client to College / Super Agent' => 'Client to College / Super Agent', 'College / Super Agent to Client' => 'College / Super Agent to Client'],
 
-    'payment_to_college' => ['Agent to College' => 'Agent to College', 'Student to College' => 'Student to College'],
+    'all_college_payment_type' => ['College / Super Agent to Company' => 'College / Super Agent to Company', 'Company to College / Super Agent' => 'Company to College / Super Agent', 'Client to College / Super Agent' => 'Client to College / Super Agent', 'College / Super Agent to Client' => 'College / Super Agent to Client', 'Pre Claimed Commission' => 'Pre Claimed Commission'],
 
-    'student_payment_type' => ['Student to Agent' => 'Student to Agent', 'Agent to Student' => 'Agent to Student'],
+    //'payment_to_college' => ['Company to College' => 'Company to College', 'Student to College' => 'Student to College'],
+    'payment_to_college' => ['Company to College / Super Agent' => 'Company to College / Super Agent', 'Client to College / Super Agent' => 'Client to College / Super Agent'],
 
-    'subagent_payment_type' => ['Sub Agent to Agent' => 'Sub Agent to Agent', 'Agent to Sub Agent' => 'Agent to Sub Agent'],
+    'student_payment_type' => ['Client to Company' => 'Client to Company', 'Company to Client' => 'Company to Client'],
+
+    'subagent_payment_type' => ['Sub Agent to Company' => 'Sub Agent to Company', 'Company to Sub Agent' => 'Company to Sub Agent'],
 
     'countries' => [
         'AU' => 'Australia',
